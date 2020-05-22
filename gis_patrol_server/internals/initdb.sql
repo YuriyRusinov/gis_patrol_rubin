@@ -16,9 +16,10 @@ commit;
 
 create extension IF NOT EXISTS postgis;
 
---begin;
+begin;
 --\i ./schema/all_tables.sql
---commit;
+\i ./schema/maclabel.sql
+commit;
 
 --\encoding win1251
 
