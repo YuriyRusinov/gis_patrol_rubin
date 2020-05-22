@@ -77,7 +77,7 @@ $LINTER_PREFIX/bin/psql -h $DB_HOST -p $DB_PORT -d $BASE -c "select setgis_patro
 
 #$LINTER_PREFIX/bin/psql -h $DB_HOST -p $DB_PORT -d $BASE -f ./initprivs.sql $USER
 
-#$LINTER_PREFIX/bin/psql -h $DB_HOST -p $DB_PORT -d $BASE -f ./initdata.sql $USER
+$LINTER_PREFIX/bin/psql -h $DB_HOST -p $DB_PORT -d $BASE -f ./initdata.sql $USER
 
 #$LINTER_PREFIX/bin/psql -h $DB_HOST -p $DB_PORT -d $BASE -f ./initiotriggers.sql $USER
 
