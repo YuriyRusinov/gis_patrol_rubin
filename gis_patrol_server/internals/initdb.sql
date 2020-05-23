@@ -12,12 +12,9 @@ commit;
 \i ./functions/contribs/readd_contribs.sql
 
 
---\encoding koi8r
-
-create extension IF NOT EXISTS postgis;
-
 begin;
---\i ./schema/all_tables.sql
+\i ./schema/all_tables.sql
+create extension IF NOT EXISTS postgis;
 \i ./schema/maclabel.sql
 commit;
 

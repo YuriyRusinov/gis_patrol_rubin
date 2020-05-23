@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<extension name="postgis">
+	<schema name="public"/>
+</extension>
+
+<table name="tbl_communication_types" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="440" y="60"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="name_en" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="name_ru" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="description_en">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="description_ru">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_communication_types_pk" type="pk-constr" table="public.tbl_communication_types">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_communications" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="20" y="40"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_parent">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_type" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="geo_location">
+		<type name="geometry" length="0"/>
+	</column>
+	<constraint name="tbl_communications_pk" type="pk-constr" table="public.tbl_communications">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_id_parent" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communications" table="public.tbl_communications">
+	<columns names="id_parent" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="tbl_communications_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communication_types" table="public.tbl_communications">
+	<columns names="id_type" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_tbl_communications_tbl_communications" type="relfk" layer="0"
+	 src-table="public.tbl_communications"
+	 dst-table="public.tbl_communications" reference-fk="fk_id_parent"
+	 src-required="false" dst-required="false">
+	<line>
+		<position x="323.45" y="108.554"/>
+	<position x="323.45" y="29"/>
+	<position x="214.966" y="29"/>
+	</line>
+	<label ref-type="src-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="rel_tbl_communications_tbl_communication_types" type="relfk" layer="0"
+	 src-table="public.tbl_communications"
+	 dst-table="public.tbl_communication_types" reference-fk="tbl_communications_fk"
+	 src-required="false" dst-required="true">
+	<label ref-type="name-label">
+		<position x="6.67438" y="-1.61457"/>
+	</label>
+</relationship>
+
+</dbmodel>
