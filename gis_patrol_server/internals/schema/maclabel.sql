@@ -22,7 +22,7 @@ language 'plpgsql';
 
 
 select checkForMaclabelType();
-create table maclabels (
+create table IF NOT EXISTS maclabels (
    id                   SERIAL not null,
    name                 VARCHAR              not null,
    mac_value            MACLABEL             not null,
