@@ -22,6 +22,7 @@ language 'plpgsql';
 
 
 select checkForMaclabelType();
+drop table if exists maclabels;
 create table IF NOT EXISTS maclabels (
    id                   SERIAL not null,
    name                 VARCHAR              not null,
