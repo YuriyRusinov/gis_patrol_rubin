@@ -67,21 +67,34 @@ CREATE SEQUENCE public.tbl_communications_id_seq
 ALTER SEQUENCE public.tbl_communications_id_seq OWNER TO postgres;
 -- ddl-end --
 
--- object: public.tbl_communication_objects | type: TABLE --
--- DROP TABLE IF EXISTS public.tbl_communication_objects CASCADE;
-CREATE TABLE public.tbl_communication_objects (
+-- object: public.tbl_io_communication_objects | type: TABLE --
+-- DROP TABLE IF EXISTS public.tbl_io_communication_objects CASCADE;
+CREATE TABLE public.tbl_io_communication_objects (
 	id integer NOT NULL DEFAULT nextval('public.tbl_communications_id_seq'::regclass),
-	id_parent integer,
-	name character varying NOT NULL,
-	description text,
-	id_type integer NOT NULL,
-	address text NOT NULL,
-	geo_location geometry,
+	id_category integer NOT NULL,
+	name varchar NOT NULL,
+	description varchar,
+	table_name varchar(256),
+	information text NOT NULL,
+	is_system boolean NOT NULL DEFAULT false,
+	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
+	is_global boolean NOT NULL DEFAULT false,
+	record_fill_color int8,
+	record_text_color int8,
+	ref_table_name varchar(256),
+	r_icon varchar,
+	uuid_t uuid NOT NULL,
 	CONSTRAINT tbl_communications_pk PRIMARY KEY (id)
 
 );
 -- ddl-end --
-COMMENT ON TABLE public.tbl_communication_objects IS E'Таблица содержит перечень ресурсов связи, данные ресурсы могут быть как самостоятельными структурами, так и частью более крупных ресурсов.';
+COMMENT ON TABLE public.tbl_io_communication_objects IS E'Таблица содержит перечень информационных объектов, относящихся к ресурсам связи';
+-- ddl-end --
+COMMENT ON COLUMN public.tbl_io_communication_objects.ref_table_name IS E'Если таблица наследуется от таблицы другого информационного объекта, то здесь приводится название базовой таблицы';
+-- ddl-end --
+COMMENT ON COLUMN public.tbl_io_communication_objects.r_icon IS E'Иконка для отображения';
+-- ddl-end --
+COMMENT ON COLUMN public.tbl_io_communication_objects.uuid_t IS E'Уникальный идентификатор';
 -- ddl-end --
 
 -- object: public.tbl_func_equipment_id_seq | type: SEQUENCE --
@@ -263,18 +276,11 @@ CREATE TABLE public.tbl_cat_params (
 );
 -- ddl-end --
 
--- object: fk_id_parent | type: CONSTRAINT --
--- ALTER TABLE public.tbl_communication_objects DROP CONSTRAINT IF EXISTS fk_id_parent CASCADE;
-ALTER TABLE public.tbl_communication_objects ADD CONSTRAINT fk_id_parent FOREIGN KEY (id_parent)
-REFERENCES public.tbl_communication_objects (id) MATCH FULL
-ON DELETE NO ACTION ON UPDATE NO ACTION;
--- ddl-end --
-
--- object: tbl_communications_fk | type: CONSTRAINT --
--- ALTER TABLE public.tbl_communication_objects DROP CONSTRAINT IF EXISTS tbl_communications_fk CASCADE;
-ALTER TABLE public.tbl_communication_objects ADD CONSTRAINT tbl_communications_fk FOREIGN KEY (id_type)
+-- object: category_fk | type: CONSTRAINT --
+-- ALTER TABLE public.tbl_io_communication_objects DROP CONSTRAINT IF EXISTS category_fk CASCADE;
+ALTER TABLE public.tbl_io_communication_objects ADD CONSTRAINT category_fk FOREIGN KEY (id_category)
 REFERENCES public.tbl_communication_categories (id) MATCH FULL
-ON DELETE NO ACTION ON UPDATE NO ACTION;
+ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- ddl-end --
 
 -- object: func_equipment_fk | type: CONSTRAINT --
@@ -287,14 +293,14 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- object: communication_objects_fk | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_func_equipment_communications DROP CONSTRAINT IF EXISTS communication_objects_fk CASCADE;
 ALTER TABLE public.tbl_func_equipment_communications ADD CONSTRAINT communication_objects_fk FOREIGN KEY (id_tbl_communication_objects)
-REFERENCES public.tbl_communication_objects (id) MATCH FULL
+REFERENCES public.tbl_io_communication_objects (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: communication_object_fk | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_param_values DROP CONSTRAINT IF EXISTS communication_object_fk CASCADE;
 ALTER TABLE public.tbl_param_values ADD CONSTRAINT communication_object_fk FOREIGN KEY (id_communication_object)
-REFERENCES public.tbl_communication_objects (id) MATCH FULL
+REFERENCES public.tbl_io_communication_objects (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
