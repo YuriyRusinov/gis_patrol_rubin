@@ -71,13 +71,15 @@ CREATE SEQUENCE public.tbl_communications_id_seq
 ALTER SEQUENCE public.tbl_communications_id_seq OWNER TO postgres;
 -- ddl-end --
 
--- object: public.tbl_io_communication_objects | type: TABLE --
--- DROP TABLE IF EXISTS public.tbl_io_communication_objects CASCADE;
-CREATE TABLE public.tbl_io_communication_objects (
+-- object: public.tbl_io_communication_objects_references | type: TABLE --
+-- DROP TABLE IF EXISTS public.tbl_io_communication_objects_references CASCADE;
+CREATE TABLE public.tbl_io_communication_objects_references (
 	id integer NOT NULL DEFAULT nextval('public.tbl_communications_id_seq'::regclass),
+	id_author int4 NOT NULL,
 	id_category integer NOT NULL,
 	name varchar NOT NULL,
 	description varchar,
+	table_scheme varchar(256),
 	table_name varchar(256),
 	information text NOT NULL,
 	is_system boolean NOT NULL DEFAULT false,
@@ -92,13 +94,13 @@ CREATE TABLE public.tbl_io_communication_objects (
 
 );
 -- ddl-end --
-COMMENT ON TABLE public.tbl_io_communication_objects IS E'Таблица содержит перечень информационных объектов, относящихся к ресурсам связи';
+COMMENT ON TABLE public.tbl_io_communication_objects_references IS E'Таблица содержит перечень контейнеров информационных объектов, относящихся к ресурсам связи';
 -- ddl-end --
-COMMENT ON COLUMN public.tbl_io_communication_objects.ref_table_name IS E'Если таблица наследуется от таблицы другого информационного объекта, то здесь приводится название базовой таблицы';
+COMMENT ON COLUMN public.tbl_io_communication_objects_references.ref_table_name IS E'Если таблица наследуется от таблицы другого информационного объекта, то здесь приводится название базовой таблицы';
 -- ddl-end --
-COMMENT ON COLUMN public.tbl_io_communication_objects.r_icon IS E'Иконка для отображения';
+COMMENT ON COLUMN public.tbl_io_communication_objects_references.r_icon IS E'Иконка для отображения';
 -- ddl-end --
-COMMENT ON COLUMN public.tbl_io_communication_objects.uuid_t IS E'Уникальный идентификатор';
+COMMENT ON COLUMN public.tbl_io_communication_objects_references.uuid_t IS E'Уникальный идентификатор';
 -- ddl-end --
 
 -- object: public.tbl_func_equipment_id_seq | type: SEQUENCE --
@@ -270,6 +272,21 @@ CREATE TABLE public.tbl_parameter_values (
 );
 -- ddl-end --
 
+-- object: public.users | type: TABLE --
+-- DROP TABLE IF EXISTS public.users CASCADE;
+CREATE TABLE public.users (
+	id serial NOT NULL,
+	id_maclabel smallint NOT NULL DEFAULT 1,
+	firstname varchar NOT NULL DEFAULT '',
+	lastname varchar NOT NULL DEFAULT '',
+	surname varchar NOT NULL DEFAULT '',
+	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
+	email varchar,
+	CONSTRAINT users_pk PRIMARY KEY (id)
+
+);
+-- ddl-end --
+
 -- object: fk_category_ref | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_communication_categories DROP CONSTRAINT IF EXISTS fk_category_ref CASCADE;
 ALTER TABLE public.tbl_communication_categories ADD CONSTRAINT fk_category_ref FOREIGN KEY (id_child)
@@ -285,10 +302,17 @@ ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: category_fk | type: CONSTRAINT --
--- ALTER TABLE public.tbl_io_communication_objects DROP CONSTRAINT IF EXISTS category_fk CASCADE;
-ALTER TABLE public.tbl_io_communication_objects ADD CONSTRAINT category_fk FOREIGN KEY (id_category)
+-- ALTER TABLE public.tbl_io_communication_objects_references DROP CONSTRAINT IF EXISTS category_fk CASCADE;
+ALTER TABLE public.tbl_io_communication_objects_references ADD CONSTRAINT category_fk FOREIGN KEY (id_category)
 REFERENCES public.tbl_communication_categories (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- ddl-end --
+
+-- object: fk_author | type: CONSTRAINT --
+-- ALTER TABLE public.tbl_io_communication_objects_references DROP CONSTRAINT IF EXISTS fk_author CASCADE;
+ALTER TABLE public.tbl_io_communication_objects_references ADD CONSTRAINT fk_author FOREIGN KEY (id_author)
+REFERENCES public.users (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: category_fk | type: CONSTRAINT --
@@ -308,7 +332,7 @@ ON DELETE CASCADE ON UPDATE CASCADE;
 -- object: fk_communication_object | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_parameter_values DROP CONSTRAINT IF EXISTS fk_communication_object CASCADE;
 ALTER TABLE public.tbl_parameter_values ADD CONSTRAINT fk_communication_object FOREIGN KEY (id_communication_object)
-REFERENCES public.tbl_io_communication_objects (id) MATCH FULL
+REFERENCES public.tbl_io_communication_objects_references (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
