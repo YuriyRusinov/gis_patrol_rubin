@@ -23,10 +23,15 @@ language 'plpgsql';
 
 select checkForMaclabelType();
 drop table if exists maclabels;
-create table IF NOT EXISTS maclabels (
+create table if not exists maclabels (
    id                   SERIAL not null,
    name                 VARCHAR              not null,
    mac_value            MACLABEL             not null,
    constraint PK_MACLABELS primary key (id)
 );
+
+alter table if exists users
+   add constraint FK_USERS_REFERENCE_MACLABEL foreign key (id_maclabel)
+      references maclabels (id)
+      on delete restrict on update restrict;
 

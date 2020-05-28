@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="333,198" last-zoom="0.95" max-obj-count="9"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="353,0" last-zoom="0.95" max-obj-count="10"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -60,12 +60,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 </sequence>
 
-<table name="tbl_io_communication_objects" layer="0" collapse-mode="2" max-obj-count="16" z-value="0">
+<table name="tbl_io_communication_objects_references" layer="0" collapse-mode="2" max-obj-count="19" z-value="0">
 	<schema name="public"/>
-	<comment><![CDATA[Таблица содержит перечень информационных объектов, относящихся к ресурсам связи]]></comment>
-	<position x="960" y="60"/>
+	<comment><![CDATA[Таблица содержит перечень контейнеров информационных объектов, относящихся к ресурсам связи]]></comment>
+	<position x="1020" y="40"/>
 	<column name="id" not-null="true" sequence="public.tbl_communications_id_seq">
 		<type name="integer" length="0"/>
+	</column>
+	<column name="id_author" not-null="true">
+		<type name="int4" length="0"/>
 	</column>
 	<column name="id_category" not-null="true">
 		<type name="integer" length="0"/>
@@ -75,6 +78,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="description">
 		<type name="varchar" length="0"/>
+	</column>
+	<column name="table_scheme">
+		<type name="varchar" length="256"/>
 	</column>
 	<column name="table_name">
 		<type name="varchar" length="256"/>
@@ -109,7 +115,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="uuid" length="0"/>
 		<comment><![CDATA[Уникальный идентификатор]]></comment>
 	</column>
-	<constraint name="tbl_communications_pk" type="pk-constr" table="public.tbl_io_communication_objects">
+	<constraint name="tbl_communications_pk" type="pk-constr" table="public.tbl_io_communication_objects_references">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -179,7 +185,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameters" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
-	<position x="480" y="680"/>
+	<position x="480" y="760"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -208,7 +214,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameter_types" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<position x="460" y="960"/>
+	<position x="460" y="1040"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -301,7 +307,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameter_values" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
-	<position x="1080" y="480"/>
+	<position x="1020" y="560"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -322,6 +328,35 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="users" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<position x="1380" y="100"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_maclabel" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="firstname" not-null="true" default-value="''">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="lastname" not-null="true" default-value="''">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="surname" not-null="true" default-value="''">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="insert_time" not-null="true" default-value="current_timestamp">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="email">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="users_pk" type="pk-constr" table="public.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_category_ref" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communication_categories" table="public.tbl_communication_categories">
 	<columns names="id_child" ref-type="src-columns"/>
@@ -335,8 +370,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="category_fk" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_communication_categories" table="public.tbl_io_communication_objects">
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_communication_categories" table="public.tbl_io_communication_objects_references">
 	<columns names="id_category" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_author" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.users" table="public.tbl_io_communication_objects_references">
+	<columns names="id_author" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -353,7 +394,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_communication_object" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_io_communication_objects" table="public.tbl_parameter_values">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_io_communication_objects_references" table="public.tbl_parameter_values">
 	<columns names="id_communication_object" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -375,7 +416,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_communication_objects_tbl_communication_categories" type="relfk" layer="0"
-	 src-table="public.tbl_io_communication_objects"
+	 src-table="public.tbl_io_communication_objects_references"
 	 dst-table="public.tbl_communication_categories" reference-fk="category_fk"
 	 src-required="false" dst-required="true">
 	<label ref-type="name-label">
@@ -388,9 +429,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="837.481" y="140.287"/>
-	<position x="837.481" y="49"/>
-	<position x="717.654" y="49"/>
+		<position x="807.859" y="144.292"/>
+	<position x="807.859" y="37"/>
+	<position x="689.906" y="37"/>
 	</line>
 </relationship>
 
@@ -401,12 +442,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tbl_parameter_values_tbl_io_communication_objects" type="relfk" layer="0"
 	 src-table="public.tbl_parameter_values"
-	 dst-table="public.tbl_io_communication_objects" reference-fk="fk_communication_object"
+	 dst-table="public.tbl_io_communication_objects_references" reference-fk="fk_communication_object"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_tbl_parameter_values_tbl_cat_params" type="relfk" layer="0"
 	 src-table="public.tbl_parameter_values"
 	 dst-table="public.tbl_cat_params" reference-fk="fk_cat_param"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_io_communication_objects_references_users" type="relfk" layer="0"
+	 src-table="public.tbl_io_communication_objects_references"
+	 dst-table="public.users" reference-fk="fk_author"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
