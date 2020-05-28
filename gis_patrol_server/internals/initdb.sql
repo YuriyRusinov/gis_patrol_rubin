@@ -14,7 +14,10 @@ commit;
 
 begin;
 \i ./schema/all_tables.sql
-create extension IF NOT EXISTS postgis;
+create extension if not exists postgis;
+create extension if not exists fuzzystrmatch;
+create extension if not exists postgis_tiger_geocoder;
+create extension if not exists address_standardizer;
 \i ./schema/maclabel.sql
 commit;
 
