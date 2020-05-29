@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/patrol">
+    <file alias="db_connect.png">db_connect_2310.png</file>
+    <file alias="db_disconnect.png">db_disconnect_2346.png</file>
+    <file alias="exit.png">exit_closethesession_close_6317.png</file>
+</qresource>
+</RCC>
