@@ -26,8 +26,14 @@ PatrolSingleton::PatrolSingleton( QObject* parent )
         qFatal("There should be only one PatrolSingleton object");
     }
     _instance = this;
+    qDebug() << __PRETTY_FUNCTION__;
 }
 
 PatrolSingleton::~PatrolSingleton() {
+    qDebug() << __PRETTY_FUNCTION__;
     _instance = nullptr;
+}
+
+void PatrolSingleton::resetPatrol() {
+    delete _instance;
 }

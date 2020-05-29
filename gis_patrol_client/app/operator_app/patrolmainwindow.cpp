@@ -11,6 +11,7 @@
 #include <QToolBar>
 #include <QtDebug>
 
+#include <patrolsingleton.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
 
@@ -22,6 +23,8 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     _UI->setupUi( this );
     this->addToolBar(Qt::TopToolBarArea, _tbAct);
     this->setCentralWidget(_mdiArea);
+    _patrolS = PatrolSingleton::getPatrolS();
+    qDebug() << __PRETTY_FUNCTION__ << (_patrolS != nullptr);
 
     this->initActions();
 
@@ -31,6 +34,7 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
 }
 
 PatrolMainWindow::~PatrolMainWindow() {
+    _patrolS->resetPatrol();
     delete _mdiArea;
     delete _tbAct;
     delete _UI;

@@ -1,5 +1,6 @@
 HEADERS += \
            patrolsingleton.h \
+           patroldbloader.h \
            ui/logindbform.h
 
 FORMS += \
@@ -7,4 +8,5 @@ FORMS += \
 
 SOURCES += \
            patrolsingleton.cpp \
+           patroldbloader.cpp \
            ui/logindbform.cpp

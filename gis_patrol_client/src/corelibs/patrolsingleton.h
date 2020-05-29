@@ -13,6 +13,7 @@
 class PatrolSingleton : public QObject {
 public:
     static PatrolSingleton* getPatrolS( QObject* parent=nullptr );
+    static void resetPatrol();
 
 private:
     PatrolSingleton(QObject* parent=nullptr);

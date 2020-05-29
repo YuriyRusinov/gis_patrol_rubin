@@ -7,6 +7,6 @@ int main(int argc, char* argv[]) {
 
     pmw->show();
     int ret = app.exec();
-    pmw->deleteLater();
+    delete pmw;//->deleteLater();
     return ret;
 }

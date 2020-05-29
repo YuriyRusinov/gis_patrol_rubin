@@ -23,11 +23,11 @@ DEFINES += __USE_DLL_DATAACCESS
 # libpq support
 PKGCONFIG += libpq
 
-win32 {
-!win32-g++:LIBS *= libpqdll.lib
-win32-g++:LIBS += $${PSQL_HOME}/lib/libpq.dll.a
-}
-unix: LIBS += -lpq
+#win32 {
+#!win32-g++:LIBS *= libpqdll.lib
+#win32-g++:LIBS += $${PSQL_HOME}/lib/libpq.dll.a
+#}
+#unix: LIBS += -lpq
 
 include (dataaccess.pri)
 
