@@ -3,8 +3,8 @@ TEMPLATE = subdirs
 include(./gis_patrol_client.conf)
 
 SUBDIRS += \
-            src #\
-#            app \
+            src \
+            app
 
 #transl
 transl.files = ./transl/*.qm
