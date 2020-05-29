@@ -20,3 +20,7 @@ user.config
 ####################
 *.swp
 .tmp/
+
+# Conflicts save files #
+########################
+*.orig
