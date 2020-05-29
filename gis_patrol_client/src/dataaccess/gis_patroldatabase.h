@@ -1,23 +1,19 @@
-
-#ifndef KKSDATABASE_H
-#define KKSDATABASE_H
+#pragma once
 
 #include "config_dataaccess.h"
 #include "gis_patrolresult.h"
 #include "pqnotify.h"
 #include <QObject>
 
-
-/*!\ingroup SystemGroup
-\brief ????? GISPatrolDatabase
+/*!@ingroup SystemGroup
+@brief Класс GISPatrolDatabase
 */
 class __DA_EXPORT GISPatrolDatabase : QObject
 {
     Q_OBJECT
 
-    friend class KKSCoreApplication;
-    friend class KKSLoader;
-    
+    friend class PatrolSingleton;
+
     public:
         GISPatrolDatabase()
         {
@@ -40,8 +36,8 @@ class __DA_EXPORT GISPatrolDatabase : QObject
         virtual bool connected() const = 0;
 
         virtual GISPatrolResult * execute( const char* query ) const = 0;
-                GISPatrolResult * execute( const QString & query) const;
-                int         executeCmd( const QString & sql ) const;
+        GISPatrolResult * execute( const QString & query) const;
+        int executeCmd( const QString & sql ) const;
         virtual GISPatrolResult * execSQL( const char * sql, ...) const = 0;
 
         virtual GISPatrolResult * execPrepared(
@@ -137,5 +133,3 @@ class __DA_EXPORT GISPatrolDatabase : QObject
     signals:
         void disconnected() const;
 };
-
-#endif
