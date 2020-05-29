@@ -18,7 +18,7 @@ int GISPatrolDatabase::executeCmd(const QString & sql) const
 
 GISPatrolResult * GISPatrolDatabase::execute( const QString & query ) const
 {
-    return execute( query.toUtf8().constData() );
+    return execute( query.toLatin1().constData() );
 }
 
 GISPatrolResult * GISPatrolDatabase::execParams(
@@ -31,7 +31,7 @@ GISPatrolResult * GISPatrolDatabase::execParams(
 {
     if( _paramTypes.count() != _paramFormats.count() || _paramTypes.count() != _paramValues.count()) return NULL;
 
-    QByteArray b = _command.toUtf8();
+    QByteArray b = _command.toLatin1();
     const char * command      = b.constData();    
     int          nParams      = _paramTypes.size();
     int          resultFormat = _resultFormat;
@@ -46,7 +46,7 @@ GISPatrolResult * GISPatrolDatabase::execParams(
         paramFormats[i] = _paramFormats.at(i);
 
         if(paramFormats[i] == 0){ 
-            QByteArray b = _paramValues.at(i).toString().toUtf8();
+            QByteArray b = _paramValues.at(i).toString().toLatin1();
             paramLengths[i] = b.length();
             paramValues[i] = new char[paramLengths[i]];
             memset(paramValues[i], 0, paramLengths[i]+1);
