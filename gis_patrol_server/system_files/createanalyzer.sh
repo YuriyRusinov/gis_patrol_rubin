@@ -93,8 +93,8 @@ printf "cp \$A_DIR/.pgpass $HOME_DIR \n\n" >> ./analyzer.sh
 printf "chmod 0600 $HOME_DIR/.pgpass\n" >> ./analyzer.sh
 printf "export PGPASSFILE=$HOME_DIR/.pgpass\n" >> ./analyzer.sh
 
-printf "\$LINTER_PREFIX/bin/psql -p \$PORT -d \$DB -c \"set session authorization admin; select createtemptables(); select setCurrentDl(4); select cmdanalyzejournal();\" -t \$USER  2>\$LOG_FILE\n\n" >> ./analyzer.sh
-printf "\$LINTER_PREFIX/bin/psql -p \$PORT -d \$DB -c \"set session authorization admin; select createtemptables(); select setCurrentDl(4); select putIOIntoRubric();\" -t \$USER  2>\$LOG_FILE\n\n" >> ./analyzer.sh
+#printf "\$LINTER_PREFIX/bin/psql -p \$PORT -d \$DB -c \"set session authorization admin; select createtemptables(); select setCurrentDl(4); select cmdanalyzejournal();\" -t \$USER  2>\$LOG_FILE\n\n" >> ./analyzer.sh
+#printf "\$LINTER_PREFIX/bin/psql -p \$PORT -d \$DB -c \"set session authorization admin; select createtemptables(); select setCurrentDl(4); select putIOIntoRubric();\" -t \$USER  2>\$LOG_FILE\n\n" >> ./analyzer.sh
 
 printf "rm -f $HOME_DIR/.pgpass\n" >> ./analyzer.sh
 

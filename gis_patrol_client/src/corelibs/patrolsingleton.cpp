@@ -7,6 +7,9 @@
  *  Ю.Л.Русинов
  */
 #include <QtDebug>
+#include <gis_patroldatabase.h>
+#include <gis_patrolpgdatabase.h>
+#include "patrolguiapp.h"
 #include "patrolsingleton.h"
 
 PatrolSingleton* PatrolSingleton::_instance = nullptr;
@@ -20,8 +23,10 @@ PatrolSingleton* PatrolSingleton::getPatrolS( QObject* parent ) {
 }
 
 PatrolSingleton::PatrolSingleton( QObject* parent )
-    : QObject( parent ) {
-
+    : QObject( parent ),
+    _dataBase( new GISPatrolPGDatabase ),
+    _pga( new PatrolGuiApp (_dataBase) )
+{
     if (_instance) {
         qFatal("There should be only one PatrolSingleton object");
     }

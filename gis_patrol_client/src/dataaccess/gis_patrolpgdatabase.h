@@ -124,7 +124,7 @@ class __DA_EXPORT GISPatrolPGDatabase : public GISPatrolDatabase
         /*for rod web  */
 
     protected:
-        friend class KKSCoreApplication;
+        friend class PatrolGuiApp;
         mutable PGconn* conn;
 
 #ifdef USE_NOTIFICATION

@@ -12,6 +12,7 @@
 #include <QtDebug>
 
 #include <patrolsingleton.h>
+#include <patrolguiapp.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
 
@@ -42,6 +43,13 @@ PatrolMainWindow::~PatrolMainWindow() {
 
 void PatrolMainWindow::slotDbConnect() {
     qDebug() << __PRETTY_FUNCTION__;
+    PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
+    QMap<int, QString> accLevels;
+    QStringList secLevels;
+    secLevels << tr("Not secret") << tr("Confidential") << tr("Secret") << tr("Top secret");
+    for(int i=0; i<secLevels.size(); i++)
+        accLevels.insert(i, secLevels[i]);
+    pGuiApp->GUIConnect(accLevels);
 }
 
 void PatrolMainWindow::slotDbDisconnect() {

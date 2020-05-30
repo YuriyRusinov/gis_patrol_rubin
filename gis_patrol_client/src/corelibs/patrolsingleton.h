@@ -10,10 +10,16 @@
 
 #include <QObject>
 
+class GISPatrolDatabase;
+class PatrolGuiApp;
+
 class PatrolSingleton : public QObject {
 public:
     static PatrolSingleton* getPatrolS( QObject* parent=nullptr );
     static void resetPatrol();
+
+    GISPatrolDatabase* getDb() const { return _dataBase; }
+    PatrolGuiApp* getGUIObj() const { return _pga; }
 
 private:
     PatrolSingleton(QObject* parent=nullptr);
@@ -22,6 +28,10 @@ private:
     ~PatrolSingleton();
 
     static PatrolSingleton* _instance;
+
+    mutable GISPatrolDatabase* _dataBase;
+    mutable PatrolGuiApp* _pga;
+
 private:
     Q_OBJECT
 };

@@ -135,7 +135,7 @@ bool GISPatrolPGDatabase::connect( QString _ipServer,
         return connected();
     }
     delete res;
-
+/* 
     res = execute("select createTempTables()");
     if(!res){
         qCritical("cannot execute createTempTables()");
@@ -158,7 +158,7 @@ bool GISPatrolPGDatabase::connect( QString _ipServer,
         delete[] q;
         delete res;
     }
-
+*/
     return connected();
 }
 
