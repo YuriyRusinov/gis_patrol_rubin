@@ -80,13 +80,13 @@ bool GISPatrolPGDatabase::connect( QString _ipServer,
     if ( ! _password.isEmpty() ) password = _password;
     if ( ! _port.isEmpty() ) port = _port;
 
-    conn =  PQsetdbLogin( ipServer.toUtf8().constData(), 
-                          port.toUtf8().constData(), 
+    conn =  PQsetdbLogin( ipServer.toLatin1().constData(), 
+                          port.toLatin1().constData(), 
                           NULL, 
                           NULL,
-                          database.toUtf8().constData(), 
-                          user.toUtf8().constData(),  
-                          password.toUtf8().constData());
+                          database.toLatin1().constData(), 
+                          user.toLatin1().constData(),  
+                          password.toLatin1().constData());
     
     if( !connected() ){
         char * err = PQerrorMessage(conn);
@@ -99,13 +99,13 @@ bool GISPatrolPGDatabase::connect( QString _ipServer,
 
     if (to_listen)
     {
-        notify_conn = PQsetdbLogin( ipServer.toUtf8().constData(), 
-                                    port.toUtf8().constData(), 
+        notify_conn = PQsetdbLogin( ipServer.toLatin1().constData(), 
+                                    port.toLatin1().constData(), 
                                     NULL, 
                                     NULL,
-                                    database.toUtf8().constData(), 
-                                    user.toUtf8().constData(), 
-                                    password.toUtf8().constData() );
+                                    database.toLatin1().constData(), 
+                                    user.toLatin1().constData(), 
+                                    password.toLatin1().constData() );
 
         switch( PQstatus( notify_conn ) )
         {
@@ -135,7 +135,7 @@ bool GISPatrolPGDatabase::connect( QString _ipServer,
         return connected();
     }
     delete res;
-
+/* 
     res = execute("select createTempTables()");
     if(!res){
         qCritical("cannot execute createTempTables()");
@@ -158,7 +158,7 @@ bool GISPatrolPGDatabase::connect( QString _ipServer,
         delete[] q;
         delete res;
     }
-
+*/
     return connected();
 }
 
@@ -334,13 +334,13 @@ void GISPatrolPGDatabase::removeListener( IKKSListener* listener, const char* no
 void GISPatrolPGDatabase::startListen()
 {
     if(!notify_conn){
-        notify_conn = PQsetdbLogin( ipServer.toUtf8().constData(), 
-                                    port.toUtf8().constData(), 
+        notify_conn = PQsetdbLogin( ipServer.toLatin1().constData(), 
+                                    port.toLatin1().constData(), 
                                     NULL, 
                                     NULL,
-                                    database.toUtf8().constData(), 
-                                    user.toUtf8().constData(), 
-                                    password.toUtf8().constData() );
+                                    database.toLatin1().constData(), 
+                                    user.toLatin1().constData(), 
+                                    password.toLatin1().constData() );
 
         switch( PQstatus( notify_conn ) )
         {
@@ -476,8 +476,8 @@ GISPatrolResult* GISPatrolPGDatabase::execParams(const char* command,
 }
 
 /*
- * under MCBC, где стоит Postgresql 7.4 функции PQprepare нет
- * поэтому метод закомментирован
+ * under MCBC, РіРґРµ СЃС‚РѕРёС‚ Postgresql 7.4 С„СѓРЅРєС†РёРё PQprepare РЅРµС‚
+ * РїРѕСЌС‚РѕРјСѓ РјРµС‚РѕРґ Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°РЅ
  */
 
 GISPatrolResult * GISPatrolPGDatabase::prepare(
@@ -809,7 +809,7 @@ GISPatrolResult* GISPatrolPGDatabase::declare(QString cursor_name, QString sql_s
     QString str = "";
     str = "DECLARE " + cursor_name + " SCROLL CURSOR FOR " + sql_string;
 
-    tempres = execute( str.toUtf8().constData() );
+    tempres = execute( str.toLatin1().constData() );
 
     return tempres;
 }
@@ -869,7 +869,7 @@ GISPatrolResult* GISPatrolPGDatabase::fetch(QString cursor_name, int direction, 
             str = "";
     }
 
-    tempres = execute( str.toUtf8().constData() );
+    tempres = execute( str.toLatin1().constData() );
 
      return tempres;
 }
@@ -883,7 +883,7 @@ GISPatrolResult* GISPatrolPGDatabase::close(QString cursor_name) const
     QString str = "";
     str = "CLOSE " + cursor_name;
 
-    tempres = execute( str.toUtf8().constData() );
+    tempres = execute( str.toLatin1().constData() );
     commit();
     
     return tempres;
@@ -943,7 +943,7 @@ GISPatrolResult* GISPatrolPGDatabase::move(QString cursor_name, int direction, i
             str = "";
     }
 
-    tempres = execute( str.toUtf8().constData() );
+    tempres = execute( str.toLatin1().constData() );
 
     return tempres;
 }

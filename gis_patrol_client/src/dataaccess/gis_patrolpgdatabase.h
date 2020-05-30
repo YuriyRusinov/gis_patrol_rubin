@@ -1,6 +1,4 @@
-
-#ifndef KKSPGDATABASE_H
-#define KKSPGDATABASE_H
+#pragma once
 
 #include <QString>
 
@@ -15,8 +13,8 @@
 using namespace std;
 class GISPatrolPGResult;
 
-/*!\ingroup SystemGroup
-\brief ????? GISPatrolPGDatabase
+/*!@ingroup SystemGroup
+@brief Класс GISPatrolPGDatabase
 */
 class __DA_EXPORT GISPatrolPGDatabase : public GISPatrolDatabase
 {
@@ -126,7 +124,7 @@ class __DA_EXPORT GISPatrolPGDatabase : public GISPatrolDatabase
         /*for rod web  */
 
     protected:
-        friend class KKSCoreApplication;
+        friend class PatrolGuiApp;
         mutable PGconn* conn;
 
 #ifdef USE_NOTIFICATION
@@ -156,5 +154,3 @@ class __DA_EXPORT GISPatrolPGDatabase : public GISPatrolDatabase
 
         PGresult * _PQexec(const char *query) const;
 };
-
-#endif
