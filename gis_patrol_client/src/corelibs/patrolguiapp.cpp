@@ -13,7 +13,8 @@
 #include "ui/logindbform.h"
 #include "patrolguiapp.h"
 
-PatrolGuiApp::PatrolGuiApp(GISPatrolDatabase* db, QObject* parent) : QObject (parent), _dataBase(db) {}
+PatrolGuiApp::PatrolGuiApp(GISPatrolDatabase* db, QObject* parent) : QObject (parent), _dataBase(db) {
+}
 
 PatrolGuiApp::~PatrolGuiApp() {}
 
@@ -54,4 +55,14 @@ bool PatrolGuiApp::GUIConnect(const QMap<int, QString>& accLevels, QWidget* pare
     patrolSettings->endGroup(); // system
     delete patrolSettings;
     return isConn;
+}
+
+void PatrolGuiApp::disconnectFromDb() {
+    _dataBase->disconnect(false);
+    if(!_dataBase->connected())
+        dbDisconnected();
+}
+
+void PatrolGuiApp::dbDisconnected() {
+    emit disconnected();
 }

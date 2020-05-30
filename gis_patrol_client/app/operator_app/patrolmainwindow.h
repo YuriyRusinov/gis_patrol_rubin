@@ -28,6 +28,7 @@ public:
 private slots:
     void slotDbConnect();
     void slotDbDisconnect();
+    void slotDbDisconnected();
 
 private:
     //

@@ -15,6 +15,13 @@ class GISPatrolDatabase;
 class PatrolGuiApp : public QObject {
 public:
     bool GUIConnect(const QMap<int, QString>& accLevels, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags());
+    void disconnectFromDb();
+
+private slots:
+    void dbDisconnected();
+
+signals:
+    void disconnected();
 
 private:
     friend class PatrolSingleton;
