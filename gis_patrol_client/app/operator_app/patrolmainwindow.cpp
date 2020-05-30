@@ -28,10 +28,8 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     qDebug() << __PRETTY_FUNCTION__ << (_patrolS != nullptr);
 
     this->initActions();
-
-    QObject::connect(_UI->actConnect, &QAction::triggered, this, &PatrolMainWindow::slotDbConnect);
-    QObject::connect(_UI->actDisconnect, &QAction::triggered, this, &PatrolMainWindow::slotDbDisconnect);
-    QObject::connect(_UI->actQuit, &QAction::triggered, this, &QMainWindow::close);
+    PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
+    QObject::connect(pGuiApp, &PatrolGuiApp::disconnected, this, &PatrolMainWindow::slotDbDisconnected);
 }
 
 PatrolMainWindow::~PatrolMainWindow() {
@@ -42,29 +40,41 @@ PatrolMainWindow::~PatrolMainWindow() {
 }
 
 void PatrolMainWindow::slotDbConnect() {
-    qDebug() << __PRETTY_FUNCTION__;
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
     QMap<int, QString> accLevels;
     QStringList secLevels;
     secLevels << tr("Not secret") << tr("Confidential") << tr("Secret") << tr("Top secret");
     for(int i=0; i<secLevels.size(); i++)
         accLevels.insert(i, secLevels[i]);
-    pGuiApp->GUIConnect(accLevels);
+    bool isConn = pGuiApp->GUIConnect(accLevels);
+    _UI->actDisconnect->setEnabled( isConn );
+    _UI->actConnect->setEnabled( !isConn );
 }
 
 void PatrolMainWindow::slotDbDisconnect() {
+    PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
+    pGuiApp->disconnectFromDb();
     qDebug() << __PRETTY_FUNCTION__;
 }
 
 void PatrolMainWindow::initActions() {
-    QAction* aDbConnect = _tbAct->addAction(QIcon(":/patrol/db_connect.png"), tr("Connect..."));
-    aDbConnect->setToolTip(tr("Connect to database"));
-    QObject::connect(aDbConnect, &QAction::triggered, this, &PatrolMainWindow::slotDbConnect);
+    _UI->actConnect->setIcon(QIcon(":/patrol/db_connect.png"));
+    _tbAct->addAction(_UI->actConnect);//QIcon(":/patrol/db_connect.png"), tr("Connect..."));
+    _UI->actConnect->setToolTip(tr("Connect to database"));
+    QObject::connect(_UI->actConnect, &QAction::triggered, this, &PatrolMainWindow::slotDbConnect);
 
-    QAction* aDbDisconnect = _tbAct->addAction(QIcon(":/patrol/db_disconnect.png"), tr("Disconnect..."));
-    aDbDisconnect->setToolTip(tr("Disconnect from database"));
-    QObject::connect(aDbDisconnect, &QAction::triggered, this, &PatrolMainWindow::slotDbDisconnect);
+    _UI->actDisconnect->setIcon(QIcon(":/patrol/db_disconnect.png"));
+    _UI->actDisconnect->setEnabled( false );
+    _tbAct->addAction(_UI->actDisconnect);
+    _UI->actDisconnect->setToolTip(tr("Disconnect from database"));
+    QObject::connect(_UI->actDisconnect, &QAction::triggered, this, &PatrolMainWindow::slotDbDisconnect);
 
-    QAction* aQuit = _tbAct->addAction(QIcon(":/patrol/exit.png"), tr("Quit"));
-    QObject::connect(aQuit, &QAction::triggered, this, &QMainWindow::close);
+    _UI->actQuit->setIcon(QIcon(":/patrol/exit.png"));
+    _tbAct->addAction(_UI->actQuit);
+    QObject::connect(_UI->actQuit, &QAction::triggered, this, &QMainWindow::close);
+}
+
+void PatrolMainWindow::slotDbDisconnected() {
+    _UI->actConnect->setEnabled( true );
+    _UI->actDisconnect->setEnabled( false );
 }
