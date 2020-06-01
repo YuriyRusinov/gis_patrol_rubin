@@ -267,9 +267,14 @@ CREATE TABLE public.tbl_parameter_values (
 	id_cat_param integer NOT NULL,
 	value varchar NOT NULL,
 	description varchar,
+	start_time timestamptz NOT NULL DEFAULT current_timestamp,
+	finish_time timestamptz,
+	is_actual boolean NOT NULL DEFAULT true,
 	CONSTRAINT tbl_parameter_values_pk PRIMARY KEY (id)
 
 );
+-- ddl-end --
+COMMENT ON TABLE public.tbl_parameter_values IS E'Таблица содержит значения параметров, в случае изменения значения, прежняя величина остается в таблице, но для нее устанавливается время окончания и поле is_actual становится равным false';
 -- ddl-end --
 
 -- object: public.users | type: TABLE --

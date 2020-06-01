@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="289,312" last-zoom="0.95" max-obj-count="10"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="288,0" last-zoom="0.95" max-obj-count="10"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -305,8 +305,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_parameter_values" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+<table name="tbl_parameter_values" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
+	<comment><![CDATA[Таблица содержит значения параметров, в случае изменения значения, прежняя величина остается в таблице, но для нее устанавливается время окончания и поле is_actual становится равным false]]></comment>
 	<position x="1020" y="560"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
@@ -322,6 +323,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="description">
 		<type name="varchar" length="0"/>
+	</column>
+	<column name="start_time" not-null="true" default-value="current_timestamp">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="finish_time">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="is_actual" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
 	</column>
 	<constraint name="tbl_parameter_values_pk" type="pk-constr" table="public.tbl_parameter_values">
 		<columns names="id" ref-type="src-columns"/>
