@@ -47,11 +47,11 @@ insert into tbl_parameter_types (id, id_par_view, name, code) values (23, 13, '�
 insert into tbl_parameter_types (id, id_par_view, name, code) values (24, 14, 'Видео-ролик', 'bytea');
 insert into tbl_parameter_types (id, id_par_view, name, code) values (25, 11, 'Цвет записи в справочнике (текст)', 'int8');
 insert into tbl_parameter_types (id, id_par_view, name, code) values (26, 11, 'Ссылка на цвет записи (текст)', 'int8');
-insert into tbl_parameter_types (id, id_par_view, name, code) values (27, 15, 'Время', 'TIME');
-insert into tbl_parameter_types (id, id_par_view, name, code) values (28, 16, 'ГИС-объект', 'GEOMETRY');
+insert into tbl_parameter_types (id, id_par_view, name, code) values (27, 15, 'Время', 'time');
+insert into tbl_parameter_types (id, id_par_view, name, code) values (28, 16, 'ГИС-объект', 'geometry');
 --insert into tbl_parameter_types (id, id_par_view, name, code) values (29, 17, 'ГИС-объект (стандартный полигон)', 'GEOMETRY');
 insert into tbl_parameter_types (id, id_par_view, name, code) values (30, 5, 'Целочисленное значение (64 бита)', 'int8');
-insert into tbl_parameter_types (id, id_par_view, name, code) values (31, 5, 'Уникальный идентификатор (UUID)', 'UUID');
+insert into tbl_parameter_types (id, id_par_view, name, code) values (31, 5, 'Уникальный идентификатор (UUID)', 'uuid');
 insert into tbl_parameter_types (id, id_par_view, name, code) values (32, 18, 'Составной атрибут', 'varchar');
 insert into tbl_parameter_types (id, id_par_view, name, code) values (33, 19, 'Гистограмма', 'varchar');
 --insert into tbl_parameter_types (id, id_par_view, name, code) values (34, 20, 'ГИС-объект (векторный слой)', 'varchar');
