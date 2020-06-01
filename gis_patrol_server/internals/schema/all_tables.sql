@@ -193,6 +193,7 @@ CREATE TABLE public.version_table (
 -- DROP TABLE IF EXISTS public.tbl_parameters CASCADE;
 CREATE TABLE public.tbl_parameters (
 	id serial NOT NULL,
+	id_type integer,
 	code varchar(256) NOT NULL,
 	name varchar NOT NULL,
 	title varchar NOT NULL,
@@ -208,24 +209,12 @@ CREATE TABLE public.tbl_parameters (
 -- DROP TABLE IF EXISTS public.tbl_parameter_types CASCADE;
 CREATE TABLE public.tbl_parameter_types (
 	id serial NOT NULL,
+	id_par_view integer NOT NULL,
 	name character varying NOT NULL,
 	code character varying NOT NULL,
-	id_tbl_parameters integer,
 	CONSTRAINT tbl_communication_parameter_types_pk PRIMARY KEY (id)
 
 );
--- ddl-end --
-
--- object: tbl_parameters_fk | type: CONSTRAINT --
--- ALTER TABLE public.tbl_parameter_types DROP CONSTRAINT IF EXISTS tbl_parameters_fk CASCADE;
-ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT tbl_parameters_fk FOREIGN KEY (id_tbl_parameters)
-REFERENCES public.tbl_parameters (id) MATCH FULL
-ON DELETE SET NULL ON UPDATE CASCADE;
--- ddl-end --
-
--- object: tbl_parameter_types_uq | type: CONSTRAINT --
--- ALTER TABLE public.tbl_parameter_types DROP CONSTRAINT IF EXISTS tbl_parameter_types_uq CASCADE;
-ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT tbl_parameter_types_uq UNIQUE (id_tbl_parameters);
 -- ddl-end --
 
 -- object: public.tbl_cat_params | type: TABLE --
@@ -267,9 +256,14 @@ CREATE TABLE public.tbl_parameter_values (
 	id_cat_param integer NOT NULL,
 	value varchar NOT NULL,
 	description varchar,
+	start_time timestamptz NOT NULL DEFAULT current_timestamp,
+	finish_time timestamptz,
+	is_actual boolean NOT NULL DEFAULT true,
 	CONSTRAINT tbl_parameter_values_pk PRIMARY KEY (id)
 
 );
+-- ddl-end --
+COMMENT ON TABLE public.tbl_parameter_values IS E'Таблица содержит значения параметров, в случае изменения значения, прежняя величина остается в таблице, но для нее устанавливается время окончания и поле is_actual становится равным false';
 -- ddl-end --
 
 -- object: public.users | type: TABLE --
@@ -285,6 +279,18 @@ CREATE TABLE public.users (
 	CONSTRAINT users_pk PRIMARY KEY (id)
 
 );
+-- ddl-end --
+
+-- object: public.tbl_param_views | type: TABLE --
+-- DROP TABLE IF EXISTS public.tbl_param_views CASCADE;
+CREATE TABLE public.tbl_param_views (
+	id serial NOT NULL,
+	name varchar NOT NULL,
+	CONSTRAINT param_views_pk PRIMARY KEY (id)
+
+);
+-- ddl-end --
+COMMENT ON TABLE public.tbl_param_views IS E'Таблица содержит перечень элементов управления, при помощи которых должны отображаться атрибуты различных типов.\nТак, например, атрибуты типа элемент справочника должны отображаться при помощи элемента управления выпадающий список и т.д.';
 -- ddl-end --
 
 -- object: fk_category_ref | type: CONSTRAINT --
@@ -312,6 +318,20 @@ ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- ALTER TABLE public.tbl_io_communication_objects_references DROP CONSTRAINT IF EXISTS fk_author CASCADE;
 ALTER TABLE public.tbl_io_communication_objects_references ADD CONSTRAINT fk_author FOREIGN KEY (id_author)
 REFERENCES public.users (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_param_type | type: CONSTRAINT --
+-- ALTER TABLE public.tbl_parameters DROP CONSTRAINT IF EXISTS fk_param_type CASCADE;
+ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_param_type FOREIGN KEY (id_type)
+REFERENCES public.tbl_parameter_types (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: ft_par_types_views | type: CONSTRAINT --
+-- ALTER TABLE public.tbl_parameter_types DROP CONSTRAINT IF EXISTS ft_par_types_views CASCADE;
+ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT ft_par_types_views FOREIGN KEY (id_par_view)
+REFERENCES public.tbl_param_views (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
