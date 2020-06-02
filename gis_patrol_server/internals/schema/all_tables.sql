@@ -79,7 +79,6 @@ CREATE TABLE public.tbl_io_communication_objects_references (
 	id_category integer NOT NULL,
 	name varchar NOT NULL,
 	description varchar,
-	table_scheme varchar(256),
 	table_name varchar(256),
 	information text NOT NULL,
 	is_system boolean NOT NULL DEFAULT false,
@@ -193,7 +192,7 @@ CREATE TABLE public.version_table (
 -- DROP TABLE IF EXISTS public.tbl_parameters CASCADE;
 CREATE TABLE public.tbl_parameters (
 	id serial NOT NULL,
-	id_type integer,
+	id_param_type integer,
 	code varchar(256) NOT NULL,
 	name varchar NOT NULL,
 	title varchar NOT NULL,
@@ -209,7 +208,7 @@ CREATE TABLE public.tbl_parameters (
 -- DROP TABLE IF EXISTS public.tbl_parameter_types CASCADE;
 CREATE TABLE public.tbl_parameter_types (
 	id serial NOT NULL,
-	id_par_view integer NOT NULL,
+	id_param_view integer NOT NULL,
 	name character varying NOT NULL,
 	code character varying NOT NULL,
 	CONSTRAINT tbl_communication_parameter_types_pk PRIMARY KEY (id)
@@ -323,14 +322,14 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- object: fk_param_type | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_parameters DROP CONSTRAINT IF EXISTS fk_param_type CASCADE;
-ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_param_type FOREIGN KEY (id_type)
+ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_param_type FOREIGN KEY (id_param_type)
 REFERENCES public.tbl_parameter_types (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: ft_par_types_views | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_parameter_types DROP CONSTRAINT IF EXISTS ft_par_types_views CASCADE;
-ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT ft_par_types_views FOREIGN KEY (id_par_view)
+ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT ft_par_types_views FOREIGN KEY (id_param_view)
 REFERENCES public.tbl_param_views (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
