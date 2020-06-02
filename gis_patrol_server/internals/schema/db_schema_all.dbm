@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="35,990" last-zoom="0.95" max-obj-count="12"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="380,0" last-zoom="0.95" max-obj-count="12"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -60,7 +60,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 </sequence>
 
-<table name="tbl_io_communication_objects_references" layer="0" collapse-mode="2" max-obj-count="19" z-value="0">
+<table name="tbl_io_communication_objects_references" layer="0" collapse-mode="2" max-obj-count="18" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит перечень контейнеров информационных объектов, относящихся к ресурсам связи]]></comment>
 	<position x="1020" y="40"/>
@@ -78,9 +78,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="description">
 		<type name="varchar" length="0"/>
-	</column>
-	<column name="table_scheme">
-		<type name="varchar" length="256"/>
 	</column>
 	<column name="table_name">
 		<type name="varchar" length="256"/>
@@ -189,7 +186,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
-	<column name="id_type">
+	<column name="id_param_type">
 		<type name="integer" length="0"/>
 	</column>
 	<column name="code" not-null="true">
@@ -221,7 +218,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
-	<column name="id_par_view" not-null="true">
+	<column name="id_param_view" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
 	<column name="name" not-null="true">
@@ -257,7 +254,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bool" length="0"/>
 		<comment><![CDATA[Определяет, является ли поле обязательным для заполнения]]></comment>
 	</column>
-	<column name="is_readonly" not-null="true" default-value="false">
+	<column name="is_read_only" not-null="true" default-value="false">
 		<type name="bool" length="0"/>
 	</column>
 	<column name="param_sort_order" not-null="true" default-value="0">
@@ -326,7 +323,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="users" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+<table name="users" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
 	<schema name="public"/>
 	<position x="1380" y="100"/>
 	<column name="id" not-null="true">
@@ -335,17 +332,23 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_maclabel" not-null="true" default-value="1">
 		<type name="smallint" length="0"/>
 	</column>
-	<column name="firstname" not-null="true" default-value="''">
+	<column name="firstname" not-null="true">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="lastname" not-null="true" default-value="''">
+	<column name="surname">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="surname" not-null="true" default-value="''">
+	<column name="lastname" not-null="true">
 		<type name="varchar" length="0"/>
 	</column>
 	<column name="insert_time" not-null="true" default-value="current_timestamp">
 		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="family_name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="information">
+		<type name="text" length="0"/>
 	</column>
 	<column name="email">
 		<type name="varchar" length="0"/>
@@ -397,13 +400,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_param_type" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_parameter_types" table="public.tbl_parameters">
-	<columns names="id_type" ref-type="src-columns"/>
+	<columns names="id_param_type" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="ft_par_types_views" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_param_views" table="public.tbl_parameter_types">
-	<columns names="id_par_view" ref-type="src-columns"/>
+	<columns names="id_param_view" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
