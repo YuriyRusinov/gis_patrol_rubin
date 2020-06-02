@@ -226,7 +226,7 @@ CREATE TABLE public.tbl_cat_params (
 	default_value varchar,
 	is_mandatory bool NOT NULL DEFAULT false,
 	is_read_only bool NOT NULL DEFAULT false,
-	param_sort_order smallint NOT NULL DEFAULT 0,
+	param_sort_order integer NOT NULL DEFAULT 0,
 	CONSTRAINT tbl_cat_params_pk PRIMARY KEY (id)
 
 );

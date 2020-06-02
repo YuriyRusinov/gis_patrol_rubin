@@ -258,7 +258,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bool" length="0"/>
 	</column>
 	<column name="param_sort_order" not-null="true" default-value="0">
-		<type name="smallint" length="0"/>
+		<type name="integer" length="0"/>
 	</column>
 	<constraint name="tbl_cat_params_pk" type="pk-constr" table="public.tbl_cat_params">
 		<columns names="id" ref-type="src-columns"/>
@@ -458,9 +458,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="807.859" y="144.292"/>
-	<position x="807.859" y="37"/>
-	<position x="689.906" y="37"/>
+		<position x="837.481" y="140.287"/>
+	<position x="837.481" y="49"/>
+	<position x="717.654" y="49"/>
 	</line>
 </relationship>
 
