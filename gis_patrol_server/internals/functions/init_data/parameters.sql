@@ -44,4 +44,7 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (359, 3, 'id_parent', 'Родитель', 'Родитель', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (392, 9, 'user_name', 'Имя пользователя', 'Имя пользователя', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (393, 8, 'id_user', 'ИД пользователя', 'ИД пользователя', null::varchar, null::varchar, true);
-select setval('tbl_parameters_id_seq', 393, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (404, 8, 'param_sort_order', 'Порядок следования параметра', 'Порядок следования параметра', null::varchar, null::varchar, true);
+select setval('tbl_parameters_id_seq', 1000, true);
+-- все пользовательские параметры начнутся с 1001
+-- чтоб сохранить резерв для системных параметров
