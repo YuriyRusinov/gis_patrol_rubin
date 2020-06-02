@@ -225,8 +225,8 @@ CREATE TABLE public.tbl_cat_params (
 	name varchar,
 	default_value varchar,
 	is_mandatory bool NOT NULL DEFAULT false,
-	is_readonly bool NOT NULL DEFAULT false,
-	param_sort_order smallint NOT NULL DEFAULT 0,
+	is_read_only bool NOT NULL DEFAULT false,
+	param_sort_order integer NOT NULL DEFAULT 0,
 	CONSTRAINT tbl_cat_params_pk PRIMARY KEY (id)
 
 );
@@ -270,10 +270,12 @@ COMMENT ON TABLE public.tbl_parameter_values IS E'Таблица содержи�
 CREATE TABLE public.users (
 	id serial NOT NULL,
 	id_maclabel smallint NOT NULL DEFAULT 1,
-	firstname varchar NOT NULL DEFAULT '',
-	lastname varchar NOT NULL DEFAULT '',
-	surname varchar NOT NULL DEFAULT '',
+	firstname varchar NOT NULL,
+	surname varchar,
+	lastname varchar NOT NULL,
 	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
+	family_name varchar NOT NULL,
+	information text,
 	email varchar,
 	CONSTRAINT users_pk PRIMARY KEY (id)
 
