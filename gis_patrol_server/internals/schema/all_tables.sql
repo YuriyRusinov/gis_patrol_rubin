@@ -79,7 +79,6 @@ CREATE TABLE public.tbl_io_communication_objects_references (
 	id_category integer NOT NULL,
 	name varchar NOT NULL,
 	description varchar,
-	table_scheme varchar(256),
 	table_name varchar(256),
 	information text NOT NULL,
 	is_system boolean NOT NULL DEFAULT false,
@@ -193,7 +192,7 @@ CREATE TABLE public.version_table (
 -- DROP TABLE IF EXISTS public.tbl_parameters CASCADE;
 CREATE TABLE public.tbl_parameters (
 	id serial NOT NULL,
-	id_type integer,
+	id_param_type integer,
 	code varchar(256) NOT NULL,
 	name varchar NOT NULL,
 	title varchar NOT NULL,
@@ -209,7 +208,7 @@ CREATE TABLE public.tbl_parameters (
 -- DROP TABLE IF EXISTS public.tbl_parameter_types CASCADE;
 CREATE TABLE public.tbl_parameter_types (
 	id serial NOT NULL,
-	id_par_view integer NOT NULL,
+	id_param_view integer NOT NULL,
 	name character varying NOT NULL,
 	code character varying NOT NULL,
 	CONSTRAINT tbl_communication_parameter_types_pk PRIMARY KEY (id)
@@ -226,7 +225,7 @@ CREATE TABLE public.tbl_cat_params (
 	name varchar,
 	default_value varchar,
 	is_mandatory bool NOT NULL DEFAULT false,
-	is_readonly bool NOT NULL DEFAULT false,
+	is_read_only bool NOT NULL DEFAULT false,
 	param_sort_order smallint NOT NULL DEFAULT 0,
 	CONSTRAINT tbl_cat_params_pk PRIMARY KEY (id)
 
@@ -271,10 +270,12 @@ COMMENT ON TABLE public.tbl_parameter_values IS E'Таблица содержи�
 CREATE TABLE public.users (
 	id serial NOT NULL,
 	id_maclabel smallint NOT NULL DEFAULT 1,
-	firstname varchar NOT NULL DEFAULT '',
-	lastname varchar NOT NULL DEFAULT '',
-	surname varchar NOT NULL DEFAULT '',
+	firstname varchar NOT NULL,
+	surname varchar,
+	lastname varchar NOT NULL,
 	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
+	family_name varchar NOT NULL,
+	information text,
 	email varchar,
 	CONSTRAINT users_pk PRIMARY KEY (id)
 
@@ -323,14 +324,14 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- object: fk_param_type | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_parameters DROP CONSTRAINT IF EXISTS fk_param_type CASCADE;
-ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_param_type FOREIGN KEY (id_type)
+ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_param_type FOREIGN KEY (id_param_type)
 REFERENCES public.tbl_parameter_types (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: ft_par_types_views | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_parameter_types DROP CONSTRAINT IF EXISTS ft_par_types_views CASCADE;
-ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT ft_par_types_views FOREIGN KEY (id_par_view)
+ALTER TABLE public.tbl_parameter_types ADD CONSTRAINT ft_par_types_views FOREIGN KEY (id_param_view)
 REFERENCES public.tbl_param_views (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
