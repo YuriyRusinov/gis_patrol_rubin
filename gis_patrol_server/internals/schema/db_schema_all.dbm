@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="139,0" last-zoom="0.95" max-obj-count="12"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="87,78" last-zoom="0.95" max-obj-count="12"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -232,20 +232,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_cat_params" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
+<table name="tbl_cat_params" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
 	<position x="500" y="420"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
-	<column name="id_communication_category" not-null="true">
+	<column name="id_category" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
-	<column name="id_param" not-null="true">
+	<column name="id_parameter" not-null="true">
 		<type name="integer" length="0"/>
-	</column>
-	<column name="name">
-		<type name="varchar" length="0"/>
 	</column>
 	<column name="default_value">
 		<type name="varchar" length="0"/>
@@ -412,13 +409,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="category_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tbl_communication_categories" table="public.tbl_cat_params">
-	<columns names="id_communication_category" ref-type="src-columns"/>
+	<columns names="id_category" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="param_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tbl_parameters" table="public.tbl_cat_params">
-	<columns names="id_param" ref-type="src-columns"/>
+	<columns names="id_parameter" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -458,9 +455,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="837.481" y="140.287"/>
-	<position x="837.481" y="49"/>
-	<position x="717.654" y="49"/>
+		<position x="807.859" y="144.292"/>
+	<position x="807.859" y="37"/>
+	<position x="689.906" y="37"/>
 	</line>
 </relationship>
 

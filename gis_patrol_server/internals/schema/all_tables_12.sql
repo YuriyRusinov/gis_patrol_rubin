@@ -220,9 +220,8 @@ CREATE TABLE public.tbl_parameter_types (
 -- DROP TABLE IF EXISTS public.tbl_cat_params CASCADE;
 CREATE TABLE public.tbl_cat_params (
 	id serial NOT NULL,
-	id_communication_category integer NOT NULL,
-	id_param integer NOT NULL,
-	name varchar,
+	id_category integer NOT NULL,
+	id_parameter integer NOT NULL,
 	default_value varchar,
 	is_mandatory bool NOT NULL DEFAULT false,
 	is_read_only bool NOT NULL DEFAULT false,
@@ -338,14 +337,14 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- object: category_fk | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_cat_params DROP CONSTRAINT IF EXISTS category_fk CASCADE;
-ALTER TABLE public.tbl_cat_params ADD CONSTRAINT category_fk FOREIGN KEY (id_communication_category)
+ALTER TABLE public.tbl_cat_params ADD CONSTRAINT category_fk FOREIGN KEY (id_category)
 REFERENCES public.tbl_communication_categories (id) MATCH FULL
 ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: param_fk | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_cat_params DROP CONSTRAINT IF EXISTS param_fk CASCADE;
-ALTER TABLE public.tbl_cat_params ADD CONSTRAINT param_fk FOREIGN KEY (id_param)
+ALTER TABLE public.tbl_cat_params ADD CONSTRAINT param_fk FOREIGN KEY (id_parameter)
 REFERENCES public.tbl_parameters (id) MATCH FULL
 ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
