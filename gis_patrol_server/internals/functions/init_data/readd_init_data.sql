@@ -8,4 +8,6 @@ commit;
 
 begin;
 \i ./functions/init_data/maclabels.sql
+\i ./functions/init_data/users.sql
+\i ./functions/init_data/io_objects.sql
 commit;

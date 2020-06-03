@@ -88,7 +88,7 @@ CREATE TABLE public.tbl_io_communication_objects_references (
 	record_text_color int8,
 	ref_table_name varchar(256),
 	r_icon varchar,
-	uuid_t uuid NOT NULL,
+	uuid_t uuid NOT NULL DEFAULT uuid_generate_v1(),
 	CONSTRAINT tbl_communications_pk PRIMARY KEY (id)
 
 );
