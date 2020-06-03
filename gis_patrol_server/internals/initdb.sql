@@ -30,6 +30,7 @@ begin;
 
 \i ./functions/readd_functions.sql
 
+commit;
 --in readd_commands use encoding utf8 - so, set cp1251 back
 --\encoding win1251
 
@@ -37,8 +38,9 @@ begin;
 --alter sequence io_objects_id_seq rename to tbl_io_objects_id_seq;
 --alter table attrs_values rename to tbl_attrs_values;
 --alter table rec_attrs_values rename to tbl_rec_attrs_values;
+begin;
 
---\i ./functions/security/readd_security.sql
+\i ./functions/security/readd_security.sql
 
 commit;
 
