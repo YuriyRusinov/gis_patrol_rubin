@@ -20,6 +20,7 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (23, 9, 'surname', 'Отчество', 'Отчество', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (24, 9, 'lastname', 'Фамилия', 'Фамилия', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (25, 9, 'family_name', 'Фамилия, инициалы', 'Фамилия, инициалы', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (26, 9, 'db_user', 'Пользователь БД', 'Пользователь БД', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (27, 3, 'id_parent', 'Родитель', 'Входит в', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (32, 2, 'id_user', 'Пользователь', 'Пользователь', 'users', 'family_name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (48, 2, 'id_communication_object', 'Ресурс связи', 'Ресурс', 'tbl_io_communication_objects_references', 'name', true);
