@@ -25,24 +25,10 @@ WITH SCHEMA public;
 COMMENT ON EXTENSION postgis IS E'PostGIS geometry, geography, and raster spatial types and functions';
 -- ddl-end --
 
--- object: public.tbl_communication_types_id_seq | type: SEQUENCE --
--- DROP SEQUENCE IF EXISTS public.tbl_communication_types_id_seq CASCADE;
-CREATE SEQUENCE public.tbl_communication_types_id_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 2147483647
-	START WITH 1
-	CACHE 1
-	NO CYCLE
-	OWNED BY NONE;
--- ddl-end --
-ALTER SEQUENCE public.tbl_communication_types_id_seq OWNER TO postgres;
--- ddl-end --
-
 -- object: public.tbl_communication_categories | type: TABLE --
 -- DROP TABLE IF EXISTS public.tbl_communication_categories CASCADE;
 CREATE TABLE public.tbl_communication_categories (
-	id integer NOT NULL DEFAULT nextval('public.tbl_communication_types_id_seq'::regclass),
+	id serial NOT NULL,
 	id_category_type integer NOT NULL,
 	id_child int4,
 	is_main bool NOT NULL DEFAULT true,
@@ -50,16 +36,16 @@ CREATE TABLE public.tbl_communication_categories (
 	code varchar NOT NULL,
 	description varchar,
 	is_system bool NOT NULL DEFAULT false,
-	CONSTRAINT tbl_communication_types_pk PRIMARY KEY (id)
+	CONSTRAINT tbl_communication_categories_pk PRIMARY KEY (id)
 
 );
 -- ddl-end --
 COMMENT ON COLUMN public.tbl_communication_categories.id_child IS E'Категория может содержать справочник, и дочерняя категория описывает подчиненную таблицу';
 -- ddl-end --
 
--- object: public.tbl_communications_id_seq | type: SEQUENCE --
--- DROP SEQUENCE IF EXISTS public.tbl_communications_id_seq CASCADE;
-CREATE SEQUENCE public.tbl_communications_id_seq
+-- object: public.tbl_communication_objects_references_id_seq | type: SEQUENCE --
+-- DROP SEQUENCE IF EXISTS public.tbl_communication_objects_references_id_seq CASCADE;
+CREATE SEQUENCE public.tbl_communication_objects_references_id_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -68,13 +54,13 @@ CREATE SEQUENCE public.tbl_communications_id_seq
 	NO CYCLE
 	OWNED BY NONE;
 -- ddl-end --
-ALTER SEQUENCE public.tbl_communications_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.tbl_communication_objects_references_id_seq OWNER TO postgres;
 -- ddl-end --
 
 -- object: public.tbl_io_communication_objects_references | type: TABLE --
 -- DROP TABLE IF EXISTS public.tbl_io_communication_objects_references CASCADE;
 CREATE TABLE public.tbl_io_communication_objects_references (
-	id integer NOT NULL DEFAULT nextval('public.tbl_communications_id_seq'::regclass),
+	id integer NOT NULL DEFAULT nextval('public.tbl_communication_objects_references_id_seq'::regclass),
 	id_author int4 NOT NULL,
 	id_category integer NOT NULL,
 	name varchar NOT NULL,
@@ -276,6 +262,7 @@ CREATE TABLE public.users (
 	family_name varchar NOT NULL,
 	information text,
 	email varchar,
+	db_user varchar NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY (id)
 
 );
