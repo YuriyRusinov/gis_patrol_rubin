@@ -3,8 +3,9 @@
 --\i ./functions/contribs/readd_contribs.sql
 
 \i ./functions/general/readd_general.sql
-/*
+
 \i ./functions/io_objects/readd_io_objects.sql
+/*
 \i ./functions/journals/readd_journals.sql
 
 \i ./functions/files/readd_files.sql
