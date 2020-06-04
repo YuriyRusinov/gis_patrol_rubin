@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="354,0" last-zoom="0.95" max-obj-count="12"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="0,0" last-zoom="0.95" max-obj-count="12"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -17,16 +17,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<comment><![CDATA[PostGIS geometry, geography, and raster spatial types and functions]]></comment>
 </extension>
 
-<sequence name="tbl_communication_types_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
-	<schema name="public"/>
-	<role name="postgres"/>
-</sequence>
-
 <table name="tbl_communication_categories" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<position x="500" y="60"/>
-	<column name="id" not-null="true" sequence="public.tbl_communication_types_id_seq">
-		<type name="integer" length="0"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
 	</column>
 	<column name="id_category_type" not-null="true">
 		<type name="integer" length="0"/>
@@ -50,12 +45,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="is_system" not-null="true" default-value="false">
 		<type name="bool" length="0"/>
 	</column>
-	<constraint name="tbl_communication_types_pk" type="pk-constr" table="public.tbl_communication_categories">
+	<constraint name="tbl_communication_categories_pk" type="pk-constr" table="public.tbl_communication_categories">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<sequence name="tbl_communications_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+<sequence name="tbl_communication_objects_references_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
 	<schema name="public"/>
 	<role name="postgres"/>
 </sequence>
@@ -64,7 +59,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит перечень контейнеров информационных объектов, относящихся к ресурсам связи]]></comment>
 	<position x="1020" y="40"/>
-	<column name="id" not-null="true" sequence="public.tbl_communications_id_seq">
+	<column name="id" not-null="true" sequence="public.tbl_communication_objects_references_id_seq">
 		<type name="integer" length="0"/>
 	</column>
 	<column name="id_author" not-null="true">
@@ -350,7 +345,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="email">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="db_user">
+	<column name="db_user" not-null="true">
 		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="users_pk" type="pk-constr" table="public.users">
@@ -458,9 +453,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="837.481" y="140.287"/>
-	<position x="837.481" y="49"/>
-	<position x="717.654" y="49"/>
+		<position x="866.653" y="140.287"/>
+	<position x="866.653" y="49"/>
+	<position x="737.102" y="49"/>
 	</line>
 </relationship>
 
