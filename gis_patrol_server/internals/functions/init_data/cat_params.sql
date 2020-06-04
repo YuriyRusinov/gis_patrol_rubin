@@ -83,3 +83,4 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (56, 49, 16, 'current_timestamp', true, true, 5);-- insert_time
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (57, 49, 25, null, true, false, 6);-- family_name
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (58, 49, 66, null, false, false, 7);-- email
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (59, 49, 26, null, true,false, 8);-- db_user

@@ -276,6 +276,7 @@ CREATE TABLE public.users (
 	family_name varchar NOT NULL,
 	information text,
 	email varchar,
+	db_user varchar NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY (id)
 
 );

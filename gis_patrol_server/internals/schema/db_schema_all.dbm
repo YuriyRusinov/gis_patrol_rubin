@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="355,0" last-zoom="0.95" max-obj-count="12"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="354,0" last-zoom="0.95" max-obj-count="12"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -320,7 +320,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="users" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
+<table name="users" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
 	<schema name="public"/>
 	<position x="1380" y="100"/>
 	<column name="id" not-null="true">
@@ -348,6 +348,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="text" length="0"/>
 	</column>
 	<column name="email">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="db_user">
 		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="users_pk" type="pk-constr" table="public.users">
@@ -455,9 +458,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="807.859" y="144.292"/>
-	<position x="807.859" y="37"/>
-	<position x="689.906" y="37"/>
+		<position x="837.481" y="140.287"/>
+	<position x="837.481" y="49"/>
+	<position x="717.654" y="49"/>
 	</line>
 </relationship>
 
