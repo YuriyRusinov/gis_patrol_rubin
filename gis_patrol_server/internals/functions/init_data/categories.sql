@@ -20,3 +20,8 @@ insert into tbl_communication_categories (id, id_category_type, id_child, is_mai
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (184, 8, 183, true, 'Справочник значений параметров в информационных объектах', 'SYSCATEGORY_184', null::varchar, true);
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (185, 10, null::integer, false, 'Параметры в категориях', 'SYSCATEGORY_185', null::varchar, true);
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (186, 8, 185, true, 'Справочник параметров в категориях', 'SYSCATEGORY_186', null::varchar, true);
+select setval('tbl_communication_categories_id_seq', 500, true);
+--
+-- номера пользовательских категорий будут начинаться с 501,
+-- предшествующие зарезервированы для возможных добавлений системных категорий
+--

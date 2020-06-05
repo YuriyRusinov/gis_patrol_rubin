@@ -453,9 +453,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="866.653" y="140.287"/>
-	<position x="866.653" y="49"/>
-	<position x="737.102" y="49"/>
+		<position x="834.859" y="144.292"/>
+	<position x="834.859" y="37"/>
+	<position x="707.906" y="37"/>
 	</line>
 </relationship>
 
