@@ -10,3 +10,4 @@
 \i ./functions/security/uaddtogroup.sql
 \i ./functions/security/uremovefromgroup.sql
 \i ./functions/security/getauthorinfo.sql
+\i ./functions/security/getuser.sql
