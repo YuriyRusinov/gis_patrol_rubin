@@ -5,13 +5,16 @@
 \i ./functions/general/readd_general.sql
 
 \i ./functions/io_objects/readd_io_objects.sql
+\i ./functions/parameters/readd_parameters.sql
 /*
 \i ./functions/journals/readd_journals.sql
 
 \i ./functions/files/readd_files.sql
 
 \i ./functions/upiter/readd_upiter.sql
+*/
 \i ./functions/categories/readd_categories.sql
+/*
 \i ./functions/life_cycles/readd_life_cycles.sql
 \i ./functions/templates/readd_templates.sql
 \i ./functions/inf_exchange/readd_inf_exchange.sql
