@@ -26,6 +26,8 @@ QT += core widgets
 
 LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lcorelibs
 
+QMAKE_RPATHDIR += $${DESTDIR}
+
 HEADERS += patrolmainwindow.h
 
 FORMS += patrol_main_window.ui
