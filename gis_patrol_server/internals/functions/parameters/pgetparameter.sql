@@ -46,3 +46,36 @@ begin
 end
 $BODY$
 language 'plpgsql';
+
+create or replace function pGetParameter(varchar) returns setof h_get_parameter as
+$BODY$
+declare
+    parameter_code alias for $1;
+    r h_get_parameter%rowtype;
+begin
+
+    for r in
+        select
+            p.id,
+            ptt.id,
+            p.code,
+            p.name,
+            p.title,
+            p.table_name,
+            p.column_name,
+            ptt.name,
+            ptt.code,
+            null::varchar, -- default_value is possible in categories
+            null::boolean,
+            null::boolean,
+            null::integer
+        from
+            tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and lower(p.code)=lower(parameter_code))
+    loop
+        return next r;
+    end loop;
+
+    return;
+end
+$BODY$
+language 'plpgsql';
