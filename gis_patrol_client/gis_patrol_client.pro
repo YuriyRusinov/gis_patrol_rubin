@@ -1,10 +1,14 @@
 TEMPLATE = subdirs
-
+DESTDIR = ./build
 include(./gis_patrol_client.conf)
+
+QMAKE_RPATHDIR += $${DESTDIR}
+message("runtime library path is $${QMAKE_RPATHDIR}")
 
 SUBDIRS += \
             src \
             app
+
 
 #transl
 transl.files = ./transl/*.qm
