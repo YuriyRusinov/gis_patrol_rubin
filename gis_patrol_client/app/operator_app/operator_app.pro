@@ -24,7 +24,13 @@ DEPENDPATH *= ../../src/corelibs
 
 QT += core widgets
 
-LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lcorelibs
+LIBS += -L$${DESTDIR} -lgis_patrol_utils
+LIBS += -L$${DESTDIR} -ldataaccess
+LIBS += -L$${DESTDIR} -lcorelibs
+
+QMAKE_REL_RPATH_BASE = $$PWD
+QMAKE_RPATHDIR += $${DESTDIR}
+message("operator app runtime library path is $${QMAKE_RPATHDIR}")
 
 HEADERS += patrolmainwindow.h
 
