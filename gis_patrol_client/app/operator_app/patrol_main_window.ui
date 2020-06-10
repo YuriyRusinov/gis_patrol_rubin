@@ -25,14 +25,36 @@
    </property>
    <widget class="QMenu" name="menu_Db">
     <property name="title">
-     <string>&amp;Database</string>
+     <string>Data&amp;base</string>
     </property>
     <addaction name="actConnect"/>
     <addaction name="actDisconnect"/>
     <addaction name="separator"/>
     <addaction name="actQuit"/>
    </widget>
+   <widget class="QMenu" name="menu_References">
+    <property name="title">
+     <string>&amp;References</string>
+    </property>
+    <addaction name="actViewRef"/>
+   </widget>
+   <widget class="QMenu" name="menu_Categories">
+    <property name="title">
+     <string>&amp;Categories</string>
+    </property>
+    <addaction name="actCreateCat"/>
+    <addaction name="actAddParametersIntoCat"/>
+    <addaction name="actViewCat"/>
+   </widget>
+   <widget class="QMenu" name="menu_Settings">
+    <property name="title">
+     <string>&amp;Settings</string>
+    </property>
+   </widget>
    <addaction name="menu_Db"/>
+   <addaction name="menu_References"/>
+   <addaction name="menu_Categories"/>
+   <addaction name="menu_Settings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actConnect">
@@ -51,6 +73,36 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actCreate">
+   <property name="text">
+    <string>&amp;Create ...</string>
+   </property>
+  </action>
+  <action name="actViewRef">
+   <property name="text">
+    <string>View ...</string>
+   </property>
+  </action>
+  <action name="actDelete">
+   <property name="text">
+    <string>Delete ...</string>
+   </property>
+  </action>
+  <action name="actCreateCat">
+   <property name="text">
+    <string>Create ...</string>
+   </property>
+  </action>
+  <action name="actAddParametersIntoCat">
+   <property name="text">
+    <string>Add parameters ...</string>
+   </property>
+  </action>
+  <action name="actViewCat">
+   <property name="text">
+    <string>View ...</string>
    </property>
   </action>
  </widget>

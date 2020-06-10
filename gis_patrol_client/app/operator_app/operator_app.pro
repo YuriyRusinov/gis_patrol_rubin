@@ -21,12 +21,18 @@ DEPENDPATH *= ../../src/dataaccess
 #
 INCLUDEPATH *= ../../src/corelibs
 DEPENDPATH *= ../../src/corelibs
+#
+# patrolCommunications
+#
+INCLUDEPATH *= ../../src/patrolCommunications
+DEPENDPATH *= ../../src/patrolCommunications
 
 QT += core widgets
 
 LIBS += -L$${DESTDIR} -lgis_patrol_utils
 LIBS += -L$${DESTDIR} -ldataaccess
 LIBS += -L$${DESTDIR} -lcorelibs
+LIBS += -L$${DESTDIR} -lpatrolCommunications
 
 QMAKE_REL_RPATH_BASE = $$PWD
 QMAKE_RPATHDIR += $${DESTDIR}
