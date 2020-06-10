@@ -30,17 +30,22 @@ private slots:
     void slotDbDisconnect();
     void slotDbDisconnected();
 
+    void slotViewReferences();
+
 private:
     //
     // Functions
     //
     void initActions();
+    void setEnabled(bool enable);
+
 private:
     //
     // Variables
     //
     Ui::patrol_main_window* _UI;
     QToolBar* _tbAct;
+    QToolBar* _tbActReferences;
     QMdiArea* _mdiArea;
     PatrolSingleton* _patrolS;
 
