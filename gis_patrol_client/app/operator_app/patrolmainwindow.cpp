@@ -20,14 +20,17 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     QMainWindow(parent, flags),
     _UI(new Ui::patrol_main_window),
     _tbAct(new QToolBar),
+    _tbActReferences(new QToolBar),
     _mdiArea(new QMdiArea) {
     _UI->setupUi( this );
     this->addToolBar(Qt::TopToolBarArea, _tbAct);
+    this->addToolBar(Qt::TopToolBarArea, _tbActReferences);
     this->setCentralWidget(_mdiArea);
     _patrolS = PatrolSingleton::getPatrolS();
     qDebug() << __PRETTY_FUNCTION__ << (_patrolS != nullptr);
 
     this->initActions();
+    setEnabled( false );
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
     QObject::connect(pGuiApp, &PatrolGuiApp::disconnected, this, &PatrolMainWindow::slotDbDisconnected);
 }
@@ -35,6 +38,7 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
 PatrolMainWindow::~PatrolMainWindow() {
     _patrolS->resetPatrol();
     delete _mdiArea;
+    delete _tbActReferences;
     delete _tbAct;
     delete _UI;
 }
@@ -47,8 +51,7 @@ void PatrolMainWindow::slotDbConnect() {
     for(int i=0; i<secLevels.size(); i++)
         accLevels.insert(i, secLevels[i]);
     bool isConn = pGuiApp->GUIConnect(accLevels);
-    _UI->actDisconnect->setEnabled( isConn );
-    _UI->actConnect->setEnabled( !isConn );
+    setEnabled( isConn );
 }
 
 void PatrolMainWindow::slotDbDisconnect() {
@@ -64,17 +67,32 @@ void PatrolMainWindow::initActions() {
     QObject::connect(_UI->actConnect, &QAction::triggered, this, &PatrolMainWindow::slotDbConnect);
 
     _UI->actDisconnect->setIcon(QIcon(":/patrol/db_disconnect.png"));
-    _UI->actDisconnect->setEnabled( false );
     _tbAct->addAction(_UI->actDisconnect);
     _UI->actDisconnect->setToolTip(tr("Disconnect from database"));
     QObject::connect(_UI->actDisconnect, &QAction::triggered, this, &PatrolMainWindow::slotDbDisconnect);
+    _tbAct->addSeparator();
 
     _UI->actQuit->setIcon(QIcon(":/patrol/exit.png"));
     _tbAct->addAction(_UI->actQuit);
     QObject::connect(_UI->actQuit, &QAction::triggered, this, &QMainWindow::close);
+
+    _UI->actViewRef->setIcon(QIcon(":/patrol/view.png"));
+    _tbActReferences->addAction(_UI->actViewRef);
+    _UI->actViewRef->setToolTip(tr("View connection references"));
+    QObject::connect(_UI->actViewRef, &QAction::triggered, this, &PatrolMainWindow::slotViewReferences);
+
 }
 
 void PatrolMainWindow::slotDbDisconnected() {
-    _UI->actConnect->setEnabled( true );
-    _UI->actDisconnect->setEnabled( false );
+    setEnabled( false );
+}
+
+void PatrolMainWindow::slotViewReferences() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void PatrolMainWindow::setEnabled(bool enable) {
+    _UI->actViewRef->setEnabled( enable );
+    _UI->actDisconnect->setEnabled( enable );
+    _UI->actConnect->setEnabled( !enable );
 }
