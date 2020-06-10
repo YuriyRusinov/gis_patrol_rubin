@@ -2,6 +2,7 @@ select f_safe_drop_type('h_get_parameter');
 
 create type h_get_parameter as (id_parameter integer,
                                 id_param_type integer,
+                                id_param_group integer,
                                 parameter_code varchar,
                                 parameter_name varchar,
                                 parameter_title varchar,
@@ -25,6 +26,7 @@ begin
         select
             p.id,
             ptt.id,
+            p.id_param_group,
             p.code,
             p.name,
             p.title,
@@ -58,6 +60,7 @@ begin
         select
             p.id,
             ptt.id,
+            p.id_param_group,
             p.code,
             p.name,
             p.title,

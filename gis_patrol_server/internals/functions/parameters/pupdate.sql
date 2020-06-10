@@ -1,13 +1,14 @@
-create or replace function pUpdate(int4, int4, varchar, varchar, varchar, varchar, varchar) returns int4 as
+create or replace function pUpdate(int4, int4, int4, varchar, varchar, varchar, varchar, varchar) returns int4 as
 $BODY$
 declare
     idParameter alias for $1;
     idParamType alias for $2;
-    parameter_code alias for $3;
-    parameter_name alias for $4;
-    parameter_title alias for $5;
-    parameter_table_name alias for $6;
-    parameter_column_name alias for $7;
+    idParamGroup alias for $3;
+    parameter_code alias for $4;
+    parameter_name alias for $5;
+    parameter_title alias for $6;
+    parameter_table_name alias for $7;
+    parameter_column_name alias for $8;
 
     ptype int4;
     pcode varchar;
@@ -35,6 +36,7 @@ begin
     end if;
 
     update tbl_parameters set
+        id_param_group = idParamGroup,
         name = parameter_name,
         title = parameter_title,
         table_name = parameter_table_name,
