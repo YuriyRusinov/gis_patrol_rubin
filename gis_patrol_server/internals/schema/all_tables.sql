@@ -179,6 +179,7 @@ CREATE TABLE public.version_table (
 CREATE TABLE public.tbl_parameters (
 	id serial NOT NULL,
 	id_param_type integer,
+	id_param_group integer NOT NULL DEFAULT 2,
 	code varchar(256) NOT NULL,
 	name varchar NOT NULL,
 	title varchar NOT NULL,
@@ -280,6 +281,17 @@ CREATE TABLE public.tbl_param_views (
 COMMENT ON TABLE public.tbl_param_views IS E'Таблица содержит перечень элементов управления, при помощи которых должны отображаться атрибуты различных типов.\nТак, например, атрибуты типа элемент справочника должны отображаться при помощи элемента управления выпадающий список и т.д.';
 -- ddl-end --
 
+-- object: public.tbl_parameters_groups | type: TABLE --
+-- DROP TABLE IF EXISTS public.tbl_parameters_groups CASCADE;
+CREATE TABLE public.tbl_parameters_groups (
+	id serial NOT NULL,
+	id_parent integer,
+	name varchar NOT NULL,
+	CONSTRAINT tbl_parameters_groups_pk PRIMARY KEY (id)
+
+);
+-- ddl-end --
+
 -- object: fk_category_ref | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_communication_categories DROP CONSTRAINT IF EXISTS fk_category_ref CASCADE;
 ALTER TABLE public.tbl_communication_categories ADD CONSTRAINT fk_category_ref FOREIGN KEY (id_child)
@@ -312,6 +324,13 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ALTER TABLE public.tbl_parameters DROP CONSTRAINT IF EXISTS fk_param_type CASCADE;
 ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_param_type FOREIGN KEY (id_param_type)
 REFERENCES public.tbl_parameter_types (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_parameter_group_reference | type: CONSTRAINT --
+-- ALTER TABLE public.tbl_parameters DROP CONSTRAINT IF EXISTS fk_parameter_group_reference CASCADE;
+ALTER TABLE public.tbl_parameters ADD CONSTRAINT fk_parameter_group_reference FOREIGN KEY (id_param_group)
+REFERENCES public.tbl_parameters_groups (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 

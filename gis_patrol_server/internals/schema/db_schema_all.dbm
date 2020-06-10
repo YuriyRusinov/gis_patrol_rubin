@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="0,0" last-zoom="0.95" max-obj-count="12"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="0,882" last-zoom="0.95" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -175,13 +175,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 </table>
 
-<table name="tbl_parameters" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
+<table name="tbl_parameters" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
 	<schema name="public"/>
 	<position x="480" y="760"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
 	<column name="id_param_type">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_param_group" not-null="true" default-value="2">
 		<type name="integer" length="0"/>
 	</column>
 	<column name="code" not-null="true">
@@ -209,7 +212,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameter_types" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<position x="460" y="1040"/>
+	<position x="460" y="1140"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -357,7 +360,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит перечень элементов управления, при помощи которых должны отображаться атрибуты различных типов.
 Так, например, атрибуты типа элемент справочника должны отображаться при помощи элемента управления выпадающий список и т.д.]]></comment>
-	<position x="520" y="1340"/>
+	<position x="520" y="1400"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -365,6 +368,23 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="param_views_pk" type="pk-constr" table="public.tbl_param_views">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_parameters_groups" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="80" y="840"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_parent">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_parameters_groups_pk" type="pk-constr" table="public.tbl_parameters_groups">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -396,6 +416,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <constraint name="fk_param_type" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_parameter_types" table="public.tbl_parameters">
 	<columns names="id_param_type" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_parameter_group_reference" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_parameters_groups" table="public.tbl_parameters">
+	<columns names="id_param_group" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -488,5 +514,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.tbl_parameters"
 	 dst-table="public.tbl_parameter_types" reference-fk="fk_param_type"
 	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_parameters_tbl_parameters_groups" type="relfk" layer="0"
+	 src-table="public.tbl_parameters"
+	 dst-table="public.tbl_parameters_groups" reference-fk="fk_parameter_group_reference"
+	 src-required="false" dst-required="true"/>
 
 </dbmodel>
