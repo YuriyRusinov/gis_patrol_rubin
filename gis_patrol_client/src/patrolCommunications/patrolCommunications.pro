@@ -21,7 +21,7 @@ DEPENDPATH *= ../dataaccess
 INCLUDEPATH *= ../corelibs
 DEPENDPATH *= ../corelibs
 
-QT += core widgets
+QT += core widgets xml 
 
 CONFIG += link_pkgconfig
 PKGCONFIG += libpq gsl

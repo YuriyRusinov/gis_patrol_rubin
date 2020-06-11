@@ -1,8 +1,10 @@
 
 HEADERS += \
            pCommCenter.h \
-           pCommCenterType.h
+           pCommCenterType.h \
+           pCommNode.h
 
 SOURCES += \
            pCommCenter.cpp \
-           pCommCenterType.cpp
+           pCommCenterType.cpp \
+           pCommNode.cpp
