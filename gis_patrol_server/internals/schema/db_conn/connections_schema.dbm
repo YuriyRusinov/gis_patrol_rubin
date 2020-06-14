@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="540,252" last-zoom="1" max-obj-count="8"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="248,30" last-zoom="1" max-obj-count="9"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -47,7 +47,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_communication_node" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
+<table name="tbl_communication_node" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
 	<schema name="public"/>
 	<position x="780" y="100"/>
 	<column name="id" not-null="true">
@@ -86,6 +86,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_network_type" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
+	<column name="id_zone" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
 	<constraint name="tbl_communication_node_pk" type="pk-constr" table="public.tbl_communication_node">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
@@ -111,7 +114,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_communincation_node_type" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Вид узла связи]]></comment>
-	<position x="1080" y="460"/>
+	<position x="1220" y="480"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -139,6 +142,27 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="tbl_network_type_pk" type="pk-constr" table="public.tbl_network_type">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<extension name="postgis">
+	<schema name="public"/>
+</extension>
+
+<table name="tbl_communication_zone" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="380" y="460"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="borders">
+		<type name="geography" length="0"/>
+	</column>
+	<constraint name="tbl_communication_zone_pk" type="pk-constr" table="public.tbl_communication_zone">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -174,6 +198,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_zone" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communication_zone" table="public.tbl_communication_node">
+	<columns names="id_zone" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <constraint name="fk_interaction1" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communication_node" table="public.tbl_node_interactions">
 	<columns names="id_interact1" ref-type="src-columns"/>
@@ -201,9 +231,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_node" reference-fk="fk_parent_node"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="1108.86" y="209.092"/>
-	<position x="1108.86" y="77"/>
-	<position x="983.906" y="77"/>
+		<position x="1140.2" y="215.487"/>
+	<position x="1140.2" y="89"/>
+	<position x="1012.8" y="89"/>
 	</line>
 </relationship>
 
@@ -225,6 +255,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_communication_node_tbl_network_type" type="relfk" layer="0"
 	 src-table="public.tbl_communication_node"
 	 dst-table="public.tbl_network_type" reference-fk="fk_communication_network_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_communication_node_tbl_communication_zone" type="relfk" layer="0"
+	 src-table="public.tbl_communication_node"
+	 dst-table="public.tbl_communication_zone" reference-fk="fk_zone"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
