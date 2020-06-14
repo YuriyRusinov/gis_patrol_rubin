@@ -14,7 +14,7 @@ insert into tbl_param_views (id, name) values (13, 'Объект SVG');
 insert into tbl_param_views (id, name) values (14, 'Видео-ролик');
 insert into tbl_param_views (id, name) values (15, 'Время');
 insert into tbl_param_views (id, name) values (16, 'ГИС-объект');
---insert into tbl_param_views (id, name) values (17, 'ГИС-объект (стандартный полигон)');
+insert into tbl_param_views (id, name) values (17, 'ГИС-объект (geography)');
 insert into tbl_param_views (id, name) values (18, 'Составной атрибут');
 insert into tbl_param_views (id, name) values (19, 'Гистограмма');
 insert into tbl_param_views (id, name) values (20, 'ГИС-объект (карта)');
@@ -49,7 +49,7 @@ insert into tbl_parameter_types (id, id_param_view, name, code) values (25, 11, 
 insert into tbl_parameter_types (id, id_param_view, name, code) values (26, 11, 'Ссылка на цвет записи (текст)', 'int8');
 insert into tbl_parameter_types (id, id_param_view, name, code) values (27, 15, 'Время', 'time');
 insert into tbl_parameter_types (id, id_param_view, name, code) values (28, 16, 'ГИС-объект', 'geometry');
---insert into tbl_parameter_types (id, id_param_view, name, code) values (29, 17, 'ГИС-объект (стандартный полигон)', 'GEOMETRY');
+insert into tbl_parameter_types (id, id_param_view, name, code) values (29, 17, 'ГИС-объект (geography)', 'GEOGRAPHY');
 insert into tbl_parameter_types (id, id_param_view, name, code) values (30, 5, 'Целочисленное значение (64 бита)', 'int8');
 insert into tbl_parameter_types (id, id_param_view, name, code) values (31, 5, 'Уникальный идентификатор (UUID)', 'uuid');
 insert into tbl_parameter_types (id, id_param_view, name, code) values (32, 18, 'Составной атрибут', 'varchar');
