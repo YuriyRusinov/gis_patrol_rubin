@@ -12,6 +12,7 @@
 
 class GISPatrolDatabase;
 class PatrolGuiApp;
+class PGUIFactory;
 
 class PatrolSingleton : public QObject {
 public:
@@ -20,7 +21,7 @@ public:
 
     GISPatrolDatabase* getDb() const { return _dataBase; }
     PatrolGuiApp* getGUIObj() const { return _pga; }
-
+    PGUIFactory* getGUIFactory() const { return _pguif; }
 private:
     PatrolSingleton(QObject* parent=nullptr);
     PatrolSingleton(const PatrolSingleton& ps) = delete;
@@ -31,6 +32,7 @@ private:
 
     mutable GISPatrolDatabase* _dataBase;
     mutable PatrolGuiApp* _pga;
+    mutable PGUIFactory* _pguif;
 
 private:
     Q_OBJECT

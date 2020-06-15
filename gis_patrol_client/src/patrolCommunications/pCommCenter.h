@@ -25,6 +25,9 @@ public:
     QString getName() const;
     void setName(QString name);
 
+    shared_ptr< pCommCenterType > getType() const;
+    void setType( shared_ptr< pCommCenterType > pType );
+
 private:
     QString _name;
     shared_ptr< pCommCenterType > _pType;

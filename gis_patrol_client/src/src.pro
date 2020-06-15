@@ -7,6 +7,6 @@ CONFIG += c++11
 SUBDIRS += \
           gis_patrolutils \
           dataaccess \
-          corelibs \
           patrolCommunications \
-          factories
+          factories \
+          corelibs

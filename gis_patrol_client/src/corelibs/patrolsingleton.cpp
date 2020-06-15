@@ -9,6 +9,7 @@
 #include <QtDebug>
 #include <gis_patroldatabase.h>
 #include <gis_patrolpgdatabase.h>
+#include <pGuiFactory.h>
 #include "patrolguiapp.h"
 #include "patrolsingleton.h"
 
@@ -25,7 +26,8 @@ PatrolSingleton* PatrolSingleton::getPatrolS( QObject* parent ) {
 PatrolSingleton::PatrolSingleton( QObject* parent )
     : QObject( parent ),
     _dataBase( new GISPatrolPGDatabase ),
-    _pga( new PatrolGuiApp (_dataBase) )
+    _pga( new PatrolGuiApp (_dataBase) ),
+    _pguif( new PGUIFactory )
 {
     if (_instance) {
         qFatal("There should be only one PatrolSingleton object");
