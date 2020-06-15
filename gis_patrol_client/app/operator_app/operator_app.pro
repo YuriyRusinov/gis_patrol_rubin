@@ -26,13 +26,19 @@ DEPENDPATH *= ../../src/corelibs
 #
 INCLUDEPATH *= ../../src/patrolCommunications
 DEPENDPATH *= ../../src/patrolCommunications
+#
+# guifactories
+#
+INCLUDEPATH *= ../../src/factories/guifactory
+DEPENDPATH *= ../../src/factories/guifactory
 
 QT += core widgets
 
-LIBS += -L$${DESTDIR} -lgis_patrol_utils
-LIBS += -L$${DESTDIR} -ldataaccess
-LIBS += -L$${DESTDIR} -lcorelibs
-LIBS += -L$${DESTDIR} -lpatrolCommunications
+LIBS *= -L$${DESTDIR} -lgis_patrol_utils
+LIBS *= -L$${DESTDIR} -ldataaccess
+LIBS *= -L$${DESTDIR} -lcorelibs
+LIBS *= -L$${DESTDIR} -lpatrolCommunications
+LIBS *= -L$${DESTDIR} -lguifactory
 
 QMAKE_REL_RPATH_BASE = $$PWD
 QMAKE_RPATHDIR += $${DESTDIR}

@@ -32,6 +32,8 @@ private slots:
 
     void slotViewReferences();
 
+    void slotAddWidget(QWidget* w);
+
 private:
     //
     // Functions

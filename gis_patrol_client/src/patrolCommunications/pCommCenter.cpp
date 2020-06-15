@@ -29,3 +29,11 @@ QString pCommCenter::getName() const {
 void pCommCenter::setName(QString name) {
     _name = name;
 }
+
+shared_ptr< pCommCenterType > pCommCenter::getType() const {
+    return _pType;
+}
+
+void pCommCenter::setType( shared_ptr< pCommCenterType > pType ) {
+    _pType = pType;
+}

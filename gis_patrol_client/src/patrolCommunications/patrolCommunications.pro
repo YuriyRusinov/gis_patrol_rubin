@@ -26,6 +26,6 @@ QT += core widgets xml
 CONFIG += link_pkgconfig
 PKGCONFIG += libpq gsl
 
-LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lcorelibs
+LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess 
 
 include(patrolCommunications.pri)

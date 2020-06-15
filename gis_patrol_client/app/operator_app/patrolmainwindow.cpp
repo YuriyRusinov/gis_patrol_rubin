@@ -8,11 +8,13 @@
  */
 #include <QAction>
 #include <QMdiArea>
+#include <QMdiSubWindow>
 #include <QToolBar>
 #include <QtDebug>
 
 #include <patrolsingleton.h>
 #include <patrolguiapp.h>
+#include <pGuiFactory.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
 
@@ -32,7 +34,9 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     this->initActions();
     setEnabled( false );
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
+    PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
     QObject::connect(pGuiApp, &PatrolGuiApp::disconnected, this, &PatrolMainWindow::slotDbDisconnected);
+    QObject::connect(pGuiFactory, &PGUIFactory::viewWidget, this, &PatrolMainWindow::slotAddWidget);
 }
 
 PatrolMainWindow::~PatrolMainWindow() {
@@ -89,10 +93,23 @@ void PatrolMainWindow::slotDbDisconnected() {
 
 void PatrolMainWindow::slotViewReferences() {
     qDebug() << __PRETTY_FUNCTION__;
+    PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pGuiFactory->GUIView();
 }
 
 void PatrolMainWindow::setEnabled(bool enable) {
     _UI->actViewRef->setEnabled( enable );
     _UI->actDisconnect->setEnabled( enable );
     _UI->actConnect->setEnabled( !enable );
+}
+
+void PatrolMainWindow::slotAddWidget(QWidget* w) {
+    if (!w)
+        return;
+
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    QMdiSubWindow * subW = _mdiArea->addSubWindow(w);
+    subW->setAttribute(Qt::WA_DeleteOnClose, true);
+
+    w->show();
 }
