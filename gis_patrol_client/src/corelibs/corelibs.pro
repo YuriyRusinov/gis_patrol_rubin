@@ -17,16 +17,26 @@ DEPENDPATH *= ../gis_patrolutils
 INCLUDEPATH *= ../dataaccess
 DEPENDPATH *= ../dataaccess
 #
+# gui
+#
+INCLUDEPATH *= ../factories/pgui
+DEPENDPATH *= ../factories/pgui
+#
 # guifactory
 #
 INCLUDEPATH *= ../factories/guifactory
 DEPENDPATH *= ../factories/guifactory
+#
+# main entities
+#
+INCLUDEPATH *= ../patrolCommunications
+DEPENDPATH *= ../patrolCommunications
 
 QT += core widgets
 
 CONFIG += link_pkgconfig
 PKGCONFIG += libpq gsl
 
-LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lguifactory
+LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpgui -lguifactory -lpatrolCommunications
 
 include (corelibs.pri)
