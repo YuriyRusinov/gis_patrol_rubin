@@ -10,9 +10,10 @@
 #pragma once
 
 #include <QString>
-#include <memory>
+#include <QSharedPointer>
+#include <QMap>
 
-using std::shared_ptr;
+class pParameter;
 
 class pParamGroup {
 public:
@@ -26,11 +27,26 @@ public:
     QString getName() const;
     void setName( QString name );
 
-    shared_ptr< pParamGroup > getParent() const;
-    void setParent( shared_ptr< pParamGroup > parent );
+    QSharedPointer< pParamGroup > getParent() const;
+    void setParent( QSharedPointer< pParamGroup > parent );
+
+    const QMap< qint64, QSharedPointer< pParamGroup > >& getChildGroups() const;
+    void setChildGroups( const QMap< qint64, QSharedPointer< pParamGroup > >& childGroups );
+
+    void clearChildGroups();
+    void addChildGroup( pParamGroup* pChildG );
+
+    const QMap< qint64, QSharedPointer< pParameter > >& getParameters() const;
+    void setParameters( const QMap< qint64, QSharedPointer< pParameter > >& params );
+
+    void clearParameters();
+    void addParameter( pParameter* param );
 
 private:
     qint64 _id;
     QString _name;
-    shared_ptr< pParamGroup > _parentGroup;
+    QSharedPointer< pParamGroup > _parentGroup;
+    QMap< qint64, QSharedPointer< pParamGroup > > _childGroups;
+
+    QMap< qint64, QSharedPointer< pParameter > > _parameters;
 };

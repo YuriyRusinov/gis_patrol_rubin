@@ -10,6 +10,9 @@
 
 #include <QObject>
 
+#include <pParamGroup.h>
+#include <pParameter.h>
+
 class GISPatrolDatabase;
 
 class pDBLoader : public QObject {
