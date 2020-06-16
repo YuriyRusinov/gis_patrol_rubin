@@ -10,9 +10,7 @@
 #pragma once
 
 #include <QString>
-#include <memory>
-
-using std::shared_ptr;
+#include <QSharedPointer>
 
 class pParamType;
 class pParamGroup;
@@ -26,11 +24,11 @@ public:
     qint64 getId() const;
     void setId( qint64 id );
 
-    shared_ptr< pParamType > getParamType() const;
-    void setParamType( shared_ptr< pParamType > pType );
+    QSharedPointer< pParamType > getParamType() const;
+    void setParamType( QSharedPointer< pParamType > pType );
 
-    shared_ptr< pParamGroup > getParamGroup() const;
-    void setParamGroup( shared_ptr< pParamGroup > pGroup );
+    QSharedPointer< pParamGroup > getParamGroup() const;
+    void setParamGroup( QSharedPointer< pParamGroup > pGroup );
 
     QString getCode() const;
     void setCode( QString code );
@@ -52,8 +50,8 @@ public:
 
 private:
     qint64 _id;
-    shared_ptr< pParamType > _pType;
-    shared_ptr< pParamGroup > _pGroup;
+    QSharedPointer< pParamType > _pType;
+    QSharedPointer< pParamGroup > _pGroup;
     QString _code;
     QString _name;
     QString _title;

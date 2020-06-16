@@ -46,19 +46,19 @@ void pParameter::setId( qint64 id ) {
     _id = id;
 }
 
-shared_ptr< pParamType > pParameter::getParamType() const {
+QSharedPointer< pParamType > pParameter::getParamType() const {
     return _pType;
 }
 
-void pParameter::setParamType( shared_ptr< pParamType > pType ) {
+void pParameter::setParamType( QSharedPointer< pParamType > pType ) {
     _pType = pType;
 }
 
-shared_ptr< pParamGroup > pParameter::getParamGroup() const {
+QSharedPointer< pParamGroup > pParameter::getParamGroup() const {
     return _pGroup;
 }
 
-void pParameter::setParamGroup( shared_ptr< pParamGroup > pGroup ) {
+void pParameter::setParamGroup( QSharedPointer< pParamGroup > pGroup ) {
     _pGroup = pGroup;
 }
 
