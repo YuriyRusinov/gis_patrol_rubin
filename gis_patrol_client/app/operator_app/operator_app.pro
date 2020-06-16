@@ -27,6 +27,11 @@ DEPENDPATH *= ../../src/corelibs
 INCLUDEPATH *= ../../src/patrolCommunications
 DEPENDPATH *= ../../src/patrolCommunications
 #
+# gui
+#
+INCLUDEPATH *= ../../src/factories/pgui
+DEPENDPATH *= ../../src/factories/pgui
+#
 # guifactories
 #
 INCLUDEPATH *= ../../src/factories/guifactory
@@ -38,6 +43,7 @@ LIBS *= -L$${DESTDIR} -lgis_patrol_utils
 LIBS *= -L$${DESTDIR} -ldataaccess
 LIBS *= -L$${DESTDIR} -lcorelibs
 LIBS *= -L$${DESTDIR} -lpatrolCommunications
+LIBS *= -L$${DESTDIR} -lpgui
 LIBS *= -L$${DESTDIR} -lguifactory
 
 QMAKE_REL_RPATH_BASE = $$PWD

@@ -45,6 +45,8 @@
     <addaction name="actCreateCat"/>
     <addaction name="actAddParametersIntoCat"/>
     <addaction name="actViewCat"/>
+    <addaction name="separator"/>
+    <addaction name="actViewParameters"/>
    </widget>
    <widget class="QMenu" name="menu_Settings">
     <property name="title">
@@ -92,17 +94,22 @@
   </action>
   <action name="actCreateCat">
    <property name="text">
-    <string>Create ...</string>
+    <string>Create category</string>
    </property>
   </action>
   <action name="actAddParametersIntoCat">
    <property name="text">
-    <string>Add parameters ...</string>
+    <string>Add parameters to category ...</string>
    </property>
   </action>
   <action name="actViewCat">
    <property name="text">
     <string>View ...</string>
+   </property>
+  </action>
+  <action name="actViewParameters">
+   <property name="text">
+    <string>View parameters ...</string>
    </property>
   </action>
  </widget>

@@ -16,9 +16,13 @@ class QWidget;
 class PGUIFactory : public QObject {
 public:
     //
-    // Пока заглушка для отладки механизма
+    // Пока заглушка для отладки механизмов отображения и редактирования
     //
     QWidget* GUIView(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+    //
+    // Метод выводит виджет со списком возможных параметров в модальном mode=true или немодальном режиме
+    //
+    QWidget* GUIViewParams(bool mode = false, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 
 signals:
     void viewWidget(QWidget* w);

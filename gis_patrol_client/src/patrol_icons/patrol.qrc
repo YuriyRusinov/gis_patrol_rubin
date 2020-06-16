@@ -6,5 +6,11 @@
     <file alias="insert.svg">insert-table.svg</file>
     <file alias="delete.svg">delete-table.svg</file>
     <file alias="view.png">viewflow.png</file>
+    <file alias="add_parameter.svg">20923669661551940349.svg</file>
+    <file alias="add_parameter_to_cat.svg">4432838921551938925.svg</file>
+    <file alias="view_parameters.svg">9111217511536837651.svg</file>
+    <file alias="edit_parameter.svg">10617351951536837651.svg</file>
+    <file alias="del_parameter.svg">4289011151536837648.svg</file>
+    <file alias="refresh_parameters.svg">18134345211536837652.svg</file>
 </qresource>
 </RCC>
