@@ -30,7 +30,13 @@ private slots:
     void slotDbDisconnect();
     void slotDbDisconnected();
 
+    void slotCreateCategory();
+    void slotAddParametersIntoCategory();
+    void slotViewCategories();
+
     void slotViewReferences();
+
+    void slotViewParameters();
 
     void slotAddWidget(QWidget* w);
 

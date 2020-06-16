@@ -85,6 +85,17 @@ void PatrolMainWindow::initActions() {
     _UI->actViewRef->setToolTip(tr("View connection references"));
     QObject::connect(_UI->actViewRef, &QAction::triggered, this, &PatrolMainWindow::slotViewReferences);
 
+    QObject::connect(_UI->actCreateCat, &QAction::triggered, this, &PatrolMainWindow::slotCreateCategory);
+
+    _UI->actAddParametersIntoCat->setIcon(QIcon(":/patrol/add_parameter_to_cat.svg"));
+    _tbActReferences->addAction(_UI->actAddParametersIntoCat);
+    QObject::connect(_UI->actAddParametersIntoCat, &QAction::triggered, this, &PatrolMainWindow::slotAddParametersIntoCategory);
+
+    QObject::connect(_UI->actViewCat, &QAction::triggered, this, &PatrolMainWindow::slotViewCategories);
+
+    _UI->actViewParameters->setIcon(QIcon(":/patrol/view_parameters.svg"));
+    _tbActReferences->addAction(_UI->actViewParameters);
+    QObject::connect(_UI->actViewParameters, &QAction::triggered, this, &PatrolMainWindow::slotViewParameters);
 }
 
 void PatrolMainWindow::slotDbDisconnected() {
@@ -101,6 +112,10 @@ void PatrolMainWindow::setEnabled(bool enable) {
     _UI->actViewRef->setEnabled( enable );
     _UI->actDisconnect->setEnabled( enable );
     _UI->actConnect->setEnabled( !enable );
+    _UI->actCreateCat->setEnabled( enable );
+    _UI->actAddParametersIntoCat->setEnabled( enable );
+    _UI->actViewCat->setEnabled( enable );
+    _UI->actViewParameters->setEnabled( enable );
 }
 
 void PatrolMainWindow::slotAddWidget(QWidget* w) {
@@ -112,4 +127,22 @@ void PatrolMainWindow::slotAddWidget(QWidget* w) {
     subW->setAttribute(Qt::WA_DeleteOnClose, true);
 
     w->show();
+}
+
+void PatrolMainWindow::slotViewParameters() {
+    qDebug() << __PRETTY_FUNCTION__;
+    PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pGuiFactory->GUIViewParams( false );
+}
+
+void PatrolMainWindow::slotCreateCategory() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void PatrolMainWindow::slotAddParametersIntoCategory() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void PatrolMainWindow::slotViewCategories() {
+    qDebug() << __PRETTY_FUNCTION__;
 }

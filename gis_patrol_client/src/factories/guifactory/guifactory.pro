@@ -21,8 +21,13 @@ DEPENDPATH *= ../../dataaccess
 #
 INCLUDEPATH *= ../../patrolCommunications
 DEPENDPATH *= ../../patrolCommunications
+#
+# gui
+#
+INCLUDEPATH *= ../pgui
+DEPENDPATH *= ../pgui
 
 QT += core widgets
 
-LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpatrolCommunications
+LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpatrolCommunications -lpgui
 include( guifactory.pri )
