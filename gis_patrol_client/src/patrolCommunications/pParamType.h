@@ -59,7 +59,7 @@ public:
         atUserDef = 42              // Пользовательский ( for the future use )
     };
 
-    pParamType( qint64 id=-1, pParamView* pView=nullptr, QString name=QString(), QString code=QString() );
+    pParamType( qint64 id=-1, QString name=QString(), QString code=QString(), pParamView* pView=nullptr );
     pParamType( const pParamType& PT );
     ~pParamType();
 
@@ -77,7 +77,7 @@ public:
 
 private:
     PatrolParamTypes _id;
-    shared_ptr< pParamView > _pView;
     QString _name;
     QString _code;
+    shared_ptr< pParamView > _pView;
 };

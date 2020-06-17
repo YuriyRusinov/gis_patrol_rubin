@@ -10,18 +10,18 @@
 #include "pParamType.h"
 #include "pParamView.h"
 
-pParamType::pParamType( qint64 id, pParamView* pView, QString name, QString code )
+pParamType::pParamType( qint64 id, QString name, QString code, pParamView* pView )
     : _id( pParamType::PatrolParamTypes(id) ),
-    _pView( pView ),
     _name( name ),
-    _code( code ) {
+    _code( code ),
+    _pView( pView ) {
 }
 
 pParamType::pParamType( const pParamType& PT )
     : _id( PT._id ),
-    _pView( PT._pView ),
     _name( PT._name ),
-    _code( PT._code ) {
+    _code( PT._code ),
+    _pView( PT._pView ) {
 }
 
 pParamType::~pParamType() {

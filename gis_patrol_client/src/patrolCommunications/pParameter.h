@@ -28,7 +28,7 @@ public:
     void setParamType( QSharedPointer< pParamType > pType );
 
     QSharedPointer< pParamGroup > getParamGroup() const;
-    void setParamGroup( QSharedPointer< pParamGroup > pGroup );
+    void setParamGroup( QSharedPointer< pParamGroup > pGroup);
 
     QString getCode() const;
     void setCode( QString code );
@@ -59,3 +59,6 @@ private:
     QString _columnName;
     bool _isSystem;
 };
+
+Q_DECLARE_METATYPE( pParameter );
+Q_DECLARE_METATYPE( QSharedPointer< pParameter > );

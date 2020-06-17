@@ -8,12 +8,13 @@
  */
 #pragma once
 
+#include <QMap>
 #include <QObject>
-
-#include <pParamGroup.h>
-#include <pParameter.h>
+#include <QSharedPointer>
 
 class GISPatrolDatabase;
+class pParamGroup;
+class pParameter;
 
 class pDBLoader : public QObject {
 public:
@@ -22,6 +23,12 @@ public:
 
     GISPatrolDatabase* getDb() const;
     void setDb( GISPatrolDatabase* db );
+
+    QMap< qint64, QSharedPointer< pParamGroup > > loadGroupedParameters() const;
+    QMap< qint64, QSharedPointer< pParameter > > loadParameters( pParamGroup* pGroup ) const;
+
+private:
+    pParamGroup* loadParamGroup( int idGroup ) const;
 
 private:
     friend class PatrolSingleton;
