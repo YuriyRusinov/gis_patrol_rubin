@@ -58,7 +58,7 @@ QSharedPointer< pParamGroup > pParameter::getParamGroup() const {
     return _pGroup;
 }
 
-void pParameter::setParamGroup( QSharedPointer< pParamGroup > pGroup ) {
+void pParameter::setParamGroup( QSharedPointer< pParamGroup > pGroup) {
     _pGroup = pGroup;
 }
 

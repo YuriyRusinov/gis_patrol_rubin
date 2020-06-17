@@ -3,5 +3,8 @@
 \i ./functions/parameters/pgetparameterslist.sql
 \i ./functions/parameters/pfindequal.sql
 \i ./functions/parameters/pinsert.sql
+\i ./functions/parameters/pinsertgroup.sql
 \i ./functions/parameters/pupdate.sql
+\i ./functions/parameters/pupdategroup.sql
 \i ./functions/parameters/pdelete.sql
+\i ./functions/parameters/pdeletegroup.sql

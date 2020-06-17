@@ -1,7 +1,9 @@
 HEADERS += \
-           pParamListForm.h
+           pParamListForm.h \
+           pParamModel.h
 
 FORMS +=
 
 SOURCES += \
-           pParamListForm.cpp
+           pParamListForm.cpp \
+           pParamModel.cpp

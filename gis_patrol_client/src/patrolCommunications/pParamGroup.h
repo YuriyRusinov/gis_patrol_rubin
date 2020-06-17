@@ -42,6 +42,8 @@ public:
     void clearParameters();
     void addParameter( pParameter* param );
 
+    //QSharedPointer< pParamGroup > childGroupSearch (pParamGroup* pgr, bool recursive=true) const;
+
 private:
     qint64 _id;
     QString _name;
@@ -50,3 +52,6 @@ private:
 
     QMap< qint64, QSharedPointer< pParameter > > _parameters;
 };
+
+Q_DECLARE_METATYPE( pParamGroup );
+Q_DECLARE_METATYPE( QSharedPointer< pParamGroup > );
