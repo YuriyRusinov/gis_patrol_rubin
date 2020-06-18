@@ -17,7 +17,7 @@ class pParameter;
 
 class pParamGroup {
 public:
-    pParamGroup(qint64 id=-1, QString name=QString(), pParamGroup* parent=nullptr );
+    pParamGroup(qint64 id=-1, QString name=QString(), QSharedPointer< pParamGroup > parent=nullptr );
     pParamGroup(const pParamGroup& PG);
     ~pParamGroup();
 
@@ -34,7 +34,7 @@ public:
     void setChildGroups( const QMap< qint64, QSharedPointer< pParamGroup > >& childGroups );
 
     void clearChildGroups();
-    void addChildGroup( pParamGroup* pChildG );
+    void addChildGroup( QSharedPointer< pParamGroup > pChildG );
 
     const QMap< qint64, QSharedPointer< pParameter > >& getParameters() const;
     void setParameters( const QMap< qint64, QSharedPointer< pParameter > >& params );

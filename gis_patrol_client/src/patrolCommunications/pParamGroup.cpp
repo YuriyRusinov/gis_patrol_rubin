@@ -9,7 +9,7 @@
 #include "pParameter.h"
 #include "pParamGroup.h"
 
-pParamGroup::pParamGroup(qint64 id, QString name, pParamGroup* parent)
+pParamGroup::pParamGroup(qint64 id, QString name, QSharedPointer< pParamGroup > parent)
     : _id( id ),
     _name( name ),
     _parentGroup( parent ) {
@@ -60,10 +60,10 @@ void pParamGroup::clearChildGroups() {
     _childGroups.clear();
 }
 
-void pParamGroup::addChildGroup( pParamGroup* pChildG ) {
-    if (!pChildG)
+void pParamGroup::addChildGroup( QSharedPointer< pParamGroup > pChildG ) {
+    if (pChildG.isNull())
         return;
-    _childGroups.insert( pChildG->getId(), QSharedPointer< pParamGroup >(pChildG));
+    _childGroups.insert( pChildG->getId(), pChildG );
 }
 
 const QMap< qint64, QSharedPointer< pParameter > >& pParamGroup::getParameters() const {
