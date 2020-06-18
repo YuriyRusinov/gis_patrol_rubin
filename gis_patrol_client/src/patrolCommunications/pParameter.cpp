@@ -11,7 +11,7 @@
 #include "pParamGroup.h"
 #include "pParameter.h"
 
-pParameter::pParameter(qint64 id, pParamType* pType, pParamGroup* pGroup, QString pCode, QString pName, QString pTitle, QString tableName, QString columnName, bool isSystem)
+pParameter::pParameter(qint64 id, QSharedPointer< pParamType > pType, QSharedPointer< pParamGroup > pGroup, QString pCode, QString pName, QString pTitle, QString tableName, QString columnName, bool isSystem)
     : _id( id ),
     _pType( pType ),
     _pGroup( pGroup ),

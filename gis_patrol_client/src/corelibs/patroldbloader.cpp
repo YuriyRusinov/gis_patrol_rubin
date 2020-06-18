@@ -6,6 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
+#include <QtDebug>
 #include <gis_patroldatabase.h>
 #include <pParamGroup.h>
 #include <pParameter.h>
@@ -13,9 +14,9 @@
 
 #include "patroldbloader.h"
 
-pDBLoader::pDBLoader( QObject* parent )
+pDBLoader::pDBLoader(GISPatrolDatabase* db, QObject* parent )
     : QObject( parent ),
-    _db( nullptr ) {
+    _db( db ) {
 }
 
 pDBLoader::~pDBLoader() {
@@ -56,8 +57,9 @@ QMap< qint64, QSharedPointer< pParamGroup > > pDBLoader::loadGroupedParameters()
         //
         if (idParent > 0) {
             QMap< qint64, QSharedPointer< pParamGroup > >::const_iterator pp = res.constFind( idParent );
-            if (pp == res.constEnd())
+            if (pp == res.constEnd()) {
                 parentG = loadParamGroup( idParent );
+            }
             else {
                 QSharedPointer< pParamGroup > ppg = pp.value();
                 parentG = ppg.get();
@@ -65,7 +67,7 @@ QMap< qint64, QSharedPointer< pParamGroup > > pDBLoader::loadGroupedParameters()
         }
 
         QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
-        QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( pg.get() );
+        QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( pg );
         pg->setParameters( params );
         res.insert( idGroup, pg );
     }
@@ -100,8 +102,11 @@ pParamGroup* pDBLoader::loadParamGroup( int idGroup ) const {
     return pg;
 }
 
-QMap< qint64, QSharedPointer< pParameter > > pDBLoader::loadParameters( pParamGroup* pGroup ) const {
+QMap< qint64, QSharedPointer< pParameter > > pDBLoader::loadParameters( QSharedPointer< pParamGroup > pGroup) const {
+    if (pGroup.isNull())
+        return QMap< qint64, QSharedPointer< pParameter > >();
     qint64 idGroup = pGroup->getId();
+    qDebug() << __PRETTY_FUNCTION__ << tr("Group id = %1").arg( idGroup );
     QString sql_query = QString ("select id_parameter, id_param_type, id_param_group, parameter_code, parameter_name, parameter_title, table_name, column_name, parameter_type_name, parameter_type_code from pgetparameterslist(%1)").arg( idGroup );
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr || gpr->getRowCount() == 0 ) {
@@ -111,19 +116,24 @@ QMap< qint64, QSharedPointer< pParameter > > pDBLoader::loadParameters( pParamGr
     }
     QMap< qint64, QSharedPointer< pParameter > > res;
     int n = gpr->getRowCount();
+    int ncol = gpr->getColumnCount();
+    qDebug() << __PRETTY_FUNCTION__ << n << ncol;
+    QSharedPointer< pParamType > pType;
+    QSharedPointer< pParameter > param;
+
     for( int i=0; i<n; i++) {
         qint64 idParam = gpr->getCellAsInt(i, 0);// id
         qint64 idType = gpr->getCellAsInt(i, 1);// id_param_type
-        QString paramCode = gpr->getCellAsString(i, 2);// parameter_code
-        QString paramName = gpr->getCellAsString(i, 3);// parameter_name
-        QString paramTitle = gpr->getCellAsString(i, 4);// parameter_title
-        QString paramTable = gpr->getCellAsString(i, 5);// table_name
-        QString paramColumn = gpr->getCellAsString(i, 6);// column_name
-        QString paramTypeName = gpr->getCellAsString(i, 7);// type name
-        QString paramTypeCode = gpr->getCellAsString(i, 8);// type code
-        pParamType* pType = new pParamType( idType, paramTypeName, paramTypeCode);
-        pParameter* param = new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn);
-        res.insert( idParam, QSharedPointer< pParameter >(param) );
+        QString paramCode = gpr->getCellAsString(i, 3);// parameter_code
+        QString paramName = gpr->getCellAsString(i, 4);// parameter_name
+        QString paramTitle = gpr->getCellAsString(i, 5);// parameter_title
+        QString paramTable = gpr->getCellAsString(i, 6);// table_name
+        QString paramColumn = gpr->getCellAsString(i, 7);// column_name
+        QString paramTypeName = gpr->getCellAsString(i, 8);// type name
+        QString paramTypeCode = gpr->getCellAsString(i, 9);// type code
+        pType.reset ( new pParamType( idType, paramTypeName, paramTypeCode) );
+        param.reset ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+        res.insert( idParam, param );
     }
     delete gpr;
     return res;

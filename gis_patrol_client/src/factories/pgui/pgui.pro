@@ -9,6 +9,8 @@ CONFIG += qt
 INCLUDEPATH *= ../../patrolCommunications
 DEPENDPATH *= ../../patrolCommunications
 
+INCLUDEPATH *= ../../gis_patrolutils
+
 QT += core widgets
 
 LIBS *= -L$${DESTDIR} -lgis_patrol_utils -lpatrolCommunications

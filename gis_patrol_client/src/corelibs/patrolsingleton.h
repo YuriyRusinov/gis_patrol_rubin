@@ -13,6 +13,7 @@
 class GISPatrolDatabase;
 class PatrolGuiApp;
 class PGUIFactory;
+class pDBLoader;
 
 class PatrolSingleton : public QObject {
 public:
@@ -32,6 +33,7 @@ private:
 
     mutable GISPatrolDatabase* _dataBase;
     mutable PatrolGuiApp* _pga;
+    mutable pDBLoader* _pdbLoader;
     mutable PGUIFactory* _pguif;
 
 private:

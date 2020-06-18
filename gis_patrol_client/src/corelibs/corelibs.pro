@@ -37,6 +37,6 @@ QT += core widgets
 CONFIG += link_pkgconfig
 PKGCONFIG += libpq gsl
 
-LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpgui -lguifactory -lpatrolCommunications
+LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpgui -lpatrolCommunications
 
 include (corelibs.pri)
