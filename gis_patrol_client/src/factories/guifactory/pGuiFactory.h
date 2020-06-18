@@ -12,6 +12,7 @@
 #include <QObject>
 
 class QWidget;
+class pDBLoader;
 
 class PGUIFactory : public QObject {
 public:
@@ -28,11 +29,12 @@ signals:
     void viewWidget(QWidget* w);
 
 private:
-    PGUIFactory( QObject* parent = nullptr );
+    PGUIFactory(pDBLoader* dbLoader, QObject* parent = nullptr );
     ~PGUIFactory ();
 
     friend class PatrolSingleton;
 
+    mutable pDBLoader* _dbLoader;
 private:
     Q_OBJECT
 };

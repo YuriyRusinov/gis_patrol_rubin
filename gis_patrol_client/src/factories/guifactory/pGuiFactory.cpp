@@ -7,11 +7,14 @@
  *  Ю.Л.Русинов
  */
 #include <QWidget>
+#include <QtDebug>
+#include <patroldbloader.h>
 #include <pParamListForm.h>
+#include <pParamModel.h>
 #include "pGuiFactory.h"
 
-PGUIFactory::PGUIFactory( QObject* parent )
-    : QObject( parent ) {
+PGUIFactory::PGUIFactory(pDBLoader* dbLoader, QObject* parent )
+    : QObject( parent ), _dbLoader ( dbLoader ) {
 }
 
 PGUIFactory::~PGUIFactory () {
@@ -25,6 +28,10 @@ QWidget* PGUIFactory::GUIView(QWidget* parent, Qt::WindowFlags flags) {
 
 QWidget* PGUIFactory::GUIViewParams(bool mode, QWidget* parent, Qt::WindowFlags flags) {
     ParamListForm* plf = new ParamListForm( mode, parent, flags );
+    QMap< qint64, QSharedPointer< pParamGroup > > pGroups = _dbLoader->loadGroupedParameters();
+    ParametersModel* pMod = new ParametersModel( pGroups );
+    plf->setParamsModel( pMod );
+    qDebug() << __PRETTY_FUNCTION__ << pGroups.size();
     if (!mode)
         emit viewWidget( plf );
     return plf;

@@ -8,5 +8,6 @@ SUBDIRS += \
           gis_patrolutils \
           dataaccess \
           patrolCommunications \
-          factories \
-          corelibs
+          factories/pgui \
+          corelibs \
+          factories/guifactory

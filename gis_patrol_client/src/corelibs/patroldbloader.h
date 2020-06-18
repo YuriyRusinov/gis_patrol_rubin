@@ -18,14 +18,14 @@ class pParameter;
 
 class pDBLoader : public QObject {
 public:
-    pDBLoader( QObject* parent=nullptr );
+    pDBLoader(GISPatrolDatabase* db=nullptr, QObject* parent=nullptr );
     ~pDBLoader();
 
     GISPatrolDatabase* getDb() const;
     void setDb( GISPatrolDatabase* db );
 
     QMap< qint64, QSharedPointer< pParamGroup > > loadGroupedParameters() const;
-    QMap< qint64, QSharedPointer< pParameter > > loadParameters( pParamGroup* pGroup ) const;
+    QMap< qint64, QSharedPointer< pParameter > > loadParameters( QSharedPointer< pParamGroup > pGroup ) const;
 
 private:
     pParamGroup* loadParamGroup( int idGroup ) const;

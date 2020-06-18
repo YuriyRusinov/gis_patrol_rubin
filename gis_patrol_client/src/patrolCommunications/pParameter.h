@@ -17,7 +17,7 @@ class pParamGroup;
 
 class pParameter {
 public:
-    pParameter(qint64 id=-1, pParamType* pType=nullptr, pParamGroup* pGroup=nullptr, QString pCode=QString(), QString pName=QString(), QString pTitle=QString(), QString tableName=QString(), QString columnName=QString(), bool isSystem=false);
+    pParameter(qint64 id=-1, QSharedPointer< pParamType > pType=nullptr, QSharedPointer< pParamGroup > pGroup=nullptr, QString pCode=QString(), QString pName=QString(), QString pTitle=QString(), QString tableName=QString(), QString columnName=QString(), bool isSystem=false);
     pParameter(const pParameter& P1);
     ~pParameter();
 

@@ -16,6 +16,7 @@
 
 class pParamGroup;
 class pParameter;
+class pTreeItem;
 
 class ParametersModel : public QAbstractItemModel {
 public:
@@ -30,7 +31,11 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 private:
+    void setupModel(const QMap< qint64, QSharedPointer< pParamGroup > >& paramGroups, pTreeItem* rootItem );
+
+private:
     QMap< qint64, QSharedPointer< pParamGroup > > _paramGroups;
+    pTreeItem* _rootItem;
 
 private:
     Q_OBJECT
