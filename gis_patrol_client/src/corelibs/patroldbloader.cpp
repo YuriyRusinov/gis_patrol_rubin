@@ -49,7 +49,7 @@ QMap< qint64, QSharedPointer< pParamGroup > > pDBLoader::loadGroupedParameters()
         if (!ok)
             idParent = -1;
         QString name = gpr->getCellAsString(i, 2);
-        pParamGroup* parentG = nullptr;
+        QSharedPointer< pParamGroup > parentG ( nullptr );
         //
         // Запрос в БД построен так, что родительские группы идут перед дочерними,
         // поэтому родительская группа окажется в результате на момент анализа результата
@@ -59,23 +59,30 @@ QMap< qint64, QSharedPointer< pParamGroup > > pDBLoader::loadGroupedParameters()
             QMap< qint64, QSharedPointer< pParamGroup > >::const_iterator pp = res.constFind( idParent );
             if (pp == res.constEnd()) {
                 parentG = loadParamGroup( idParent );
+                res.insert( idParent, QSharedPointer< pParamGroup >(parentG) );
             }
             else {
                 QSharedPointer< pParamGroup > ppg = pp.value();
-                parentG = ppg.get();
+                parentG = ppg;
+                QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
+                parentG->addChildGroup( pg );
+                QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( pg );
+                pg->setParameters( params );
+                continue;
             }
         }
 
         QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
         QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( pg );
         pg->setParameters( params );
-        res.insert( idGroup, pg );
+        if (idParent < 0)
+            res.insert( idGroup, pg );
     }
     delete gpr;
     return res;
 }
 
-pParamGroup* pDBLoader::loadParamGroup( int idGroup ) const {
+QSharedPointer< pParamGroup > pDBLoader::loadParamGroup( int idGroup ) const {
     QString sql_query = QString ("select id_param_group, id_parent, name from pgetparamgroup (%1);").arg( idGroup );
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr || gpr->getRowCount() != 1 ) {
@@ -92,12 +99,12 @@ pParamGroup* pDBLoader::loadParamGroup( int idGroup ) const {
     qint64 idParent = gpr->isEmpty(0, 1) ? -1 : gpr->getCellAsInt(0, 1, &ok);
     if (!ok)
         idParent = -1;
-    pParamGroup* parentG = nullptr;
+    QSharedPointer< pParamGroup > parentG = nullptr;
     if (idParent > 0)
         parentG = loadParamGroup( idParent );
     QString name = gpr->getCellAsString(0, 2);
-    pParamGroup* pg ( new pParamGroup(idGroup, name, parentG) );
-    if( parentG )
+    QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
+    if( !parentG.isNull() )
         parentG->addChildGroup( pg );
     return pg;
 }

@@ -28,7 +28,7 @@ public:
     QMap< qint64, QSharedPointer< pParameter > > loadParameters( QSharedPointer< pParamGroup > pGroup ) const;
 
 private:
-    pParamGroup* loadParamGroup( int idGroup ) const;
+    QSharedPointer< pParamGroup > loadParamGroup( int idGroup ) const;
 
 private:
     friend class PatrolSingleton;

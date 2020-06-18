@@ -96,7 +96,7 @@ QVariant ParametersModel::data(const QModelIndex& index, int role) const {
 
 QVariant ParametersModel::headerData(int section, Qt::Orientation orientation, int role) const {
     QStringList headers;
-    headers << tr( "Id" ) << tr( "Code" ) << tr( "Name" ) << tr( "Title" ) << tr( "Table name" ) << tr( "Column name" ) << tr( "Type" );
+    headers << tr( "group name/parameter id" ) << tr( "Code" ) << tr( "Name" ) << tr( "Title" ) << tr( "Table name" ) << tr( "Column name" ) << tr( "Type" );
     if (section >= 0 && section < headers.size() && orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return headers[section];
 
@@ -104,23 +104,29 @@ QVariant ParametersModel::headerData(int section, Qt::Orientation orientation, i
 }
 
 void ParametersModel::setupModel(const QMap< qint64, QSharedPointer< pParamGroup > >& paramGroups, pTreeItem* rootItem ) {
+    if( paramGroups.isEmpty() )
+        return;
     QVector< pTreeItem* > parents;
     parents << rootItem;
     for (QMap< qint64, QSharedPointer< pParamGroup > >::const_iterator ppg = paramGroups.constBegin();
             ppg != paramGroups.constEnd();
             ppg++) {
-        qDebug() << __PRETTY_FUNCTION__ << ppg.value();
+        qDebug() << __PRETTY_FUNCTION__ << ppg.key() << ppg.value();
         pTreeItem* ptr = new pTreeItem( ppg.value(), parents.last());
-        parents.last()->appendChild( ptr );
-        if (ppg.value()->getChildGroups().size() > 0) {
-            setupModel( ppg.value()->getChildGroups(), ptr );
-        }
+        int nchildren = ppg.value()->getChildGroups().size();
         QMap< qint64, QSharedPointer< pParameter >> pars = ppg.value()->getParameters();
+        qDebug() << __PRETTY_FUNCTION__ << "parameters from " << ppg.key() << ppg.value() << pars.size();
         for (QMap< qint64, QSharedPointer< pParameter >>::const_iterator ppa = pars.constBegin();
                 ppa != pars.constEnd();
                 ppa++) {
+            qDebug() << __PRETTY_FUNCTION__ << ppa.key();
             pTreeItem* pptr = new pTreeItem( ppa.value(), ptr);
             ptr->appendChild( pptr );
         }
+        if ( nchildren > 0) {
+            qDebug() << __PRETTY_FUNCTION__ << nchildren << ppg.key();;
+            setupModel( ppg.value()->getChildGroups(), ptr );
+        }
+        parents.last()->appendChild( ptr );
     }
 }
