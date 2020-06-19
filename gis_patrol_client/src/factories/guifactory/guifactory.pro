@@ -24,8 +24,8 @@ DEPENDPATH *= ../../patrolCommunications
 #
 # gui
 #
-INCLUDEPATH *= ../pgui
-DEPENDPATH *= ../pgui
+INCLUDEPATH *= ../pgui ../pgui/ui
+DEPENDPATH *= ../pgui ../pgui/ui
 #
 # core
 #

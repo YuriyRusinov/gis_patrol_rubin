@@ -10,6 +10,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QModelIndex>
 
 class QButtonGroup;
 class QToolBar;
@@ -33,12 +34,19 @@ private slots:
     void editParameter();
     void delParameter();
 
-    void refresh();
+    void refreshAll();
+
+signals:
+    void addpargroup(QAbstractItemModel* paramsModel, qint64 idParent, QModelIndex pIndex);
+    void editpargroup(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex);
+    void delpargroup(QAbstractItemModel* paramsModel, QModelIndex wIndex);
+
 private:
     //
     // Functions
     //
     void init(bool mode);
+    QModelIndex getGroupIndex() const;
 
 private:
     //

@@ -34,7 +34,7 @@ public:
     void setChildGroups( const QMap< qint64, QSharedPointer< pParamGroup > >& childGroups );
 
     void clearChildGroups();
-    void addChildGroup( QSharedPointer< pParamGroup > pChildG );
+    void addChildGroup( qint64 id, QSharedPointer< pParamGroup > pChildG );
 
     const QMap< qint64, QSharedPointer< pParameter > >& getParameters() const;
     void setParameters( const QMap< qint64, QSharedPointer< pParameter > >& params );
@@ -42,7 +42,8 @@ public:
     void clearParameters();
     void addParameter( pParameter* param );
 
-    //QSharedPointer< pParamGroup > childGroupSearch (pParamGroup* pgr, bool recursive=true) const;
+    QSharedPointer< const pParamGroup > childGroupForId (qint64 id, bool recursive=true) const;
+    QSharedPointer< pParamGroup > childGroupForId (qint64 id, bool recursive=true);
 
 private:
     qint64 _id;

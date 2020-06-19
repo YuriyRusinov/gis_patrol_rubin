@@ -10,6 +10,7 @@
 #include <gis_patroldatabase.h>
 #include <gis_patrolpgdatabase.h>
 #include <patroldbloader.h>
+#include <patroldbwriter.h>
 #include <pGuiFactory.h>
 #include "patrolguiapp.h"
 #include "patrolsingleton.h"
@@ -29,7 +30,8 @@ PatrolSingleton::PatrolSingleton( QObject* parent )
     _dataBase( new GISPatrolPGDatabase ),
     _pga( new PatrolGuiApp (_dataBase) ),
     _pdbLoader( new pDBLoader( _dataBase ) ),
-    _pguif( new PGUIFactory( _pdbLoader ) )
+    _pdbWriter( new pDBWriter( _dataBase ) ),
+    _pguif( new PGUIFactory( _pdbLoader, _pdbWriter) )
 {
     if (_instance) {
         qFatal("There should be only one PatrolSingleton object");

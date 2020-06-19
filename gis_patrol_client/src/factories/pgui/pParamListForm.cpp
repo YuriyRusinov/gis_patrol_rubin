@@ -8,12 +8,16 @@
  */
 
 #include <QAbstractItemModel>
+#include <QItemSelection>
+#include <QItemSelectionModel>
 #include <QGridLayout>
 #include <QButtonGroup>
 #include <QToolBar>
 #include <QTreeView>
 #include <QAction>
+#include <QMessageBox>
 #include <QtDebug>
+#include <defines.h>
 #include "pParamListForm.h"
 
 ParamListForm::ParamListForm(bool mode, QWidget* parent, Qt::WindowFlags flags)
@@ -48,14 +52,36 @@ void ParamListForm::setParamsModel( QAbstractItemModel* paramsModel ) {
 
 void ParamListForm::addParamGroup() {
     qDebug() << __PRETTY_FUNCTION__;
+    QModelIndex parentIndex = getGroupIndex();
+    qint64 idParent = parentIndex.isValid() ? parentIndex.data(Qt::UserRole).toInt() : -1;
+    qDebug() << __PRETTY_FUNCTION__ << parentIndex << idParent << parentIndex.data(Qt::UserRole+USER_ENTITY).toInt();
+    emit addpargroup( _tvParams->model(), idParent, parentIndex );
 }
 
 void ParamListForm::editParamGroup() {
     qDebug() << __PRETTY_FUNCTION__;
+    QModelIndex wIndex = getGroupIndex();
+    if (!wIndex.isValid()) {
+        QMessageBox::warning( this, tr("Edit group"), tr("Please select group for edit"), QMessageBox::Ok );
+        return;
+    }
+    qint64 idGroup = wIndex.data( Qt::UserRole ).toInt();
+    emit editpargroup( _tvParams->model(), idGroup, wIndex );
 }
 
 void ParamListForm::delParamGroup() {
     qDebug() << __PRETTY_FUNCTION__;
+    QModelIndex wIndex = getGroupIndex();
+    if (!wIndex.isValid()) {
+        QMessageBox::warning( this, tr("Delete group"), tr("Please select group for remove"), QMessageBox::Ok );
+        return;
+    }
+    int numChildren = _tvParams->model()->rowCount( wIndex );
+    if (numChildren > 0) {
+        QMessageBox::warning( this, tr("Delete group"), tr("Group is not empty, removing is impossible"), QMessageBox::Ok );
+        return;
+    }
+    emit delpargroup( _tvParams->model(), wIndex );
 }
 
 void ParamListForm::addParameter() {
@@ -70,12 +96,12 @@ void ParamListForm::delParameter() {
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-void ParamListForm::refresh() {
+void ParamListForm::refreshAll() {
     qDebug() << __PRETTY_FUNCTION__;
 }
 
 void ParamListForm::init(bool mode) {
-    _tvParams->setSelectionMode( QAbstractItemView::ExtendedSelection );
+    _tvParams->setSelectionMode( mode ? QAbstractItemView::ExtendedSelection : QAbstractItemView::SingleSelection);
 
     _tbParamActions->setVisible ( !mode );
 //    _bgParams->setVisible( mode );
@@ -105,4 +131,23 @@ void ParamListForm::init(bool mode) {
     QAction* actDelParameter = _tbParamActions->addAction( QIcon(":/patrol/del_parameter.svg"), tr("Delete parameter") );
     actDelParameter->setToolTip( tr("Delete parameter") );
     QObject::connect( actDelParameter, &QAction::triggered, this, &ParamListForm::delParameter );
+
+    _tbParamActions->addSeparator();
+    QAction* actRefresh = _tbParamActions->addAction( QIcon(":/patrol/refresh_parameters.svg"), tr( "Refresh") );
+    actRefresh->setToolTip( tr("Refresh") );
+    QObject::connect( actRefresh, &QAction::triggered, this, &ParamListForm::refreshAll );
+}
+
+QModelIndex ParamListForm::getGroupIndex() const {
+    QItemSelectionModel *selMod = _tvParams->selectionModel();
+    QItemSelection selInd = selMod->selection();
+    QModelIndex parentIndex = selInd.empty() ? QModelIndex() : selInd.indexes().at(0);
+    qint64 idParent = parentIndex.isValid() ? parentIndex.data(Qt::UserRole).toInt() : -1;
+    if( selInd.empty() || idParent < 0 )
+        return QModelIndex();
+    QAbstractItemModel* sourceMod = _tvParams->model();
+
+    for (; sourceMod->data(parentIndex, Qt::UserRole+USER_ENTITY).toInt() != 0 && parentIndex.isValid(); parentIndex = parentIndex.parent() )
+        ;
+    return parentIndex;
 }
