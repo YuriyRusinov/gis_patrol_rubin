@@ -2,6 +2,7 @@ HEADERS += \
            patrolsingleton.h \
            patroldbloader.h \
            patrolguiapp.h \
+           patroldbwriter.h \
            ui/logindbform.h
 
 FORMS += \
@@ -11,4 +12,5 @@ SOURCES += \
            patrolsingleton.cpp \
            patroldbloader.cpp \
            patrolguiapp.cpp \
+           patroldbwriter.cpp \
            ui/logindbform.cpp

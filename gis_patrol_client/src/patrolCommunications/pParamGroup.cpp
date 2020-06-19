@@ -60,10 +60,10 @@ void pParamGroup::clearChildGroups() {
     _childGroups.clear();
 }
 
-void pParamGroup::addChildGroup( QSharedPointer< pParamGroup > pChildG ) {
+void pParamGroup::addChildGroup( qint64 id, QSharedPointer< pParamGroup > pChildG ) {
     if (pChildG.isNull())
         return;
-    _childGroups.insert( pChildG->getId(), pChildG );
+    _childGroups.insert( id, pChildG );
 }
 
 const QMap< qint64, QSharedPointer< pParameter > >& pParamGroup::getParameters() const {
@@ -82,4 +82,40 @@ void pParamGroup::addParameter( pParameter* param ) {
     if (!param)
         return;
     _parameters.insert( param->getId(), QSharedPointer< pParameter >(param) );
+}
+
+QSharedPointer< const pParamGroup > pParamGroup::childGroupForId (qint64 id, bool recursive) const {
+    if (this->_id == id)
+        return QSharedPointer< const pParamGroup >(this);
+
+    QMap<qint64, QSharedPointer< pParamGroup >>::const_iterator pg = _childGroups.constFind (id);
+    if( pg != _childGroups.constEnd() )
+        return pg.value();
+    else if (recursive) {
+        QSharedPointer< const pParamGroup > apg ( nullptr );
+        for( pg = _childGroups.constBegin(); pg != _childGroups.constEnd() && apg == nullptr; pg++) {
+            apg = pg.value()->childGroupForId( id, recursive );
+        }
+        return apg;
+    }
+
+    return nullptr;
+}
+
+QSharedPointer< pParamGroup > pParamGroup::childGroupForId (qint64 id, bool recursive) {
+    if ( this->_id == id )
+        return QSharedPointer< pParamGroup >(this);
+
+    QMap<qint64, QSharedPointer< pParamGroup >>::const_iterator pg = _childGroups.constFind (id);
+    if( pg != _childGroups.constEnd() )
+        return pg.value();
+    else if (recursive) {
+        QSharedPointer< pParamGroup > apg ( nullptr );
+        for( pg = _childGroups.constBegin(); pg != _childGroups.constEnd() && apg == nullptr; pg++) {
+            apg = pg.value()->childGroupForId( id, recursive );
+        }
+        return apg;
+    }
+
+    return nullptr;
 }

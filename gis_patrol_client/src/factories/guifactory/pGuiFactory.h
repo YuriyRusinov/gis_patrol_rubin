@@ -9,10 +9,13 @@
 
 #pragma once
 
+#include <QModelIndex>
 #include <QObject>
 
+class QAbstractItemModel;
 class QWidget;
 class pDBLoader;
+class pDBWriter;
 
 class PGUIFactory : public QObject {
 public:
@@ -25,16 +28,22 @@ public:
     //
     QWidget* GUIViewParams(bool mode = false, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 
+private slots:
+    void addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idParent, QModelIndex pIndex);
+    void editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex);
+    void delGroupOfParams(QAbstractItemModel* paramsModel, QModelIndex wIndex);
+
 signals:
     void viewWidget(QWidget* w);
 
 private:
-    PGUIFactory(pDBLoader* dbLoader, QObject* parent = nullptr );
+    PGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent = nullptr );
     ~PGUIFactory ();
 
     friend class PatrolSingleton;
 
     mutable pDBLoader* _dbLoader;
+    mutable pDBWriter* _dbWriter;
 private:
     Q_OBJECT
 };

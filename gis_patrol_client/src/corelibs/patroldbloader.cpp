@@ -50,33 +50,28 @@ QMap< qint64, QSharedPointer< pParamGroup > > pDBLoader::loadGroupedParameters()
             idParent = -1;
         QString name = gpr->getCellAsString(i, 2);
         QSharedPointer< pParamGroup > parentG ( nullptr );
-        //
-        // Запрос в БД построен так, что родительские группы идут перед дочерними,
-        // поэтому родительская группа окажется в результате на момент анализа результата
-        // запроса к БД
-        //
-        if (idParent > 0) {
-            QMap< qint64, QSharedPointer< pParamGroup > >::const_iterator pp = res.constFind( idParent );
-            if (pp == res.constEnd()) {
-                parentG = loadParamGroup( idParent );
-                res.insert( idParent, QSharedPointer< pParamGroup >(parentG) );
-            }
-            else {
-                QSharedPointer< pParamGroup > ppg = pp.value();
-                parentG = ppg;
-                QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
-                parentG->addChildGroup( pg );
-                QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( pg );
-                pg->setParameters( params );
-                continue;
+        QSharedPointer< pParamGroup > parg ( new pParamGroup(idGroup, name, parentG) );
+        if (idParent <= 0) {
+            res.insert( idGroup, parg);
+        }
+        else if (res.contains( idParent )) {
+            parentG = res.value( idParent );
+            parg->setParent( parentG );
+            parentG->addChildGroup( idGroup, parg );
+        }
+        else {
+            for(QMap< qint64, QSharedPointer< pParamGroup >>::const_iterator pg=res.constBegin();
+                    pg != res.constEnd() && parentG == nullptr;
+                    pg++)
+                parentG = pg.value()->childGroupForId( idParent );
+            if (parentG) {
+                parentG->addChildGroup( idGroup, parg);
+                parg->setParent( parentG );
             }
         }
 
-        QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
-        QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( pg );
-        pg->setParameters( params );
-        if (idParent < 0)
-            res.insert( idGroup, pg );
+        QMap< qint64, QSharedPointer< pParameter > > params = loadParameters( parg );
+        parg->setParameters( params );
     }
     delete gpr;
     return res;
@@ -105,7 +100,7 @@ QSharedPointer< pParamGroup > pDBLoader::loadParamGroup( int idGroup ) const {
     QString name = gpr->getCellAsString(0, 2);
     QSharedPointer< pParamGroup > pg ( new pParamGroup(idGroup, name, parentG) );
     if( !parentG.isNull() )
-        parentG->addChildGroup( pg );
+        parentG->addChildGroup( idGroup, pg );
     return pg;
 }
 

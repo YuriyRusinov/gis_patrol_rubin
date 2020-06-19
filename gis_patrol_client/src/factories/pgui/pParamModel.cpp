@@ -79,14 +79,22 @@ QVariant ParametersModel::data(const QModelIndex& index, int role) const {
     if( role == Qt::UserRole+USER_ENTITY ) {
         if( wItem->isGroup() )
             return 0;
-        else
+        else if ( wItem->isParameter() )
             return 1;
+        else
+            return -1;
     }
     else if( role == Qt::UserRole ) {
         if( wItem->isGroup() )
             return wItem->getGroup()->getId();
         else if ( wItem->isParameter() )
             return wItem->getParameter()->getId();
+    }
+    else if ( role == Qt::UserRole+1 ) {
+        if( wItem->isGroup() )
+            return QVariant::fromValue< QSharedPointer<pParamGroup> >(wItem->getGroup());
+        else if ( wItem->isParameter() )
+            return QVariant::fromValue<QSharedPointer<pParameter> >(wItem->getParameter());
     }
     else if (role == Qt::DisplayRole)
         return wItem->data(index.column());
@@ -119,8 +127,8 @@ void ParametersModel::setupModel(const QMap< qint64, QSharedPointer< pParamGroup
         for (QMap< qint64, QSharedPointer< pParameter >>::const_iterator ppa = pars.constBegin();
                 ppa != pars.constEnd();
                 ppa++) {
-            qDebug() << __PRETTY_FUNCTION__ << ppa.key();
             pTreeItem* pptr = new pTreeItem( ppa.value(), ptr);
+            qDebug() << __PRETTY_FUNCTION__ << ppa.key() << pptr->isGroup();
             ptr->appendChild( pptr );
         }
         if ( nchildren > 0) {
