@@ -33,11 +33,15 @@ public:
     int columnCount() const;
 
     QVariant data(int column) const;
+    bool insertChildren(int position, int count);
+    bool removeChildren(int position, int count);
     int row() const;
     pTreeItem *parentItem();
 
     QSharedPointer< pParamGroup > getGroup() const;
+    void setGroup( QSharedPointer< pParamGroup > group );
     QSharedPointer< pParameter > getParameter() const;
+    void setParameter( QSharedPointer< pParameter > parameter );
 
 private:
     QVector< pTreeItem* > _childItems;

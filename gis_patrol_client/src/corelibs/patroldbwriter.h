@@ -21,6 +21,8 @@ public:
     pDBWriter(GISPatrolDatabase* db=nullptr, QObject* parent=nullptr );
     ~pDBWriter();
 
+    qint64 writeParamGroup( QSharedPointer< pParamGroup > pgr ) const;
+
     GISPatrolDatabase* getDb() const;
     void setDb( GISPatrolDatabase* db );
 

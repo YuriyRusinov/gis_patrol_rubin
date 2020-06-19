@@ -7,12 +7,15 @@
  *  Ю.Л.Русинов
  */
 #include <QAbstractItemModel>
+#include <QMessageBox>
 #include <QWidget>
 #include <QtDebug>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
 #include <pParamListForm.h>
 #include <pParamModel.h>
+#include <pParamGroup.h>
+#include <pParameter.h>
 #include <paramsgroupform.h>
 #include "pGuiFactory.h"
 
@@ -50,6 +53,18 @@ void PGUIFactory::addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idPar
     if (pgf->exec() == QDialog::Accepted) {
         qDebug() << __PRETTY_FUNCTION__ << "New group";
     }
+    QSharedPointer< pParamGroup > parentG = (idParent > 0 ? paramsModel->data(pIndex, Qt::UserRole+1).value< QSharedPointer< pParamGroup >>() : nullptr);
+    QSharedPointer< pParamGroup > newGroup ( new pParamGroup( pgf->getId(), pgf->getName(), parentG ) );
+    qint64 res = _dbWriter->writeParamGroup( newGroup );
+    if( res <= 0 ) {
+        QWidget* sw = qobject_cast<QWidget *>(this->sender());
+        QMessageBox::warning(sw, tr("Write group to database"), tr("Error in attempt to save group"), QMessageBox::Ok);
+    }
+    int nr = paramsModel->rowCount( pIndex );
+    bool isInserted = paramsModel->insertRows( nr, 1, pIndex );
+    qDebug() << __PRETTY_FUNCTION__ << isInserted;
+    QModelIndex newGroupInd = paramsModel->index( nr, 0, pIndex );
+    paramsModel->setData( newGroupInd, QVariant::fromValue<QSharedPointer< pParamGroup >>(newGroup), Qt::UserRole+1);
 }
 
 void PGUIFactory::editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex) {

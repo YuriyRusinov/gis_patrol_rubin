@@ -42,16 +42,18 @@ int ParametersModel::rowCount( const QModelIndex& parent) const {
 }
 
 QModelIndex ParametersModel::index(int row, int column, const QModelIndex& parent) const {
-    if (!hasIndex(row, column, parent))
+    if (parent.isValid() && parent.column() != 0)
         return QModelIndex();
 
-    pTreeItem *parentItem;
+    pTreeItem *parentItem = getItem(parent);
+    if(!parentItem)
+        return QModelIndex();
 
-    if (!parent.isValid())
+/*    if (!parent.isValid())
         parentItem = _rootItem;
     else
         parentItem = static_cast<pTreeItem*>(parent.internalPointer());
-
+*/
     pTreeItem *childItem = parentItem->child(row);
     if (childItem)
         return createIndex(row, column, childItem);
@@ -62,10 +64,11 @@ QModelIndex ParametersModel::parent(const QModelIndex& index) const {
     if (!index.isValid())
         return QModelIndex();
 
-    pTreeItem *childItem = static_cast<pTreeItem*>(index.internalPointer());
-    pTreeItem *parentItem = childItem->parentItem();
+    pTreeItem *childItem = getItem( index );
+    //static_cast<pTreeItem*>(index.internalPointer());
+    pTreeItem *parentItem = childItem ? childItem->parentItem() : nullptr;
 
-    if (parentItem == _rootItem)
+    if (!parentItem || parentItem == _rootItem)
         return QModelIndex();
 
     return createIndex(parentItem->row(), 0, parentItem);
@@ -137,4 +140,65 @@ void ParametersModel::setupModel(const QMap< qint64, QSharedPointer< pParamGroup
         }
         parents.last()->appendChild( ptr );
     }
+}
+
+Qt::ItemFlags ParametersModel::flags(const QModelIndex &index) const {
+    if (!index.isValid())
+        return Qt::NoItemFlags;
+
+    return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
+}
+
+bool ParametersModel::setData(const QModelIndex &index, const QVariant &value,
+             int role) {
+    pTreeItem *item = getItem(index);
+    if (!item)
+        return false;
+
+    if (role == Qt::UserRole+1) {
+        QSharedPointer< pParamGroup > pgr = value.value< QSharedPointer< pParamGroup >>();
+        if (pgr)
+            item->setGroup( pgr );
+        else {
+            QSharedPointer< pParameter > ppar = value.value< QSharedPointer< pParameter >> ();
+            item->setParameter( ppar );
+        }
+        emit dataChanged( index.sibling(index.row(), 0), index.sibling(index.row(), 6), {Qt::DisplayRole, Qt::EditRole, Qt::UserRole, Qt::UserRole+1});
+        return true;
+    }
+    return false;
+}
+
+bool ParametersModel::insertRows(int position, int rows, const QModelIndex &parent) {
+    pTreeItem *parentItem = getItem(parent);
+    if (!parentItem)
+        return false;
+
+    beginInsertRows(parent, position, position + rows - 1);
+    const bool success = parentItem->insertChildren(position,
+                                                    rows);
+    endInsertRows();
+
+    return success;
+}
+
+bool ParametersModel::removeRows(int position, int rows, const QModelIndex &parent) {
+    pTreeItem *parentItem = getItem(parent);
+    if (!parentItem)
+        return false;
+
+    beginRemoveRows(parent, position, position + rows - 1);
+    const bool success = parentItem->removeChildren(position, rows);
+    endRemoveRows();
+
+    return success;
+}
+
+pTreeItem *ParametersModel::getItem(const QModelIndex &index) const {
+    if (index.isValid()) {
+        pTreeItem *item = static_cast<pTreeItem*>(index.internalPointer());
+        if (item)
+            return item;
+    }
+    return _rootItem;
 }
