@@ -90,3 +90,38 @@ QSharedPointer< pParamGroup > pTreeItem::getGroup() const {
 QSharedPointer< pParameter > pTreeItem::getParameter() const {
     return _pParam;
 }
+
+bool pTreeItem::insertChildren(int position, int count) {
+
+    if (position < 0 || position > _childItems.size())
+        return false;
+
+    for (int row = 0; row < count; ++row) {
+        pTreeItem *item = new pTreeItem(QSharedPointer< pParamGroup >(nullptr), this);
+        _childItems.insert(position, item);
+    }
+
+    return true;
+}
+
+bool pTreeItem::removeChildren(int position, int count) {
+    if (position < 0 || position + count > _childItems.size())
+        return false;
+
+    for (int row = 0; row < count; ++row)
+        delete _childItems.takeAt(position);
+
+    return true;
+}
+
+void pTreeItem::setGroup( QSharedPointer< pParamGroup > group ) {
+    _pGroup.reset();
+    _pGroup = group;
+    _pParam.reset();
+}
+
+void pTreeItem::setParameter( QSharedPointer< pParameter > parameter ) {
+    _pGroup.reset();
+    _pParam.reset();
+    _pParam = parameter;
+}
