@@ -86,6 +86,13 @@ void ParamListForm::delParamGroup() {
 
 void ParamListForm::addParameter() {
     qDebug() << __PRETTY_FUNCTION__;
+    QModelIndex wIndex = getGroupIndex();
+    if (!wIndex.isValid()) {
+        QMessageBox::warning( this, tr("Add parameter"), tr("Please select parent group for parameter"), QMessageBox::Ok );
+        return;
+    }
+    qint64 idGroup = wIndex.data( Qt::UserRole ).toLongLong();
+    emit addparam( _tvParams->model(), idGroup, wIndex );
 }
 
 void ParamListForm::editParameter() {
@@ -139,7 +146,7 @@ void ParamListForm::init(bool mode) {
 }
 
 QModelIndex ParamListForm::getGroupIndex() const {
-    QItemSelectionModel *selMod = _tvParams->selectionModel();
+    QItemSelectionModel* selMod = _tvParams->selectionModel();
     QItemSelection selInd = selMod->selection();
     QModelIndex parentIndex = selInd.empty() ? QModelIndex() : selInd.indexes().at(0);
     qint64 idParent = parentIndex.isValid() ? parentIndex.data(Qt::UserRole).toInt() : -1;
@@ -150,4 +157,17 @@ QModelIndex ParamListForm::getGroupIndex() const {
     for (; sourceMod->data(parentIndex, Qt::UserRole+USER_ENTITY).toInt() != 0 && parentIndex.isValid(); parentIndex = parentIndex.parent() )
         ;
     return parentIndex;
+}
+
+QModelIndex ParamListForm::getParamIndex() const {
+    QItemSelectionModel* selMod = _tvParams->selectionModel();
+    QItemSelection selInd = selMod->selection();
+    if( selInd.empty() )
+        return QModelIndex();
+    QModelIndex paramIndex = selInd.indexes().at(0);
+    QAbstractItemModel* sourceMod = _tvParams->model();
+    if (sourceMod->data( paramIndex, Qt::UserRole+USER_ENTITY ).toInt() == 0) // group
+        return QModelIndex();
+
+    return paramIndex;
 }

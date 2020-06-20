@@ -41,12 +41,17 @@ signals:
     void editpargroup(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex);
     void delpargroup(QAbstractItemModel* paramsModel, QModelIndex wIndex);
 
+    void addparam(QAbstractItemModel* paramsModel, qint64 idParentGroup, QModelIndex pIndex);
+    void editparam(QAbstractItemModel* paramsModel, qint64 idParameter, QModelIndex wIndex);
+    void delparam(QAbstractItemModel* paramsModel, QModelIndex wIndex);
+
 private:
     //
     // Functions
     //
     void init(bool mode);
     QModelIndex getGroupIndex() const;
+    QModelIndex getParamIndex() const;
 
 private:
     //

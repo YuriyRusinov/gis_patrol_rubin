@@ -17,6 +17,7 @@
 #include <pParamGroup.h>
 #include <pParameter.h>
 #include <paramsgroupform.h>
+#include <paramsform.h>
 #include "pGuiFactory.h"
 
 PGUIFactory::PGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
