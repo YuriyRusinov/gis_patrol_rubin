@@ -22,6 +22,8 @@ public:
     ~pDBWriter();
 
     qint64 writeParamGroup( QSharedPointer< pParamGroup > pgr ) const;
+    qint64 updateParamGroup( QSharedPointer< pParamGroup > pgr ) const;
+    qint64 deleteParamGroup( qint64 idGroup ) const;
 
     GISPatrolDatabase* getDb() const;
     void setDb( GISPatrolDatabase* db );

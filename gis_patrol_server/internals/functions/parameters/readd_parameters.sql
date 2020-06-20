@@ -8,3 +8,5 @@
 \i ./functions/parameters/pupdategroup.sql
 \i ./functions/parameters/pdelete.sql
 \i ./functions/parameters/pdeletegroup.sql
+
+\i ./functions/parameters/triggers/readd_triggers.sql
