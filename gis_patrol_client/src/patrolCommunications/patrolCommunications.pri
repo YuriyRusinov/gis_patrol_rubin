@@ -6,6 +6,7 @@ HEADERS += \
            pParameter.h \
            pParamType.h \
            pParamGroup.h \
+           pCatParameter.h \
            pParamView.h
 
 SOURCES += \
@@ -15,4 +16,5 @@ SOURCES += \
            pParameter.cpp \
            pParamType.cpp \
            pParamGroup.cpp \
+           pCatParameter.cpp \
            pParamView.cpp

@@ -13,6 +13,7 @@
 class GISPatrolDatabase;
 class PatrolGuiApp;
 class PGUIFactory;
+class pCatGuiFactory;
 class pDBLoader;
 class pDBWriter;
 
@@ -24,6 +25,7 @@ public:
     GISPatrolDatabase* getDb() const { return _dataBase; }
     PatrolGuiApp* getGUIObj() const { return _pga; }
     PGUIFactory* getGUIFactory() const { return _pguif; }
+    pCatGuiFactory* getCatGUIFactory() const { return _pcatf; }
     pDBLoader* getDbLoader() const { return _pdbLoader; }
     pDBWriter* getDbWriter() const { return _pdbWriter; }
 
@@ -40,6 +42,7 @@ private:
     mutable pDBLoader* _pdbLoader;
     mutable pDBWriter* _pdbWriter;
     mutable PGUIFactory* _pguif;
+    mutable pCatGuiFactory* _pcatf;
 
 private:
     Q_OBJECT
