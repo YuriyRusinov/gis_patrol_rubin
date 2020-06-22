@@ -1,7 +1,7 @@
 select f_safe_drop_type('h_get_category');
-create type h_get_category as(id int4,
-                              id_io_category_type int4,
-                              id_child int4,
+create type h_get_category as(id int8,
+                              id_io_category_type int8,
+                              id_child int8,
                               c_name varchar,
                               c_desc varchar,
                               t_name varchar,
@@ -11,7 +11,7 @@ create type h_get_category as(id int4,
                               is_system boolean,
                               is_global boolean);
 
-create or replace function cGetCategory(int4) returns setof h_get_category as
+create or replace function cGetCategory(int8) returns setof h_get_category as
 $BODY$
 declare
     idCategory alias for $1;
@@ -77,7 +77,7 @@ end
 $BODY$
 language 'plpgsql';
 
-create or replace function cGetCategoryIO (int4) returns setof h_get_category as
+create or replace function cGetCategoryIO (int8) returns setof h_get_category as
 $BODY$
 declare
     idObject alias for $1;
@@ -110,7 +110,7 @@ end
 $BODY$
 language 'plpgsql';
 
-create or replace function cGetParentCategory(int4) returns setof h_get_category as
+create or replace function cGetParentCategory(int8) returns setof h_get_category as
 $BODY$
 declare
     idCategory alias for $1;
@@ -142,7 +142,7 @@ end
 $BODY$
 language 'plpgsql';
 
-create or replace function cGetChildCategory(int4) returns setof h_get_category as
+create or replace function cGetChildCategory(int8) returns setof h_get_category as
 $BODY$
 declare
     idCategory alias for $1;

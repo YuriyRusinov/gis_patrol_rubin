@@ -1,8 +1,8 @@
 select f_safe_drop_type('h_get_parameter');
 
-create type h_get_parameter as (id_parameter integer,
-                                id_param_type integer,
-                                id_param_group integer,
+create type h_get_parameter as (id_parameter int8,
+                                id_param_type int8,
+                                id_param_group int8,
                                 parameter_code varchar,
                                 parameter_name varchar,
                                 parameter_title varchar,
@@ -13,9 +13,9 @@ create type h_get_parameter as (id_parameter integer,
                                 default_value varchar,
                                 is_mandatory boolean,
                                 is_read_only boolean,
-                                param_sort_order integer);
+                                param_sort_order int8);
 
-create or replace function pGetParameter(integer) returns setof h_get_parameter as
+create or replace function pGetParameter(int8) returns setof h_get_parameter as
 $BODY$
 declare
     idParameter alias for $1;

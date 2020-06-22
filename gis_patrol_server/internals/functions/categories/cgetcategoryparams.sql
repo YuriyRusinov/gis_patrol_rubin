@@ -1,4 +1,4 @@
-create or replace function cGetCategoryParameter(int4) returns setof h_get_parameter as
+create or replace function cGetCategoryParameter(int8) returns setof h_get_parameter as
 $BODY$
 declare
     idCategoryParam alias for $1;
@@ -8,7 +8,8 @@ begin
 
     query := E'select 
             p.id, 
-            ptt.id, 
+            ptt.id,
+            pgr.id,
             p.code, 
             p.name, 
             p.title, 
@@ -22,7 +23,8 @@ begin
             pcat.param_sort_order
         from
             tbl_cat_params pcat
-            inner join tbl_parameters p on (pcat.id = ' || idCategoryParam || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id);';
+            inner join tbl_parameters p on (pcat.id = ' || idCategoryParam || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id);';
+            raise warning '%', query;
     for r in 
         execute query
     loop
@@ -34,7 +36,7 @@ end
 $BODY$
 language 'plpgsql';
 
-create or replace function cGetCategoryParam(int4, int4) returns setof h_get_parameter as
+create or replace function cGetCategoryParam(int8, int8) returns setof h_get_parameter as
 $BODY$
 declare
     idCategory alias for $1;
@@ -46,7 +48,8 @@ begin
 
     query := E'select 
             p.id, 
-            ptt.id, 
+            ptt.id,
+            pgr.id,
             p.code, 
             p.name, 
             p.title, 
@@ -61,7 +64,7 @@ begin
         from  
             tbl_cat_params pcat
             inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = ' || idParameter || E' and pcat.id_parameter = p.id) 
-            inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id)'; 
+            inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id)'; 
     for r in 
         execute query
     loop
@@ -74,12 +77,12 @@ end
 $BODY$
 language 'plpgsql';
 
-create or replace function cGetCategoryParamsByIO(int4) returns setof h_get_parameter as
+create or replace function cGetCategoryParamsByIO(int8) returns setof h_get_parameter as
 $BODY$
 declare
     idObject alias for $1;
 
-    idCategory int4;
+    idCategory int8;
     r h_get_parameter%rowtype;
     query varchar;
 begin
@@ -104,7 +107,7 @@ $BODY$
 declare
     tableName alias for $1;
 
-    idCategory int4;
+    idCategory int8;
     r h_get_parameter%rowtype;
     query varchar;
 begin
@@ -125,7 +128,7 @@ $BODY$
 language 'plpgsql';
 
 
-create or replace function cGetCategoryParams(int4) returns setof h_get_parameter as
+create or replace function cGetCategoryParams(int8) returns setof h_get_parameter as
 $BODY$
 declare
     idCategory alias for $1;
@@ -136,6 +139,7 @@ begin
     query := E'select 
             p.id, 
             ptt.id, 
+            pgr.id,
             p.code, 
             p.name, 
             p.title, 
@@ -148,7 +152,7 @@ begin
             pcat.is_read_only,
             pcat.param_sort_order
         from  
-            tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id)';
+            tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id)';
     raise warning 'query is %', query;
 --(case when a.column_name isnull then NULL else (select a1.id_a_type from attributes a1 where a1.code = a.column_name) end) as ref_attr_type
     for r in 
