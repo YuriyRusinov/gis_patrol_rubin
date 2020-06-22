@@ -1,3 +1,4 @@
+\i ./functions/parameters/pgetparamtype.sql
 \i ./functions/parameters/pgetparameter.sql
 \i ./functions/parameters/pgetgroup.sql
 \i ./functions/parameters/pgetparameterslist.sql

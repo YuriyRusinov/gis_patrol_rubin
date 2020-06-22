@@ -125,6 +125,11 @@ void ParametersModel::setupModel(const QMap< qint64, QSharedPointer< pParamGroup
         qDebug() << __PRETTY_FUNCTION__ << ppg.key() << ppg.value();
         pTreeItem* ptr = new pTreeItem( ppg.value(), parents.last());
         int nchildren = ppg.value()->getChildGroups().size();
+        if ( nchildren > 0) {
+            qDebug() << __PRETTY_FUNCTION__ << nchildren << ppg.key();;
+            setupModel( ppg.value()->getChildGroups(), ptr );
+        }
+        parents.last()->appendChild( ptr );
         QMap< qint64, QSharedPointer< pParameter >> pars = ppg.value()->getParameters();
         qDebug() << __PRETTY_FUNCTION__ << "parameters from " << ppg.key() << ppg.value() << pars.size();
         for (QMap< qint64, QSharedPointer< pParameter >>::const_iterator ppa = pars.constBegin();
@@ -134,11 +139,6 @@ void ParametersModel::setupModel(const QMap< qint64, QSharedPointer< pParamGroup
             qDebug() << __PRETTY_FUNCTION__ << ppa.key() << pptr->isGroup();
             ptr->appendChild( pptr );
         }
-        if ( nchildren > 0) {
-            qDebug() << __PRETTY_FUNCTION__ << nchildren << ppg.key();;
-            setupModel( ppg.value()->getChildGroups(), ptr );
-        }
-        parents.last()->appendChild( ptr );
     }
 }
 
