@@ -1,4 +1,4 @@
-create or replace function pFindEqual(int4, varchar, varchar, varchar, varchar, varchar) returns int4 as
+create or replace function pFindEqual(int8, varchar, varchar, varchar, varchar, varchar) returns int8 as
 $BODY$
 declare
     idParamType alias for $1;

@@ -1,4 +1,4 @@
-create or replace function pGetParametersList(integer) returns setof h_get_parameter as
+create or replace function pGetParametersList(int8) returns setof h_get_parameter as
 $BODY$
 declare
     idParamGroup alias for $1;

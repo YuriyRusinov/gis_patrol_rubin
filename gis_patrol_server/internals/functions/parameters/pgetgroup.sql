@@ -1,10 +1,10 @@
 select f_safe_drop_type('h_get_parameter_group');
 
-create type h_get_parameter_group as (id_param_group integer,
-                                      id_parent integer,
+create type h_get_parameter_group as (id_param_group int8,
+                                      id_parent int8,
                                       name varchar);
 
-create or replace function pGetParamGroup(integer) returns setof h_get_parameter_group as
+create or replace function pGetParamGroup(int8) returns setof h_get_parameter_group as
 $BODY$
 declare
     idParamGroup alias for $1;
@@ -27,7 +27,7 @@ end
 $BODY$
 language 'plpgsql';
 
-create or replace function pGetParamGroups(integer) returns setof h_get_parameter_group as
+create or replace function pGetParamGroups(int8) returns setof h_get_parameter_group as
 $BODY$
 declare
     idParamParentGroup alias for $1;
