@@ -1,1 +1,5 @@
 gis_patrol_server/internals/functions/init_data/maclabels.sql merge=ours
+gis_patrol_server/internals/schema/all_tables_12.sql merge=ours
+gis_patrol_server/internals/initdb.sql merge=ours
+gis_patrol_server/internals/schema/all_tables.sql merge=ours
+gis_patrol_server/internals/functions/init_data/users.sql merge=ours

@@ -1,4 +1,4 @@
-create or replace function pDelete(int4) returns int4 as
+create or replace function pDeleteParameter(int8) returns int4 as
 $BODY$
 declare
     idParameter alias for $1;

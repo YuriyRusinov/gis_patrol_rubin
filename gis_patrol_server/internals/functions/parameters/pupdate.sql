@@ -1,4 +1,4 @@
-create or replace function pUpdate(int4, int4, int4, varchar, varchar, varchar, varchar, varchar) returns int4 as
+create or replace function pUpdateParameter(int8, int8, int8, varchar, varchar, varchar, varchar, varchar) returns int4 as
 $BODY$
 declare
     idParameter alias for $1;

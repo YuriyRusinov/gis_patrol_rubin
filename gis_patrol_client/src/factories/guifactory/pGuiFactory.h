@@ -33,6 +33,12 @@ private slots:
     void editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex);
     void delGroupOfParams(QAbstractItemModel* paramsModel, QModelIndex wIndex);
 
+    void addParameter( QAbstractItemModel* paramsModel, qint64 idParentGroup, QModelIndex pIndex );
+    void editParameter( QAbstractItemModel* paramsModel, qint64 idParameter, QModelIndex wIndex );
+    void deleteParameter( QAbstractItemModel* paramsModel, QModelIndex wIndex );
+
+    void refreshParams();
+
 signals:
     void viewWidget(QWidget* w);
 

@@ -97,14 +97,28 @@ void ParamListForm::addParameter() {
 
 void ParamListForm::editParameter() {
     qDebug() << __PRETTY_FUNCTION__;
+    QModelIndex wIndex = getParamIndex();
+    if (!wIndex.isValid()) {
+        QMessageBox::warning( this, tr("Edit parameter"), tr("Please select parameter for edit"), QMessageBox::Ok );
+        return;
+    }
+    qint64 idParam = wIndex.data( Qt::UserRole ).toLongLong();
+    emit editparam( _tvParams->model(), idParam, wIndex );
 }
 
 void ParamListForm::delParameter() {
     qDebug() << __PRETTY_FUNCTION__;
+    QModelIndex wIndex = getParamIndex();
+    if (!wIndex.isValid()) {
+        QMessageBox::warning( this, tr("Delete parameter"), tr("Please select parameter for delete"), QMessageBox::Ok );
+        return;
+    }
+    emit delparam( _tvParams->model(), wIndex );
 }
 
 void ParamListForm::refreshAll() {
     qDebug() << __PRETTY_FUNCTION__;
+    emit refreshParams();
 }
 
 void ParamListForm::init(bool mode) {

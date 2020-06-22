@@ -45,6 +45,8 @@ signals:
     void editparam(QAbstractItemModel* paramsModel, qint64 idParameter, QModelIndex wIndex);
     void delparam(QAbstractItemModel* paramsModel, QModelIndex wIndex);
 
+    void refreshParams();
+
 private:
     //
     // Functions

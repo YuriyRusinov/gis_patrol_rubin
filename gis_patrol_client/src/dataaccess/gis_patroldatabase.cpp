@@ -18,7 +18,7 @@ int GISPatrolDatabase::executeCmd(const QString & sql) const
 
 GISPatrolResult * GISPatrolDatabase::execute( const QString & query ) const
 {
-    return execute( query.toLatin1().constData() );
+    return execute( query.toUtf8().constData() );
 }
 
 GISPatrolResult * GISPatrolDatabase::execParams(

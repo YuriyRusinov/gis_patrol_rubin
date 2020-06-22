@@ -24,6 +24,9 @@ public:
     qint64 writeParamGroup( QSharedPointer< pParamGroup > pgr ) const;
     qint64 updateParamGroup( QSharedPointer< pParamGroup > pgr ) const;
     qint64 deleteParamGroup( qint64 idGroup ) const;
+    qint64 insertParam( QSharedPointer< pParameter > pPar ) const;
+    qint64 updateParam( QSharedPointer< pParameter > pPar ) const;
+    qint64 deleteParam( qint64 idParam ) const;
 
     GISPatrolDatabase* getDb() const;
     void setDb( GISPatrolDatabase* db );

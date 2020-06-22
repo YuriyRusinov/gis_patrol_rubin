@@ -15,6 +15,7 @@
 class GISPatrolDatabase;
 class pParamGroup;
 class pParameter;
+class pParamType;
 
 class pDBLoader : public QObject {
 public:
@@ -26,8 +27,8 @@ public:
 
     QMap< qint64, QSharedPointer< pParamGroup > > loadGroupedParameters() const;
     QMap< qint64, QSharedPointer< pParameter > > loadParameters( QSharedPointer< pParamGroup > pGroup ) const;
+    QMap< qint64, QSharedPointer< pParamType > > loadAvailParamTypes() const;
 
-private:
     QSharedPointer< pParamGroup > loadParamGroup( int idGroup ) const;
 
 private:

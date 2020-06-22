@@ -140,3 +140,25 @@ QMap< qint64, QSharedPointer< pParameter > > pDBLoader::loadParameters( QSharedP
     delete gpr;
     return res;
 }
+
+QMap< qint64, QSharedPointer< pParamType > > pDBLoader::loadAvailParamTypes() const {
+    QString sql_query = QString ("select id_param_type, type_name, type_code from pGetParameterTypes();");
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() == 0 ) {
+        if( gpr )
+            delete gpr;
+        return QMap< qint64, QSharedPointer< pParamType > >();
+    }
+    QMap< qint64, QSharedPointer< pParamType > > res;
+    int n = gpr->getRowCount();
+
+    for (int i=0; i<n; i++) {
+        qint64 idType = gpr->getCellAsInt(i, 0); // id
+        QString typeName = gpr->getCellAsString(i, 1); // name
+        QString typeCode = gpr->getCellAsString(i, 2); // code
+        QSharedPointer< pParamType > pType ( new pParamType(idType, typeName, typeCode) );
+        res.insert( idType, pType );
+    }
+    delete gpr;
+    return res;
+}

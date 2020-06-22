@@ -1,4 +1,4 @@
-create or replace function pInsertParameter (int4, int4, varchar, varchar, varchar, varchar, varchar) returns int4 as
+create or replace function pInsertParameter (int8, int8, varchar, varchar, varchar, varchar, varchar) returns int4 as
 $BODY$
 declare
     idParamType alias for $1;

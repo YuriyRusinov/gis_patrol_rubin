@@ -16,6 +16,7 @@
 #include <pParamModel.h>
 #include <pParamGroup.h>
 #include <pParameter.h>
+#include <pParamType.h>
 #include <paramsgroupform.h>
 #include <paramsform.h>
 #include "pGuiFactory.h"
@@ -38,6 +39,10 @@ QWidget* PGUIFactory::GUIViewParams(bool mode, QWidget* parent, Qt::WindowFlags 
     QObject::connect( plf, &ParamListForm::addpargroup, this, &PGUIFactory::addGroupOfParams );
     QObject::connect( plf, &ParamListForm::editpargroup, this, &PGUIFactory::editGroupOfParams );
     QObject::connect( plf, &ParamListForm::delpargroup, this, &PGUIFactory::delGroupOfParams );
+    QObject::connect( plf, &ParamListForm::addparam, this, &PGUIFactory::addParameter );
+    QObject::connect( plf, &ParamListForm::editparam, this, &PGUIFactory::editParameter );
+    QObject::connect( plf, &ParamListForm::delparam, this, &PGUIFactory::deleteParameter );
+    QObject::connect( plf, &ParamListForm::refreshParams, this, &PGUIFactory::refreshParams );
     QMap< qint64, QSharedPointer< pParamGroup > > pGroups = _dbLoader->loadGroupedParameters();
     ParametersModel* pMod = new ParametersModel( pGroups );
     plf->setParamsModel( pMod );
@@ -66,9 +71,9 @@ void PGUIFactory::addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idPar
         QMessageBox::warning(sw, tr("Write group to database"), tr("Error in attempt to save group"), QMessageBox::Ok);
     }
     int nr = paramsModel->rowCount( pIndex );
-    bool isInserted = paramsModel->insertRows( nr, 1, pIndex );
-    qDebug() << __PRETTY_FUNCTION__ << isInserted;
-    QModelIndex newGroupInd = paramsModel->index( nr, 0, pIndex );
+    bool isInserted = paramsModel->insertRows( 0, 1, pIndex );
+    qDebug() << __PRETTY_FUNCTION__ << isInserted << nr;
+    QModelIndex newGroupInd = paramsModel->index( 0, 0, pIndex );
     paramsModel->setData( newGroupInd, QVariant::fromValue<QSharedPointer< pParamGroup >>(newGroup), Qt::UserRole+1);
 }
 
@@ -79,8 +84,9 @@ void PGUIFactory::editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGr
     QString groupName = wIndex.data( Qt::DisplayRole ).toString();
     QString parentName = wIndex.parent().isValid() ? wIndex.parent().data( Qt::DisplayRole ).toString() : QString();
     ParamsGroupForm* pgf = new ParamsGroupForm(idGroup, groupName, parentName);
-    if (pgf->exec() != QDialog::Accepted) {
-        delete pgf;
+    if (!pgf || pgf->exec() != QDialog::Accepted) {
+        if( pgf )
+            delete pgf;
         return;
     }
     QSharedPointer< pParamGroup > parentG = ( wIndex.parent().isValid() ? paramsModel->data(wIndex.parent(), Qt::UserRole+1).value< QSharedPointer< pParamGroup >>() : nullptr);
@@ -116,4 +122,114 @@ void PGUIFactory::delGroupOfParams(QAbstractItemModel* paramsModel, QModelIndex 
     }
     QModelIndex pIndex = wIndex.parent();
     paramsModel->removeRows(wIndex.row(), 1, pIndex);
+}
+
+void PGUIFactory::addParameter( QAbstractItemModel* paramsModel, qint64 idParentGroup, QModelIndex pIndex ) {
+    QMap< qint64, QSharedPointer<pParamType> > pTypes = _dbLoader->loadAvailParamTypes();
+    ParamsForm* parForm = new ParamsForm( -1, pTypes );
+    if (!parForm || parForm->exec() != QDialog::Accepted) {
+        if (parForm)
+            delete parForm;
+        return;
+    }
+    QSharedPointer< pParamType > pType = parForm->getParamType();
+    QSharedPointer< pParamGroup > pGroup = paramsModel->data( pIndex, Qt::UserRole+1 ).value< QSharedPointer< pParamGroup > >();
+    if( pGroup.isNull() )
+        pGroup = _dbLoader->loadParamGroup( idParentGroup );
+    QString paramName = parForm->getName();
+    QString paramCode = parForm->getCode();
+    QString paramTitle = parForm->getTitle();
+    QString tableName = QString();
+    QString columnName = QString();
+    if (pType->getId() == 2 || pType->getId() == 27) {
+        tableName = parForm->getTableName();
+        columnName = parForm->getColumnName();
+    }
+    QSharedPointer< pParameter > pParam( new pParameter(-1, pType, pGroup, paramCode, paramName, paramTitle, tableName, columnName) );
+    qint64 idParam = _dbWriter->insertParam( pParam );
+    if (idParam <= 0) {
+        QWidget* sw = qobject_cast<QWidget *>(this->sender());
+        QMessageBox::warning( sw, tr("New parameter"), tr("Cannot insert parameter, DB error"), QMessageBox::Ok );
+        return;
+    }
+    int nr = paramsModel->rowCount( pIndex );
+    bool isInserted = paramsModel->insertRows( nr, 1, pIndex );
+    qDebug() << __PRETTY_FUNCTION__ << isInserted;
+    QModelIndex wIndex = paramsModel->index( nr, 0, pIndex );
+    paramsModel->setData(wIndex, QVariant::fromValue<QSharedPointer< pParameter >>( pParam ), Qt::UserRole+1);
+}
+void PGUIFactory::editParameter( QAbstractItemModel* paramsModel, qint64 idParameter, QModelIndex wIndex ) {
+    if (!paramsModel || !wIndex.isValid() || idParameter <= 0)
+        return;
+    QSharedPointer< pParameter > pParam = paramsModel->data(wIndex, Qt::UserRole+1).value< QSharedPointer< pParameter >> ();
+    if (!pParam)
+        return;
+    QMap< qint64, QSharedPointer<pParamType> > pTypes = _dbLoader->loadAvailParamTypes();
+    ParamsForm* parForm = new ParamsForm( idParameter, pTypes );
+    if (!parForm )
+        return;
+
+    QSharedPointer< pParamType> pType = pParam->getParamType();
+    parForm->setParamType( pType->getId() );
+    parForm->setName( pParam->getName() );
+    parForm->setCode( pParam->getCode() );
+    parForm->setTitle( pParam->getTitle() );
+    parForm->setTableName( pParam->getTableName() );
+    parForm->setColumnName( pParam->getColumnName() );
+    if (parForm->exec() != QDialog::Accepted) {
+        delete parForm;
+        return;
+    }
+    QString paramName = parForm->getName();
+    QString paramCode = parForm->getCode();
+    QString paramTitle = parForm->getTitle();
+    QString tableName = QString();
+    QString columnName = QString();
+    if (pType->getId() == 2 || pType->getId() == 27) {
+        tableName = parForm->getTableName();
+        columnName = parForm->getColumnName();
+    }
+    pParam->setName( paramName );
+    pParam->setCode( paramCode );
+    pParam->setTitle( paramTitle );
+    pParam->setTableName( tableName );
+    pParam->setColumnName( columnName );
+    delete parForm;
+    qint64 idParam = _dbWriter->updateParam( pParam );
+    if (idParam < 0 || idParam != idParameter) {
+        QWidget* sw = qobject_cast<QWidget *>(this->sender());
+        QMessageBox::warning( sw, tr("Edit parameter"), tr("Cannot update parameter, DB error"), QMessageBox::Ok );
+        return;
+    }
+    paramsModel->setData( wIndex, QVariant::fromValue<QSharedPointer< pParameter >>( pParam ), Qt::UserRole+1);
+}
+
+void PGUIFactory::deleteParameter( QAbstractItemModel* paramsModel, QModelIndex wIndex ) {
+    if( !paramsModel || !wIndex.isValid() )
+        return;
+    int nr = paramsModel->rowCount( wIndex );
+    QWidget* sw = qobject_cast<QWidget *>(this->sender());
+    if (nr > 0) {
+        QMessageBox::warning( sw, tr("Delete parameter"), tr("Cannot delete parameter"), QMessageBox::Ok );
+        return;
+    }
+    QMessageBox::StandardButton res = QMessageBox::question( sw, tr("Delete parameter"), tr("Do you really want to delete parameter ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
+    if (res != QMessageBox::Yes)
+        return;
+    qint64 idRes = _dbWriter->deleteParam( wIndex.data(Qt::UserRole).toInt() );
+    if (idRes < 0) {
+        QMessageBox::warning( sw, tr("Delete parameter"), tr("DB Error in delete parameter"), QMessageBox::Ok );
+        return;
+    }
+    QModelIndex pIndex = wIndex.parent();
+    paramsModel->removeRows(wIndex.row(), 1, pIndex);
+}
+
+void PGUIFactory::refreshParams() {
+    ParamListForm* plf = qobject_cast< ParamListForm *>(this->sender());
+    if (!plf)
+        return;
+    QMap< qint64, QSharedPointer< pParamGroup > > pGroups = _dbLoader->loadGroupedParameters();
+    ParametersModel* pMod = new ParametersModel( pGroups );
+    plf->setParamsModel( pMod );
 }
