@@ -1,5 +1,7 @@
 HEADERS += \
-           pGuiFactory.h
+           pGuiFactory.h \
+           pCatGuiFactory.h
 
 SOURCES += \
-           pGuiFactory.cpp
+           pGuiFactory.cpp \
+           pCatGuifactory.cpp
