@@ -16,6 +16,7 @@ class GISPatrolDatabase;
 class pParamGroup;
 class pParameter;
 class pParamType;
+class pCategory;
 
 class pDBLoader : public QObject {
 public:
@@ -29,7 +30,12 @@ public:
     QMap< qint64, QSharedPointer< pParameter > > loadParameters( QSharedPointer< pParamGroup > pGroup ) const;
     QMap< qint64, QSharedPointer< pParamType > > loadAvailParamTypes() const;
 
-    QSharedPointer< pParamGroup > loadParamGroup( int idGroup ) const;
+    QSharedPointer< pParamGroup > loadParamGroup( qint64 idGroup ) const;
+
+    QMap< qint64, QSharedPointer< pCategory > > loadCategories() const;
+
+private:
+    QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
 
 private:
     friend class PatrolSingleton;

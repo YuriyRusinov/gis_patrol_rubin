@@ -15,6 +15,7 @@
 #include <patrolsingleton.h>
 #include <patrolguiapp.h>
 #include <pGuiFactory.h>
+#include <pCatGuiFactory.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
 
@@ -88,10 +89,12 @@ void PatrolMainWindow::initActions() {
     QObject::connect(_UI->actCreateCat, &QAction::triggered, this, &PatrolMainWindow::slotCreateCategory);
 
     _UI->actAddParametersIntoCat->setIcon(QIcon(":/patrol/add_parameter_to_cat.svg"));
-    _tbActReferences->addAction(_UI->actAddParametersIntoCat);
+    //_tbActReferences->addAction(_UI->actAddParametersIntoCat);
     QObject::connect(_UI->actAddParametersIntoCat, &QAction::triggered, this, &PatrolMainWindow::slotAddParametersIntoCategory);
 
-    QObject::connect(_UI->actViewCat, &QAction::triggered, this, &PatrolMainWindow::slotViewCategories);
+    _UI->actViewCat->setIcon(QIcon(":/patrol/view_parameters.svg"));
+    _tbActReferences->addAction( _UI->actViewCat );
+    QObject::connect( _UI->actViewCat, &QAction::triggered, this, &PatrolMainWindow::slotViewCategories );
 
     _UI->actViewParameters->setIcon(QIcon(":/patrol/view_parameters.svg"));
     _tbActReferences->addAction(_UI->actViewParameters);
@@ -145,4 +148,8 @@ void PatrolMainWindow::slotAddParametersIntoCategory() {
 
 void PatrolMainWindow::slotViewCategories() {
     qDebug() << __PRETTY_FUNCTION__;
+    pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
+    QWidget* catW = pCatGuiF->GUICatView();
+    if (catW)
+        slotAddWidget( catW );
 }

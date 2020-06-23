@@ -11,6 +11,7 @@
 #include <pParamGroup.h>
 #include <pParameter.h>
 #include <pParamType.h>
+#include <pCategory.h>
 
 #include "patroldbwriter.h"
 
@@ -142,4 +143,22 @@ qint64 pDBWriter::deleteParam( qint64 idParam ) const {
         qDebug() << __PRETTY_FUNCTION__ << idParam << idParamR;
     delete gpr;
     return idParam;
+}
+
+qint64 pDBWriter::writeCategory( QSharedPointer< pCategory > pCat ) const {
+    if (pCat.isNull())
+        return -1;
+
+    return pCat->getId();
+}
+
+qint64 pDBWriter::updateCategory( QSharedPointer< pCategory > pCat ) const {
+    if (pCat.isNull())
+        return -1;
+
+    return pCat->getId();
+}
+
+qint64 pDBWriter::deleteCategory( qint64 idCat ) const {
+    return idCat;
 }
