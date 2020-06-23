@@ -7,7 +7,9 @@ HEADERS += \
            pParamType.h \
            pParamGroup.h \
            pCatParameter.h \
-           pParamView.h
+           pParamView.h \
+           pCategory.h \
+           pCategoryType.h
 
 SOURCES += \
            pCommCenter.cpp \
@@ -17,4 +19,6 @@ SOURCES += \
            pParamType.cpp \
            pParamGroup.cpp \
            pCatParameter.cpp \
-           pParamView.cpp
+           pParamView.cpp \
+           pCategory.cpp \
+           pCategoryType.cpp

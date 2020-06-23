@@ -11,6 +11,37 @@ create type h_get_category as(id int8,
                               is_system boolean,
                               is_global boolean);
 
+create or replace function cGetCategories() returns setof h_get_category as
+$BODY$
+declare
+    r h_get_category%rowtype;
+begin
+
+    for r in
+        select 
+            c.id, 
+            c.id_category_type, 
+            c.id_child, 
+            c.name, 
+            c.description, 
+            t.name, 
+            t.description, 
+            c.is_main, 
+            c.code,
+            c.is_system,
+            true
+        from 
+            tbl_communication_categories c
+            inner join tbl_category_type t on ( c.id_category_type = t.id and c.id_child is not null ) order by 1
+    loop
+        return next r;
+    end loop;
+
+    return;
+end
+$BODY$
+language 'plpgsql';
+
 create or replace function cGetCategory(int8) returns setof h_get_category as
 $BODY$
 declare
