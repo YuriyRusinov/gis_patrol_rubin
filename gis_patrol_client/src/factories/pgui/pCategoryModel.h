@@ -14,7 +14,7 @@
 #include <QModelIndex>
 #include <QSharedPointer>
 
-class pParameter;
+class pCatTreeItem;
 class pCategory;
 
 class pCategoryModel : public QAbstractItemModel {
@@ -36,7 +36,12 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
 private:
+    pCatTreeItem* getItem(QModelIndex index) const;
+    void setupModel( const QMap< qint64, QSharedPointer< pCategory > >& cats, pCatTreeItem* rootItem );
+
+private:
     QMap< qint64, QSharedPointer< pCategory > > _categories;
+    pCatTreeItem* _rootItem;
 
 private:
     Q_OBJECT
