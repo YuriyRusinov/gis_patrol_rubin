@@ -44,6 +44,7 @@ pCatEditor::pCatEditor( QSharedPointer< pCategory > pCat, const QMap< qint64, QS
     _lTableCatCode( new QLabel( tr("Code:") ) ),
     _lETableCatCode( new QLineEdit ),
     _lTableCatDesc( new QLabel( tr("Description:") ) ),
+    _lETableCatDesc( new QLineEdit ),
     _tvTableCatParams( new QTreeView ) {
     init();
 }
@@ -109,6 +110,8 @@ void pCatEditor::init( ) {
     _tabCatWidget->addTab( _tvTableCatParams, tr("Parameters of table category") );
 
     initActions();
+    initCatParams();
+    initTableCatParams();
 }
 
 void pCatEditor::initActions( ) {
@@ -126,7 +129,34 @@ void pCatEditor::initActions( ) {
     actAddParam->setToolTip( tr("Add parameter to table category") );
     QObject::connect( actAddTableParam, &QAction::triggered, this, &pCatEditor::addParamIntoTableCat );
 
-    QAction* actRemoveTableParam = _tbCatActions->addAction(QIcon(":/patrol/remove_parameter_from_cat.svg"), tr("Remove parameter from table category") );
+    QAction* actRemoveTableParam = _tbCatActions->addAction( QIcon(":/patrol/remove_parameter_from_cat.svg"), tr("Remove parameter from table category") );
     actRemoveTableParam->setToolTip( tr("Remove parameter from table category") );
     QObject::connect( actRemoveTableParam, &QAction::triggered, this, &pCatEditor::removeParamFromTableCat );
+    _tbCatActions->addSeparator();
+
+    QAction* actSaveCat = _tbCatActions->addAction( QIcon(":/patrol/save_db.png"), tr ("Save categories to DB") );
+    actSaveCat->setToolTip( tr("Save categories to database") );
+    QObject::connect( actSaveCat, &QAction::triggered, this, &pCatEditor::saveCategory );
+}
+
+void pCatEditor::initCatParams( ) {
+    QGridLayout * grCatPLay = new QGridLayout( _catParamWidget );
+    grCatPLay->addWidget( _lCatName, 0, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grCatPLay->addWidget( _lECatName, 0, 1, 1, 1 , Qt::AlignLeft | Qt::AlignVCenter );
+    grCatPLay->addWidget( _lCatCode, 1, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grCatPLay->addWidget( _lECatCode, 1, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    grCatPLay->addWidget( _lCatDesc, 2, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grCatPLay->addWidget( _lECatDesc, 2, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    grCatPLay->addWidget( _lCatType, 3, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grCatPLay->addWidget( _cbCatTypes, 3, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+}
+
+void pCatEditor::initTableCatParams( ) {
+    QGridLayout* grTableCatLay = new QGridLayout( _tableCatParamWidget );
+    grTableCatLay->addWidget( _lTableCatName, 0, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grTableCatLay->addWidget( _lETableCatName, 0, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    grTableCatLay->addWidget( _lTableCatCode, 1, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grTableCatLay->addWidget( _lETableCatCode, 1, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+    grTableCatLay->addWidget( _lTableCatDesc, 2, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
+    grTableCatLay->addWidget( _lETableCatDesc, 2, 1, 1, 1,  Qt::AlignLeft | Qt::AlignVCenter );
 }

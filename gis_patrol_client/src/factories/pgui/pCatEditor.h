@@ -46,6 +46,8 @@ private:
     //
     void init( );
     void initActions( );
+    void initCatParams( );
+    void initTableCatParams( );
 
 private:
     //

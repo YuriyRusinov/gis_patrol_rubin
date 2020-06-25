@@ -13,5 +13,7 @@
     <file alias="edit_parameter.svg">10617351951536837651.svg</file>
     <file alias="del_parameter.svg">4289011151536837648.svg</file>
     <file alias="refresh_parameters.svg">18134345211536837652.svg</file>
+    <file alias="save.svg">save-svgrepo-com.svg</file>
+    <file alias="save_db.png">192824_database_256x256.png</file>
 </qresource>
 </RCC>
