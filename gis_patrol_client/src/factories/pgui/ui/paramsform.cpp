@@ -27,7 +27,7 @@ ParamsForm::ParamsForm( qint64 id, const QMap< qint64, QSharedPointer< pParamTyp
         _UI->cbType->setCurrentIndex( -1 );
     else
         _UI->cbType->setEnabled( false );
-    QRegExp cRegExp(QString("[A-Za-z0-9]*"));
+    QRegExp cRegExp(QString("[A-Za-z0-9_]*"));
     QValidator* codeVal = new QRegExpValidator(cRegExp, this);
     _UI->lECode->setValidator( codeVal );
 }

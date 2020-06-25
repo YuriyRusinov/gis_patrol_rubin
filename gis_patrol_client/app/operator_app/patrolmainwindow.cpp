@@ -36,8 +36,10 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     setEnabled( false );
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
     PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
     QObject::connect(pGuiApp, &PatrolGuiApp::disconnected, this, &PatrolMainWindow::slotDbDisconnected);
     QObject::connect(pGuiFactory, &PGUIFactory::viewWidget, this, &PatrolMainWindow::slotAddWidget);
+    QObject::connect(pCatGuiF, &pCatGuiFactory::viewCatWidget, this, &PatrolMainWindow::slotAddWidget);
 }
 
 PatrolMainWindow::~PatrolMainWindow() {

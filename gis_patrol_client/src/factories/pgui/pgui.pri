@@ -5,6 +5,7 @@ HEADERS += \
            pTreeItem.h \
            pCatTreeItem.h \
            pCategoryModel.h \
+           pCatEditor.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -19,5 +20,6 @@ SOURCES += \
            pTreeItem.cpp \
            pCatTreeItem.cpp \
            pCategoryModel.cpp \
+           pCatEditor.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp

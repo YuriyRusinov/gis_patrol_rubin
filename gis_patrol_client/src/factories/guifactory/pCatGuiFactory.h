@@ -31,6 +31,9 @@ private slots:
     void delPCategory( QAbstractItemModel* catMod, QModelIndex cIndex );
     void refreshCats();
 
+signals:
+    void viewCatWidget( QWidget* w );
+
 private:
     pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter,  QObject* parent=nullptr );
     ~pCatGuiFactory();
