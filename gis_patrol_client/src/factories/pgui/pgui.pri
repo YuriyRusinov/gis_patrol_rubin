@@ -3,6 +3,7 @@ HEADERS += \
            pCategoryListForm.h \
            pParamModel.h \
            pTreeItem.h \
+           pCatTreeItem.h \
            pCategoryModel.h \
            pCatEditor.h \
            ui/paramsgroupform.h \
@@ -17,6 +18,7 @@ SOURCES += \
            pParamListForm.cpp \
            pParamModel.cpp \
            pTreeItem.cpp \
+           pCatTreeItem.cpp \
            pCategoryModel.cpp \
            pCatEditor.cpp \
            ui/paramsgroupform.cpp \

@@ -10,12 +10,16 @@
 #pragma once
 
 #include <QModelIndex>
+#include <QSharedPointer>
 #include <QObject>
 
 class QAbstractItemModel;
 class QWidget;
+
 class pDBLoader;
 class pDBWriter;
+
+class pCategory;
 
 class pCatGuiFactory : public QObject {
 public:

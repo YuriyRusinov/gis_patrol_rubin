@@ -25,8 +25,14 @@ pCatGuiFactory::~pCatGuiFactory() {
 
 QWidget* pCatGuiFactory::GUICatView( QWidget* parent, Qt::WindowFlags flags ) {
     pCategoryListForm* pclf = new pCategoryListForm( parent, flags );
+    QObject::connect( pclf, &pCategoryListForm::addCategory, this, &pCatGuiFactory::addPCategory );
+    QObject::connect( pclf, &pCategoryListForm::editCategory, this, &pCatGuiFactory::editPCategory );
+    QObject::connect( pclf, &pCategoryListForm::delCategory, this, &pCatGuiFactory::delPCategory );
+    QObject::connect( pclf, &pCategoryListForm::refrechCatMod, this, &pCatGuiFactory::refreshCats );
     QMap< qint64, QSharedPointer< pCategory > > categories = _dbLoader->loadCategories();
     qDebug() << __PRETTY_FUNCTION__ << categories.size();
+    pCategoryModel* pCatMod = new pCategoryModel( categories );
+    pclf->setCatModel( pCatMod );
     return pclf;
 }
 

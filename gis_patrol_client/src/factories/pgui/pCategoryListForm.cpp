@@ -9,6 +9,9 @@
 
 #include <QToolBar>
 #include <QAbstractItemModel>
+#include <QItemSelectionModel>
+#include <QItemSelection>
+#include <QMessageBox>
 #include <QTreeView>
 #include <QAction>
 #include <QGridLayout>
@@ -45,18 +48,57 @@ void pCategoryListForm::setCatModel( QAbstractItemModel* cModel ) {
 
 void pCategoryListForm::addcategory( ) {
     qDebug() << __PRETTY_FUNCTION__;
+    QAbstractItemModel* cModel = _tvCat->model();
+    emit addCategory( cModel );
 }
 
 void pCategoryListForm::editcategory( ) {
     qDebug() << __PRETTY_FUNCTION__;
+    QItemSelectionModel* selModel = _tvCat->selectionModel();
+    QItemSelection sel = selModel->selection();
+    QAbstractItemModel* cModel = _tvCat->model();
+    if ( sel.indexes().isEmpty() ) {
+        QMessageBox::warning( this, tr("Edit category"), tr("Please select category for edit"), QMessageBox::Ok );
+        return;
+    }
+    QModelIndex cIndex = sel.indexes().at( 0 );
+    //
+    // Мы можем редактировать только в комплексе главную и дочернюю
+    // категории
+    //
+    if (cIndex.parent().isValid()) {
+        QSharedPointer< pCategory > pChildCat = cIndex.data( Qt::UserRole+1 ).value<QSharedPointer< pCategory > >();
+        qDebug() << __PRETTY_FUNCTION__ << pChildCat->getId();
+        cIndex = cIndex.parent();
+    }
+    QSharedPointer< pCategory > pCat = cIndex.data( Qt::UserRole+1 ).value<QSharedPointer< pCategory > >();
+    qDebug() << __PRETTY_FUNCTION__ << cIndex << pCat->getId();
+    emit editCategory( cModel, pCat, cIndex );
 }
 
 void pCategoryListForm::delcategory( ) {
+    QItemSelectionModel* selModel = _tvCat->selectionModel();
+    QItemSelection sel = selModel->selection();
+    QAbstractItemModel* cModel = _tvCat->model();
+    if ( sel.indexes().isEmpty() ) {
+        QMessageBox::warning( this, tr("Delete category"), tr("Please select category for remove"), QMessageBox::Ok );
+        return;
+    }
+    QModelIndex cIndex = sel.indexes().at( 0 );
+    if (cIndex.parent().isValid()) {
+        cIndex = cIndex.parent();
+    }
+    QSharedPointer< pCategory > pCat = cIndex.data( Qt::UserRole+1 ).value<QSharedPointer< pCategory > >();
+    QMessageBox::StandardButton qres = QMessageBox::question( this, tr("Delete category"), tr( "Do you really want to delete category %1 and its child category ?").arg( pCat->getName() ), QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
+    if( qres != QMessageBox::Yes )
+        return;
+    emit delCategory( cModel, cIndex );
     qDebug() << __PRETTY_FUNCTION__;
 }
 
 void pCategoryListForm::refreshC( ) {
     qDebug() << __PRETTY_FUNCTION__;
+    emit refrechCatMod();
 }
 
 void pCategoryListForm::init() {
