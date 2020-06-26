@@ -9,12 +9,12 @@
 
 #include "pCategoryType.h"
 
-pCategoryType::pCategoryType( qint64 id, QString name, QString desc )
-    : _idCatType( id ), _name( name ), _description( desc ) {
+pCategoryType::pCategoryType( qint64 id, QString name, QString desc, bool isRef )
+    : _idCatType( id ), _name( name ), _description( desc ), _isReference( isRef ) {
 }
 
 pCategoryType::pCategoryType( const pCategoryType& pct )
-    : _idCatType( pct._idCatType ), _name( pct._name ), _description( pct._description ) {
+    : _idCatType( pct._idCatType ), _name( pct._name ), _description( pct._description ),_isReference( pct._isReference) {
 }
 
 pCategoryType::~pCategoryType() {}
@@ -41,4 +41,12 @@ QString pCategoryType::getDesc() const {
 
 void pCategoryType::setDesc( QString desc ) {
     _description = desc;
+}
+
+bool pCategoryType::isReference() const {
+    return _isReference;
+}
+
+void pCategoryType::setReference( bool value ) {
+    _isReference = value;
 }

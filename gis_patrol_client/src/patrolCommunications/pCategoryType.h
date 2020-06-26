@@ -15,7 +15,7 @@
 
 class pCategoryType {
 public:
-    pCategoryType( qint64 id=-1, QString name=QString(), QString desc=QString() );
+    pCategoryType( qint64 id=-1, QString name=QString(), QString desc=QString(), bool isRef=false );
     pCategoryType( const pCategoryType& pct );
     ~pCategoryType();
 
@@ -28,10 +28,14 @@ public:
     QString getDesc() const;
     void setDesc( QString desc );
 
+    bool isReference() const;
+    void setReference( bool value );
+
 private:
     qint64 _idCatType;
     QString _name;
     QString _description;
+    bool _isReference;
 };
 
 Q_DECLARE_METATYPE( QSharedPointer< pCategoryType > );
