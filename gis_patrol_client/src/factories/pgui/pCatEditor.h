@@ -13,6 +13,7 @@
 #include <QWidget>
 #include <QSharedPointer>
 
+class QAbstractItemModel;
 class QComboBox;
 class QLabel;
 class QLineEdit;
@@ -31,6 +32,9 @@ public:
     QSharedPointer< pCategory > getCategory() const;
     void setCategory( QSharedPointer< pCategory > pc );
 
+    void setCatParamModel( QAbstractItemModel* paramModel );
+    void setTableCatParamModel( QAbstractItemModel* paramModel );
+
 public slots:
     void saveCategory( );
 
@@ -48,6 +52,7 @@ private:
     void initActions( );
     void initCatParams( );
     void initTableCatParams( );
+    void initValues( );
 
 private:
     //

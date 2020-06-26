@@ -9,7 +9,8 @@ create type h_get_category as(id int8,
                               is_main boolean,
                               c_code varchar,
                               is_system boolean,
-                              is_global boolean);
+                              is_global boolean,
+                              is_qualifier boolean);
 
 create or replace function cGetCategories() returns setof h_get_category as
 $BODY$
@@ -29,7 +30,8 @@ begin
             c.is_main, 
             c.code,
             c.is_system,
-            true
+            true,
+            t.id < 3 or (t.id >= 8 and t.id < 10) as is_qualifier
         from 
             tbl_communication_categories c
             inner join tbl_category_type t on ( c.id_category_type = t.id and c.id_child is not null ) order by 1
@@ -61,7 +63,8 @@ begin
             c.is_main, 
             c.code,
             c.is_system,
-            true
+            true,
+            t.id < 3 or (t.id >= 8 and t.id < 10) as is_qualifier
         from 
             tbl_communication_categories c
             inner join tbl_category_type t on (c.id_category_type = t.id and c.id = idCategory)
@@ -93,7 +96,8 @@ begin
             cc.is_main, 
             cc.code,
             cc.is_system,
-            true
+            true,
+            t.id < 3 or (t.id >= 8 and t.id < 10) as is_qualifier
         from 
             tbl_io_communication_objects_references io
             inner join tbl_communication_categories c on (c.id = io.id_category and io.table_name = tableName)
@@ -127,7 +131,8 @@ begin
             c.is_main, 
             c.code,
             c.is_system,
-            true
+            true,
+            t.id < 3 or ( t.id >= 8 and t.id < 10 ) as is_qualifier
         from 
             tbl_communication_categories c inner join
             tbl_category_type t on (c.id_category_type = t.id)
@@ -160,7 +165,8 @@ begin
             c.is_main, 
             c.code,
             c.is_system,
-            true
+            true,
+            t.id < 3 or ( t.id >= 8 and t.id < 10 ) as is_qualifier
         from 
             tbl_communication_categories c inner join
             tbl_category_type t on (c.id_category_type = t.id and c.id_child = idCategory)
@@ -192,7 +198,8 @@ begin
             cc.is_main, 
             cc.code,
             cc.is_system,
-            true
+            true,
+            t.id < 3 or ( t.id >= 8 and t.id < 10 ) as is_qualifier
         from 
             tbl_communication_categories c
             inner join tbl_communication_categories cc on (c.id_child = cc.id and c.id = idCategory)

@@ -22,8 +22,9 @@
 
 \i ./functions/categories/csetcompleted.sql
 \i ./functions/categories/csetglobal.sql
-\i ./functions/categories/cgetcategorytypes.sql
 */
+\i ./functions/categories/cgetcategorytypes.sql
+
 \i ./functions/categories/cdeletecategory.sql
 
 \i ./functions/categories/triggers/readd_triggers.sql

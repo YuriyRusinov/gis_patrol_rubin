@@ -6,6 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
+#include <QMessageBox>
 #include <QtDebug>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
@@ -38,13 +39,22 @@ QWidget* pCatGuiFactory::GUICatView( QWidget* parent, Qt::WindowFlags flags ) {
 
 void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
     qDebug() << __PRETTY_FUNCTION__ << catMod;
-    pCatEditor* cEditor = new pCatEditor();
+    QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
+    qint64 defaultType = 1;
+    QSharedPointer< pCategory > pCat ( new pCategory );
+    pCat->setType( pCTypes.value( defaultType, nullptr ) );
+    pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
     emit viewCatWidget( cEditor );
 }
 
 void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< pCategory > pCat, QModelIndex cIndex ) {
+    if (pCat.isNull()) {
+        QMessageBox::warning( qobject_cast<QWidget*>(this->sender()), tr("Edit category"), tr("Cannot edit category, error"), QMessageBox::Ok );
+        return;
+    }
     qDebug() << __PRETTY_FUNCTION__ << catMod << pCat.isNull() << cIndex;
-    pCatEditor* cEditor = new pCatEditor();
+    QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
+    pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
     emit viewCatWidget( cEditor );
 }
 

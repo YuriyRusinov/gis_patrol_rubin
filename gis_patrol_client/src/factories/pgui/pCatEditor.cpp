@@ -7,11 +7,14 @@
  *  Ю.Л.Русинов
  */
 
+#include <QAbstractItemModel>
 #include <QAction>
 #include <QComboBox>
+#include <QHBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QRegExpValidator>
 #include <QTabWidget>
 #include <QToolBar>
 #include <QTreeView>
@@ -78,6 +81,7 @@ QSharedPointer< pCategory > pCatEditor::getCategory() const {
 
 void pCatEditor::setCategory( QSharedPointer< pCategory > pc ) {
     _pCategory = pc;
+    initValues();
 }
 
 void pCatEditor::saveCategory( ) {
@@ -112,6 +116,7 @@ void pCatEditor::init( ) {
     initActions();
     initCatParams();
     initTableCatParams();
+    initValues();
 }
 
 void pCatEditor::initActions( ) {
@@ -141,22 +146,85 @@ void pCatEditor::initActions( ) {
 
 void pCatEditor::initCatParams( ) {
     QGridLayout * grCatPLay = new QGridLayout( _catParamWidget );
-    grCatPLay->addWidget( _lCatName, 0, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grCatPLay->addWidget( _lECatName, 0, 1, 1, 1 , Qt::AlignLeft | Qt::AlignVCenter );
-    grCatPLay->addWidget( _lCatCode, 1, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grCatPLay->addWidget( _lECatCode, 1, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
-    grCatPLay->addWidget( _lCatDesc, 2, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grCatPLay->addWidget( _lECatDesc, 2, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
-    grCatPLay->addWidget( _lCatType, 3, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grCatPLay->addWidget( _cbCatTypes, 3, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
+
+    QHBoxLayout* hNameLay = new QHBoxLayout;
+    hNameLay->addWidget( _lCatName );
+    hNameLay->addWidget( _lECatName );
+    grCatPLay->addLayout( hNameLay, 0, 0, 1, 1, Qt::AlignJustify);
+
+    QHBoxLayout* hCodeLay = new QHBoxLayout;
+    hCodeLay->addWidget( _lCatCode );
+    hCodeLay->addWidget( _lECatCode );
+    grCatPLay->addLayout( hCodeLay, 1, 0, 1, 1, Qt::AlignJustify);
+
+    QHBoxLayout* hDescLay = new QHBoxLayout;
+    hDescLay->addWidget( _lCatDesc );
+    hDescLay->addWidget( _lECatDesc );
+    grCatPLay->addLayout( hDescLay, 2, 0, 1, 1, Qt::AlignJustify );
+    
+    QHBoxLayout* hCTypeLay = new QHBoxLayout;
+    hCTypeLay->addWidget( _lCatType );
+    hCTypeLay->addWidget( _cbCatTypes );
+    grCatPLay->addLayout( hCTypeLay, 3, 0, 1, 1, Qt::AlignJustify);
 }
 
 void pCatEditor::initTableCatParams( ) {
     QGridLayout* grTableCatLay = new QGridLayout( _tableCatParamWidget );
-    grTableCatLay->addWidget( _lTableCatName, 0, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grTableCatLay->addWidget( _lETableCatName, 0, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
-    grTableCatLay->addWidget( _lTableCatCode, 1, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grTableCatLay->addWidget( _lETableCatCode, 1, 1, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
-    grTableCatLay->addWidget( _lTableCatDesc, 2, 0, 1, 1, Qt::AlignRight | Qt::AlignVCenter );
-    grTableCatLay->addWidget( _lETableCatDesc, 2, 1, 1, 1,  Qt::AlignLeft | Qt::AlignVCenter );
+
+    QHBoxLayout* hTNameLay = new QHBoxLayout;
+    hTNameLay->addWidget( _lTableCatName );
+    hTNameLay->addWidget( _lETableCatName );
+    grTableCatLay->addLayout( hTNameLay, 0, 0, 1, 1, Qt::AlignJustify );
+
+    QHBoxLayout* hTCodeLay = new QHBoxLayout;
+    hTCodeLay->addWidget( _lTableCatCode );
+    hTCodeLay->addWidget( _lETableCatCode );
+    grTableCatLay->addLayout( hTCodeLay, 1, 0, 1, 1, Qt::AlignJustify );
+    QHBoxLayout* hTDescLay = new QHBoxLayout;
+    hTDescLay->addWidget( _lTableCatDesc );
+    hTDescLay->addWidget( _lETableCatDesc );
+    grTableCatLay->addLayout( hTDescLay, 2, 0, 1, 1, Qt::AlignJustify | Qt::AlignTop );
+}
+
+void pCatEditor::initValues( ) {
+    _cbCatTypes->clear();
+    for( QMap< qint64, QSharedPointer< pCategoryType > >::const_iterator pct = _availCatTypes.constBegin();
+            pct != _availCatTypes.constEnd();
+            pct++ ) {
+        _cbCatTypes->addItem( pct.value()->getName(), pct.key() );
+    }
+    qint64 idDefType = (_pCategory.isNull() ? 1 : _pCategory->getType()->getId());
+    int typeInd = _cbCatTypes->findData( idDefType );
+    _cbCatTypes->setCurrentIndex( typeInd );
+    bool isTypeCh = (_pCategory.isNull() || _pCategory->getId() <= 0);
+    _cbCatTypes->setEnabled( isTypeCh );
+
+    QRegExp cRegExp(QString("[A-Za-z0-9_]*"));
+    QValidator* codeVal = new QRegExpValidator(cRegExp, this);
+    _lECatName->setText( _pCategory->getName() );
+    _lECatCode->setText( _pCategory->getCode() );
+    _lECatCode->setValidator( codeVal );
+    _lECatDesc->setText( _pCategory->getDesc() );
+    if( !_pCategory->getTableCat().isNull() ) {
+        QSharedPointer< pCategory > pCatT = _pCategory->getTableCat();
+        _lETableCatName->setText( pCatT->getName() );
+        _lETableCatCode->setText( pCatT->getCode() );
+        QValidator* tCodeVal = new QRegExpValidator(cRegExp, this);
+        _lETableCatCode->setValidator( tCodeVal );
+        _lETableCatDesc->setText( pCatT->getDesc() );
+    }
+}
+
+void pCatEditor::setCatParamModel( QAbstractItemModel* paramModel ) {
+    QAbstractItemModel* oldModel = _tvCatParams->model();
+    _tvCatParams->setModel( paramModel );
+    if (oldModel && oldModel != paramModel )
+        delete oldModel;
+}
+
+void pCatEditor::setTableCatParamModel( QAbstractItemModel* paramModel ) {
+    QAbstractItemModel* oldModel = _tvTableCatParams->model();
+    _tvTableCatParams->setModel( paramModel );
+    if (oldModel && oldModel != paramModel )
+        delete oldModel;
 }

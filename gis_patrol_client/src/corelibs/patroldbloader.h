@@ -17,6 +17,7 @@ class pParamGroup;
 class pParameter;
 class pParamType;
 class pCategory;
+class pCategoryType;
 
 class pDBLoader : public QObject {
 public:
@@ -33,6 +34,10 @@ public:
     QSharedPointer< pParamGroup > loadParamGroup( qint64 idGroup ) const;
 
     QMap< qint64, QSharedPointer< pCategory > > loadCategories() const;
+
+    QMap< qint64, QSharedPointer< pCategoryType > > loadAvailCatTypes() const;
+
+    QSharedPointer< pCategory > loadCategory( qint64 idCat ) const;
 
 private:
     QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
