@@ -10,6 +10,7 @@
 #pragma once
 
 #include <QMap>
+#include <QModelIndex>
 #include <QWidget>
 #include <QSharedPointer>
 
@@ -44,6 +45,15 @@ private slots:
     void addParamIntoTableCat();
     void removeParamFromTableCat();
 
+    void upParamInCat();
+    void downParamInCat();
+    void upParamInTableCat();
+    void downParamInTableCat();
+
+signals:
+    void addParameterIntoCategory( QSharedPointer< pCategory > pc, QAbstractItemModel* cAttrModel );
+    void removeParameterFromCategory( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel );
+
 private:
     //
     // Functions
@@ -73,6 +83,8 @@ private:
     QLineEdit* _lECatDesc;
     QLabel* _lCatType;
     QComboBox* _cbCatTypes;
+    QWidget* _wCatParams;
+    QToolBar* _tbCatParamsActions;
     QTreeView* _tvCatParams;
 
     QWidget* _tableCatParamWidget;
@@ -82,6 +94,8 @@ private:
     QLineEdit* _lETableCatCode;
     QLabel* _lTableCatDesc;
     QLineEdit* _lETableCatDesc;
+    QWidget* _wTableCatParams;
+    QToolBar* _tbTableCatParamsActions;
     QTreeView* _tvTableCatParams;
 
 private:

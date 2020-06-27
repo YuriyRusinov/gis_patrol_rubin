@@ -40,6 +40,8 @@ pCatEditor::pCatEditor( QSharedPointer< pCategory > pCat, const QMap< qint64, QS
     _lECatDesc( new QLineEdit ),
     _lCatType( new QLabel( tr("Type:") ) ),
     _cbCatTypes( new QComboBox ),
+    _wCatParams( new QWidget ),
+    _tbCatParamsActions( new QToolBar ),
     _tvCatParams( new QTreeView ),
     _tableCatParamWidget( new QWidget ),
     _lTableCatName( new QLabel( tr("Name:") ) ),
@@ -48,12 +50,16 @@ pCatEditor::pCatEditor( QSharedPointer< pCategory > pCat, const QMap< qint64, QS
     _lETableCatCode( new QLineEdit ),
     _lTableCatDesc( new QLabel( tr("Description:") ) ),
     _lETableCatDesc( new QLineEdit ),
+    _wTableCatParams( new QWidget ),
+    _tbTableCatParamsActions( new QToolBar ),
     _tvTableCatParams( new QTreeView ) {
     init();
 }
 
 pCatEditor::~pCatEditor( ) {
     delete _tvTableCatParams;
+    delete _tbTableCatParamsActions;
+    delete _wTableCatParams;
     delete _lETableCatDesc;
     delete _lTableCatDesc;
     delete _lETableCatCode;
@@ -62,6 +68,8 @@ pCatEditor::~pCatEditor( ) {
     delete _lTableCatName;
     delete _tableCatParamWidget;
     delete _tvCatParams;
+    delete _tbCatParamsActions;
+    delete _wCatParams;
     delete _cbCatTypes;
     delete _lCatType;
     delete _lECatDesc;
@@ -90,6 +98,7 @@ void pCatEditor::saveCategory( ) {
 
 void pCatEditor::addParamIntoCat() {
     qDebug() << __PRETTY_FUNCTION__;
+    emit addParameterIntoCategory( _pCategory, _tvCatParams->model() );
 }
 
 void pCatEditor::removeParamFromCat() {
@@ -98,6 +107,8 @@ void pCatEditor::removeParamFromCat() {
 
 void pCatEditor::addParamIntoTableCat() {
     qDebug() << __PRETTY_FUNCTION__;
+    if ( !_pCategory.isNull() && !_pCategory->getTableCat().isNull() )
+        emit addParameterIntoCategory( _pCategory->getTableCat(), _tvTableCatParams->model() );
 }
 
 void pCatEditor::removeParamFromTableCat() {
@@ -109,9 +120,15 @@ void pCatEditor::init( ) {
     grLay->addWidget( _tbCatActions, 0, 0, 1, 1 );
     grLay->addWidget( _tabCatWidget, 1, 0, 1, 1 );
     _tabCatWidget->addTab( _catParamWidget, tr("Category") );
-    _tabCatWidget->addTab( _tvCatParams, tr("Parameters of category") );
+    QGridLayout* grCatParamLay = new QGridLayout ( _wCatParams );
+    grCatParamLay->addWidget( _tbCatParamsActions, 0, 0, 1, 1 );
+    grCatParamLay->addWidget( _tvCatParams, 1, 0, 1, 1 );
+    _tabCatWidget->addTab( _wCatParams, tr("Parameters of category") );
     _tabCatWidget->addTab( _tableCatParamWidget, tr("Table category") );
-    _tabCatWidget->addTab( _tvTableCatParams, tr("Parameters of table category") );
+    QGridLayout* grTableCatParamLay = new QGridLayout( _wTableCatParams );
+    grTableCatParamLay->addWidget( _tbTableCatParamsActions, 0, 0, 1, 1 );
+    grTableCatParamLay->addWidget( _tvTableCatParams, 1, 0, 1, 1 );
+    _tabCatWidget->addTab( _wTableCatParams, tr("Parameters of table category") );
 
     initActions();
     initCatParams();
@@ -120,24 +137,35 @@ void pCatEditor::init( ) {
 }
 
 void pCatEditor::initActions( ) {
-    QAction* actAddParam = _tbCatActions->addAction(QIcon(":/patrol/add_parameter_to_cat.svg"), tr("Add parameter to category") );
+    QAction* actAddParam = _tbCatParamsActions->addAction(QIcon(":/patrol/add_parameter_to_cat.svg"), tr("Add parameter to category") );
     actAddParam->setToolTip( tr("Add parameter to main category") );
     QObject::connect( actAddParam, &QAction::triggered, this, &pCatEditor::addParamIntoCat );
 
-    QAction* actRemoveParam = _tbCatActions->addAction(QIcon(":/patrol/remove_parameter_from_cat.svg"), tr("Remove parameter from category") );
+    QAction* actRemoveParam = _tbCatParamsActions->addAction(QIcon(":/patrol/remove_parameter_from_cat.svg"), tr("Remove parameter from category") );
     actRemoveParam->setToolTip( tr("Remove parameter from main category") );
     QObject::connect( actRemoveParam, &QAction::triggered, this, &pCatEditor::removeParamFromCat );
 
-    _tbCatActions->addSeparator();
+    QAction* actUpParam = _tbCatParamsActions->addAction(QIcon(":/patrol/up_arrow.svg"), tr( "Up" ) );
+    actUpParam->setToolTip( tr("Increase parameter order") );
+    QObject::connect( actUpParam, &QAction::triggered, this, &pCatEditor::upParamInCat );
+    QAction* actDownParam = _tbCatParamsActions->addAction( QIcon(":/patrol/down_arrow.svg"), tr ( "Down" ) );
+    actDownParam->setToolTip( tr("Decrease parameter order") );
+    QObject::connect( actDownParam, &QAction::triggered, this, &pCatEditor::downParamInCat );
 
-    QAction* actAddTableParam = _tbCatActions->addAction( QIcon(":/patrol/add_parameter_to_cat.svg"), tr( "Add parameter to table category" ) );
+    QAction* actAddTableParam = _tbTableCatParamsActions->addAction( QIcon(":/patrol/add_parameter_to_cat.svg"), tr( "Add parameter to table category" ) );
     actAddParam->setToolTip( tr("Add parameter to table category") );
     QObject::connect( actAddTableParam, &QAction::triggered, this, &pCatEditor::addParamIntoTableCat );
 
-    QAction* actRemoveTableParam = _tbCatActions->addAction( QIcon(":/patrol/remove_parameter_from_cat.svg"), tr("Remove parameter from table category") );
+    QAction* actRemoveTableParam = _tbTableCatParamsActions->addAction( QIcon(":/patrol/remove_parameter_from_cat.svg"), tr("Remove parameter from table category") );
     actRemoveTableParam->setToolTip( tr("Remove parameter from table category") );
     QObject::connect( actRemoveTableParam, &QAction::triggered, this, &pCatEditor::removeParamFromTableCat );
-    _tbCatActions->addSeparator();
+
+    QAction* actUpTableParam = _tbTableCatParamsActions->addAction( QIcon(":/patrol/up_arrow.svg"), tr( "Up" ) );
+    actUpTableParam->setToolTip( tr("Increase parameter order") );
+    QObject::connect( actUpTableParam, &QAction::triggered, this, &pCatEditor::upParamInTableCat );
+    QAction* actDownTableParam = _tbTableCatParamsActions->addAction( QIcon(":/patrol/down_arrow.svg"), tr ( "Down" ) );
+    actDownTableParam->setToolTip( tr("Decrease parameter order") );
+    QObject::connect( actDownTableParam, &QAction::triggered, this, &pCatEditor::downParamInTableCat );
 
     QAction* actSaveCat = _tbCatActions->addAction( QIcon(":/patrol/save_db.png"), tr ("Save categories to DB") );
     actSaveCat->setToolTip( tr("Save categories to database") );
@@ -227,4 +255,20 @@ void pCatEditor::setTableCatParamModel( QAbstractItemModel* paramModel ) {
     _tvTableCatParams->setModel( paramModel );
     if (oldModel && oldModel != paramModel )
         delete oldModel;
+}
+
+void pCatEditor::upParamInCat() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void pCatEditor::downParamInCat() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void pCatEditor::upParamInTableCat() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void pCatEditor::downParamInTableCat() {
+    qDebug() << __PRETTY_FUNCTION__;
 }
