@@ -10,13 +10,11 @@
 #pragma once
 
 #include <QAbstractItemModel>
-#include <QMap>
+#include <QList>
 #include <QModelIndex>
 #include <QSharedPointer>
 
-class pParameter;
 class pCatParameter;
-class pTreeItem;
 
 class pCatParametersModel : public QAbstractItemModel {
 public:
@@ -37,7 +35,7 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
 private:
-    QMap< qint64, QSharedPointer< pCatParameter > > _paramGroups;
+    QList< QSharedPointer< pCatParameter > > _pCatParams;
 
 private:
     Q_OBJECT

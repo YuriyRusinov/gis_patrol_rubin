@@ -152,7 +152,7 @@ begin
             pcat.is_read_only,
             pcat.param_sort_order
         from  
-            tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id)';
+            tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id) order by 14';
     raise warning 'query is %', query;
 --(case when a.column_name isnull then NULL else (select a1.id_a_type from attributes a1 where a1.code = a.column_name) end) as ref_attr_type
     for r in 

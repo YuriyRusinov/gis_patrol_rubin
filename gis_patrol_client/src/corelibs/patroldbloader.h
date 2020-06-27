@@ -18,6 +18,7 @@ class pParameter;
 class pParamType;
 class pCategory;
 class pCategoryType;
+class pCatParameter;
 
 class pDBLoader : public QObject {
 public:
@@ -41,6 +42,7 @@ public:
 
 private:
     QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
+    QMap< qint64, QSharedPointer< pCatParameter > > loadCatParameters( qint64 idCat ) const;
 
 private:
     friend class PatrolSingleton;
