@@ -198,6 +198,8 @@ QMap< qint64, QSharedPointer< pCategory > > pDBLoader::loadCategories() const {
         }
         pc->setMain( isMain );
         pc->setSystem( isSys );
+        QMap< qint64, QSharedPointer< pCatParameter > > pcp = loadCatParameters( idCat );
+        pc->setCategoryPars( pcp );
         res.insert( idCat, pc );
     }
 
@@ -238,6 +240,8 @@ QSharedPointer< pCategory > pDBLoader::loadCategory( qint64 idCat ) const {
     }
     pc->setMain( isMain );
     pc->setSystem( isSys );
+    QMap< qint64, QSharedPointer< pCatParameter > > pcp = loadCatParameters( idCat );
+    pc->setCategoryPars( pcp );
 
     delete gpr;
     return pc;
@@ -254,10 +258,9 @@ QSharedPointer< pCategory > pDBLoader::loadChildCat( qint64 idCat ) const {
     QMap< qint64, QSharedPointer< pCategory > > res;
     int i=0;
 
-    qint64 idCatNew = gpr->getCellAsInt64(i, 0); // id
-    Q_UNUSED( idCatNew );
+    qint64 idChildCat = gpr->getCellAsInt64(i, 0); // id
     qint64 idCatType = gpr->getCellAsInt64(i, 1); // id_type
-    qint64 idChildCat = gpr->getCellAsInt64(i, 2); // id_child
+    qint64 idChildChildCat = gpr->getCellAsInt64(i, 2); // id_child
     QString cName = gpr->getCellAsString(i, 3); // name
     QString cDesc = gpr->getCellAsString(i, 4); // description
     QString ctName = gpr->getCellAsString(i, 5); // type_name
@@ -269,13 +272,15 @@ QSharedPointer< pCategory > pDBLoader::loadChildCat( qint64 idCat ) const {
     bool isRef = false;
     Q_UNUSED( isGlobal );
     QSharedPointer< pCategoryType > pcType ( new pCategoryType( idCatType, ctName, ctDesc, isRef ) );
-    QSharedPointer< pCategory > pc ( new pCategory( idCat, cName, cCode, pcType ) );
+    QSharedPointer< pCategory > pc ( new pCategory( idChildCat, cName, cCode, pcType ) );
     if (idChildCat > 0) {
-        QSharedPointer< pCategory > childCat = loadChildCat( idChildCat );
+        QSharedPointer< pCategory > childCat = loadChildCat( idChildChildCat );
         pc->setTableCat( childCat );
     }
     pc->setMain( isMain );
     pc->setSystem( isSys );
+    QMap< qint64, QSharedPointer< pCatParameter > > pcp = loadCatParameters( idChildCat );
+    pc->setCategoryPars( pcp );
 
     delete gpr;
     return pc;
@@ -297,6 +302,41 @@ QMap< qint64, QSharedPointer< pCategoryType > > pDBLoader::loadAvailCatTypes() c
         QString cTypeDesc = gpr->getCellAsString( i, 2 );
         QSharedPointer< pCategoryType > pCType ( new pCategoryType( idType, cTypeName, cTypeDesc ) );
         res.insert( idType, pCType );
+    }
+    delete gpr;
+    return res;
+}
+
+QMap< qint64, QSharedPointer< pCatParameter > > pDBLoader::loadCatParameters( qint64 idCat ) const {
+    QString sql_query = QString( "select * from cGetCategoryParams(%1)" ).arg( idCat );
+    qDebug() << __PRETTY_FUNCTION__ << sql_query;
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() == 0 ) {
+        if( gpr )
+            delete gpr;
+        return QMap< qint64, QSharedPointer< pCatParameter > >();
+    }
+    int n = gpr->getRowCount();
+    QMap< qint64, QSharedPointer< pCatParameter > > res;
+    for (int i=0; i<n; i++) {
+        qint64 idParam = gpr->getCellAsInt64( i, 0 );
+        qint64 idParamType = gpr->getCellAsInt64( i, 1 );
+        QString paramCode = gpr->getCellAsString( i, 3 );// parameter_code
+        QString paramName = gpr->getCellAsString( i, 4 );// parameter_name
+        QString paramTitle = gpr->getCellAsString( i, 5 );// parameter_title
+        QString paramTable = gpr->getCellAsString( i, 6 );// table_name
+        QString paramColumn = gpr->getCellAsString( i, 7 );// column_name
+        QString paramTypeName = gpr->getCellAsString( i, 8 );// type name
+        QString paramTypeCode = gpr->getCellAsString( i, 9 );// type code
+        QVariant paramDefVal = gpr->getCellAsString( i, 10 );// default value
+        bool isMandatory = gpr->getCellAsBool( i, 11 );
+        bool isReadOnly = gpr->getCellAsBool( i, 12 );
+        int sort_order = gpr->getCellAsInt( i, 13 );
+        QSharedPointer< pParamType > pType ( new pParamType( idParamType, paramTypeName, paramTypeCode) );
+        QSharedPointer< pParamGroup > pGroup = loadParamGroup( gpr->getCellAsInt64( i, 2) );
+        QSharedPointer< pParameter > param ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+        QSharedPointer< pCatParameter > pcParam ( new pCatParameter (*(param.data()), isMandatory, isReadOnly, paramDefVal, sort_order ) );
+        res.insert( idParam, pcParam );
     }
     delete gpr;
     return res;

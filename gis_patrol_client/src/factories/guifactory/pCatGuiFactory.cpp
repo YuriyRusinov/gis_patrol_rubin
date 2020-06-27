@@ -14,6 +14,7 @@
 #include <pCategoryModel.h>
 #include <pCategory.h>
 #include <pCatEditor.h>
+#include <pCatParamModel.h>
 
 #include "pCatGuiFactory.h"
 
@@ -55,6 +56,12 @@ void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< 
     qDebug() << __PRETTY_FUNCTION__ << catMod << pCat.isNull() << cIndex;
     QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
     pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
+    pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
+    cEditor->setCatParamModel( pcMod );
+    if( !pCat->getTableCat().isNull() ) {
+        pCatParametersModel* pcTableMod = new pCatParametersModel( pCat->getTableCat()->categoryPars() );
+        cEditor->setTableCatParamModel( pcTableMod );
+    }
     emit viewCatWidget( cEditor );
 }
 
