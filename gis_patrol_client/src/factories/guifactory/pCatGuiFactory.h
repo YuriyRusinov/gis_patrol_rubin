@@ -18,6 +18,7 @@ class QWidget;
 
 class pDBLoader;
 class pDBWriter;
+class PGUIFactory;
 
 class pCategory;
 
@@ -31,16 +32,20 @@ private slots:
     void delPCategory( QAbstractItemModel* catMod, QModelIndex cIndex );
     void refreshCats();
 
+    void addParameterToCat( QSharedPointer< pCategory > pc, QAbstractItemModel* cAttrModel );
+    void removeParameterFromCat( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel );
+
 signals:
     void viewCatWidget( QWidget* w );
 
 private:
-    pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter,  QObject* parent=nullptr );
+    pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, PGUIFactory* guif, QObject* parent=nullptr );
     ~pCatGuiFactory();
     friend class PatrolSingleton;
 
     mutable pDBLoader* _dbLoader;
     mutable pDBWriter* _dbWriter;
+    mutable PGUIFactory* _guiFactory;
 private:
     Q_OBJECT
 };

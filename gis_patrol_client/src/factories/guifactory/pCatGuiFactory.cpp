@@ -18,8 +18,9 @@
 
 #include "pCatGuiFactory.h"
 
-pCatGuiFactory::pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
-    : QObject( parent ), _dbLoader( dbLoader), _dbWriter( dbWriter ) {
+pCatGuiFactory::pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, PGUIFactory* guif, QObject* parent )
+    : QObject( parent ), _dbLoader( dbLoader), _dbWriter( dbWriter ),
+    _guiFactory( guif ) {
 }
 
 pCatGuiFactory::~pCatGuiFactory() {
@@ -46,6 +47,16 @@ void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
     QSharedPointer< pCategory > pCat ( new pCategory );
     pCat->setType( cType );
     pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
+    QObject::connect( cEditor,
+                      &pCatEditor::addParameterIntoCategory,
+                      this,
+                      &pCatGuiFactory::addParameterToCat
+            );
+    QObject::connect( cEditor,
+                      &pCatEditor::removeParameterFromCategory,
+                      this,
+                      &pCatGuiFactory::removeParameterFromCat
+            );
     pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
     cEditor->setCatParamModel( pcMod );
     if( pCat->getTableCat().isNull() ){
@@ -66,6 +77,16 @@ void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< 
     qDebug() << __PRETTY_FUNCTION__ << catMod << pCat.isNull() << cIndex;
     QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
     pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
+    QObject::connect( cEditor,
+                      &pCatEditor::addParameterIntoCategory,
+                      this,
+                      &pCatGuiFactory::addParameterToCat
+            );
+    QObject::connect( cEditor,
+                      &pCatEditor::removeParameterFromCategory,
+                      this,
+                      &pCatGuiFactory::removeParameterFromCat
+            );
     pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
     cEditor->setCatParamModel( pcMod );
     if( !pCat->getTableCat().isNull() ) {
@@ -80,5 +101,17 @@ void pCatGuiFactory::delPCategory( QAbstractItemModel* catMod, QModelIndex cInde
 }
 
 void pCatGuiFactory::refreshCats() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void pCatGuiFactory::addParameterToCat( QSharedPointer< pCategory > pc, QAbstractItemModel* cAttrModel ) {
+    if( pc.isNull() || cAttrModel == nullptr )
+        return;
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void pCatGuiFactory::removeParameterFromCat( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel ) {
+    if( pc.isNull() || cAttrModel == nullptr || idParameter <= 0 || !parIndex.isValid() )
+        return;
     qDebug() << __PRETTY_FUNCTION__;
 }
