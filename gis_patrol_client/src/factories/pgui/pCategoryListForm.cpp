@@ -18,6 +18,7 @@
 #include <QtDebug>
 
 #include <pCategory.h>
+#include "pItemDelegate.h"
 #include "pCategoryListForm.h"
 
 pCategoryListForm::pCategoryListForm( QWidget* parent, Qt::WindowFlags flags )
@@ -25,6 +26,8 @@ pCategoryListForm::pCategoryListForm( QWidget* parent, Qt::WindowFlags flags )
     _tbCatActions( new QToolBar ),
     _tvCat( new QTreeView ) {
     QGridLayout* gLay = new QGridLayout( this );
+    QAbstractItemDelegate* pDeleg = new pItemDelegate( this );
+    _tvCat->setItemDelegate( pDeleg );
     gLay->addWidget( _tbCatActions, 0, 0, 1, 1 );
     gLay->addWidget( _tvCat, 1, 0, 1, 1);
     init();

@@ -1,6 +1,6 @@
 /*
  * @brief Данный класс осуществляет отсортированное по порядку визуальное отображение параметров в категории
- * pPCatParamSortModel.cpp
+ * pCatParamSortModel.cpp
  *
  * (C) НИИ "Рубин"
  * @author

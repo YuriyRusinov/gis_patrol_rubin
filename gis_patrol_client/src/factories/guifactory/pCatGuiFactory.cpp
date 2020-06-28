@@ -42,9 +42,19 @@ void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
     qDebug() << __PRETTY_FUNCTION__ << catMod;
     QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
     qint64 defaultType = 1;
+    QSharedPointer< pCategoryType > cType = pCTypes.value( defaultType, nullptr );
     QSharedPointer< pCategory > pCat ( new pCategory );
-    pCat->setType( pCTypes.value( defaultType, nullptr ) );
+    pCat->setType( cType );
     pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
+    pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
+    cEditor->setCatParamModel( pcMod );
+    if( pCat->getTableCat().isNull() ){
+        qint64 defaultTableType = 10;
+        QSharedPointer< pCategory > pTableCat ( new pCategory( -2, QString(), QString(), pCTypes.value( defaultTableType, nullptr ) ) );
+        pCat->setTableCat( pTableCat );
+    }
+    pCatParametersModel* pcTableMod = new pCatParametersModel( pCat->getTableCat()->categoryPars() );
+    cEditor->setTableCatParamModel( pcTableMod );
     emit viewCatWidget( cEditor );
 }
 

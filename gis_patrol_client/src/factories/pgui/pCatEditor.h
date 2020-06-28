@@ -18,6 +18,7 @@ class QAbstractItemModel;
 class QComboBox;
 class QLabel;
 class QLineEdit;
+class QSortFilterProxyModel;
 class QTabWidget;
 class QToolBar;
 class QTreeView;
@@ -98,6 +99,8 @@ private:
     QToolBar* _tbTableCatParamsActions;
     QTreeView* _tvTableCatParams;
 
+    QSortFilterProxyModel* _cSortModel;
+    QSortFilterProxyModel* _cTSortModel;
 private:
     Q_OBJECT
 };

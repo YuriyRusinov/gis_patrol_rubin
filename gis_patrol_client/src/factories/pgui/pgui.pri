@@ -8,6 +8,7 @@ HEADERS += \
            pCatParamModel.h \
            pCatEditor.h \
            pCatParamSortModel.h \
+           pItemDelegate.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -25,5 +26,6 @@ SOURCES += \
            pCatParamModel.cpp \
            pCatEditor.cpp \
            pCatParamSortModel.cpp \
+           pItemDelegate.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp
