@@ -24,6 +24,7 @@
 #include <pCategoryType.h>
 
 #include "pCatEditor.h"
+#include "pCatParamSortModel.h"
 
 pCatEditor::pCatEditor( QSharedPointer< pCategory > pCat, const QMap< qint64, QSharedPointer< pCategoryType > >& pAvailCatTypes, QWidget* parent, Qt::WindowFlags flags )
     : QWidget( parent, flags ),
@@ -52,11 +53,16 @@ pCatEditor::pCatEditor( QSharedPointer< pCategory > pCat, const QMap< qint64, QS
     _lETableCatDesc( new QLineEdit ),
     _wTableCatParams( new QWidget ),
     _tbTableCatParamsActions( new QToolBar ),
-    _tvTableCatParams( new QTreeView ) {
+    _tvTableCatParams( new QTreeView ),
+    _cSortModel( new pCatParamSortModel ),
+    _cTSortModel( new pCatParamSortModel )
+{
     init();
 }
 
 pCatEditor::~pCatEditor( ) {
+    delete _cTSortModel;
+    delete _cSortModel;
     delete _tvTableCatParams;
     delete _tbTableCatParamsActions;
     delete _wTableCatParams;
@@ -97,8 +103,8 @@ void pCatEditor::saveCategory( ) {
 }
 
 void pCatEditor::addParamIntoCat() {
-    qDebug() << __PRETTY_FUNCTION__;
-    emit addParameterIntoCategory( _pCategory, _tvCatParams->model() );
+    qDebug() << __PRETTY_FUNCTION__ << _cSortModel->sourceModel();
+    emit addParameterIntoCategory( _pCategory, _cSortModel->sourceModel() );
 }
 
 void pCatEditor::removeParamFromCat() {
@@ -106,9 +112,9 @@ void pCatEditor::removeParamFromCat() {
 }
 
 void pCatEditor::addParamIntoTableCat() {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << _cTSortModel->sourceModel();
     if ( !_pCategory.isNull() && !_pCategory->getTableCat().isNull() )
-        emit addParameterIntoCategory( _pCategory->getTableCat(), _tvTableCatParams->model() );
+        emit addParameterIntoCategory( _pCategory->getTableCat(), _cTSortModel->sourceModel() );
 }
 
 void pCatEditor::removeParamFromTableCat() {
@@ -123,11 +129,14 @@ void pCatEditor::init( ) {
     QGridLayout* grCatParamLay = new QGridLayout ( _wCatParams );
     grCatParamLay->addWidget( _tbCatParamsActions, 0, 0, 1, 1 );
     grCatParamLay->addWidget( _tvCatParams, 1, 0, 1, 1 );
+    _tvCatParams->setModel( _cSortModel );
+
     _tabCatWidget->addTab( _wCatParams, tr("Parameters of category") );
     _tabCatWidget->addTab( _tableCatParamWidget, tr("Table category") );
     QGridLayout* grTableCatParamLay = new QGridLayout( _wTableCatParams );
     grTableCatParamLay->addWidget( _tbTableCatParamsActions, 0, 0, 1, 1 );
     grTableCatParamLay->addWidget( _tvTableCatParams, 1, 0, 1, 1 );
+    _tvTableCatParams->setModel( _cTSortModel );
     _tabCatWidget->addTab( _wTableCatParams, tr("Parameters of table category") );
 
     initActions();
@@ -244,15 +253,19 @@ void pCatEditor::initValues( ) {
 }
 
 void pCatEditor::setCatParamModel( QAbstractItemModel* paramModel ) {
-    QAbstractItemModel* oldModel = _tvCatParams->model();
-    _tvCatParams->setModel( paramModel );
+    QAbstractItemModel* oldModel = _cSortModel->sourceModel();
+    //_tvCatParams->model();
+    //_tvCatParams->setModel( paramModel );
+    _cSortModel->setSourceModel( paramModel );
     if (oldModel && oldModel != paramModel )
         delete oldModel;
 }
 
 void pCatEditor::setTableCatParamModel( QAbstractItemModel* paramModel ) {
-    QAbstractItemModel* oldModel = _tvTableCatParams->model();
-    _tvTableCatParams->setModel( paramModel );
+    QAbstractItemModel* oldModel = _cTSortModel->sourceModel();
+    //_tvTableCatParams->model();
+    //_tvTableCatParams->setModel( paramModel );
+    _cTSortModel->setSourceModel( paramModel );
     if (oldModel && oldModel != paramModel )
         delete oldModel;
 }

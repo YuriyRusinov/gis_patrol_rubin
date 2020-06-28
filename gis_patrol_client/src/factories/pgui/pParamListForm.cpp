@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QtDebug>
 #include <defines.h>
+#include "pItemDelegate.h"
 #include "pParamListForm.h"
 
 ParamListForm::ParamListForm(bool mode, QWidget* parent, Qt::WindowFlags flags)
@@ -26,6 +27,8 @@ ParamListForm::ParamListForm(bool mode, QWidget* parent, Qt::WindowFlags flags)
     _tvParams( new QTreeView ),
     _bgParams( new QButtonGroup ) {
 
+    QAbstractItemDelegate* pDeleg = new pItemDelegate;
+    _tvParams->setItemDelegate( pDeleg );
     QGridLayout* gLay = new QGridLayout( this );
     gLay->addWidget( _tbParamActions, 0, 0, 1, 1 );
     gLay->addWidget( _tvParams, 1, 0, 1, 1);
