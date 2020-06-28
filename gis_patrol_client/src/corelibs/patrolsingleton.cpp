@@ -33,7 +33,7 @@ PatrolSingleton::PatrolSingleton( QObject* parent )
     _pdbLoader( new pDBLoader( _dataBase ) ),
     _pdbWriter( new pDBWriter( _dataBase ) ),
     _pguif( new PGUIFactory( _pdbLoader, _pdbWriter ) ),
-    _pcatf( new pCatGuiFactory( _pdbLoader, _pdbWriter ) )
+    _pcatf( new pCatGuiFactory( _pdbLoader, _pdbWriter, _pguif ) )
 {
     if (_instance) {
         qFatal("There should be only one PatrolSingleton object");
