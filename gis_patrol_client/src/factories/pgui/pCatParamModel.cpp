@@ -110,6 +110,21 @@ bool pCatParametersModel::setData(const QModelIndex& index, const QVariant &valu
         emit dataChanged( index.sibling(index.row(), 0), index.sibling(index.row(), 4), {Qt::DisplayRole, Qt::EditRole, Qt::UserRole, Qt::UserRole+1});
         return true;
     }
+    else if( index.column()==1 && (role == Qt::DisplayRole || role== Qt::EditRole) ) {
+        (*pct)->setDefaultValue( value );
+        emit dataChanged( index, index, {Qt::DisplayRole, Qt::EditRole});
+        return true;
+    }
+    else if( index.column() == 2 && role == Qt::CheckStateRole ) {
+        (*pct)->setMandatory( (value==Qt::Checked) );
+        emit dataChanged( index, index, {Qt::CheckStateRole} );
+        return true;
+    }
+    else if( index.column() == 3 && role == Qt::CheckStateRole ) {
+        (*pct)->setReadOnly( (value==Qt::Checked) );
+        emit dataChanged( index, index, {Qt::CheckStateRole} );
+        return true;
+    }
     return false;
 }
 
