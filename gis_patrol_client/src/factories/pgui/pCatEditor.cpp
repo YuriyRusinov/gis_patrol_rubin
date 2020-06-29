@@ -107,6 +107,7 @@ void pCatEditor::saveCategory( ) {
 void pCatEditor::addParamIntoCat() {
     qDebug() << __PRETTY_FUNCTION__ << _cSortModel->sourceModel();
     emit addParameterIntoCategory( _pCategory, _cSortModel->sourceModel() );
+    _cSortModel->sort( 0 );
 }
 
 void pCatEditor::removeParamFromCat() {
@@ -117,6 +118,7 @@ void pCatEditor::addParamIntoTableCat() {
     qDebug() << __PRETTY_FUNCTION__ << _cTSortModel->sourceModel();
     if ( !_pCategory.isNull() && !_pCategory->getTableCat().isNull() )
         emit addParameterIntoCategory( _pCategory->getTableCat(), _cTSortModel->sourceModel() );
+    _cTSortModel->sort( 0 );
 }
 
 void pCatEditor::removeParamFromTableCat() {
@@ -134,6 +136,7 @@ void pCatEditor::init( ) {
     QAbstractItemDelegate* pCatDeleg = new pCatParamDelegate;
     _tvCatParams->setModel( _cSortModel );
     _tvCatParams->setItemDelegate( pCatDeleg );
+    _cSortModel->setSortRole( Qt::UserRole );
 
     _tabCatWidget->addTab( _wCatParams, tr("Parameters of category") );
     _tabCatWidget->addTab( _tableCatParamWidget, tr("Table category") );
@@ -143,6 +146,7 @@ void pCatEditor::init( ) {
     QAbstractItemDelegate* pTableCatDeleg = new pCatParamDelegate;
     _tvTableCatParams->setModel( _cTSortModel );
     _tvTableCatParams->setItemDelegate( pTableCatDeleg );
+    _cTSortModel->setSortRole( Qt::UserRole );
     _tabCatWidget->addTab( _wTableCatParams, tr("Parameters of table category") );
 
     initActions();

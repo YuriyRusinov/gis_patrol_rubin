@@ -205,10 +205,11 @@ QModelIndexList ParamListForm::getParamsIndexList() const {
         return selInd.indexes();
     QAbstractItemModel* sourceMod = _tvParams->model();
 
+    QModelIndexList wIndexes = selMod->selectedRows( 0 );
     QModelIndexList res;
-    for (int i=0; i<selInd.indexes().size(); i++) {
-        QModelIndex wIndex = selInd.indexes().at(i);
-        if( wIndex.column() == 0 && sourceMod->data( wIndex, Qt::UserRole+USER_ENTITY ).toInt() == 1 )
+    for (int i=0; i<wIndexes.size(); i++) {
+        QModelIndex wIndex = wIndexes.at( i );//selInd.indexes().at(i);
+        if( sourceMod->data( wIndex, Qt::UserRole+USER_ENTITY ).toInt() == 1 )
             res.append( wIndex );
     }
     return res;
@@ -227,24 +228,12 @@ QMap< qint64, QSharedPointer< pParameter > > ParamListForm::getParameters() cons
     QModelIndexList selParamIndexes = getParamsIndexList();
     qDebug() << __PRETTY_FUNCTION__ << selInd.indexes().size();
     for (int i=0; i< selParamIndexes.size(); i++) {
-        qDebug() << __PRETTY_FUNCTION__ << selParamIndexes[i];
-//    for( QModelIndexList::const_iterator pp = selInd.indexes().constBegin();
-//           pp != selInd.indexes().constEnd();
-//           pp++ ) {
-        //qDebug() << __PRETTY_FUNCTION__ << *pp;// << pp->isValid();// << pp->data( Qt::UserRole+USER_ENTITY ).toInt();
-        //<< sourceMod->data( *pp, Qt::UserRole+USER_ENTITY ).toInt();
         QModelIndex wIndex = selParamIndexes[i];;
-        try {
-            qDebug() << __PRETTY_FUNCTION__ << wIndex;
-            if (wIndex.data( Qt::UserRole+USER_ENTITY ).toInt() != 1) {
-                continue;
-            }
-            qDebug() << __PRETTY_FUNCTION__ << "Parameter";
+        qDebug() << __PRETTY_FUNCTION__ << wIndex;
+        if (wIndex.data( Qt::UserRole+USER_ENTITY ).toInt() != 1) {
+            continue;
         }
-        catch (...) {
-            qDebug() << __PRETTY_FUNCTION__ << "Index error";// << wIndex;
-            //continue;
-        }
+        qDebug() << __PRETTY_FUNCTION__ << "Parameter";
         qint64 pId = wIndex.data( Qt::UserRole ).toLongLong();
         QSharedPointer< pParameter > pPar = wIndex.data( Qt::UserRole+1 ).value< QSharedPointer< pParameter > > ();
         if ( !selParams.contains( pId ) )

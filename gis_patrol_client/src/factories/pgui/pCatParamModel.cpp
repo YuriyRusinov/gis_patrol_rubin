@@ -55,7 +55,7 @@ QVariant pCatParametersModel::data(const QModelIndex& index, int role) const {
     int iColumn = index.column();
     QList< QSharedPointer< pCatParameter > >::const_iterator pct = _pCatParams.constBegin()+iRow;
     if( role == Qt::UserRole ) {
-        return (*pct)->getId();
+        return pct->isNull() ? -1 : (*pct)->getId();
     }
     else if ( role == Qt::UserRole+1 ) {
         return pct->isNull() ? QVariant() : QVariant::fromValue< QSharedPointer< pCatParameter > >(*pct);
@@ -107,7 +107,7 @@ bool pCatParametersModel::setData(const QModelIndex& index, const QVariant &valu
     if (role == Qt::UserRole+1) {
         QSharedPointer< pCatParameter > pgr = value.value< QSharedPointer< pCatParameter >>();
         pct->reset( pgr.get() );
-        emit dataChanged( index.sibling(index.row(), 0), index.sibling(index.row(), 4), {Qt::DisplayRole, Qt::EditRole, Qt::UserRole, Qt::UserRole+1});
+        emit dataChanged( index.sibling(index.row(), 0), index.sibling(index.row(), 3), {Qt::DisplayRole, Qt::EditRole, Qt::UserRole, Qt::UserRole+1});
         return true;
     }
     else if( index.column()==1 && (role == Qt::DisplayRole || role== Qt::EditRole) ) {
