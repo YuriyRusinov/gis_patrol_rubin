@@ -7,18 +7,15 @@
  *  Ю.Л.Русинов
  */
 
+#include <QtDebug>
 #include <pParamGroup.h>
 #include <pParameter.h>
 #include <pParamType.h>
+#include <pAttribute.h>
 #include "pTreeItem.h"
 
-pTreeItem::pTreeItem( QSharedPointer< pParamGroup > pgr, pTreeItem* parent )
-    : _pGroup ( pgr ), _pParam( nullptr ), _parentItem( parent ) {
-    _childItems.clear();
-}
-
-pTreeItem::pTreeItem( QSharedPointer< pParameter > param, pTreeItem* parent )
-    : _pGroup( nullptr ), _pParam( param ), _parentItem( parent ) {
+pTreeItem::pTreeItem( QSharedPointer< pAttribute > pgr, pTreeItem* parent )
+    : _pAttr ( pgr ), _parentItem( parent ) {
     _childItems.clear();
 }
 
@@ -37,12 +34,22 @@ pTreeItem* pTreeItem::child( int row ) {
     return _childItems[row];
 }
 
-bool pTreeItem::isGroup() const {
-    return !_pGroup.isNull();
+int pTreeItem::getEntity() const {
+    if (_pAttr.isNull())
+        return -1;
+
+    return _pAttr->getEntity();
 }
 
-bool pTreeItem::isParameter() const {
-    return !_pParam.isNull();
+qint64 pTreeItem::getId() const {
+    if (_pAttr.isNull())
+        return -1;
+
+    return _pAttr->getId();
+}
+
+bool pTreeItem::isNull() const {
+    return _pAttr.isNull();
 }
 
 int pTreeItem::childCount() const {
@@ -54,9 +61,14 @@ int pTreeItem::columnCount() const {
 }
 
 QVariant pTreeItem::data(int column) const {
-    if (isGroup() && column >=0 && column < 1)
+    if (_pAttr.isNull())
+        return QVariant();
+    else if ( _pAttr->getEntity() == 0  && column >=0 && column < 1) {
+        QSharedPointer< pParamGroup > _pGroup = qSharedPointerDynamicCast< pParamGroup >(_pAttr );
         return _pGroup->getName();
-    else if (isParameter()) {
+    }
+    else if (_pAttr->getEntity() == 1) {
+        QSharedPointer< pParameter > _pParam = qSharedPointerDynamicCast< pParameter >(_pAttr);
         switch (column) {
             case 0: return _pParam->getId(); break;
             case 1: return _pParam->getCode(); break;
@@ -84,11 +96,11 @@ pTreeItem* pTreeItem::parentItem() {
 }
 
 QSharedPointer< pParamGroup > pTreeItem::getGroup() const {
-    return _pGroup;
+    return qSharedPointerDynamicCast< pParamGroup >(_pAttr );
 }
 
 QSharedPointer< pParameter > pTreeItem::getParameter() const {
-    return _pParam;
+    return qSharedPointerDynamicCast< pParameter >(_pAttr);
 }
 
 bool pTreeItem::insertChildren(int position, int count) {
@@ -97,7 +109,7 @@ bool pTreeItem::insertChildren(int position, int count) {
         return false;
 
     for (int row = 0; row < count; ++row) {
-        pTreeItem *item = new pTreeItem(QSharedPointer< pParamGroup >(nullptr), this);
+        pTreeItem *item = new pTreeItem(QSharedPointer< pAttribute >(nullptr), this);
         _childItems.insert(position, item);
     }
 
@@ -115,13 +127,9 @@ bool pTreeItem::removeChildren(int position, int count) {
 }
 
 void pTreeItem::setGroup( QSharedPointer< pParamGroup > group ) {
-    _pGroup.reset();
-    _pGroup = group;
-    _pParam.reset();
+    _pAttr = group;
 }
 
 void pTreeItem::setParameter( QSharedPointer< pParameter > parameter ) {
-    _pGroup.reset();
-    _pParam.reset();
-    _pParam = parameter;
+    _pAttr = parameter;
 }

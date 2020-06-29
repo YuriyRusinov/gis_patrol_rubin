@@ -11,11 +11,13 @@
 
 #include <QModelIndex>
 #include <QObject>
+#include <QSharedPointer>
 
 class QAbstractItemModel;
 class QWidget;
 class pDBLoader;
 class pDBWriter;
+class pParamGroup;
 
 class PGUIFactory : public QObject {
 public:
@@ -43,11 +45,18 @@ signals:
     void viewWidget(QWidget* w);
 
 private:
+    //
+    // Functions
+    //
     PGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent = nullptr );
     ~PGUIFactory ();
+    void buildParamModel( QAbstractItemModel* pModel, const QMap< qint64, QSharedPointer< pParamGroup >>& pGroups, QModelIndex parent=QModelIndex()) const;
 
     friend class PatrolSingleton;
 
+    //
+    // Variables
+    //
     mutable pDBLoader* _dbLoader;
     mutable pDBWriter* _dbWriter;
 private:

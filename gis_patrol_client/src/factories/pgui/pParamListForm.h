@@ -10,12 +10,16 @@
 #pragma once
 
 #include <QDialog>
+#include <QSharedPointer>
 #include <QModelIndex>
 
 class QButtonGroup;
+class QDialogButtonBox;
 class QToolBar;
 class QTreeView;
 class QAbstractItemModel;
+
+class pParameter;
 
 class ParamListForm : public QDialog {
 public:
@@ -24,6 +28,7 @@ public:
 
     QAbstractItemModel* getParamsModel() const;
     void setParamsModel( QAbstractItemModel* paramsModel );
+    QMap< qint64, QSharedPointer< pParameter > > getParameters() const;
 
 private slots:
     void addParamGroup();
@@ -54,6 +59,7 @@ private:
     void init(bool mode);
     QModelIndex getGroupIndex() const;
     QModelIndex getParamIndex() const;
+    QModelIndexList getParamsIndexList() const;
 
 private:
     //
@@ -62,6 +68,7 @@ private:
     QToolBar* _tbParamActions;
     QTreeView* _tvParams;
     QButtonGroup* _bgParams;
+    QDialogButtonBox* _dbbParams;
 
 private:
     Q_OBJECT

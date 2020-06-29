@@ -114,7 +114,7 @@ bool pCatParametersModel::setData(const QModelIndex& index, const QVariant &valu
 }
 
 bool pCatParametersModel::insertRows(int position, int rows, const QModelIndex &parent) {
-    if (parent.isValid() || position < 0 || position >= _pCatParams.size())
+    if (parent.isValid() || position < 0 || position > _pCatParams.size())
         return false;
 
     beginInsertRows(parent, position, position + rows - 1);

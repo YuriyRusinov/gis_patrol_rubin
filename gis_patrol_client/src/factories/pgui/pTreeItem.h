@@ -15,19 +15,20 @@
 
 class pParamGroup;
 class pParameter;
+class pAttribute;
 
 class pTreeItem {
 public:
-    explicit pTreeItem( QSharedPointer< pParamGroup > pgr=nullptr, pTreeItem* parent=nullptr );
-    explicit pTreeItem( QSharedPointer< pParameter > param, pTreeItem* parent=nullptr );
+    explicit pTreeItem( QSharedPointer< pAttribute > pgr=nullptr, pTreeItem* parent=nullptr );
     ~pTreeItem();
 
     void appendChild( pTreeItem* child );
 
     pTreeItem* child(int row);
 
-    bool isGroup() const;
-    bool isParameter() const;
+    bool isNull() const;
+    int getEntity() const;
+    qint64 getId() const;
 
     int childCount() const;
     int columnCount() const;
@@ -45,7 +46,6 @@ public:
 
 private:
     QVector< pTreeItem* > _childItems;
-    QSharedPointer< pParamGroup > _pGroup;
-    QSharedPointer< pParameter > _pParam;
+    QSharedPointer< pAttribute > _pAttr;
     pTreeItem* _parentItem;
 };
