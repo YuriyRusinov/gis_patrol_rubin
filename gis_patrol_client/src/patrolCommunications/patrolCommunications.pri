@@ -1,5 +1,6 @@
 
 HEADERS += \
+           pAttribute.h \
            pCommCenter.h \
            pCommCenterType.h \
            pCommNode.h \

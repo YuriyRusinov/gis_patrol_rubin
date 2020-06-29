@@ -6,8 +6,10 @@
  * @author
  *  Ю.Л.Русинов
  */
+#include <QDialog>
 #include <QMessageBox>
 #include <QtDebug>
+
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
 #include <pCategoryListForm.h>
@@ -15,7 +17,11 @@
 #include <pCategory.h>
 #include <pCatEditor.h>
 #include <pCatParamModel.h>
+#include <pParameter.h>
+#include <pCatParameter.h>
+#include <pParamListForm.h>
 
+#include "pGuiFactory.h"
 #include "pCatGuiFactory.h"
 
 pCatGuiFactory::pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, PGUIFactory* guif, QObject* parent )
@@ -108,6 +114,24 @@ void pCatGuiFactory::addParameterToCat( QSharedPointer< pCategory > pc, QAbstrac
     if( pc.isNull() || cAttrModel == nullptr )
         return;
     qDebug() << __PRETTY_FUNCTION__;
+    QWidget* paramForm = _guiFactory->GUIViewParams( true );
+    ParamListForm* paramDialog = qobject_cast< ParamListForm* >( paramForm );
+    if (!paramDialog || paramDialog->exec() != QDialog::Accepted )
+        return;
+    QMap< qint64, QSharedPointer< pParameter > > params = paramDialog->getParameters();
+    int npars (pc->categoryPars().size());
+    int iorder = 1;
+    for ( QMap< qint64, QSharedPointer< pParameter > >::const_iterator ppc = params.constBegin();
+            ppc != params.constEnd();
+            ppc++ ) {
+        QSharedPointer< pCatParameter > pcp ( new pCatParameter ( (*ppc.value()), false, false, QVariant(), npars+iorder) );
+        pc->addParam( ppc.key(), pcp );
+        iorder++;
+        bool isInserted = cAttrModel->insertRows(npars, 1);
+        QModelIndex pcIndex = cAttrModel->index( npars, 0 );
+        qDebug() << __PRETTY_FUNCTION__ << isInserted << pcIndex;
+        cAttrModel->setData( pcIndex, QVariant::fromValue< QSharedPointer< pCatParameter > >( pcp ), Qt::UserRole+1 );
+    }
 }
 
 void pCatGuiFactory::removeParameterFromCat( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel ) {

@@ -12,16 +12,18 @@
 #include <QString>
 #include <QSharedPointer>
 
+#include "pAttribute.h"
+
 class pParamType;
 class pParamGroup;
 
-class pParameter {
+class pParameter : public pAttribute {
 public:
     pParameter(qint64 id=-1, QSharedPointer< pParamType > pType=nullptr, QSharedPointer< pParamGroup > pGroup=nullptr, QString pCode=QString(), QString pName=QString(), QString pTitle=QString(), QString tableName=QString(), QString columnName=QString(), bool isSystem=false);
     pParameter(const pParameter& P1);
     ~pParameter();
 
-    qint64 getId() const;
+    qint64 getId() const override;
     void setId( qint64 id );
 
     QSharedPointer< pParamType > getParamType() const;
@@ -47,6 +49,8 @@ public:
 
     bool getSystem() const;
     void setSystem( bool isSys );
+
+    int getEntity() const override;
 
 private:
     qint64 _id;

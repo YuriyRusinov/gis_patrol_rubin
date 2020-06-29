@@ -13,15 +13,17 @@
 #include <QSharedPointer>
 #include <QMap>
 
+#include "pAttribute.h"
+
 class pParameter;
 
-class pParamGroup {
+class pParamGroup : public pAttribute {
 public:
     pParamGroup(qint64 id=-1, QString name=QString(), QSharedPointer< pParamGroup > parent=nullptr );
     pParamGroup(const pParamGroup& PG);
     ~pParamGroup();
 
-    qint64 getId() const;
+    qint64 getId() const override;
     void setId( qint64 id );
 
     QString getName() const;
@@ -45,6 +47,7 @@ public:
     QSharedPointer< const pParamGroup > childGroupForId (qint64 id, bool recursive=true) const;
     QSharedPointer< pParamGroup > childGroupForId (qint64 id, bool recursive=true);
 
+    int getEntity() const override;
 private:
     qint64 _id;
     QString _name;

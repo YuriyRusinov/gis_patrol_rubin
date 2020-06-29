@@ -6,13 +6,14 @@
  * @author
  *  Ю.Л.Русинов
  */
-
+#include <QtDebug>
 #include "pParamType.h"
 #include "pParamGroup.h"
 #include "pParameter.h"
 
 pParameter::pParameter(qint64 id, QSharedPointer< pParamType > pType, QSharedPointer< pParamGroup > pGroup, QString pCode, QString pName, QString pTitle, QString tableName, QString columnName, bool isSystem)
-    : _id( id ),
+    : pAttribute(),
+    _id( id ),
     _pType( pType ),
     _pGroup( pGroup ),
     _code( pCode ),
@@ -24,7 +25,8 @@ pParameter::pParameter(qint64 id, QSharedPointer< pParamType > pType, QSharedPoi
 }
 
 pParameter::pParameter(const pParameter& P1)
-    : _id( P1._id ),
+    : pAttribute( P1 ),
+    _id( P1._id ),
     _pType( P1._pType ),
     _pGroup( P1._pGroup ),
     _code( P1._code ),
@@ -108,4 +110,8 @@ bool pParameter::getSystem() const {
 
 void pParameter::setSystem( bool isSys ) {
     _isSystem = isSys;
+}
+
+int pParameter::getEntity() const {
+    return 1;
 }

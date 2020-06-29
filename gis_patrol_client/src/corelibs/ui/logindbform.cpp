@@ -22,6 +22,7 @@ LoginDbForm::LoginDbForm( const QMap<int, QString>& accessLevels, QWidget* paren
     }
     QValidator * portVal = new QIntValidator( 1, 5500, this);
     _UI->lEPort->setValidator( portVal );
+    _UI->lePassword->setFocus();
 
     QObject::connect(_UI->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     QObject::connect(_UI->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

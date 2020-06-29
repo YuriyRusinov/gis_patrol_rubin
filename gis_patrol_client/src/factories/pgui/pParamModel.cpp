@@ -29,7 +29,7 @@ int ParametersModel::columnCount( const QModelIndex& parent) const {
 }
 
 int ParametersModel::rowCount( const QModelIndex& parent) const {
-    pTreeItem *parentItem;
+    pTreeItem *parentItem ( nullptr );
     if (parent.column() > 0)
         return 0;
 
@@ -38,10 +38,13 @@ int ParametersModel::rowCount( const QModelIndex& parent) const {
     else
         parentItem = static_cast<pTreeItem*>(parent.internalPointer());
 
-    return parentItem->childCount();
+    int nr = parentItem->childCount();
+//    qDebug() << __PRETTY_FUNCTION__ << nr;
+    return nr;
 }
 
 QModelIndex ParametersModel::index(int row, int column, const QModelIndex& parent) const {
+//    qDebug() << __PRETTY_FUNCTION__ << row << column << parent;
     if (parent.isValid() && parent.column() != 0)
         return QModelIndex();
 
@@ -49,14 +52,12 @@ QModelIndex ParametersModel::index(int row, int column, const QModelIndex& paren
     if(!parentItem)
         return QModelIndex();
 
-/*    if (!parent.isValid())
-        parentItem = _rootItem;
-    else
-        parentItem = static_cast<pTreeItem*>(parent.internalPointer());
-*/
     pTreeItem *childItem = parentItem->child(row);
-    if (childItem)
-        return createIndex(row, column, childItem);
+    if (childItem) {
+        QModelIndex wIndex = createIndex(row, column, childItem);
+//        qDebug() << __PRETTY_FUNCTION__ << row << column << parent << wIndex;
+        return wIndex;
+    }
     return QModelIndex();
 }
 
@@ -80,23 +81,25 @@ QVariant ParametersModel::data(const QModelIndex& index, int role) const {
 
     pTreeItem* wItem = static_cast<pTreeItem*>(index.internalPointer());
     if( role == Qt::UserRole+USER_ENTITY ) {
-        if( wItem->isGroup() )
-            return 0;
-        else if ( wItem->isParameter() )
-            return 1;
-        else
-            return -1;
+        //if( wItem == nullptr || wItem->isNull())
+        //    return -1;
+
+        //qDebug() << __PRETTY_FUNCTION__ << wItem;
+        return 1;//wItem->getEntity();
     }
     else if( role == Qt::UserRole ) {
-        if( wItem->isGroup() )
-            return wItem->getGroup()->getId();
-        else if ( wItem->isParameter() )
-            return wItem->getParameter()->getId();
+        //qDebug() << __PRETTY_FUNCTION__ << wItem << wItem->isGroup() << QSharedPointer<pParamGroup>(wItem->getGroup()).isNull();
+        if( !wItem || wItem->isNull() )
+            return -1;
+
+        return wItem->getId();
     }
     else if ( role == Qt::UserRole+1 ) {
-        if( wItem->isGroup() )
+        if( !wItem || wItem->isNull() )
+            return QVariant();
+        else if( wItem->getEntity() == 0 )
             return QVariant::fromValue< QSharedPointer<pParamGroup> >(wItem->getGroup());
-        else if ( wItem->isParameter() )
+        else if ( wItem->getEntity() == 1 )
             return QVariant::fromValue<QSharedPointer<pParameter> >(wItem->getParameter());
     }
     else if (role == Qt::DisplayRole)
@@ -122,21 +125,24 @@ void ParametersModel::setupModel(const QMap< qint64, QSharedPointer< pParamGroup
     for (QMap< qint64, QSharedPointer< pParamGroup > >::const_iterator ppg = paramGroups.constBegin();
             ppg != paramGroups.constEnd();
             ppg++) {
-        qDebug() << __PRETTY_FUNCTION__ << ppg.key() << ppg.value();
+        //qDebug() << __PRETTY_FUNCTION__ << ppg.key() << ppg.value();
+        if (ppg.value().isNull())
+            continue;
         pTreeItem* ptr = new pTreeItem( ppg.value(), parents.last());
         int nchildren = ppg.value()->getChildGroups().size();
         if ( nchildren > 0) {
-            qDebug() << __PRETTY_FUNCTION__ << nchildren << ppg.key();;
             setupModel( ppg.value()->getChildGroups(), ptr );
         }
         parents.last()->appendChild( ptr );
         QMap< qint64, QSharedPointer< pParameter >> pars = ppg.value()->getParameters();
-        qDebug() << __PRETTY_FUNCTION__ << "parameters from " << ppg.key() << ppg.value() << pars.size();
+        //qDebug() << __PRETTY_FUNCTION__ << "parameters from " << ppg.key() << ppg.value() << pars.size();
         for (QMap< qint64, QSharedPointer< pParameter >>::const_iterator ppa = pars.constBegin();
                 ppa != pars.constEnd();
                 ppa++) {
+            if (ppa.value().isNull())
+                continue;
             pTreeItem* pptr = new pTreeItem( ppa.value(), ptr);
-            qDebug() << __PRETTY_FUNCTION__ << ppa.key() << pptr->isGroup();
+            //qDebug() << __PRETTY_FUNCTION__ << ppa.key() << pptr->isGroup();
             ptr->appendChild( pptr );
         }
     }

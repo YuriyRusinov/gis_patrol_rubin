@@ -8,16 +8,19 @@
  */
 
 #include <QAbstractItemModel>
+#include <QAction>
+#include <QDialogButtonBox>
 #include <QItemSelection>
 #include <QItemSelectionModel>
 #include <QGridLayout>
 #include <QButtonGroup>
 #include <QToolBar>
 #include <QTreeView>
-#include <QAction>
 #include <QMessageBox>
 #include <QtDebug>
+
 #include <defines.h>
+#include <pParameter.h>
 #include "pItemDelegate.h"
 #include "pParamListForm.h"
 
@@ -25,18 +28,21 @@ ParamListForm::ParamListForm(bool mode, QWidget* parent, Qt::WindowFlags flags)
     : QDialog( parent, flags),
     _tbParamActions( new QToolBar ),
     _tvParams( new QTreeView ),
-    _bgParams( new QButtonGroup ) {
+    _bgParams( new QButtonGroup ),
+    _dbbParams( new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel) ) {
 
     QAbstractItemDelegate* pDeleg = new pItemDelegate;
     _tvParams->setItemDelegate( pDeleg );
     QGridLayout* gLay = new QGridLayout( this );
     gLay->addWidget( _tbParamActions, 0, 0, 1, 1 );
     gLay->addWidget( _tvParams, 1, 0, 1, 1);
+    gLay->addWidget( _dbbParams, 2, 0, 1, 1);
 //    gLay->addWidget( _bgParams, 2, 0, 1, 1);
     init(mode);
 }
 
 ParamListForm::~ParamListForm() {
+    delete _dbbParams;
     delete _bgParams;
     delete _tvParams;
     delete _tbParamActions;
@@ -125,9 +131,12 @@ void ParamListForm::refreshAll() {
 }
 
 void ParamListForm::init(bool mode) {
-    _tvParams->setSelectionMode( mode ? QAbstractItemView::ExtendedSelection : QAbstractItemView::SingleSelection);
+    _tvParams->setSelectionMode( mode ? QAbstractItemView::ExtendedSelection : QAbstractItemView::SingleSelection );
 
     _tbParamActions->setVisible ( !mode );
+    _dbbParams->setVisible ( mode );
+    QObject::connect( _dbbParams, &QDialogButtonBox::accepted, this, &QDialog::accept );
+    QObject::connect( _dbbParams, &QDialogButtonBox::rejected, this, &QDialog::reject );
 //    _bgParams->setVisible( mode );
 
     QAction* actAddParamGroup = _tbParamActions->addAction( QIcon(":/patrol/add_parameter.svg"), tr("Add group of parameters"));
@@ -187,4 +196,60 @@ QModelIndex ParamListForm::getParamIndex() const {
         return QModelIndex();
 
     return paramIndex;
+}
+
+QModelIndexList ParamListForm::getParamsIndexList() const {
+    QItemSelectionModel* selMod = _tvParams->selectionModel();
+    QItemSelection selInd = selMod->selection();
+    if( selInd.empty() )
+        return selInd.indexes();
+    QAbstractItemModel* sourceMod = _tvParams->model();
+
+    QModelIndexList res;
+    for (int i=0; i<selInd.indexes().size(); i++) {
+        QModelIndex wIndex = selInd.indexes().at(i);
+        if( wIndex.column() == 0 && sourceMod->data( wIndex, Qt::UserRole+USER_ENTITY ).toInt() == 1 )
+            res.append( wIndex );
+    }
+    return res;
+}
+
+QMap< qint64, QSharedPointer< pParameter > > ParamListForm::getParameters() const {
+    QItemSelectionModel* selMod = _tvParams->selectionModel();
+    QItemSelection selInd = selMod->selection();
+    QAbstractItemModel* sourceMod = selMod->model();
+    qDebug() << __PRETTY_FUNCTION__ << "Number of rows is " << sourceMod->rowCount();
+    Q_UNUSED( sourceMod );
+    if( selInd.empty() )
+        return QMap< qint64, QSharedPointer< pParameter > >();
+
+    QMap< qint64, QSharedPointer< pParameter > > selParams;
+    QModelIndexList selParamIndexes = getParamsIndexList();
+    qDebug() << __PRETTY_FUNCTION__ << selInd.indexes().size();
+    for (int i=0; i< selParamIndexes.size(); i++) {
+        qDebug() << __PRETTY_FUNCTION__ << selParamIndexes[i];
+//    for( QModelIndexList::const_iterator pp = selInd.indexes().constBegin();
+//           pp != selInd.indexes().constEnd();
+//           pp++ ) {
+        //qDebug() << __PRETTY_FUNCTION__ << *pp;// << pp->isValid();// << pp->data( Qt::UserRole+USER_ENTITY ).toInt();
+        //<< sourceMod->data( *pp, Qt::UserRole+USER_ENTITY ).toInt();
+        QModelIndex wIndex = selParamIndexes[i];;
+        try {
+            qDebug() << __PRETTY_FUNCTION__ << wIndex;
+            if (wIndex.data( Qt::UserRole+USER_ENTITY ).toInt() != 1) {
+                continue;
+            }
+            qDebug() << __PRETTY_FUNCTION__ << "Parameter";
+        }
+        catch (...) {
+            qDebug() << __PRETTY_FUNCTION__ << "Index error";// << wIndex;
+            //continue;
+        }
+        qint64 pId = wIndex.data( Qt::UserRole ).toLongLong();
+        QSharedPointer< pParameter > pPar = wIndex.data( Qt::UserRole+1 ).value< QSharedPointer< pParameter > > ();
+        if ( !selParams.contains( pId ) )
+            selParams.insert( pId, pPar );
+    }
+
+    return selParams;
 }

@@ -6,6 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
+#include <QtDebug>
 #include "pParameter.h"
 #include "pParamGroup.h"
 
@@ -118,4 +119,8 @@ QSharedPointer< pParamGroup > pParamGroup::childGroupForId (qint64 id, bool recu
     }
 
     return nullptr;
+}
+
+int pParamGroup::getEntity() const {
+    return 0;
 }

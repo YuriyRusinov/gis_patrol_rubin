@@ -8,8 +8,11 @@
  */
 #include <QAbstractItemModel>
 #include <QMessageBox>
+#include <QStandardItemModel>
 #include <QWidget>
 #include <QtDebug>
+
+#include <defines.h>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
 #include <pParamListForm.h>
@@ -44,7 +47,9 @@ QWidget* PGUIFactory::GUIViewParams(bool mode, QWidget* parent, Qt::WindowFlags 
     QObject::connect( plf, &ParamListForm::delparam, this, &PGUIFactory::deleteParameter );
     QObject::connect( plf, &ParamListForm::refreshParams, this, &PGUIFactory::refreshParams );
     QMap< qint64, QSharedPointer< pParamGroup > > pGroups = _dbLoader->loadGroupedParameters();
-    ParametersModel* pMod = new ParametersModel( pGroups );
+    QAbstractItemModel* pMod = new ParametersModel( pGroups );
+    //this->buildParamModel( pMod, pGroups );
+    //QStandardItemModel( pGroups.size(), 1) ;
     plf->setParamsModel( pMod );
     qDebug() << __PRETTY_FUNCTION__ << pGroups.size();
     if (!mode)
@@ -232,4 +237,43 @@ void PGUIFactory::refreshParams() {
     QMap< qint64, QSharedPointer< pParamGroup > > pGroups = _dbLoader->loadGroupedParameters();
     ParametersModel* pMod = new ParametersModel( pGroups );
     plf->setParamsModel( pMod );
+}
+
+void PGUIFactory::buildParamModel( QAbstractItemModel* pMod, const QMap< qint64, QSharedPointer< pParamGroup >>& pGroups, QModelIndex parent) const {
+    int i=0;
+    if (pMod->rowCount(parent) > 0) {
+        int nr = pMod->rowCount();
+        pMod->removeRows(0, nr, parent);
+    }
+    if (pMod->columnCount( parent ) == 0)
+        pMod->insertColumns(0, 1, parent );
+    pMod->insertRows( 0, pGroups.size(), parent );
+    for (QMap< qint64, QSharedPointer< pParamGroup > >::const_iterator pgr = pGroups.constBegin();
+            pgr != pGroups.constEnd();
+            pgr++) {
+        QModelIndex wIndex = pMod->index(i, 0, parent);
+        pMod->setData( wIndex, pgr.key(), Qt::UserRole);
+        //pMod->setData( wIndex, QVariant::fromValue< QSharedPointer< pParamGroup > > (pgr.value()), Qt::UserRole+1);
+        pMod->setData( wIndex, 0 /*pgr.value()->getEntity()*/, Qt::UserRole+USER_ENTITY);
+        pMod->setData( wIndex, pgr.value()->getName(), Qt::DisplayRole );
+        int nchildren = pgr.value()->getChildGroups().size();
+        if ( nchildren > 0) {
+            buildParamModel( pMod, pgr.value()->getChildGroups(), wIndex );
+        }
+
+        for( QMap<qint64, QSharedPointer< pParameter >>::const_iterator pa = pgr.value()->getParameters().constBegin();
+                pa != pgr.value()->getParameters().constEnd();
+                pa++ ) {
+            int nr = pMod->rowCount( wIndex );
+            pMod->insertRows(nr, 1, wIndex );
+            if (pMod->columnCount( wIndex ) == 0)
+                pMod->insertColumns(0, 1, wIndex );
+            QModelIndex wpIndex = pMod->index( nr, 0, wIndex );
+            pMod->setData( wpIndex, pa.key(), Qt::UserRole );
+            //pMod->setData( wpIndex, QVariant::fromValue< QSharedPointer< pParameter >>(pa.value()), Qt::UserRole+1 );
+            pMod->setData( wpIndex, 1/*pa.value()->getEntity()*/, Qt::UserRole+USER_ENTITY);
+            pMod->setData( wpIndex, pa.value()->getName(), Qt::DisplayRole );
+        }
+        i++;
+    }
 }
