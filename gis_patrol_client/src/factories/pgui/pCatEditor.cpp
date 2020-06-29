@@ -7,6 +7,7 @@
  *  Ю.Л.Русинов
  */
 
+#include <QAbstractItemDelegate>
 #include <QAbstractItemModel>
 #include <QAction>
 #include <QComboBox>
@@ -25,6 +26,7 @@
 
 #include "pCatEditor.h"
 #include "pCatParamSortModel.h"
+#include "pCatParamDelegate.h"
 
 pCatEditor::pCatEditor( QSharedPointer< pCategory > pCat, const QMap< qint64, QSharedPointer< pCategoryType > >& pAvailCatTypes, QWidget* parent, Qt::WindowFlags flags )
     : QWidget( parent, flags ),
@@ -129,14 +131,18 @@ void pCatEditor::init( ) {
     QGridLayout* grCatParamLay = new QGridLayout ( _wCatParams );
     grCatParamLay->addWidget( _tbCatParamsActions, 0, 0, 1, 1 );
     grCatParamLay->addWidget( _tvCatParams, 1, 0, 1, 1 );
+    QAbstractItemDelegate* pCatDeleg = new pCatParamDelegate;
     _tvCatParams->setModel( _cSortModel );
+    _tvCatParams->setItemDelegate( pCatDeleg );
 
     _tabCatWidget->addTab( _wCatParams, tr("Parameters of category") );
     _tabCatWidget->addTab( _tableCatParamWidget, tr("Table category") );
     QGridLayout* grTableCatParamLay = new QGridLayout( _wTableCatParams );
     grTableCatParamLay->addWidget( _tbTableCatParamsActions, 0, 0, 1, 1 );
     grTableCatParamLay->addWidget( _tvTableCatParams, 1, 0, 1, 1 );
+    QAbstractItemDelegate* pTableCatDeleg = new pCatParamDelegate;
     _tvTableCatParams->setModel( _cTSortModel );
+    _tvTableCatParams->setItemDelegate( pTableCatDeleg );
     _tabCatWidget->addTab( _wTableCatParams, tr("Parameters of table category") );
 
     initActions();
