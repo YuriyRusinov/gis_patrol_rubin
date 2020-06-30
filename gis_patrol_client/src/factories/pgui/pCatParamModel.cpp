@@ -81,7 +81,10 @@ QVariant pCatParametersModel::data(const QModelIndex& index, int role) const {
         switch( iColumn ) {
             case 0: return pct.value()->getName(); break;
             case 1: return pct.value()->getDefaultValue(); break;
+<<<<<<< HEAD
             case 4: return pct.value()->getOrder(); break;
+=======
+>>>>>>> b069186... Insert/Remove parameters, changing there priorities.
             default: return QVariant(); break;
         }
     }
