@@ -7,6 +7,7 @@
  *  Ю.Л.Русинов
  */
 
+#include <QtDebug>
 #include "pCatParameter.h"
 #include "pCategoryType.h"
 #include "pCategory.h"
@@ -108,7 +109,11 @@ void pCategory::addParam( qint64 idParam, QSharedPointer< pCatParameter > p ) {
 }
 
 void pCategory::removeParam( qint64 idParam ) {
-    _categoryParams.remove( idParam );
+    QSharedPointer< pCatParameter > pPar = _categoryParams.value( idParam, nullptr );
+    if (pPar)
+        pPar.reset();
+    int res = _categoryParams.remove( idParam );
+    qDebug() << __PRETTY_FUNCTION__ << idParam << res;
 }
 
 bool pCategory::isMain() const {

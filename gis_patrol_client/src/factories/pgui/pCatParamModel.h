@@ -35,7 +35,8 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
 private:
-    QList< QSharedPointer< pCatParameter > > _pCatParams;
+    QMap< qint64, QSharedPointer< pCatParameter > > _pCategoryParams;
+//    QList< QSharedPointer< pCatParameter > > _pCatParams;
 
 private:
     Q_OBJECT

@@ -120,15 +120,17 @@ void pCatGuiFactory::addParameterToCat( QSharedPointer< pCategory > pc, QAbstrac
         return;
     QMap< qint64, QSharedPointer< pParameter > > params = paramDialog->getParameters();
     int npars (pc->categoryPars().size());
-    int iorder = 1;
+    int nr = cAttrModel->rowCount();
+    int iorder = 0;
+    qDebug() << __PRETTY_FUNCTION__ << nr << npars << params.size();
+    bool isInserted = cAttrModel->insertRows(nr, params.size());
     for ( QMap< qint64, QSharedPointer< pParameter > >::const_iterator ppc = params.constBegin();
             ppc != params.constEnd();
             ppc++ ) {
-        QSharedPointer< pCatParameter > pcp ( new pCatParameter ( (*ppc.value()), false, false, QVariant(), npars+iorder) );
+        QSharedPointer< pCatParameter > pcp ( new pCatParameter ( (*ppc.value()), false, false, QVariant(), npars+iorder+1 ) );
         pc->addParam( ppc.key(), pcp );
+        QModelIndex pcIndex = cAttrModel->index( nr+iorder, 0 );
         iorder++;
-        bool isInserted = cAttrModel->insertRows(npars, 1);
-        QModelIndex pcIndex = cAttrModel->index( npars, 0 );
         qDebug() << __PRETTY_FUNCTION__ << isInserted << pcIndex;
         cAttrModel->setData( pcIndex, QVariant::fromValue< QSharedPointer< pCatParameter > >( pcp ), Qt::UserRole+1 );
     }
@@ -138,4 +140,7 @@ void pCatGuiFactory::removeParameterFromCat( QSharedPointer< pCategory > pc, qin
     if( pc.isNull() || cAttrModel == nullptr || idParameter <= 0 || !parIndex.isValid() )
         return;
     qDebug() << __PRETTY_FUNCTION__;
+    int iRow = parIndex.row();
+    cAttrModel->removeRows( iRow, 1, parIndex.parent() );
+//    pc->removeParam( idParameter );
 }
