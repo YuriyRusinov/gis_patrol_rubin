@@ -11,6 +11,7 @@
 
 #include <QSharedPointer>
 #include <QVariant>
+#include <QVector>
 
 #include "pParameter.h"
 
@@ -32,6 +33,9 @@ public:
     int getOrder() const;
     void setOrder( int val );
 
+    const int& paramOrder() const;
+    int& paramOrder();
+
     inline bool operator< (const pCatParameter& pcp) const { return getOrder() < pcp.getOrder(); }
 
 private:
@@ -44,6 +48,11 @@ private:
 inline bool compareCatParams( QSharedPointer< const pCatParameter > item1, QSharedPointer< const pCatParameter > item2 ) {
     return item1->getOrder() < item2->getOrder();
 }
+
+/*
+ * @brief Функция осуществляет поиск параметров с порядком следования в категории строго больше заданного.
+ */
+void findCatParamsByOrder( QVector< qint64 >& res, const QMap< qint64, QSharedPointer< pCatParameter > >& params, int order );
 
 Q_DECLARE_METATYPE( pCatParameter );
 Q_DECLARE_METATYPE( QSharedPointer< pCatParameter > );

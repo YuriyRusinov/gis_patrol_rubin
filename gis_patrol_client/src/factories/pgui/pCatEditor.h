@@ -51,9 +51,12 @@ private slots:
     void upParamInTableCat();
     void downParamInTableCat();
 
+    void cTypeIndexChanged( int index );
+
 signals:
     void addParameterIntoCategory( QSharedPointer< pCategory > pc, QAbstractItemModel* cAttrModel );
     void removeParameterFromCategory( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel );
+    void saveCat( QSharedPointer< pCategory > pc);
 
 private:
     //

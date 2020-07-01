@@ -108,12 +108,12 @@ void pCategory::addParam( qint64 idParam, QSharedPointer< pCatParameter > p ) {
     _categoryParams.insert( idParam, p );
 }
 
-void pCategory::removeParam( qint64 idParam ) {
+int pCategory::removeParam( qint64 idParam ) {
     QSharedPointer< pCatParameter > pPar = _categoryParams.value( idParam, nullptr );
     if (pPar)
         pPar.reset();
     int res = _categoryParams.remove( idParam );
-    qDebug() << __PRETTY_FUNCTION__ << idParam << res;
+    return res;
 }
 
 bool pCategory::isMain() const {

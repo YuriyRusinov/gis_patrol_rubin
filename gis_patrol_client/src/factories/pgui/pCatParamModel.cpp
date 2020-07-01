@@ -22,7 +22,7 @@ pCatParametersModel::~pCatParametersModel() {
 
 int pCatParametersModel::columnCount( const QModelIndex& parent) const {
     Q_UNUSED( parent );
-    return 4;
+    return 5;
 }
 
 int pCatParametersModel::rowCount( const QModelIndex& parent) const {
@@ -81,6 +81,7 @@ QVariant pCatParametersModel::data(const QModelIndex& index, int role) const {
         switch( iColumn ) {
             case 0: return pct.value()->getName(); break;
             case 1: return pct.value()->getDefaultValue(); break;
+            case 4: return pct.value()->getOrder(); break;
             default: return QVariant(); break;
         }
     }
@@ -99,7 +100,7 @@ QVariant pCatParametersModel::data(const QModelIndex& index, int role) const {
 
 QVariant pCatParametersModel::headerData(int section, Qt::Orientation orientation, int role) const {
     QStringList headers;
-    headers << tr( "Name" ) << tr("Default Value") << tr( "Mandatory" ) << tr( "Read only" );
+    headers << tr( "Name" ) << tr("Default Value") << tr( "Mandatory" ) << tr( "Read only" ) << tr( "Order" );
     if (section >= 0 && section < headers.size() && orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return headers[section];
 
@@ -131,7 +132,7 @@ bool pCatParametersModel::setData(const QModelIndex& index, const QVariant &valu
         if( oldKey < 0 )//!= newKey )
             _pCategoryParams.remove( oldKey );
         _pCategoryParams.insert( newKey, pgr );
-        emit dataChanged( index.sibling(iRow, 0), index.sibling(iRow, 3), {Qt::DisplayRole, Qt::EditRole, Qt::UserRole, Qt::UserRole+1});
+        emit dataChanged( index.sibling(iRow, 0), index.sibling(iRow, 4), {Qt::DisplayRole, Qt::EditRole, Qt::UserRole, Qt::UserRole+1});
         return true;
     }
     else if ( role == Qt::UserRole+2 ) {

@@ -103,16 +103,72 @@ void pCatEditor::setCategory( QSharedPointer< pCategory > pc ) {
 
 void pCatEditor::saveCategory( ) {
     qDebug() << __PRETTY_FUNCTION__;
+    _pCategory->setName( _lECatName->text() );
+    _pCategory->setCode( _lECatCode->text() );
+    _pCategory->setDesc( _lECatDesc->text() );
+    qint64 cType = _cbCatTypes->currentData().toLongLong();
+    QSharedPointer< pCategoryType > pCType = _availCatTypes.value( cType );
+    _pCategory->setType( pCType );
+    int nattrs = _cSortModel->sourceModel()->rowCount();
+    bool isRef = (cType == 1 || cType == 2 || cType == 8 || cType==9);
+    QAbstractItemModel* attrMod = _cSortModel->sourceModel();
+    for (int i=0; i<nattrs; i++) {
+        QModelIndex aIndex = attrMod->index(i, 0);
+        qint64 idParam = attrMod->data( aIndex, Qt::UserRole ).toLongLong();
+        QSharedPointer< pCatParameter > cPar = attrMod->data( aIndex, Qt::UserRole+1).value< QSharedPointer< pCatParameter > >();
+        _pCategory->addParam( idParam, cPar );
+    }
+    _pCategory->setMain( true );
+    _pCategory->setSystem( false );
+    if( !isRef ) {
+        _pCategory->setTableCat( nullptr );
+        emit saveCat( _pCategory );
+        return;
+    }
+    QSharedPointer< pCategoryType > pCTableType = _availCatTypes.value( 10 );
+    QSharedPointer< pCategory > pTableCat = _pCategory->getTableCat();
+    qDebug() << __PRETTY_FUNCTION__ << pTableCat.isNull();
+    pTableCat->setName( _lETableCatName->text() );
+    pTableCat->setCode( _lETableCatCode->text() );
+    pTableCat->setDesc( _lETableCatDesc->text() );
+    int ntattrs = _cTSortModel->sourceModel()->rowCount();
+    QAbstractItemModel* attrTMod = _cTSortModel->sourceModel();
+    for (int i=0; i<ntattrs; i++) {
+        QModelIndex aIndex = attrTMod->index(i, 0);
+        qint64 idParam = attrTMod->data( aIndex, Qt::UserRole ).toLongLong();
+        QSharedPointer< pCatParameter > cPar = attrTMod->data( aIndex, Qt::UserRole+1).value< QSharedPointer< pCatParameter > >();
+        pTableCat->addParam( idParam, cPar );
+    }
+    _pCategory->setTableCat( pTableCat );
+    emit saveCat( _pCategory );
+
 }
 
 void pCatEditor::addParamIntoCat() {
     qDebug() << __PRETTY_FUNCTION__ << _cSortModel->sourceModel();
+    if( _pCategory.isNull() )
+        return;
     emit addParameterIntoCategory( _pCategory, _cSortModel->sourceModel() );
     _cSortModel->sort( 0 );
 }
 
 void pCatEditor::removeParamFromCat() {
     qDebug() << __PRETTY_FUNCTION__;
+    if (_pCategory.isNull())
+        return;
+    QItemSelectionModel* selMod = _tvCatParams->selectionModel();
+    if (selMod == nullptr)
+        return;
+    QItemSelection cSel = selMod->selection();
+    QItemSelection cParSel = _cSortModel->mapSelectionToSource( cSel );
+    qDebug() << __PRETTY_FUNCTION__ << cParSel.indexes();
+    if (cParSel.indexes().isEmpty())
+        return;
+
+    QModelIndex parIndex = cParSel.indexes().at(0);
+    parIndex = parIndex.sibling( parIndex.row(), 0 );
+    qint64 idParameter = parIndex.data( Qt::UserRole ).toLongLong();
+    emit removeParameterFromCategory( _pCategory, idParameter, parIndex, _cSortModel->sourceModel() );
 }
 
 void pCatEditor::addParamIntoTableCat() {
@@ -253,13 +309,15 @@ void pCatEditor::initValues( ) {
     for( QMap< qint64, QSharedPointer< pCategoryType > >::const_iterator pct = _availCatTypes.constBegin();
             pct != _availCatTypes.constEnd();
             pct++ ) {
-        _cbCatTypes->addItem( pct.value()->getName(), pct.key() );
+        if (pct.key() != 10)
+            _cbCatTypes->addItem( pct.value()->getName(), pct.key() );
     }
     qint64 idDefType = (_pCategory.isNull() ? 1 : _pCategory->getType()->getId());
     int typeInd = _cbCatTypes->findData( idDefType );
     _cbCatTypes->setCurrentIndex( typeInd );
     bool isTypeCh = (_pCategory.isNull() || _pCategory->getId() <= 0);
     _cbCatTypes->setEnabled( isTypeCh );
+    QObject::connect( _cbCatTypes, QOverload<int>::of(&QComboBox::currentIndexChanged), this, QOverload<int>::of(&pCatEditor::cTypeIndexChanged) );
 
     QRegExp cRegExp(QString("[A-Za-z0-9_]*"));
     QValidator* codeVal = new QRegExpValidator(cRegExp, this);
@@ -293,10 +351,57 @@ void pCatEditor::setTableCatParamModel( QAbstractItemModel* paramModel ) {
 
 void pCatEditor::upParamInCat() {
     qDebug() << __PRETTY_FUNCTION__;
+    QItemSelectionModel* selMod = _tvCatParams->selectionModel();
+    if (selMod == nullptr)
+        return;
+    QItemSelection cSel = selMod->selection();
+    if( cSel.indexes().isEmpty() )
+        return;
+    QModelIndex wProxyIndex = cSel.indexes().at( 0 );
+    QModelIndex wPrevProxyIndex = _cSortModel->index( wProxyIndex.row()-1, 0, wProxyIndex.parent() );
+    if( !wProxyIndex.isValid() || !wPrevProxyIndex.isValid() )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << wProxyIndex << wPrevProxyIndex;
+    QModelIndex wParamIndex = _cSortModel->mapToSource( wProxyIndex );
+    QModelIndex wPrevParamIndex = _cSortModel->mapToSource( wPrevProxyIndex );
+    QSharedPointer< pCatParameter > pc1 = wParamIndex.data( Qt::UserRole+1 ).value< QSharedPointer< pCatParameter > >();
+    QSharedPointer< pCatParameter > pc2 = wPrevParamIndex.data( Qt::UserRole+1 ).value< QSharedPointer< pCatParameter > >();
+    if (pc1.isNull() || pc2.isNull())
+        return;
+    int order1 = pc1->getOrder();
+    int order2 = pc2->getOrder();
+    QAbstractItemModel* tMod = _cSortModel->sourceModel();
+    tMod->setData( wParamIndex, order2, Qt::UserRole+2 );
+    tMod->setData( wPrevParamIndex, order1, Qt::UserRole+2 );
+    _cSortModel->sort( 4 );
 }
 
 void pCatEditor::downParamInCat() {
     qDebug() << __PRETTY_FUNCTION__;
+    QItemSelectionModel* selMod = _tvCatParams->selectionModel();
+    if (selMod == nullptr)
+        return;
+    QItemSelection cSel = selMod->selection();
+    if( cSel.indexes().isEmpty() )
+        return;
+    QModelIndex wProxyIndex = cSel.indexes().at( 0 );
+    QAbstractItemModel* tMod = _cSortModel->sourceModel();
+    QModelIndex wNextProxyIndex = _cSortModel->index( wProxyIndex.row()+1, 0, wProxyIndex.parent() );
+    qDebug() << __PRETTY_FUNCTION__ << wProxyIndex << wNextProxyIndex;
+    if( !wProxyIndex.isValid() || !wNextProxyIndex.isValid() )
+        return;
+
+    QModelIndex wParamIndex = _cSortModel->mapToSource( wProxyIndex );
+    QModelIndex wNextParamIndex = _cSortModel->mapToSource( wNextProxyIndex );
+    QSharedPointer< pCatParameter > pc1 = wParamIndex.data( Qt::UserRole+1 ).value< QSharedPointer< pCatParameter > >();
+    QSharedPointer< pCatParameter > pc2 = wNextParamIndex.data( Qt::UserRole+1 ).value< QSharedPointer< pCatParameter > >();
+    if (pc1.isNull() || pc2.isNull())
+        return;
+    int order1 = pc1->getOrder();
+    int order2 = pc2->getOrder();
+    tMod->setData( wParamIndex, order2, Qt::UserRole+2 );
+    tMod->setData( wNextParamIndex, order1, Qt::UserRole+2 );
+    _cSortModel->sort( 4 );
 }
 
 void pCatEditor::upParamInTableCat() {
@@ -319,11 +424,10 @@ void pCatEditor::upParamInTableCat() {
         return;
     int order1 = pc1->getOrder();
     int order2 = pc2->getOrder();
-//    pc1->setOrder( order2 );
-//    pc2->setOrder( order1 );
     QAbstractItemModel* tMod = _cTSortModel->sourceModel();
     tMod->setData( wParamIndex, order2, Qt::UserRole+2 );
     tMod->setData( wPrevParamIndex, order1, Qt::UserRole+2 );
+    _cTSortModel->sort( 4 );
 }
 
 void pCatEditor::downParamInTableCat() {
@@ -348,8 +452,15 @@ void pCatEditor::downParamInTableCat() {
         return;
     int order1 = pc1->getOrder();
     int order2 = pc2->getOrder();
-//    pc1->setOrder( order2 );
-//    pc2->setOrder( order1 );
     tMod->setData( wParamIndex, order2, Qt::UserRole+2 );
     tMod->setData( wNextParamIndex, order1, Qt::UserRole+2 );
+    _cTSortModel->sort( 4 );
+}
+
+void pCatEditor::cTypeIndexChanged( int index ) {
+    qDebug() << __PRETTY_FUNCTION__ << index;
+    qint64 cType = _cbCatTypes->currentData().toLongLong();
+    bool isRef = (cType == 1 || cType == 2 || cType == 8 || cType==9);
+    _tableCatParamWidget->setEnabled( isRef );
+    _wTableCatParams->setEnabled( isRef );
 }
