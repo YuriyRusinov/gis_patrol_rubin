@@ -59,3 +59,19 @@ int pCatParameter::getOrder() const {
 void pCatParameter::setOrder( int val ) {
     _orderCat = val;
 }
+
+const int& pCatParameter::paramOrder() const {
+    return _orderCat;
+}
+
+int& pCatParameter::paramOrder() {
+    return _orderCat;
+}
+
+void findCatParamsByOrder( QVector< qint64 >& res, const QMap< qint64, QSharedPointer< pCatParameter > >& params, int orderVal ) {
+    QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pp;
+    for( pp=params.constBegin(); pp != params.constEnd(); pp++) {
+        if (pp.value()->paramOrder() > orderVal)
+            res.append( pp.key() );
+    }
+}

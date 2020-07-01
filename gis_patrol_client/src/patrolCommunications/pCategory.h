@@ -48,7 +48,7 @@ public:
 
     void clearPars();
     void addParam( qint64 idParam, QSharedPointer< pCatParameter > p );
-    void removeParam( qint64 idParam );
+    int removeParam( qint64 idParam );
 
     bool isMain() const;
     void setMain( bool val );

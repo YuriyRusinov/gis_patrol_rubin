@@ -8,6 +8,7 @@
  */
 #include <QDialog>
 #include <QMessageBox>
+#include <QVector>
 #include <QtDebug>
 
 #include <patroldbloader.h>
@@ -107,7 +108,14 @@ void pCatGuiFactory::delPCategory( QAbstractItemModel* catMod, QModelIndex cInde
 }
 
 void pCatGuiFactory::refreshCats() {
+    pCategoryListForm* pclf = qobject_cast< pCategoryListForm* >(this->sender());
+    if( pclf == nullptr )
+        return;
     qDebug() << __PRETTY_FUNCTION__;
+    QMap< qint64, QSharedPointer< pCategory > > categories = _dbLoader->loadCategories();
+    qDebug() << __PRETTY_FUNCTION__ << categories.size();
+    pCategoryModel* pCatMod = new pCategoryModel( categories );
+    pclf->setCatModel( pCatMod );
 }
 
 void pCatGuiFactory::addParameterToCat( QSharedPointer< pCategory > pc, QAbstractItemModel* cAttrModel ) {
@@ -139,8 +147,25 @@ void pCatGuiFactory::addParameterToCat( QSharedPointer< pCategory > pc, QAbstrac
 void pCatGuiFactory::removeParameterFromCat( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel ) {
     if( pc.isNull() || cAttrModel == nullptr || idParameter <= 0 || !parIndex.isValid() )
         return;
-    qDebug() << __PRETTY_FUNCTION__;
+    int pOrder = parIndex.data( Qt::UserRole+2 ).toInt();
     int iRow = parIndex.row();
     cAttrModel->removeRows( iRow, 1, parIndex.parent() );
-//    pc->removeParam( idParameter );
+    pc->removeParam( idParameter );
+    QVector< qint64 > lpars;
+    for( QMap< qint64, QSharedPointer< pCatParameter >>::const_iterator pcp= pc->categoryPars().constBegin(); pcp != pc->categoryPars().constEnd(); pcp++) {
+        qDebug() << __PRETTY_FUNCTION__ << pcp.value()->paramOrder();
+    }
+    findCatParamsByOrder( lpars, pc->categoryPars(), pOrder );
+    qDebug() << __PRETTY_FUNCTION__ << pOrder << idParameter << lpars;
+/*
+ *  Отладочная печать приоритетов
+    int nl = lpars.size();
+    for( int i=0; i<nl; i++) {
+        QSharedPointer< pCatParameter > pca = pc->categoryPars().value( lpars[i] );
+        qDebug() << __PRETTY_FUNCTION__ << lpars[i] << pca->paramOrder();
+        pca->paramOrder()--;
+        QModelIndex wInd = cAttrModel->index( iRow+i, 0, parIndex.parent() );
+        cAttrModel->setData( wInd, pca->paramOrder(), Qt::UserRole+2 );
+    }
+*/
 }
