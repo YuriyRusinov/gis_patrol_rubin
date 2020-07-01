@@ -463,4 +463,8 @@ void pCatEditor::cTypeIndexChanged( int index ) {
     bool isRef = (cType == 1 || cType == 2 || cType == 8 || cType==9);
     _tableCatParamWidget->setEnabled( isRef );
     _wTableCatParams->setEnabled( isRef );
+//    pc1->setOrder( order2 );
+//    pc2->setOrder( order1 );
+    tMod->setData( wParamIndex, order2, Qt::UserRole+2 );
+    tMod->setData( wNextParamIndex, order1, Qt::UserRole+2 );
 }
