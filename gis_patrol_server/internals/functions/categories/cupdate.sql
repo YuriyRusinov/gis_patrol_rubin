@@ -1,13 +1,13 @@
-drop function if exists cInsert(varchar, varchar, varchar, int4, int4, boolean);
-create or replace function cInsert(varchar, varchar, varchar, int8, int8, boolean) returns int8 as
+create or replace function cUpdate(int8, varchar, varchar, varchar, int8, int8, boolean) returns int8 as
 $BODY$
 declare
-    cName alias for $1;
-    cCode alias for $2;
-    cDesc alias for $3;
-    idType alias for $4;
-    idChild alias for $5;
-    isMain alias for $6;
+    idCat alias for $1;
+    cName alias for $2;
+    cCode alias for $3;
+    cDesc alias for $4;
+    idType alias for $5;
+    idChild alias for $6;
+    isMain alias for $7;
     
     idCategory int8;
 begin
@@ -17,26 +17,19 @@ begin
         return idCategory;
     end if;
     
-    select getNextSeq('tbl_communication_categories', 'id') into idCategory;
-
-    insert into tbl_communication_categories (id,
-                               id_category_type,
-                               id_child,
-                               is_main,
-                               name,
-                               code,
-                               description,
-                               is_system)
-                       values (idCategory,
-                               idType,
-                               idChild,
-                               isMain,
-                               cName,
-                               cCode,
-                               cDesc,
-                               false);
+    update tbl_communication_categories
+            set id_category_type=idType,
+                id_child = idChild,
+                is_main = isMain,
+                name = cName,
+                code = cCode,
+                description = cDesc
+            where id = idCat;
+ 
     if(not FOUND) then
         return -1;
+    else
+        idCategory := idCat;
     end if;
     
     return idCategory;

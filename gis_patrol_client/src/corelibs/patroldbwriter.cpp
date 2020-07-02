@@ -197,6 +197,70 @@ qint64 pDBWriter::updateCategory( QSharedPointer< pCategory > pCat ) const {
     if (pCat.isNull())
         return -1;
 
+    _db->begin();
+    if( !pCat->getTableCat().isNull() && pCat->getTableCat()->getId() <= 0 ) {
+        qint64 idChildCat = writeCategory( pCat->getTableCat() );
+        if (idChildCat < 0) {
+            _db->rollback();
+            return -1;
+        }
+    }
+    else if( !pCat->getTableCat().isNull() && pCat->getTableCat()->getId() > 0 ) {
+        qint64 idChildCat = updateCategory( pCat->getTableCat() );
+        if (idChildCat < 0) {
+            _db->rollback();
+            return -1;
+        }
+    }
+    QString sql_query = QString("select cupdate( %1, '%2', '%3', '%4', %5, %6, %7 );")
+                                .arg( pCat->getId() )
+                                .arg( pCat->getName() )
+                                .arg( pCat->getCode() )
+                                .arg( pCat->getDesc() )
+                                .arg( pCat->getType()->getId() )
+                                .arg( pCat->getTableCat().isNull() ? QString("null::int8") : QString::number( pCat->getTableCat()->getId() ) )
+                                .arg( pCat->isMain() ? QString("true") : QString("false") );
+
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        _db->rollback();
+        return -1;
+    }
+    qint64 idCat = gpr->getCellAsInt64( 0, 0 );
+    QList< qint64 > oldParams = getCategoryParams( pCat->getId() );
+    QList< qint64 > removeParams;
+    QMap< qint64, QSharedPointer< pCatParameter > > params = pCat->categoryPars();
+    /*
+     * Сначала удаляем параметры, которые помечены на удаление
+     */
+    for (QList< qint64 >::const_iterator pop = oldParams.constBegin();
+            pop != oldParams.constEnd();
+            pop++ ) {
+        if (!params.contains( *pop ) ) {
+            qint64 res = deleteCategoryParam( pCat->getId(), *pop );
+            if (res < 0) {
+                _db->rollback();
+                delete gpr;
+                return -1;
+            }
+        }
+    }
+    for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pp = params.constBegin();
+            pp != params.constEnd();
+            pp++ ) {
+        qint64 res = updateCategoryParam( pCat->getId(), pp.value() );
+        if (res < 0) {
+            _db->rollback();
+            delete gpr;
+            return -1;
+        }
+    }
+    pCat->setId( idCat );
+    delete gpr;
+
+    _db->commit();
     return pCat->getId();
 }
 
@@ -209,6 +273,63 @@ qint64 pDBWriter::insertCategoryParam( qint64 idCategory, QSharedPointer< pCatPa
         return -1;
 
     QString sql_query = QString("select cAddAttr( %1, %2, '%3', %4, %5, %6 );")
+                            .arg( idCategory )
+                            .arg( pCParam->getId() )
+                            .arg( pCParam->getDefaultValue().toString() )
+                            .arg( pCParam->isMandatory() ? QString( "true" ) : QString( "false" ) )
+                            .arg( pCParam->isReadOnly() ? QString( "true" ) : QString( "false" ) )
+                            .arg( pCParam->getOrder() );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+
+    qint64 res = gpr->getCellAsInt64( 0, 0 );
+    delete gpr;
+    return res;
+}
+
+QList< qint64 > pDBWriter::getCategoryParams( qint64 idCat ) const {
+    if ( idCat <= 0 )
+        return QList< qint64 >();
+
+    QString sql_query = QString( "select * from cGetCategoryParams( %1 );").arg ( idCat );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() == 0 ) {
+        if( gpr )
+            delete gpr;
+        return QList< qint64 >();
+    }
+    int n = gpr->getRowCount();
+    QList< qint64 > parList;
+    for (int i=0; i<n; i++) {
+        qint64 idp = gpr->getCellAsInt64( i, 0 );
+        parList.append( idp );
+    }
+    delete gpr;
+    return parList;
+}
+
+qint64 pDBWriter::deleteCategoryParam( qint64 idCat, qint64 idPar ) const {
+    QString sql_query = QString( "select cDelAttr(%1, %2);").arg( idCat ).arg( idPar );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+    qint64 idRes = gpr->getCellAsInt64( 0, 0 );
+    delete gpr;
+    return idRes;
+}
+
+qint64 pDBWriter::updateCategoryParam( qint64 idCategory, QSharedPointer< pCatParameter> pCParam ) const {
+    if( idCategory <= 0 || pCParam.isNull() )
+        return -1;
+
+    QString sql_query = QString("select cUpdateAttr( %1, %2, '%3', %4, %5, %6 );")
                             .arg( idCategory )
                             .arg( pCParam->getId() )
                             .arg( pCParam->getDefaultValue().toString() )
