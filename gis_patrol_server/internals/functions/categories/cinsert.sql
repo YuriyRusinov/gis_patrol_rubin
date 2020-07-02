@@ -1,4 +1,5 @@
-create or replace function cInsert(varchar, varchar, varchar, int4, int4, boolean) returns int4 as
+drop function if exists cInsert(varchar, varchar, varchar, int4, int4, boolean);
+create or replace function cInsert(varchar, varchar, varchar, int8, int8, boolean) returns int8 as
 $BODY$
 declare
     cName alias for $1;

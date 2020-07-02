@@ -40,6 +40,8 @@ public:
 
     QSharedPointer< pCategory > loadCategory( qint64 idCat ) const;
 
+    QSharedPointer< pParameter> loadParameter( qint64 idParam ) const;
+
 private:
     QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
     QMap< qint64, QSharedPointer< pCatParameter > > loadCatParameters( qint64 idCat ) const;

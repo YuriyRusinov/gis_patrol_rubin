@@ -1,5 +1,6 @@
 drop function if exists caddattr(int4, int4, varchar, boolean, boolean);
-create or replace function cAddAttr(int4, int4, varchar, boolean, boolean, int4) returns int4 as
+drop function if exists caddattr(int4, int4, varchar, boolean, boolean, int4);
+create or replace function cAddAttr(int8, int8, varchar, boolean, boolean, int4) returns int8 as
 $BODY$
 declare
     idCategory alias for $1;
@@ -11,7 +12,7 @@ declare
 
     cnt int4;
     r record;
-    idCategoryParam int4;
+    idCategoryParam int8;
 begin
 
     idCategoryParam := NULL;
