@@ -141,7 +141,7 @@ bool pCatParametersModel::setData(const QModelIndex& index, const QVariant &valu
         if( pgr.isNull() )
             return false;
         pgr->setOrder( value.toInt() );
-        emit dataChanged( index, index, {Qt::UserRole+1, Qt::UserRole+2});
+        emit dataChanged( index, index, {Qt::EditRole, Qt::UserRole+1, Qt::UserRole+2});
     }
     else if( index.column()==1 && (role == Qt::DisplayRole || role== Qt::EditRole) ) {
         qint64 wKey = ckeys[ index.row() ];

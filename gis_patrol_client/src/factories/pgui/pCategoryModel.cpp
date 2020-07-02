@@ -121,17 +121,28 @@ QVariant pCategoryModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 bool pCategoryModel::insertRows(int position, int rows, const QModelIndex &parent) {
-    Q_UNUSED( position );
-    Q_UNUSED( rows );
-    Q_UNUSED( parent );
-    return false;
+    pCatTreeItem *parentItem = getItem( parent );
+    if (!parentItem)
+        return false;
+
+    beginInsertRows(parent, position, position + rows - 1);
+    const bool success = parentItem->insertChildren(position,
+                                                    rows);
+    endInsertRows();
+
+    return success;
 }
 
 bool pCategoryModel::removeRows(int position, int rows, const QModelIndex &parent) {
-    Q_UNUSED( position );
-    Q_UNUSED( rows );
-    Q_UNUSED( parent );
-    return false;
+    pCatTreeItem *parentItem = getItem( parent );
+    if( !parentItem )
+        return false;
+
+    beginRemoveRows( parent, position, position + rows - 1 );
+    const bool success = parentItem->removeChildren( position, rows );
+    endRemoveRows();
+
+    return success;
 }
 
 pCatTreeItem* pCategoryModel::getItem(QModelIndex index) const {

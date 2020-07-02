@@ -46,49 +46,12 @@ QWidget* pCatGuiFactory::GUICatView( QWidget* parent, Qt::WindowFlags flags ) {
     return pclf;
 }
 
-void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
-    qDebug() << __PRETTY_FUNCTION__ << catMod;
+QWidget* pCatGuiFactory::GUICategoryEditor( QSharedPointer< pCategory > pCat, QWidget* parent, Qt::WindowFlags flags ) {
     QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
     qint64 defaultType = 1;
     QSharedPointer< pCategoryType > cType = pCTypes.value( defaultType, nullptr );
-    QSharedPointer< pCategory > pCat ( new pCategory );
     pCat->setType( cType );
-    pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
-    QObject::connect( cEditor,
-                      &pCatEditor::addParameterIntoCategory,
-                      this,
-                      &pCatGuiFactory::addParameterToCat
-            );
-    QObject::connect( cEditor,
-                      &pCatEditor::removeParameterFromCategory,
-                      this,
-                      &pCatGuiFactory::removeParameterFromCat
-            );
-    QObject::connect( cEditor,
-                      &pCatEditor::saveCat,
-                      this,
-                      &pCatGuiFactory::saveCategory
-            );
-    pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
-    cEditor->setCatParamModel( pcMod );
-    if( pCat->getTableCat().isNull() ){
-        qint64 defaultTableType = 10;
-        QSharedPointer< pCategory > pTableCat ( new pCategory( -2, QString(), QString(), pCTypes.value( defaultTableType, nullptr ) ) );
-        pCat->setTableCat( pTableCat );
-    }
-    pCatParametersModel* pcTableMod = new pCatParametersModel( pCat->getTableCat()->categoryPars() );
-    cEditor->setTableCatParamModel( pcTableMod );
-    emit viewCatWidget( cEditor );
-}
-
-void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< pCategory > pCat, QModelIndex cIndex ) {
-    if (pCat.isNull()) {
-        QMessageBox::warning( qobject_cast<QWidget*>(this->sender()), tr("Edit category"), tr("Cannot edit category, error"), QMessageBox::Ok );
-        return;
-    }
-    qDebug() << __PRETTY_FUNCTION__ << catMod << pCat.isNull() << cIndex;
-    QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
-    pCatEditor* cEditor = new pCatEditor( pCat, pCTypes );
+    pCatEditor* cEditor = new pCatEditor( pCat, pCTypes, parent, flags );
     QObject::connect( cEditor,
                       &pCatEditor::addParameterIntoCategory,
                       this,
@@ -110,6 +73,33 @@ void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< 
         pCatParametersModel* pcTableMod = new pCatParametersModel( pCat->getTableCat()->categoryPars() );
         cEditor->setTableCatParamModel( pcTableMod );
     }
+    return cEditor;
+}
+
+void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
+    qDebug() << __PRETTY_FUNCTION__ << catMod;
+    QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
+    qint64 defaultType = 1;
+    QSharedPointer< pCategoryType > cType = pCTypes.value( defaultType, nullptr );
+    QSharedPointer< pCategory > pCat ( new pCategory );
+    pCat->setType( cType );
+    if( pCat->getTableCat().isNull() ){
+        qint64 defaultTableType = 10;
+        QSharedPointer< pCategory > pTableCat ( new pCategory( -2, QString(), QString(), pCTypes.value( defaultTableType, nullptr ) ) );
+        pCat->setTableCat( pTableCat );
+    }
+    pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat ));
+    emit viewCatWidget( cEditor );
+}
+
+void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< pCategory > pCat, QModelIndex cIndex ) {
+    if (pCat.isNull()) {
+        QMessageBox::warning( qobject_cast<QWidget*>(this->sender()), tr("Edit category"), tr("Cannot edit category, error"), QMessageBox::Ok );
+        return;
+    }
+    qDebug() << __PRETTY_FUNCTION__ << catMod << pCat.isNull() << cIndex;
+    QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
+    pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat ));
     emit viewCatWidget( cEditor );
 }
 
@@ -124,7 +114,7 @@ void pCatGuiFactory::delPCategory( QAbstractItemModel* catMod, QModelIndex cInde
         return;
     }
     int iRow = cIndex.row();
-    catMod->removeRows( iRow-1, 1, cIndex.parent() );
+    catMod->removeRows( iRow, 1, cIndex.parent() );
 }
 
 void pCatGuiFactory::refreshCats() {
