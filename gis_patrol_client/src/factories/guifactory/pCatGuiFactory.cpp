@@ -115,6 +115,16 @@ void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< 
 
 void pCatGuiFactory::delPCategory( QAbstractItemModel* catMod, QModelIndex cIndex ) {
     qDebug() << __PRETTY_FUNCTION__ << catMod << cIndex;
+    if( catMod == nullptr || !cIndex.isValid() )
+        return;
+    qint64 idCat = cIndex.data( Qt::UserRole ).toLongLong();
+    qint64 res = _dbWriter->deleteCategory( idCat );
+    if ( res < 0 ) {
+        QMessageBox::warning( qobject_cast<QWidget*>(this->sender()), tr("Delete category"), tr("Cannot delete category %1").arg( idCat ), QMessageBox::Ok );
+        return;
+    }
+    int iRow = cIndex.row();
+    catMod->removeRows( iRow-1, 1, cIndex.parent() );
 }
 
 void pCatGuiFactory::refreshCats() {
