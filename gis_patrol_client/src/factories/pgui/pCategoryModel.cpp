@@ -68,30 +68,6 @@ QModelIndex pCategoryModel::index(int row, int column, const QModelIndex& parent
 
     return QModelIndex();
 
-/*     if (pCat == nullptr && !parent.isValid()) {
-        pCat = new pCategory (*((_categories.constBegin()+row).value().get()));
-        return createIndex(row, column, pCat);
-    }
-    else
-        return QModelIndex();
-
-    if( !pCat->getTableCat().isNull() ) {
-        qDebug() << __PRETTY_FUNCTION__ << QString("Child category");
-        return createIndex(row, column, pCat->getTableCat().get() );
-    }
-        int prow = parent.row();
-        QMap<qint64, QSharedPointer< pCategory > >::const_iterator pcat = _categories.constBegin()+prow;
-        if( !pcat.value()->getTableCat().isNull() ) {
-            return QModelIndex();//createIndex(row, column, pcat.value()->getTableCat().get());
-        }
-        else
-            return QModelIndex();
-    }
-    else if ( !parent.isValid() ) {
-        QMap<qint64, QSharedPointer< pCategory > >::const_iterator pcat = _categories.constBegin()+row;
-        return createIndex(row, column, pcat.value().get() );
-    }
-*/
 }
 
 QModelIndex pCategoryModel::parent(const QModelIndex& index) const {
@@ -106,30 +82,6 @@ QModelIndex pCategoryModel::parent(const QModelIndex& index) const {
         return QModelIndex();
 
     return createIndex(parentItem->row(), 0, parentItem);
-/*
-//    int irow = index.row();
-    pCategory* pcat = (pCategory *)(index.internalPointer());
-    if (!pcat)
-        return QModelIndex();
-    qint64 idCat = pcat->getId();
-    QMap<qint64, QSharedPointer< pCategory > >::const_iterator pcc = _categories.constFind( idCat );
-    if (pcc != _categories.constEnd())
-        return QModelIndex();
-    
-    bool isChildFind = false;
-    int nchild = 0;
-    for (QMap<qint64, QSharedPointer< pCategory > >::const_iterator pcc = _categories.constBegin(); pcc != _categories.constEnd() && !isChildFind; pcc++) {
-        isChildFind = (pcc.value()->getTableCat()->getId() == idCat);
-        if( !isChildFind )
-            nchild++;
-    }
-    if (isChildFind)
-        return createIndex(nchild, 0, (_categories.constBegin()+nchild).value().get());
-    else
-        return QModelIndex();
-*/
-    Q_UNUSED( index );
-    return QModelIndex();
 }
 
 QVariant pCategoryModel::data(const QModelIndex& index, int role) const {

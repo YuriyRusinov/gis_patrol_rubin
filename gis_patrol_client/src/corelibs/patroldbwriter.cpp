@@ -265,7 +265,17 @@ qint64 pDBWriter::updateCategory( QSharedPointer< pCategory > pCat ) const {
 }
 
 qint64 pDBWriter::deleteCategory( qint64 idCat ) const {
-    return idCat;
+    QString sql_query = QString("select cDeleteCategory( %1 );").arg( idCat );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+
+    qint64 res = gpr->getCellAsInt64( 0, 0 );
+    delete gpr;
+    return res;
 }
 
 qint64 pDBWriter::insertCategoryParam( qint64 idCategory, QSharedPointer< pCatParameter> pCParam ) const {
