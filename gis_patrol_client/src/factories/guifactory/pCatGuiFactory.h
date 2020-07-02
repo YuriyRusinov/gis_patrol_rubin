@@ -25,6 +25,7 @@ class pCategory;
 class pCatGuiFactory : public QObject {
 public:
     QWidget* GUICatView( QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
+    QWidget* GUICategoryEditor( QSharedPointer< pCategory > pCat, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
 
 private slots:
     void addPCategory( QAbstractItemModel* catMod );

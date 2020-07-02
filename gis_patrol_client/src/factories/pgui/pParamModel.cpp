@@ -81,11 +81,11 @@ QVariant ParametersModel::data(const QModelIndex& index, int role) const {
 
     pTreeItem* wItem = static_cast<pTreeItem*>(index.internalPointer());
     if( role == Qt::UserRole+USER_ENTITY ) {
-        //if( wItem == nullptr || wItem->isNull())
-        //    return -1;
+        if( wItem == nullptr || wItem->isNull())
+            return -1;
 
         //qDebug() << __PRETTY_FUNCTION__ << wItem;
-        return 1;//wItem->getEntity();
+        return wItem->getEntity();
     }
     else if( role == Qt::UserRole ) {
         //qDebug() << __PRETTY_FUNCTION__ << wItem << wItem->isGroup() << QSharedPointer<pParamGroup>(wItem->getGroup()).isNull();
