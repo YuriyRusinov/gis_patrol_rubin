@@ -64,6 +64,11 @@ void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
                       this,
                       &pCatGuiFactory::removeParameterFromCat
             );
+    QObject::connect( cEditor,
+                      &pCatEditor::saveCat,
+                      this,
+                      &pCatGuiFactory::saveCategory
+            );
     pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
     cEditor->setCatParamModel( pcMod );
     if( pCat->getTableCat().isNull() ){
@@ -93,6 +98,11 @@ void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< 
                       &pCatEditor::removeParameterFromCategory,
                       this,
                       &pCatGuiFactory::removeParameterFromCat
+            );
+    QObject::connect( cEditor,
+                      &pCatEditor::saveCat,
+                      this,
+                      &pCatGuiFactory::saveCategory
             );
     pCatParametersModel* pcMod = new pCatParametersModel( pCat->categoryPars() );
     cEditor->setCatParamModel( pcMod );
@@ -168,4 +178,31 @@ void pCatGuiFactory::removeParameterFromCat( QSharedPointer< pCategory > pc, qin
         cAttrModel->setData( wInd, pca->paramOrder(), Qt::UserRole+2 );
     }
 */
+}
+
+void pCatGuiFactory::saveCategory( QSharedPointer< pCategory > pCategory ) {
+    if( pCategory.isNull() )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << pCategory->getId() << (pCategory->getTableCat().isNull() ? QString("Not reference") : QString::number(pCategory->getTableCat()->getId()));
+    qint64 idCategory ( -1 );
+    if( pCategory->getId() <= 0 ) {
+        if( pCategory->getTableCat() && !pCategory->getTableCat()->categoryPars().contains( 1 ) ) {
+            QMessageBox::StandardButton res = QMessageBox::question(qobject_cast<QWidget*>(this->sender()), tr("Create/edit category"), tr("Table category does not contains ID. Do you want to add it ?"), QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No), QMessageBox::Yes);
+            if (res == QMessageBox::Yes) {
+                QSharedPointer< pParameter > pId = _dbLoader->loadParameter( (qint64)1 );
+                QSharedPointer< pCatParameter> pcId ( new pCatParameter( *pId, false, false ) );
+                pCategory->getTableCat()->addParam( 1, pcId );
+            }
+            else
+                return;
+        }
+        idCategory = _dbWriter->writeCategory( pCategory );
+    }
+    else
+        idCategory = _dbWriter->updateCategory( pCategory );
+
+    if( idCategory < 0 ) {
+        QMessageBox::warning( qobject_cast<QWidget*>(this->sender()), tr("Create/edit category"), tr("Cannot write category, DB Error"), QMessageBox::Ok );
+        return;
+    }
 }

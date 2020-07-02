@@ -341,3 +341,39 @@ QMap< qint64, QSharedPointer< pCatParameter > > pDBLoader::loadCatParameters( qi
     delete gpr;
     return res;
 }
+
+QSharedPointer< pParameter> pDBLoader::loadParameter( qint64 idParam ) const {
+    QString sql_query = QString("select * from pgetparameter(%1);").arg( idParam );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return nullptr;
+    }
+    int n = gpr->getRowCount();
+    int ncol = gpr->getColumnCount();
+    qDebug() << __PRETTY_FUNCTION__ << n << ncol;
+    QSharedPointer< pParamType > pType;
+    QSharedPointer< pParameter > param;
+
+    int i=0;
+    qint64 idParamNew = gpr->getCellAsInt64(i, 0);// id
+    if( idParamNew != idParam ) {
+        delete gpr;
+        return nullptr;
+    }
+    qint64 idType = gpr->getCellAsInt64(i, 1);// id_param_type
+    qint64 idGroup = gpr->getCellAsInt64( i, 2 );
+    QSharedPointer< pParamGroup > pGroup = loadParamGroup( idGroup );
+    QString paramCode = gpr->getCellAsString(i, 3);// parameter_code
+    QString paramName = gpr->getCellAsString(i, 4);// parameter_name
+    QString paramTitle = gpr->getCellAsString(i, 5);// parameter_title
+    QString paramTable = gpr->getCellAsString(i, 6);// table_name
+    QString paramColumn = gpr->getCellAsString(i, 7);// column_name
+    QString paramTypeName = gpr->getCellAsString(i, 8);// type name
+    QString paramTypeCode = gpr->getCellAsString(i, 9);// type code
+    pType.reset ( new pParamType( idType, paramTypeName, paramTypeCode) );
+    param.reset ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+    delete gpr;
+    return param;
+}

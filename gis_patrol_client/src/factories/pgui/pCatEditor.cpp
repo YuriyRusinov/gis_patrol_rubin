@@ -102,7 +102,6 @@ void pCatEditor::setCategory( QSharedPointer< pCategory > pc ) {
 }
 
 void pCatEditor::saveCategory( ) {
-    qDebug() << __PRETTY_FUNCTION__;
     _pCategory->setName( _lECatName->text() );
     _pCategory->setCode( _lECatCode->text() );
     _pCategory->setDesc( _lECatDesc->text() );
@@ -115,7 +114,9 @@ void pCatEditor::saveCategory( ) {
     for (int i=0; i<nattrs; i++) {
         QModelIndex aIndex = attrMod->index(i, 0);
         qint64 idParam = attrMod->data( aIndex, Qt::UserRole ).toLongLong();
+        int porder = attrMod->data( aIndex, Qt::UserRole+2 ).toInt();
         QSharedPointer< pCatParameter > cPar = attrMod->data( aIndex, Qt::UserRole+1).value< QSharedPointer< pCatParameter > >();
+        cPar->setOrder( porder );
         _pCategory->addParam( idParam, cPar );
     }
     _pCategory->setMain( true );
@@ -136,9 +137,13 @@ void pCatEditor::saveCategory( ) {
     for (int i=0; i<ntattrs; i++) {
         QModelIndex aIndex = attrTMod->index(i, 0);
         qint64 idParam = attrTMod->data( aIndex, Qt::UserRole ).toLongLong();
-        QSharedPointer< pCatParameter > cPar = attrTMod->data( aIndex, Qt::UserRole+1).value< QSharedPointer< pCatParameter > >();
+        int porder = attrTMod->data( aIndex, Qt::UserRole+2 ).toInt();
+        QSharedPointer< pCatParameter > cPar = attrTMod->data( aIndex, Qt::UserRole+1 ).value< QSharedPointer< pCatParameter > >();
+        cPar->setOrder( porder );
         pTableCat->addParam( idParam, cPar );
     }
+    pTableCat->setMain( false );
+    pTableCat->setSystem( false );
     _pCategory->setTableCat( pTableCat );
     emit saveCat( _pCategory );
 
@@ -340,6 +345,7 @@ void pCatEditor::setCatParamModel( QAbstractItemModel* paramModel ) {
     _cSortModel->setSourceModel( paramModel );
     if (oldModel && oldModel != paramModel )
         delete oldModel;
+    _cSortModel->sort( 4 );
 }
 
 void pCatEditor::setTableCatParamModel( QAbstractItemModel* paramModel ) {
@@ -347,6 +353,7 @@ void pCatEditor::setTableCatParamModel( QAbstractItemModel* paramModel ) {
     _cTSortModel->setSourceModel( paramModel );
     if (oldModel && oldModel != paramModel )
         delete oldModel;
+    _cTSortModel->sort( 4 );
 }
 
 void pCatEditor::upParamInCat() {

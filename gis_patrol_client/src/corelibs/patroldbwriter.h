@@ -16,6 +16,7 @@ class GISPatrolDatabase;
 class pParamGroup;
 class pParameter;
 class pCategory;
+class pCatParameter;
 
 class pDBWriter : public QObject {
 public:
@@ -32,6 +33,8 @@ public:
     qint64 writeCategory( QSharedPointer< pCategory > pCat ) const;
     qint64 updateCategory( QSharedPointer< pCategory > pCat ) const;
     qint64 deleteCategory( qint64 idCat ) const;
+
+    qint64 insertCategoryParam( qint64 idCategory, QSharedPointer< pCatParameter> pCParam ) const;
 
     GISPatrolDatabase* getDb() const;
     void setDb( GISPatrolDatabase* db );

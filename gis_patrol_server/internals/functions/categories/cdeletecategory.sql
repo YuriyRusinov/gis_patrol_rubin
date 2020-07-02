@@ -1,4 +1,5 @@
-create or replace function cDeleteCategory(int4) returns int4 as
+drop function if exists cDeleteCategory(int4);
+create or replace function cDeleteCategory(int8) returns int8 as
 $BODY$
 declare
     idCategory alias for $1;

@@ -34,6 +34,7 @@ private slots:
 
     void addParameterToCat( QSharedPointer< pCategory > pc, QAbstractItemModel* cAttrModel );
     void removeParameterFromCat( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel );
+    void saveCategory( QSharedPointer< pCategory > pCategory );
 
 signals:
     void viewCatWidget( QWidget* w );
