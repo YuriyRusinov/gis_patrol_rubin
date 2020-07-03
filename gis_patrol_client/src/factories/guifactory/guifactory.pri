@@ -1,7 +1,7 @@
 HEADERS += \
-           pGuiFactory.h \
+           pParamGuiFactory.h \
            pCatGuiFactory.h
 
 SOURCES += \
-           pGuiFactory.cpp \
+           pParamGuiFactory.cpp \
            pCatGuifactory.cpp

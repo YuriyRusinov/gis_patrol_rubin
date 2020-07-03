@@ -19,7 +19,7 @@ class pDBLoader;
 class pDBWriter;
 class pParamGroup;
 
-class PGUIFactory : public QObject {
+class pParamGUIFactory : public QObject {
 public:
     //
     // Пока заглушка для отладки механизмов отображения и редактирования
@@ -48,8 +48,8 @@ private:
     //
     // Functions
     //
-    PGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent = nullptr );
-    ~PGUIFactory ();
+    pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent = nullptr );
+    ~pParamGUIFactory ();
     void buildParamModel( QAbstractItemModel* pModel, const QMap< qint64, QSharedPointer< pParamGroup >>& pGroups, QModelIndex parent=QModelIndex()) const;
 
     friend class PatrolSingleton;

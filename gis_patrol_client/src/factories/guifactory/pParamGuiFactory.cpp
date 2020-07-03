@@ -22,30 +22,30 @@
 #include <pParamType.h>
 #include <paramsgroupform.h>
 #include <paramsform.h>
-#include "pGuiFactory.h"
+#include "pParamGuiFactory.h"
 
-PGUIFactory::PGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
+pParamGUIFactory::pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
     : QObject( parent ), _dbLoader ( dbLoader ), _dbWriter ( dbWriter ) {
 }
 
-PGUIFactory::~PGUIFactory () {
+pParamGUIFactory::~pParamGUIFactory () {
 }
 
-QWidget* PGUIFactory::GUIView(QWidget* parent, Qt::WindowFlags flags) {
+QWidget* pParamGUIFactory::GUIView(QWidget* parent, Qt::WindowFlags flags) {
     QWidget* w = new QWidget( parent, flags );
     emit viewWidget( w );
     return w;
 }
 
-QWidget* PGUIFactory::GUIViewParams(bool mode, QWidget* parent, Qt::WindowFlags flags) {
+QWidget* pParamGUIFactory::GUIViewParams(bool mode, QWidget* parent, Qt::WindowFlags flags) {
     ParamListForm* plf = new ParamListForm( mode, parent, flags );
-    QObject::connect( plf, &ParamListForm::addpargroup, this, &PGUIFactory::addGroupOfParams );
-    QObject::connect( plf, &ParamListForm::editpargroup, this, &PGUIFactory::editGroupOfParams );
-    QObject::connect( plf, &ParamListForm::delpargroup, this, &PGUIFactory::delGroupOfParams );
-    QObject::connect( plf, &ParamListForm::addparam, this, &PGUIFactory::addParameter );
-    QObject::connect( plf, &ParamListForm::editparam, this, &PGUIFactory::editParameter );
-    QObject::connect( plf, &ParamListForm::delparam, this, &PGUIFactory::deleteParameter );
-    QObject::connect( plf, &ParamListForm::refreshParams, this, &PGUIFactory::refreshParams );
+    QObject::connect( plf, &ParamListForm::addpargroup, this, &pParamGUIFactory::addGroupOfParams );
+    QObject::connect( plf, &ParamListForm::editpargroup, this, &pParamGUIFactory::editGroupOfParams );
+    QObject::connect( plf, &ParamListForm::delpargroup, this, &pParamGUIFactory::delGroupOfParams );
+    QObject::connect( plf, &ParamListForm::addparam, this, &pParamGUIFactory::addParameter );
+    QObject::connect( plf, &ParamListForm::editparam, this, &pParamGUIFactory::editParameter );
+    QObject::connect( plf, &ParamListForm::delparam, this, &pParamGUIFactory::deleteParameter );
+    QObject::connect( plf, &ParamListForm::refreshParams, this, &pParamGUIFactory::refreshParams );
     QMap< qint64, QSharedPointer< pParamGroup > > pGroups = _dbLoader->loadGroupedParameters();
     QAbstractItemModel* pMod = new ParametersModel( pGroups );
     //this->buildParamModel( pMod, pGroups );
@@ -57,7 +57,7 @@ QWidget* PGUIFactory::GUIViewParams(bool mode, QWidget* parent, Qt::WindowFlags 
     return plf;
 }
 
-void PGUIFactory::addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idParent, QModelIndex pIndex) {
+void pParamGUIFactory::addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idParent, QModelIndex pIndex) {
     if( !paramsModel )
         return;
     qDebug() << __PRETTY_FUNCTION__ << paramsModel << idParent << pIndex;
@@ -82,7 +82,7 @@ void PGUIFactory::addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idPar
     paramsModel->setData( newGroupInd, QVariant::fromValue<QSharedPointer< pParamGroup >>(newGroup), Qt::UserRole+1);
 }
 
-void PGUIFactory::editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex) {
+void pParamGUIFactory::editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGroup, QModelIndex wIndex) {
     if (!paramsModel || idGroup <= 0 || !wIndex.isValid() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << paramsModel << idGroup << wIndex;
@@ -106,7 +106,7 @@ void PGUIFactory::editGroupOfParams(QAbstractItemModel* paramsModel, qint64 idGr
     paramsModel->setData( wIndex, QVariant::fromValue<QSharedPointer< pParamGroup >>(edGroup), Qt::UserRole+1);
 }
 
-void PGUIFactory::delGroupOfParams(QAbstractItemModel* paramsModel, QModelIndex wIndex) {
+void pParamGUIFactory::delGroupOfParams(QAbstractItemModel* paramsModel, QModelIndex wIndex) {
     if (!paramsModel || !wIndex.isValid() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << paramsModel << wIndex;
@@ -129,7 +129,7 @@ void PGUIFactory::delGroupOfParams(QAbstractItemModel* paramsModel, QModelIndex 
     paramsModel->removeRows(wIndex.row(), 1, pIndex);
 }
 
-void PGUIFactory::addParameter( QAbstractItemModel* paramsModel, qint64 idParentGroup, QModelIndex pIndex ) {
+void pParamGUIFactory::addParameter( QAbstractItemModel* paramsModel, qint64 idParentGroup, QModelIndex pIndex ) {
     QMap< qint64, QSharedPointer<pParamType> > pTypes = _dbLoader->loadAvailParamTypes();
     ParamsForm* parForm = new ParamsForm( -1, pTypes );
     if (!parForm || parForm->exec() != QDialog::Accepted) {
@@ -163,7 +163,7 @@ void PGUIFactory::addParameter( QAbstractItemModel* paramsModel, qint64 idParent
     QModelIndex wIndex = paramsModel->index( nr, 0, pIndex );
     paramsModel->setData(wIndex, QVariant::fromValue<QSharedPointer< pParameter >>( pParam ), Qt::UserRole+1);
 }
-void PGUIFactory::editParameter( QAbstractItemModel* paramsModel, qint64 idParameter, QModelIndex wIndex ) {
+void pParamGUIFactory::editParameter( QAbstractItemModel* paramsModel, qint64 idParameter, QModelIndex wIndex ) {
     if (!paramsModel || !wIndex.isValid() || idParameter <= 0)
         return;
     QSharedPointer< pParameter > pParam = paramsModel->data(wIndex, Qt::UserRole+1).value< QSharedPointer< pParameter >> ();
@@ -209,7 +209,7 @@ void PGUIFactory::editParameter( QAbstractItemModel* paramsModel, qint64 idParam
     paramsModel->setData( wIndex, QVariant::fromValue<QSharedPointer< pParameter >>( pParam ), Qt::UserRole+1);
 }
 
-void PGUIFactory::deleteParameter( QAbstractItemModel* paramsModel, QModelIndex wIndex ) {
+void pParamGUIFactory::deleteParameter( QAbstractItemModel* paramsModel, QModelIndex wIndex ) {
     if( !paramsModel || !wIndex.isValid() )
         return;
     int nr = paramsModel->rowCount( wIndex );
@@ -230,7 +230,7 @@ void PGUIFactory::deleteParameter( QAbstractItemModel* paramsModel, QModelIndex 
     paramsModel->removeRows(wIndex.row(), 1, pIndex);
 }
 
-void PGUIFactory::refreshParams() {
+void pParamGUIFactory::refreshParams() {
     ParamListForm* plf = qobject_cast< ParamListForm *>(this->sender());
     if (!plf)
         return;
@@ -239,7 +239,7 @@ void PGUIFactory::refreshParams() {
     plf->setParamsModel( pMod );
 }
 
-void PGUIFactory::buildParamModel( QAbstractItemModel* pMod, const QMap< qint64, QSharedPointer< pParamGroup >>& pGroups, QModelIndex parent) const {
+void pParamGUIFactory::buildParamModel( QAbstractItemModel* pMod, const QMap< qint64, QSharedPointer< pParamGroup >>& pGroups, QModelIndex parent) const {
     int i=0;
     if (pMod->rowCount(parent) > 0) {
         int nr = pMod->rowCount();

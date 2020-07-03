@@ -51,8 +51,7 @@ void pCategoryListForm::setCatModel( QAbstractItemModel* cModel ) {
 
 void pCategoryListForm::addcategory( ) {
     qDebug() << __PRETTY_FUNCTION__;
-    QAbstractItemModel* cModel = _tvCat->model();
-    emit addCategory( cModel );
+    emit addCategory( );
 }
 
 void pCategoryListForm::editcategory( ) {
