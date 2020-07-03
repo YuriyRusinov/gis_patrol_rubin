@@ -38,7 +38,7 @@ void pDBWriter::setDb( GISPatrolDatabase* db ) {
 qint64 pDBWriter::writeParamGroup( QSharedPointer< pParamGroup > pgr ) const {
     if (pgr.isNull())
         return -1;
-    QString sql_query = QString("select pinsertgroup( %1, '%2' );").arg(pgr->getParent() ? QString::number( pgr->getParent()->getId() ) : QString("null::bigint")).arg(pgr->getName());
+    QString sql_query = QString("select pinsertgroup( %1, %2 );").arg(pgr->getParent() ? QString::number( pgr->getParent()->getId() ) : QString("null::bigint")).arg(pgr->getName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg(pgr->getName()));
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr || gpr->getRowCount() != 1 ) {
         if( gpr )
@@ -54,7 +54,7 @@ qint64 pDBWriter::writeParamGroup( QSharedPointer< pParamGroup > pgr ) const {
 qint64 pDBWriter::updateParamGroup( QSharedPointer< pParamGroup > pgr ) const {
     if (pgr.isNull())
         return -1;
-    QString sql_query = QString("select pUpdateGroup(%1, %2, '%3');").arg( pgr->getId() ).arg(pgr->getParent() ? QString::number( pgr->getParent()->getId() ) : QString("null::bigint")).arg( pgr->getName() );
+    QString sql_query = QString("select pUpdateGroup(%1, %2, %3);").arg( pgr->getId() ).arg(pgr->getParent() ? QString::number( pgr->getParent()->getId() ) : QString("null::bigint")).arg( pgr->getName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pgr->getName() ) );
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr || gpr->getRowCount() != 1 ) {
         if( gpr )
@@ -83,12 +83,12 @@ qint64 pDBWriter::deleteParamGroup( qint64 idGroup ) const {
 qint64 pDBWriter::insertParam( QSharedPointer< pParameter > pPar ) const {
     if (pPar.isNull())
         return -1;
-    QString sql_query = QString("select pInsertParameter(%1, %2, '%3', '%4', '%5', %6, %7);")
+    QString sql_query = QString("select pInsertParameter(%1, %2, %3, %4, %5, %6, %7);")
                             .arg( pPar->getParamType()->getId() )
                             .arg( pPar->getParamGroup()->getId() )
-                            .arg( pPar->getCode() )
-                            .arg( pPar->getName() )
-                            .arg( pPar->getTitle() )
+                            .arg( pPar->getCode().isEmpty() ? QString("null::varchar") : QString("'%1'").arg(pPar->getCode()) )
+                            .arg( pPar->getName().isEmpty() ? QString("null::varchar"): QString("'%1'").arg(pPar->getName()) )
+                            .arg( pPar->getTitle().isEmpty() ? QString("null::varchar") :  QString("'%1'").arg(pPar->getTitle()) )
                             .arg( pPar->getTableName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pPar->getTableName() ) )
                             .arg( pPar->getColumnName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pPar->getColumnName() ) );
     GISPatrolResult * gpr = _db->execute( sql_query );
@@ -107,13 +107,13 @@ qint64 pDBWriter::insertParam( QSharedPointer< pParameter > pPar ) const {
 qint64 pDBWriter::updateParam( QSharedPointer< pParameter > pPar ) const {
     if (pPar.isNull())
         return -1;
-    QString sql_query = QString("select pUpdateParameter(%1, %2, %3, '%4', '%5', '%6', %7, %8);")
+    QString sql_query = QString("select pUpdateParameter(%1, %2, %3, %4, %5, %6, %7, %8);")
                             .arg( pPar->getId() )
                             .arg( pPar->getParamType()->getId() )
                             .arg( pPar->getParamGroup()->getId() )
-                            .arg( pPar->getCode() )
-                            .arg( pPar->getName() )
-                            .arg( pPar->getTitle() )
+                            .arg( pPar->getCode().isEmpty() ? QString("null::varchar") : QString("'%1'").arg(pPar->getCode()) )
+                            .arg( pPar->getName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg(pPar->getName()) )
+                            .arg( pPar->getTitle().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pPar->getTitle() ) )
                             .arg( pPar->getTableName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pPar->getTableName() ) )
                             .arg( pPar->getColumnName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pPar->getColumnName() ) );
     qDebug() << __PRETTY_FUNCTION__ << sql_query;
@@ -160,10 +160,10 @@ qint64 pDBWriter::writeCategory( QSharedPointer< pCategory > pCat ) const {
             return -1;
         }
     }
-    QString sql_query = QString("select cinsert( '%1', '%2', '%3', %4, %5, %6 );")
-                                .arg( pCat->getName() )
-                                .arg( pCat->getCode() )
-                                .arg( pCat->getDesc() )
+    QString sql_query = QString("select cinsert( %1, %2, %3, %4, %5, %6 );")
+                                .arg( pCat->getName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pCat->getName() ) )
+                                .arg( pCat->getCode().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pCat->getCode() ) )
+                                .arg( pCat->getDesc().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pCat->getDesc() ) )
                                 .arg( pCat->getType()->getId() )
                                 .arg( pCat->getTableCat().isNull() ? QString("null::int8") : QString::number( pCat->getTableCat()->getId() ) )
                                 .arg( pCat->isMain() ? QString("true") : QString("false") );
@@ -212,11 +212,11 @@ qint64 pDBWriter::updateCategory( QSharedPointer< pCategory > pCat ) const {
             return -1;
         }
     }
-    QString sql_query = QString("select cupdate( %1, '%2', '%3', '%4', %5, %6, %7 );")
+    QString sql_query = QString("select cupdate( %1, %2, %3, %4, %5, %6, %7 );")
                                 .arg( pCat->getId() )
-                                .arg( pCat->getName() )
-                                .arg( pCat->getCode() )
-                                .arg( pCat->getDesc() )
+                                .arg( pCat->getName().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pCat->getName() ) )
+                                .arg( pCat->getCode().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pCat->getCode() ) )
+                                .arg( pCat->getDesc().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pCat->getDesc() ) )
                                 .arg( pCat->getType()->getId() )
                                 .arg( pCat->getTableCat().isNull() ? QString("null::int8") : QString::number( pCat->getTableCat()->getId() ) )
                                 .arg( pCat->isMain() ? QString("true") : QString("false") );
@@ -282,10 +282,10 @@ qint64 pDBWriter::insertCategoryParam( qint64 idCategory, QSharedPointer< pCatPa
     if( idCategory <= 0 || pCParam.isNull() )
         return -1;
 
-    QString sql_query = QString("select cAddAttr( %1, %2, '%3', %4, %5, %6 );")
+    QString sql_query = QString("select cAddAttr( %1, %2, %3, %4, %5, %6 );")
                             .arg( idCategory )
                             .arg( pCParam->getId() )
-                            .arg( pCParam->getDefaultValue().toString() )
+                            .arg( pCParam->getDefaultValue().isNull() ? QString("null::varchar") : QString("'%1'").arg (pCParam->getDefaultValue().toString()) )
                             .arg( pCParam->isMandatory() ? QString( "true" ) : QString( "false" ) )
                             .arg( pCParam->isReadOnly() ? QString( "true" ) : QString( "false" ) )
                             .arg( pCParam->getOrder() );
@@ -339,10 +339,10 @@ qint64 pDBWriter::updateCategoryParam( qint64 idCategory, QSharedPointer< pCatPa
     if( idCategory <= 0 || pCParam.isNull() )
         return -1;
 
-    QString sql_query = QString("select cUpdateAttr( %1, %2, '%3', %4, %5, %6 );")
+    QString sql_query = QString("select cUpdateAttr( %1, %2, %3, %4, %5, %6 );")
                             .arg( idCategory )
                             .arg( pCParam->getId() )
-                            .arg( pCParam->getDefaultValue().toString() )
+                            .arg( pCParam->getDefaultValue().isNull() ? QString("null::varchar") : QString("'%1'").arg( pCParam->getDefaultValue().toString() ) )
                             .arg( pCParam->isMandatory() ? QString( "true" ) : QString( "false" ) )
                             .arg( pCParam->isReadOnly() ? QString( "true" ) : QString( "false" ) )
                             .arg( pCParam->getOrder() );
