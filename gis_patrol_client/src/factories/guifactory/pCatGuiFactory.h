@@ -18,7 +18,7 @@ class QWidget;
 
 class pDBLoader;
 class pDBWriter;
-class PGUIFactory;
+class pParamGUIFactory;
 
 class pCategory;
 
@@ -27,8 +27,11 @@ public:
     QWidget* GUICatView( QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
     QWidget* GUICategoryEditor( QSharedPointer< pCategory > pCat, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
 
+public slots:
+    void createCategory( QSharedPointer< pCategory > pCat, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
+    void addPCategory( );
+
 private slots:
-    void addPCategory( QAbstractItemModel* catMod );
     void editPCategory( QAbstractItemModel* catMod, QSharedPointer< pCategory > pCat, QModelIndex cIndex );
     void delPCategory( QAbstractItemModel* catMod, QModelIndex cIndex );
     void refreshCats();
@@ -41,13 +44,13 @@ signals:
     void viewCatWidget( QWidget* w );
 
 private:
-    pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, PGUIFactory* guif, QObject* parent=nullptr );
+    pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* guif, QObject* parent=nullptr );
     ~pCatGuiFactory();
     friend class PatrolSingleton;
 
     mutable pDBLoader* _dbLoader;
     mutable pDBWriter* _dbWriter;
-    mutable PGUIFactory* _guiFactory;
+    mutable pParamGUIFactory* _guiFactory;
 private:
     Q_OBJECT
 };

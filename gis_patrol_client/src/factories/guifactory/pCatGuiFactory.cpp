@@ -22,10 +22,10 @@
 #include <pCatParameter.h>
 #include <pParamListForm.h>
 
-#include "pGuiFactory.h"
+#include "pParamGuiFactory.h"
 #include "pCatGuiFactory.h"
 
-pCatGuiFactory::pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, PGUIFactory* guif, QObject* parent )
+pCatGuiFactory::pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* guif, QObject* parent )
     : QObject( parent ), _dbLoader( dbLoader), _dbWriter( dbWriter ),
     _guiFactory( guif ) {
 }
@@ -76,8 +76,7 @@ QWidget* pCatGuiFactory::GUICategoryEditor( QSharedPointer< pCategory > pCat, QW
     return cEditor;
 }
 
-void pCatGuiFactory::addPCategory( QAbstractItemModel* catMod ) {
-    qDebug() << __PRETTY_FUNCTION__ << catMod;
+void pCatGuiFactory::addPCategory( ) {
     QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
     qint64 defaultType = 1;
     QSharedPointer< pCategoryType > cType = pCTypes.value( defaultType, nullptr );
@@ -205,4 +204,19 @@ void pCatGuiFactory::saveCategory( QSharedPointer< pCategory > pCategory ) {
         QMessageBox::warning( qobject_cast<QWidget*>(this->sender()), tr("Create/edit category"), tr("Cannot write category, DB Error"), QMessageBox::Ok );
         return;
     }
+}
+
+void pCatGuiFactory::createCategory( QSharedPointer< pCategory > pCat, QWidget* parent, Qt::WindowFlags flags ) {
+    QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
+    qint64 defaultType = 1;
+    QSharedPointer< pCategoryType > cType = pCTypes.value( defaultType, nullptr );
+    pCat.reset ( new pCategory );
+    pCat->setType( cType );
+    if( pCat->getTableCat().isNull() ){
+        qint64 defaultTableType = 10;
+        QSharedPointer< pCategory > pTableCat ( new pCategory( -2, QString(), QString(), pCTypes.value( defaultTableType, nullptr ) ) );
+        pCat->setTableCat( pTableCat );
+    }
+    pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat, parent, flags ));
+    emit viewCatWidget( cEditor );
 }

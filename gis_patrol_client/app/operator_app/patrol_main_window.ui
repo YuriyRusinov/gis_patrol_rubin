@@ -50,7 +50,6 @@
      <addaction name="actViewParameters"/>
     </widget>
     <addaction name="actCreateCat"/>
-    <addaction name="actAddParametersIntoCat"/>
     <addaction name="menuView"/>
     <addaction name="separator"/>
    </widget>

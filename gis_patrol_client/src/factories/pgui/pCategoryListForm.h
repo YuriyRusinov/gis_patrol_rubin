@@ -34,7 +34,7 @@ private slots:
     void refreshC( );
 
 signals:
-    void addCategory( QAbstractItemModel* mod );
+    void addCategory( );
     void editCategory( QAbstractItemModel* mod, QSharedPointer< pCategory > pCat, QModelIndex cIndex );
     void delCategory( QAbstractItemModel* mod, QModelIndex cIndex );
 

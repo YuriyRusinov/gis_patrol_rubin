@@ -14,7 +14,7 @@
 
 #include <patrolsingleton.h>
 #include <patrolguiapp.h>
-#include <pGuiFactory.h>
+#include <pParamGuiFactory.h>
 #include <pCatGuiFactory.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
@@ -35,10 +35,10 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     this->initActions();
     setEnabled( false );
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
-    PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
     pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
     QObject::connect(pGuiApp, &PatrolGuiApp::disconnected, this, &PatrolMainWindow::slotDbDisconnected);
-    QObject::connect(pGuiFactory, &PGUIFactory::viewWidget, this, &PatrolMainWindow::slotAddWidget);
+    QObject::connect(pGuiFactory, &pParamGUIFactory::viewWidget, this, &PatrolMainWindow::slotAddWidget);
     QObject::connect(pCatGuiF, &pCatGuiFactory::viewCatWidget, this, &PatrolMainWindow::slotAddWidget);
 }
 
@@ -91,7 +91,6 @@ void PatrolMainWindow::initActions() {
     QObject::connect(_UI->actCreateCat, &QAction::triggered, this, &PatrolMainWindow::slotCreateCategory);
 
     _UI->actAddParametersIntoCat->setIcon(QIcon(":/patrol/add_parameter_to_cat.svg"));
-    //_tbActReferences->addAction(_UI->actAddParametersIntoCat);
     QObject::connect(_UI->actAddParametersIntoCat, &QAction::triggered, this, &PatrolMainWindow::slotAddParametersIntoCategory);
 
     _UI->actViewCat->setIcon(QIcon(":/patrol/view_parameters.svg"));
@@ -109,7 +108,7 @@ void PatrolMainWindow::slotDbDisconnected() {
 
 void PatrolMainWindow::slotViewReferences() {
     qDebug() << __PRETTY_FUNCTION__;
-    PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
     pGuiFactory->GUIView();
 }
 
@@ -136,12 +135,14 @@ void PatrolMainWindow::slotAddWidget(QWidget* w) {
 
 void PatrolMainWindow::slotViewParameters() {
     qDebug() << __PRETTY_FUNCTION__;
-    PGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
     pGuiFactory->GUIViewParams( false );
 }
 
 void PatrolMainWindow::slotCreateCategory() {
     qDebug() << __PRETTY_FUNCTION__;
+    pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
+    pCatGuiF->addPCategory( );
 }
 
 void PatrolMainWindow::slotAddParametersIntoCategory() {

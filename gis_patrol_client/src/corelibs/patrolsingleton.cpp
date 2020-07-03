@@ -11,7 +11,7 @@
 #include <gis_patrolpgdatabase.h>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
-#include <pGuiFactory.h>
+#include <pParamGuiFactory.h>
 #include <pCatGuiFactory.h>
 #include "patrolguiapp.h"
 #include "patrolsingleton.h"
@@ -32,7 +32,7 @@ PatrolSingleton::PatrolSingleton( QObject* parent )
     _pga( new PatrolGuiApp (_dataBase) ),
     _pdbLoader( new pDBLoader( _dataBase ) ),
     _pdbWriter( new pDBWriter( _dataBase ) ),
-    _pguif( new PGUIFactory( _pdbLoader, _pdbWriter ) ),
+    _pguif( new pParamGUIFactory( _pdbLoader, _pdbWriter ) ),
     _pcatf( new pCatGuiFactory( _pdbLoader, _pdbWriter, _pguif ) )
 {
     if (_instance) {
