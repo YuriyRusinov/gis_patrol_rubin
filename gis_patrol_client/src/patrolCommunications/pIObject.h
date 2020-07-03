@@ -11,7 +11,10 @@
 
 #include <QDateTime>
 #include <QColor>
+#include <QIcon>
 #include <QSharedPointer>
+#include <QString>
+#include <QUuid>
 
 class pCategory;
 
@@ -25,6 +28,52 @@ public:
               QString description = QString());
     pIObject( const pIObject& io );
     ~pIObject( );
+
+    qint64 getId() const;
+    void setId( qint64 id );
+
+    QSharedPointer< pCategory > getCategory( ) const;
+    void setCategory( QSharedPointer< pCategory > pCat );
+
+    QString getName( ) const;
+    void setName( QString name );
+
+    QString getDesc( ) const;
+    void setDesc( QString desc );
+
+    QString getTableName( ) const;
+    void setTableName( QString tableName );
+
+    const QDateTime& insertTime( ) const;
+    QDateTime& insertTime( );
+    void setInsertTime( const QDateTime& dt );
+
+    bool isSystem( ) const;
+    void setSystem( bool sys );
+
+    bool isGlobal( ) const;
+    void setGlobal( bool global );
+
+    const QColor& getBackground( ) const;
+    void setBackground( const QColor& bgc );
+
+    const QColor& getForeground( ) const;
+    void setForeground( const QColor& fgc );
+
+    qint64 getAuthor( ) const;
+    void setAuthor( qint64 idAuthor );
+
+    int getMacLabel( ) const;
+    void setMacLabel( int ml );
+
+    QString getInfo( ) const;
+    void setInfo( const QString& info );
+
+    const QIcon& getIcon( ) const;
+    void setIcon( const QIcon& rIcon );
+
+    const QUuid& uuid() const;
+    QUuid& uuid();
 
 private:
     qint64 _id;
@@ -42,8 +91,14 @@ private:
      * Системные ИО удалить нельзя. Можно только модифицировать 
      * (добавлять, удалять, изменять) их экземпляры ИО. */
     bool _isSystem;
+    bool _isGlobal;
+    QColor _recordBackground;
+    QColor _recordForeground;
     qint64 _idUser;
     int _idMaclabel;
 
-}; /* -----  end of class PIObject  ----- */
+    QString _information;
+    QIcon _rIcon;
+    QUuid _uuid_t;
 
+}; /* -----  end of class PIObject  ----- */
