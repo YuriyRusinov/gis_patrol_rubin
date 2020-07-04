@@ -11,7 +11,8 @@ HEADERS += \
            pParamView.h \
            pCategory.h \
            pCategoryType.h \
-           pIObject.h
+           pIObject.h \
+           pParamValue.h
 
 SOURCES += \
            pCommCenter.cpp \
@@ -24,4 +25,5 @@ SOURCES += \
            pParamView.cpp \
            pCategory.cpp \
            pCategoryType.cpp \
-           pIObject.cpp
+           pIObject.cpp \
+           pParamValue.cpp
