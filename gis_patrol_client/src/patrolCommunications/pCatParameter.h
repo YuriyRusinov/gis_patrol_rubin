@@ -17,7 +17,7 @@
 
 class pCatParameter : public pParameter {
 public:
-    pCatParameter( const pParameter& par = pParameter(), bool is_mandatory = false, bool is_readonly = false, QVariant defaultValue = QVariant(), int orderCat=-1 );
+    pCatParameter( const pParameter& par = pParameter(), bool is_mandatory = false, bool is_readonly = false, QVariant defaultValue = QVariant(), int orderCat = -1, qint64 id_row = -1);
     pCatParameter( const pCatParameter& pcp );
     ~pCatParameter();
 
@@ -36,6 +36,9 @@ public:
     const int& paramOrder() const;
     int& paramOrder();
 
+    int getIdRow() const;
+    void setIdRow( qint64 id_row );
+
     inline bool operator< (const pCatParameter& pcp) const { return getOrder() < pcp.getOrder(); }
 
 private:
@@ -43,6 +46,7 @@ private:
     bool _is_readonly;
     QVariant _defaultValue;
     int _orderCat;
+    qint64 _idRow;
 };
 
 inline bool compareCatParams( QSharedPointer< const pCatParameter > item1, QSharedPointer< const pCatParameter > item2 ) {

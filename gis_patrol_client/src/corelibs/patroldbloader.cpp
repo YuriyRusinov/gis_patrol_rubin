@@ -332,10 +332,11 @@ QMap< qint64, QSharedPointer< pCatParameter > > pDBLoader::loadCatParameters( qi
         bool isMandatory = gpr->getCellAsBool( i, 11 );
         bool isReadOnly = gpr->getCellAsBool( i, 12 );
         int sort_order = gpr->getCellAsInt( i, 13 );
+        qint64 id_row = gpr->getCellAsInt64( i, 14 );
         QSharedPointer< pParamType > pType ( new pParamType( idParamType, paramTypeName, paramTypeCode) );
         QSharedPointer< pParamGroup > pGroup = loadParamGroup( gpr->getCellAsInt64( i, 2) );
         QSharedPointer< pParameter > param ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
-        QSharedPointer< pCatParameter > pcParam ( new pCatParameter (*(param.data()), isMandatory, isReadOnly, paramDefVal, sort_order ) );
+        QSharedPointer< pCatParameter > pcParam ( new pCatParameter (*(param.data()), isMandatory, isReadOnly, paramDefVal, sort_order, id_row ) );
         res.insert( idParam, pcParam );
     }
     delete gpr;

@@ -19,7 +19,8 @@ begin
             null::varchar, -- default_value is possible in categories
             null::boolean,
             null::boolean,
-            null::integer
+            null::integer,
+            null::int8
         from
             tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id)
             inner join tbl_parameters_groups pg on (p.id_param_group=pg.id and pg.id=idParamGroup) order by 1
