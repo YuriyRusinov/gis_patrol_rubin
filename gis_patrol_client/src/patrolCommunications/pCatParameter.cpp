@@ -9,12 +9,13 @@
 
 #include "pCatParameter.h"
 
-pCatParameter::pCatParameter( const pParameter& par, bool is_mandatory, bool is_readonly, QVariant defaultValue, int orderCat )
+pCatParameter::pCatParameter( const pParameter& par, bool is_mandatory, bool is_readonly, QVariant defaultValue, int orderCat, qint64 id_row )
     : pParameter( par ),
     _is_mandatory( is_mandatory ),
     _is_readonly( is_readonly ),
     _defaultValue( defaultValue ),
-    _orderCat( orderCat ) {
+    _orderCat( orderCat ),
+    _idRow( id_row ) {
 }
 
 pCatParameter::pCatParameter( const pCatParameter& pcp )
@@ -22,7 +23,8 @@ pCatParameter::pCatParameter( const pCatParameter& pcp )
     _is_mandatory( pcp._is_mandatory ),
     _is_readonly( pcp._is_readonly ),
     _defaultValue( pcp._defaultValue ),
-    _orderCat( pcp._orderCat ) {
+    _orderCat( pcp._orderCat ),
+    _idRow( pcp._idRow ) {
 }
 
 pCatParameter::~pCatParameter() {
@@ -66,6 +68,14 @@ const int& pCatParameter::paramOrder() const {
 
 int& pCatParameter::paramOrder() {
     return _orderCat;
+}
+
+int pCatParameter::getIdRow() const {
+    return _idRow;
+}
+
+void pCatParameter::setIdRow( qint64 id_row ) {
+    _idRow = id_row;
 }
 
 void findCatParamsByOrder( QVector< qint64 >& res, const QMap< qint64, QSharedPointer< pCatParameter > >& params, int orderVal ) {

@@ -13,7 +13,8 @@ create type h_get_parameter as (id_parameter int8,
                                 default_value varchar,
                                 is_mandatory boolean,
                                 is_read_only boolean,
-                                param_sort_order int8);
+                                param_sort_order integer,
+                                id_ex int8);
 
 create or replace function pGetParameter(int8) returns setof h_get_parameter as
 $BODY$
@@ -37,7 +38,8 @@ begin
             null::varchar, -- default_value is possible in categories
             null::boolean,
             null::boolean,
-            null::integer
+            null::integer,
+            null::int8
         from
             tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and p.id=idParameter)
     loop
@@ -71,7 +73,8 @@ begin
             null::varchar, -- default_value is possible in categories
             null::boolean,
             null::boolean,
-            null::integer
+            null::integer,
+            null::int8
         from
             tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and lower(p.code)=lower(parameter_code))
     loop

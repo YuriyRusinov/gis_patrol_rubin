@@ -20,7 +20,8 @@ begin
             pcat.default_value, 
             pcat.is_mandatory, 
             pcat.is_read_only,
-            pcat.param_sort_order
+            pcat.param_sort_order,
+            pcat.id
         from
             tbl_cat_params pcat
             inner join tbl_parameters p on (pcat.id = ' || idCategoryParam || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id);';
@@ -60,7 +61,8 @@ begin
             pcat.default_value, 
             pcat.is_mandatory, 
             pcat.is_read_only,
-            pcat.param_sort_order
+            pcat.param_sort_order,
+            pcat.id
         from  
             tbl_cat_params pcat
             inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = ' || idParameter || E' and pcat.id_parameter = p.id) 
@@ -150,7 +152,8 @@ begin
             pcat.default_value, 
             pcat.is_mandatory, 
             pcat.is_read_only,
-            pcat.param_sort_order
+            pcat.param_sort_order,
+            pcat.id
         from  
             tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id) order by 14';
     raise warning 'query is %', query;
