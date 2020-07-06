@@ -226,6 +226,7 @@ qint64 pIObject::removeParamValue( qint64 _id ) {
         if( ca->getId() == _id ) {
             _paramValues.removeAt( i );
             cnt++;
+            count--;
         }
         else
             i++;
