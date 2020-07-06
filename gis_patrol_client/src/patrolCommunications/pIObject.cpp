@@ -7,6 +7,8 @@
  *  Ю.Л.Русинов
  */
 
+#include "pCatParameter.h"
+#include "pParamValue.h"
 #include "pIObject.h"
 
 pIObject::pIObject( )
@@ -24,7 +26,8 @@ pIObject::pIObject( )
     _idMaclabel( 1 ),
     _information( QString() ),
     _rIcon( QIcon() ),
-    _uuid_t( QUuid() ) {
+    _uuid_t( QUuid() ),
+    _paramValues( QList< QSharedPointer< pParamValue > >() ) {
 }
 
 pIObject::pIObject( qint64 id,
@@ -45,7 +48,8 @@ pIObject::pIObject( qint64 id,
     _idMaclabel( 1 ),
     _information( QString() ),
     _rIcon( QIcon() ),
-    _uuid_t( QUuid() ) {
+    _uuid_t( QUuid() ),
+    _paramValues( QList< QSharedPointer< pParamValue > >() ) {
 }
 
 pIObject::pIObject( const pIObject& io )
@@ -63,10 +67,12 @@ pIObject::pIObject( const pIObject& io )
     _idMaclabel( io._idMaclabel ),
     _information( io._information ),
     _rIcon( io._rIcon ),
-    _uuid_t( io._uuid_t.toString() ) {
+    _uuid_t( io._uuid_t.toString() ),
+    _paramValues( io._paramValues ) {
 }
 
 pIObject::~pIObject( ) {
+    _paramValues.clear();
 }
 
 qint64 pIObject::getId() const {
@@ -191,4 +197,61 @@ const QUuid& pIObject::uuid() const {
 
 QUuid& pIObject::uuid() {
     return _uuid_t;
+}
+
+const QList< QSharedPointer< pParamValue > >& pIObject::paramValues() const {
+    return _paramValues;
+}
+
+QList< QSharedPointer< pParamValue > >& pIObject::paramValues() {
+    return _paramValues;
+}
+
+void pIObject::setParamValues( QList< QSharedPointer< pParamValue > >& pVals ) {
+    _paramValues = pVals;
+}
+
+void pIObject::addParamValue( QSharedPointer< pParamValue > pVal ) {
+    if( pVal.isNull() )
+        return;
+
+    _paramValues.append( pVal );
+}
+
+qint64 pIObject::removeParamValue( qint64 _id ) {
+    int count = _paramValues.size();
+    int cnt = 0;
+    for (int i=0; i<count; ) {
+        QSharedPointer< pCatParameter > ca = _paramValues[i]->getCatParam();
+        if( ca->getId() == _id ) {
+            _paramValues.removeAt( i );
+            cnt++;
+        }
+        else
+            i++;
+    }
+    if( cnt == 0 )
+        return -1;
+
+    return _id;
+}
+
+qint64 pIObject::removeParamValue( QSharedPointer< pParamValue > pVal ) {
+    if( pVal.isNull() )
+        return -1;
+
+    int cnt = _paramValues.removeAll( pVal );
+    if( cnt == 0 )
+        return -1;
+
+    return 1;
+}
+
+qint64 pIObject::removeParamValueInd( qint64 index ) {
+    if( index < 0 || index >= _paramValues.size() )
+        return -1;
+
+    _paramValues.removeAt( index );
+
+    return 1;
 }

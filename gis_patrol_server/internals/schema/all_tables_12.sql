@@ -238,11 +238,12 @@ COMMENT ON TABLE public.tbl_category_type IS E'Справочник типов �
 CREATE TABLE public.tbl_parameter_values (
 	id bigserial NOT NULL,
 	id_communication_object integer,
-	id_cat_param integer NOT NULL,
+	id_param_category integer NOT NULL,
 	value varchar NOT NULL,
 	description varchar,
 	start_time timestamptz NOT NULL DEFAULT current_timestamp,
 	finish_time timestamptz,
+	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
 	is_actual boolean NOT NULL DEFAULT true,
 	CONSTRAINT tbl_parameter_values_pk PRIMARY KEY (id)
 
@@ -364,7 +365,7 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- object: fk_cat_param | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_parameter_values DROP CONSTRAINT IF EXISTS fk_cat_param CASCADE;
-ALTER TABLE public.tbl_parameter_values ADD CONSTRAINT fk_cat_param FOREIGN KEY (id_cat_param)
+ALTER TABLE public.tbl_parameter_values ADD CONSTRAINT fk_cat_param FOREIGN KEY (id_param_category)
 REFERENCES public.tbl_cat_params (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --

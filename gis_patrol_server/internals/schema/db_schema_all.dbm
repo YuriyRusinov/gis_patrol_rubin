@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="453,0" last-zoom="0.95" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="451,0" last-zoom="0.95" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -285,7 +285,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_parameter_values" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
+<table name="tbl_parameter_values" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит значения параметров, в случае изменения значения, прежняя величина остается в таблице, но для нее устанавливается время окончания и поле is_actual становится равным false]]></comment>
 	<position x="1020" y="560"/>
@@ -295,7 +295,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_communication_object">
 		<type name="integer" length="0"/>
 	</column>
-	<column name="id_cat_param" not-null="true">
+	<column name="id_param_category" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
 	<column name="value" not-null="true">
@@ -308,6 +308,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="timestamptz" length="0"/>
 	</column>
 	<column name="finish_time">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="insert_time" not-null="true" default-value="current_timestamp">
 		<type name="timestamptz" length="0"/>
 	</column>
 	<column name="is_actual" not-null="true" default-value="true">
@@ -451,7 +454,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_cat_param" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_cat_params" table="public.tbl_parameter_values">
-	<columns names="id_cat_param" ref-type="src-columns"/>
+	<columns names="id_param_category" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
