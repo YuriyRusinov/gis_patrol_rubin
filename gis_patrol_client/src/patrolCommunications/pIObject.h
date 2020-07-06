@@ -17,6 +17,7 @@
 #include <QUuid>
 
 class pCategory;
+class pParamValue;
 
 class pIObject
 {
@@ -75,6 +76,23 @@ public:
     const QUuid& uuid() const;
     QUuid& uuid();
 
+    const QList< QSharedPointer< pParamValue > >& paramValues() const;
+    QList< QSharedPointer< pParamValue > >& paramValues();
+    void setParamValues( QList< QSharedPointer< pParamValue > >& pVals );
+    void addParamValue( QSharedPointer< pParamValue > pVal );
+    //
+    // удаляет из списка значений все значения атрибута с указанным id
+    //
+    qint64 removeParamValue( qint64 _id );
+    //
+    // удаляет из списка значений указанное значение
+    //
+    qint64 removeParamValue( QSharedPointer< pParamValue > pVal );
+    //
+    // удаляет из списка значений значение с указанным порядковым индексом
+    //
+    qint64 removeParamValueInd( qint64 index );
+
 private:
     qint64 _id;
     QSharedPointer< pCategory > _pCategory;
@@ -100,5 +118,7 @@ private:
     QString _information;
     QIcon _rIcon;
     QUuid _uuid_t;
+
+    QList< QSharedPointer< pParamValue > > _paramValues;
 
 }; /* -----  end of class PIObject  ----- */
