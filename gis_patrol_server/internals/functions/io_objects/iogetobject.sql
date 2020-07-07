@@ -1,7 +1,7 @@
 select f_safe_drop_type('h_get_object');
-create type h_get_object as (id int4,
-                             id_io_category int4,
-                             author int4,
+create type h_get_object as (id int8,
+                             id_io_category int8,
+                             author int8,
                              io_name varchar,
                              io_table_name varchar,
                              io_desc varchar,
@@ -15,8 +15,9 @@ create type h_get_object as (id int4,
                              author_email varchar,
                              r_icon varchar,
                              uuid_t uuid);
-                             
-create or replace function ioGetObject(int4) returns setof h_get_object as
+
+drop function if exists ioGetObject(int4);                        
+create or replace function ioGetObject(int8) returns setof h_get_object as
 $BODY$
 declare
     idObject alias for $1;
@@ -60,7 +61,7 @@ create or replace function ioGetObjectIDByTableName (varchar) returns int4 as
 $BODY$
 declare
     tableName alias for $1;
-    idObject int4;
+    idObject int8;
 begin
     select into idObject io.id from tbl_io_communication_objects_references io where io.table_name = tableName;
     --raise notice '%', idObject;
