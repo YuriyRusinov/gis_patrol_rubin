@@ -19,6 +19,7 @@ class pParamType;
 class pCategory;
 class pCategoryType;
 class pCatParameter;
+class pIObject;
 
 class pDBLoader : public QObject {
 public:

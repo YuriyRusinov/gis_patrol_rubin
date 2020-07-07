@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="56,504" last-zoom="0.95" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="470,0" last-zoom="0.95" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -63,10 +63,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bigint" length="0"/>
 	</column>
 	<column name="id_author" not-null="true">
-		<type name="int4" length="0"/>
+		<type name="bigint" length="0"/>
 	</column>
 	<column name="id_category" not-null="true">
-		<type name="integer" length="0"/>
+		<type name="bigint" length="0"/>
 	</column>
 	<column name="name" not-null="true">
 		<type name="varchar" length="0"/>
