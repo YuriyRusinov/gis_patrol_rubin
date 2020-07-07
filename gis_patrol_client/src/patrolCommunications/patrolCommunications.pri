@@ -30,4 +30,4 @@ SOURCES += \
            pIObject.cpp \
            pParamValue.cpp \
            pRecord.cpp \
-           pRecordC.h
+           pRecordC.cpp
