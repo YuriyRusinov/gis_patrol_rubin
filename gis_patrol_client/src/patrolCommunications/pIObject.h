@@ -16,11 +16,12 @@
 #include <QString>
 #include <QUuid>
 
+#include "pRecord.h"
+
 class pCategory;
 class pParamValue;
 
-class pIObject
-{
+class pIObject : public pRecord {
 public:
     pIObject( );
     pIObject( qint64 id,
@@ -36,12 +37,6 @@ public:
     QSharedPointer< pCategory > getCategory( ) const;
     void setCategory( QSharedPointer< pCategory > pCat );
 
-    QString getName( ) const;
-    void setName( QString name );
-
-    QString getDesc( ) const;
-    void setDesc( QString desc );
-
     QString getTableName( ) const;
     void setTableName( QString tableName );
 
@@ -55,12 +50,6 @@ public:
     bool isGlobal( ) const;
     void setGlobal( bool global );
 
-    const QColor& getBackground( ) const;
-    void setBackground( const QColor& bgc );
-
-    const QColor& getForeground( ) const;
-    void setForeground( const QColor& fgc );
-
     qint64 getAuthor( ) const;
     void setAuthor( qint64 idAuthor );
 
@@ -69,12 +58,6 @@ public:
 
     QString getInfo( ) const;
     void setInfo( const QString& info );
-
-    const QIcon& getIcon( ) const;
-    void setIcon( const QIcon& rIcon );
-
-    const QUuid& uuid() const;
-    QUuid& uuid();
 
     const QList< QSharedPointer< pParamValue > >& paramValues() const;
     QList< QSharedPointer< pParamValue > >& paramValues();
@@ -96,8 +79,6 @@ public:
 private:
     qint64 _id;
     QSharedPointer< pCategory > _pCategory;
-    QString _name;
-    QString _description;
     QString _tableName;
 
     QDateTime _insertTime;
@@ -110,14 +91,10 @@ private:
      * (добавлять, удалять, изменять) их экземпляры ИО. */
     bool _isSystem;
     bool _isGlobal;
-    QColor _recordBackground;
-    QColor _recordForeground;
     qint64 _idUser;
     int _idMaclabel;
 
     QString _information;
-    QIcon _rIcon;
-    QUuid _uuid_t;
 
     QList< QSharedPointer< pParamValue > > _paramValues;
 
