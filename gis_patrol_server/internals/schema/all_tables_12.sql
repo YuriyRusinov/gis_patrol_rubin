@@ -29,8 +29,8 @@ COMMENT ON EXTENSION postgis IS E'PostGIS geometry, geography, and raster spatia
 -- DROP TABLE IF EXISTS public.tbl_communication_categories CASCADE;
 CREATE TABLE public.tbl_communication_categories (
 	id bigserial NOT NULL,
-	id_category_type integer NOT NULL,
-	id_child int4,
+	id_category_type bigint NOT NULL,
+	id_child bigint,
 	is_main bool NOT NULL DEFAULT true,
 	name varchar NOT NULL,
 	code varchar NOT NULL,
@@ -61,8 +61,8 @@ ALTER SEQUENCE public.tbl_communication_objects_references_id_seq OWNER TO postg
 -- DROP TABLE IF EXISTS public.tbl_io_communication_objects_references CASCADE;
 CREATE TABLE public.tbl_io_communication_objects_references (
 	id bigint NOT NULL DEFAULT nextval('public.tbl_communication_objects_references_id_seq'::regclass),
-	id_author int4 NOT NULL,
-	id_category integer NOT NULL,
+	id_author bigint NOT NULL,
+	id_category bigint NOT NULL,
 	name varchar NOT NULL,
 	description varchar,
 	table_name varchar(256),
@@ -178,8 +178,8 @@ CREATE TABLE public.version_table (
 -- DROP TABLE IF EXISTS public.tbl_parameters CASCADE;
 CREATE TABLE public.tbl_parameters (
 	id bigserial NOT NULL,
-	id_param_type integer,
-	id_param_group integer NOT NULL DEFAULT 2,
+	id_param_type bigint,
+	id_param_group bigint NOT NULL DEFAULT 2,
 	code varchar(256) NOT NULL,
 	name varchar NOT NULL,
 	title varchar NOT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE public.tbl_parameters (
 -- DROP TABLE IF EXISTS public.tbl_parameter_types CASCADE;
 CREATE TABLE public.tbl_parameter_types (
 	id bigserial NOT NULL,
-	id_param_view integer NOT NULL,
+	id_param_view bigint NOT NULL,
 	name character varying NOT NULL,
 	code character varying NOT NULL,
 	CONSTRAINT tbl_communication_parameter_types_pk PRIMARY KEY (id)
@@ -207,8 +207,8 @@ CREATE TABLE public.tbl_parameter_types (
 -- DROP TABLE IF EXISTS public.tbl_cat_params CASCADE;
 CREATE TABLE public.tbl_cat_params (
 	id bigserial NOT NULL,
-	id_category integer NOT NULL,
-	id_parameter integer NOT NULL,
+	id_category bigint NOT NULL,
+	id_parameter bigint NOT NULL,
 	default_value varchar,
 	is_mandatory bool NOT NULL DEFAULT false,
 	is_read_only bool NOT NULL DEFAULT false,
@@ -237,8 +237,8 @@ COMMENT ON TABLE public.tbl_category_type IS E'Справочник типов �
 -- DROP TABLE IF EXISTS public.tbl_parameter_values CASCADE;
 CREATE TABLE public.tbl_parameter_values (
 	id bigserial NOT NULL,
-	id_communication_object integer,
-	id_param_category integer NOT NULL,
+	id_communication_object bigint,
+	id_param_category bigint NOT NULL,
 	value varchar NOT NULL,
 	description varchar,
 	start_time timestamptz NOT NULL DEFAULT current_timestamp,
@@ -286,7 +286,7 @@ COMMENT ON TABLE public.tbl_param_views IS E'Таблица содержит п�
 -- DROP TABLE IF EXISTS public.tbl_parameters_groups CASCADE;
 CREATE TABLE public.tbl_parameters_groups (
 	id bigserial NOT NULL,
-	id_parent integer,
+	id_parent bigint,
 	name varchar NOT NULL,
 	CONSTRAINT tbl_parameters_groups_pk PRIMARY KEY (id)
 

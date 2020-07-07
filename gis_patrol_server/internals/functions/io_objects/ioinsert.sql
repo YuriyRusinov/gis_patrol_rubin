@@ -1,6 +1,8 @@
+drop function if exists ioInsert(varchar, int4, int4, varchar, varchar, varchar, boolean, varchar, int8, int8, varchar, uuid);
+
 create or replace function ioInsert(varchar, 
-                                    int4, 
-                                    int4, 
+                                    int8, 
+                                    int8, 
                                     varchar, 
                                     varchar, 
                                     varchar, 
@@ -9,7 +11,7 @@ create or replace function ioInsert(varchar,
                                     int8,
                                     int8,
                                     varchar,
-                                    uuid) returns int4 as
+                                    uuid) returns int8 as
 $BODY$
 declare
     ioName alias for $1;
@@ -25,7 +27,7 @@ declare
     rIcon alias for $11;
     m_uuid alias for $12;
 
-    idObject int4;
+    idObject int8;
 begin
 
     select into idObject id from tbl_io_communication_objects_references io where io.uuid_t = m_uuid;

@@ -1,4 +1,5 @@
-create or replace function createIOTable (varchar, int4, bool) returns varchar as
+drop function if exists createIOTable (varchar, int4, bool);
+create or replace function createIOTable (varchar, int8, bool) returns varchar as
 $BODY$
 declare
     table_name alias for $1;
@@ -12,9 +13,9 @@ declare
     
     query varchar;
     r RECORD;
-    res int4;
-    amount int4;
-    what int4;
+    res int8;
+    amount int8;
+    what int8;
     unit varchar;
     c_query varchar;
 
@@ -24,7 +25,7 @@ declare
     tName varchar; --for atCheckListEx
     q varchar; --for atCheckListEx
     rr RECORD; --for atCheckListEx
-    isExist int4;
+    isExist int8;
 
     bHasGIS bool; --qualifier has gis attribute!
     bHasParent bool;
@@ -82,7 +83,7 @@ begin
             q := 'select f_is_table_exist(' || quote_literal(tName) || ', NULL) as is_exist';
             for rr in execute q
             loop
-                --TODO: need add check that if the table exist that has the structure aka (id_1 int4, id_2 int4)
+                --TODO: need add check that if the table exist that has the structure aka (id_1 int8, id_2 int8)
                 --else we should create the new table
                 if(rr.is_exist <> 1) then
                     create_ref_table := create_ref_table || ' create table ' || tName || ' (id_' || table_name || ' int8, id_' || r.atabname || ' int8); ';
