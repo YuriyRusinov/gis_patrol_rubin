@@ -19,10 +19,10 @@ public:
     pRecord();
     pRecord( qint64 id, const QString& name, const QString& desc=QString(), const QString& code = QString() );
     pRecord( const pRecord& r );
-    ~pRecord();
+    virtual ~pRecord();
 
-    qint64 getId() const;
-    void setId( qint64 id );
+    virtual qint64 getId() const;
+    virtual void setId( qint64 id );
 
     const QString& getUUID() const;
     void setUUID( const QString& u );
@@ -36,14 +36,14 @@ public:
     const QColor& getTextColor() const;
     void setTextColor( const QColor& tc );
 
-    const QString& getName() const;
-    void setName( const QString& name );
+    virtual const QString& getName() const;
+    virtual void setName( const QString& name );
 
-    const QString& getCode() const;
-    void setCode( const QString& code );
+    virtual const QString& getCode() const;
+    virtual void setCode( const QString& code );
 
-    const QString& getDesc() const;
-    void setDesc( const QString& desc );
+    virtual const QString& getDesc() const;
+    virtual void setDesc( const QString& desc );
 
     virtual void setParent( QSharedPointer< pRecord > p );
     QSharedPointer< pRecord > getParent() const;

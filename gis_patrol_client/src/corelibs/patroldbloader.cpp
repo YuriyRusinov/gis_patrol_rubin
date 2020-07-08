@@ -6,8 +6,13 @@
  * @author
  *  Ю.Л.Русинов
  */
+#include <QColor>
+#include <QIcon>
+#include <QPixmap>
 #include <QtDebug>
 #include <gis_patroldatabase.h>
+#include <pIObject.h>
+#include <pRecordC.h>
 #include <pParamGroup.h>
 #include <pParameter.h>
 #include <pParamType.h>
@@ -377,4 +382,71 @@ QSharedPointer< pParameter> pDBLoader::loadParameter( qint64 idParam ) const {
     param.reset ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
     delete gpr;
     return param;
+}
+
+QSharedPointer< pIObject > pDBLoader::loadIO( qint64 id ) const {
+    QString sql_query = QString("select * from ioGetObject( %1 );").arg( id );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return nullptr;
+    }
+    qint64 idNew = gpr->getCellAsInt64(0, 0);
+    if( idNew != id ) {
+        delete gpr;
+        return nullptr;
+    }
+    qint64 idCat = gpr->getCellAsInt64(0, 1);
+    QSharedPointer< pCategory > pCateg = loadCategory( idCat );
+    qint64 idAuthor = gpr->getCellAsInt64( 0, 2 );
+    QString name = gpr->getCellAsString( 0, 3 );
+    QString tableName = gpr->getCellAsString( 0, 4 );
+    QString description = gpr->getCellAsString( 0, 5 );
+    QString info = gpr->getCellAsString( 0, 6 );
+    bool isSys = gpr->getCellAsBool( 0, 7 );
+    QDateTime insert_time = gpr->getCellAsDateTime( 0, 8 );
+    bool isGlobal = gpr->getCellAsBool( 0, 9 );
+    QColor fillColor( gpr->getCellAsInt64( 0, 10 ) );
+    QColor textColor( gpr->getCellAsInt64( 0, 11 ) );
+    QString refTableName = gpr->getCellAsString( 0, 12 );
+    QString authEmail = gpr->getCellAsString( 0, 13 );
+    const char *const xpm ( gpr->getCellAsString( 0, 14 ).toLatin1().constData() );
+    QIcon rIcon = QIcon ( QPixmap( xpm ) );
+    QString uuidStr = gpr->getCellAsString( 0, 15 );
+    QSharedPointer< pIObject > pIORes ( new pIObject( id, pCateg, name, description ) );
+    pIORes->setAuthor( idAuthor );
+//    pIORes->setName( name );
+    pIORes->setTableName( tableName );
+//    pIORes->setDesc( description );
+    pIORes->setInfo( info );
+    pIORes->setSystem( isSys );
+    pIORes->setInsertTime( insert_time );
+    pIORes->setGlobal( isGlobal );
+    pIORes->setFillColor( fillColor );
+    pIORes->setTextColor( textColor );
+    pIORes->setRefTableName( refTableName );
+    pIORes->setAuthorEmail( authEmail );
+    pIORes->setIcon( rIcon );
+    pIORes->setUUID( uuidStr );
+
+    delete gpr;
+    return pIORes;
+}
+
+QSharedPointer< pRecordCopy > pDBLoader::loadCopy( qint64 id, QSharedPointer< pIObject > io ) const {
+    Q_UNUSED( id );
+    Q_UNUSED( io );
+    return nullptr;
+}
+
+QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPointer< pIObject > io ) const {
+    Q_UNUSED( io );
+    return QMap< qint64, QSharedPointer< pRecordCopy > >();
+}
+
+QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPointer< pCategory > pCat, QString tableName ) const {
+    Q_UNUSED( pCat );
+    Q_UNUSED( tableName );
+    return QMap< qint64, QSharedPointer< pRecordCopy > >();
 }

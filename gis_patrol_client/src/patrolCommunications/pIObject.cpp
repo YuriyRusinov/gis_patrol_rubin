@@ -20,6 +20,8 @@ pIObject::pIObject( ) : pRecord( ),
     _idUser( -1 ),
     _idMaclabel( 1 ),
     _information( QString() ),
+    _refTableName( QString() ),
+    _authorEmail( QString() ),
     _paramValues( QList< QSharedPointer< pParamValue > >() ) {
 }
 
@@ -36,6 +38,8 @@ pIObject::pIObject( qint64 id,
     _idUser( -1 ),
     _idMaclabel( 1 ),
     _information( QString() ),
+    _refTableName( QString() ),
+    _authorEmail( QString() ),
     _paramValues( QList< QSharedPointer< pParamValue > >() ) {
 }
 
@@ -45,10 +49,12 @@ pIObject::pIObject( const pIObject& io )
     _tableName( io._tableName ),
     _insertTime( io._insertTime ),
     _isSystem( io._isSystem ),
-    _isGlobal( io._isGlobal),
+    _isGlobal( io._isGlobal ),
     _idUser( io._idUser ),
     _idMaclabel( io._idMaclabel ),
     _information( io._information ),
+    _refTableName( io._refTableName ),
+    _authorEmail( io._authorEmail ),
     _paramValues( io._paramValues ) {
 }
 
@@ -180,4 +186,20 @@ qint64 pIObject::removeParamValueInd( qint64 index ) {
     _paramValues.removeAt( index );
 
     return 1;
+}
+
+QString pIObject::getRefTableName( ) const {
+    return _refTableName;
+}
+
+void pIObject::setRefTableName( const QString& refTableName ) {
+    _refTableName = refTableName;
+}
+
+QString pIObject::getAuthorEmail( ) const {
+    return _authorEmail;
+}
+
+void pIObject::setAuthorEmail( const QString& authorEmail ) {
+    _authorEmail = authorEmail;
 }
