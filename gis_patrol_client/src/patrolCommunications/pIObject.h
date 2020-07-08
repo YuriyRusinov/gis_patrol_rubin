@@ -29,10 +29,7 @@ public:
               QString name,
               QString description = QString());
     pIObject( const pIObject& io );
-    ~pIObject( );
-
-    qint64 getId() const;
-    void setId( qint64 id );
+    virtual ~pIObject( );
 
     QSharedPointer< pCategory > getCategory( ) const;
     void setCategory( QSharedPointer< pCategory > pCat );
@@ -58,6 +55,12 @@ public:
 
     QString getInfo( ) const;
     void setInfo( const QString& info );
+
+    QString getRefTableName( ) const;
+    void setRefTableName( const QString& refTableName );
+
+    QString getAuthorEmail( ) const;
+    void setAuthorEmail( const QString& authorEmail );
 
     const QList< QSharedPointer< pParamValue > >& paramValues() const;
     QList< QSharedPointer< pParamValue > >& paramValues();
@@ -95,6 +98,9 @@ private:
     int _idMaclabel;
 
     QString _information;
+
+    QString _refTableName;
+    QString _authorEmail;
 
     QList< QSharedPointer< pParamValue > > _paramValues;
 

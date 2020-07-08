@@ -166,9 +166,9 @@ const int ATTR_NAME = 2;
 #define ATTR_OUTPUT_NUMBER 100
 #define ATTR_MESSAGE_BODY 45
 #define ATTR_AUTHOR 13
-#define ATTR_CODE 6
+const int ATTR_CODE = 6;
 #define ATTR_COLUMN_NAME 9
-#define ATTR_DESCRIPTION 3
+const int ATTR_DESCRIPTION = 3;
 #define ATTR_EXEC_DATETIME 37
 #define ATTR_EXEC_PERIOD 38
 #define ATTR_ID_A_TYPE 5

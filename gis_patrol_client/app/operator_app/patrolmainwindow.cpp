@@ -12,10 +12,13 @@
 #include <QToolBar>
 #include <QtDebug>
 
+#include <defines.h>
 #include <patrolsingleton.h>
 #include <patrolguiapp.h>
 #include <pParamGuiFactory.h>
 #include <pCatGuiFactory.h>
+#include <pIObject.h>
+#include <patroldbloader.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
 
@@ -108,8 +111,12 @@ void PatrolMainWindow::slotDbDisconnected() {
 
 void PatrolMainWindow::slotViewReferences() {
     qDebug() << __PRETTY_FUNCTION__;
+    pDBLoader* dbl = _patrolS->getDbLoader();
+    QSharedPointer< pIObject > io = dbl->loadIO( IO_IO_ID );
+    qDebug() << __PRETTY_FUNCTION__ << (io.isNull() ? -1 : io->getId());
     pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
     pGuiFactory->GUIView();
+
 }
 
 void PatrolMainWindow::setEnabled(bool enable) {

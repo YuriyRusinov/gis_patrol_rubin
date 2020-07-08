@@ -20,6 +20,7 @@ class pCategory;
 class pCategoryType;
 class pCatParameter;
 class pIObject;
+class pRecordCopy;
 
 class pDBLoader : public QObject {
 public:
@@ -42,6 +43,12 @@ public:
     QSharedPointer< pCategory > loadCategory( qint64 idCat ) const;
 
     QSharedPointer< pParameter> loadParameter( qint64 idParam ) const;
+
+    QSharedPointer< pIObject > loadIO( qint64 id ) const;
+
+    QSharedPointer< pRecordCopy > loadCopy( qint64 id, QSharedPointer< pIObject > io ) const;
+    QMap< qint64, QSharedPointer< pRecordCopy > > loadRecords( QSharedPointer< pIObject > io ) const;
+    QMap< qint64, QSharedPointer< pRecordCopy > > loadRecords( QSharedPointer< pCategory > pCat, QString tableName ) const;
 
 private:
     QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
