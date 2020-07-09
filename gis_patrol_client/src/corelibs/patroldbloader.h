@@ -54,6 +54,10 @@ private:
     QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
     QMap< qint64, QSharedPointer< pCatParameter > > loadCatParameters( qint64 idCat ) const;
 
+    QString generateSelectRecQuery( QSharedPointer< const pCategory > pCat0, const QString& tableName, bool isSys ) const;
+
+    qint64 loadIOId(const QString& tableName) const;
+
 private:
     friend class PatrolSingleton;
 

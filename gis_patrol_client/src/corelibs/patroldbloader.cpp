@@ -10,6 +10,8 @@
 #include <QIcon>
 #include <QPixmap>
 #include <QtDebug>
+
+#include <defines.h>
 #include <gis_patroldatabase.h>
 #include <pIObject.h>
 #include <pRecordC.h>
@@ -19,6 +21,7 @@
 #include <pCategory.h>
 #include <pCategoryType.h>
 #include <pCatParameter.h>
+#include <pParamValue.h>
 
 #include "patroldbloader.h"
 
@@ -441,12 +444,156 @@ QSharedPointer< pRecordCopy > pDBLoader::loadCopy( qint64 id, QSharedPointer< pI
 }
 
 QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPointer< pIObject > io ) const {
-    Q_UNUSED( io );
-    return QMap< qint64, QSharedPointer< pRecordCopy > >();
+    if (io.isNull() || io->getTableName().isEmpty() )
+        return QMap< qint64, QSharedPointer< pRecordCopy > >();
+    QMap< qint64, QSharedPointer< pRecordCopy > > recs = loadRecords( io->getCategory(), io->getTableName() );
+    return recs;
 }
 
 QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPointer< pCategory > pCat, QString tableName ) const {
-    Q_UNUSED( pCat );
-    Q_UNUSED( tableName );
-    return QMap< qint64, QSharedPointer< pRecordCopy > >();
+    if( pCat.isNull() || pCat->getTableCat().isNull() || tableName.isEmpty() )
+        return QMap< qint64, QSharedPointer< pRecordCopy > >();
+    qint64 idObject = loadIOId( tableName );
+    if (idObject < 0)
+        return QMap< qint64, QSharedPointer< pRecordCopy > >();
+    QSharedPointer< pIObject > pIO = loadIO( idObject );
+    QString sql_query = generateSelectRecQuery( pCat->getTableCat(), tableName, false );
+    qDebug() << __PRETTY_FUNCTION__ << sql_query;
+    QMap< qint64, QSharedPointer< pRecordCopy > > resRecords;
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() == 0 ) {
+        if( gpr )
+            delete gpr;
+        return resRecords;
+    }
+    int n = gpr->getRowCount();
+    QMap< qint64, QSharedPointer< pCatParameter > > cpars = pCat->getTableCat()->categoryPars();
+    for( int i=0; i<n; i++ ) {
+        qint64 id = gpr->getCellAsInt64( i, 0 );
+        QSharedPointer< pRecordCopy > prc ( new pRecordCopy(id, QString(), pIO) );
+        int icol = 0;
+        QList< QSharedPointer< pParamValue > > pValues;
+        for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
+                pc != cpars.constEnd();
+                pc++ ) {
+
+            QVariant valueV = QVariant();
+            QString columnVal = QString();
+            pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
+            switch (pType) {
+                case pParamType::atList:
+                case pParamType::atParent:
+                case pParamType::atRecordColorRef:
+                case pParamType::atRecordTextColorRef: {
+                    valueV = gpr->getCellAsInt64(i, icol);
+                    icol++;
+                    columnVal = gpr->getCellAsString(i, icol);
+                    icol++;
+                    break;
+                }
+                default: {
+                    valueV = gpr->getCell(i, icol);
+                    icol++;
+                    break;
+                }
+            }
+            QSharedPointer< pParamValue > pVal ( new pParamValue( pc.value(), valueV ) );
+            if (!columnVal.isEmpty())
+                pVal->setColumnValue( columnVal );
+            pValues.append( pVal );
+        }
+        prc->setParamValues( pValues );
+        icol = 0;
+        for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
+                pc != cpars.constEnd();
+                pc++ ) {
+            if( pc.key() == ATTR_ID )
+                prc->setId( gpr->getCellAsInt64( i, icol ) );
+            else if( pc.key() == ATTR_NAME )
+                prc->setName( gpr->getCellAsString(i, icol ) );
+            else if( pc.key() == ATTR_CODE )
+                prc->setCode( gpr->getCellAsString(i, icol ) );
+            else if( pc.key() == ATTR_DESCRIPTION )
+                prc->setDesc( gpr->getCellAsString(i, icol ) );
+            icol++;
+        }
+        resRecords.insert( id, prc );
+    }
+    delete gpr;
+    return resRecords;
+}
+
+QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCat0, const QString& tableName, bool isSys ) const {
+    Q_UNUSED( isSys );
+    if( pCat0.isNull() || tableName.isEmpty() )
+        return QString();
+
+    QString sql_query = QString();
+    QStringList usedTables;
+    QStringList paramTableCodes;
+    usedTables << tableName;
+    QList<int> tNumbers;
+    int itable = 0;
+    tNumbers << itable++;
+    QMap< qint64, QSharedPointer< pCatParameter > > params = pCat0->categoryPars();
+
+    for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = params.constBegin();
+            pc != params.constEnd();
+            pc++ ) {
+        if( pc.value()->getParamType()->getId() == pParamType::atList ||
+            pc.value()->getParamType()->getId() == pParamType::atCheckListEx ||
+            pc.value()->getParamType()->getId() == pParamType::atRecordColorRef ||
+            pc.value()->getParamType()->getId() == pParamType::atRecordTextColorRef
+            ) {
+            usedTables << pc.value()->getTableName();
+            paramTableCodes << pc.value()->getCode();
+            tNumbers << itable++;
+        }
+        else if (pc.value()->getParamType()->getId() == pParamType::atParent ) {
+            usedTables << tableName;
+            paramTableCodes << pc.value()->getCode();
+            tNumbers << itable++;
+        }
+    }
+    qDebug() << __PRETTY_FUNCTION__ << usedTables << tNumbers << isSys;
+    sql_query = QString("select ");
+    itable = 0;
+    for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = params.constBegin();
+            pc != params.constEnd();
+            pc++ ) {
+        sql_query += QString("tab_%1.%2, ").arg( tNumbers[0] ).arg( pc.value()->getCode() );
+        if( !pc.value()->getTableName().isEmpty() ) {
+            sql_query += QString("tab_%1.%2, ").arg( tNumbers[itable+1] ).arg( pc.value()->getColumnName() );
+            itable++;
+        }
+        else if ( pc.value()->getParamType()->getId() == pParamType::atParent ) {
+            sql_query += QString("tab_%1.%2, ").arg( tNumbers[itable+1] ).arg( pc.value()->getColumnName().isEmpty() ? QString("name") : pc.value()->getColumnName() );
+            itable++;
+        }
+    }
+    int index = sql_query.lastIndexOf(", ");
+    sql_query.remove(index, 2);
+    sql_query += QString(" from %1 as tab_%2").arg( usedTables[0] ).arg( tNumbers[0] );
+    int nt = usedTables.size();
+    for (int i=1; i<nt; i++) {
+        sql_query += QString(" inner join %1 as tab_%2 on (tab_%3.%4=tab_%2.id)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]);
+    }
+    return sql_query;
+}
+
+qint64 pDBLoader::loadIOId(const QString& tableName) const {
+    QString sql_query = QString ("select ioGetObjectIDByTableName ('%1');").arg( tableName );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+    bool ok;
+    qint64 id = gpr->getCellAsInt64(0, 0, &ok);
+    delete gpr;
+    if (!ok)
+        return -1;
+
+    return id;
 }

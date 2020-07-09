@@ -14,7 +14,9 @@
 #include "pRecordC.h"
 #include <QtDebug>
 
-pRecordCopy::pRecordCopy() : pRecord() {
+pRecordCopy::pRecordCopy() : pRecord(),
+    _io( nullptr ),
+    _paramValues( QList< QSharedPointer< pParamValue > >() ) {
 }
 
 pRecordCopy::pRecordCopy( const pRecordCopy& PRC ) : pRecord( PRC ),

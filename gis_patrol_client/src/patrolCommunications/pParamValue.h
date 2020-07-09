@@ -31,6 +31,9 @@ public:
     void setValue( const QVariant& val );
     QString valueForInsert() const;
 
+    const QString& getColumnValue() const;
+    void setColumnValue( const QString& cVal );
+
     QSharedPointer< pCatParameter > getCatParam() const;
     void setCatParam( QSharedPointer< pCatParameter > pCatParam );
 
@@ -56,6 +59,12 @@ private:
     qint64 _id; // в таблице tbl_parameter_values
     QSharedPointer< pCatParameter > _parameter;
     mutable QVariant _value;
+    //
+    // Для параметров, представляющих собой ссылки на элемент(ы) справочника,
+    // значением является целочисленная величина id, но для отображения также необходимо
+    // значение столбца БД, на который ссылается справочник
+    //
+    mutable QString _columnValue;
     QSharedPointer< pIObject > _ioSrc;
 
     QString _description;

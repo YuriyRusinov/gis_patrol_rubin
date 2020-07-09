@@ -15,6 +15,7 @@ pParamValue::pParamValue( )
     : _id( -1 ),
     _parameter( nullptr ),
     _value( QVariant() ),
+    _columnValue( QString() ),
     _ioSrc( nullptr ),
     _description( QString() ),
     _startDateTime( QDateTime() ),
@@ -27,6 +28,7 @@ pParamValue::pParamValue( QSharedPointer< pCatParameter > pCat, QVariant value )
     : _id( -1 ),
     _parameter( pCat ),
     _value( value ),
+    _columnValue( QString() ),
     _ioSrc( nullptr ),
     _description( QString() ),
     _startDateTime( QDateTime() ),
@@ -39,6 +41,7 @@ pParamValue::pParamValue( const pParamValue& pVal )
     : _id( pVal._id ),
     _parameter( pVal._parameter ),
     _value( pVal._value ),
+    _columnValue( pVal._columnValue ),
     _ioSrc( pVal._ioSrc ),
     _description( pVal._description ),
     _startDateTime( pVal._startDateTime ),
@@ -76,6 +79,14 @@ QString pParamValue::valueForInsert() const {
     //       пока для отработки элементов не актуально
     //
     return _value.toString();
+}
+
+const QString& pParamValue::getColumnValue() const {
+    return _columnValue;
+}
+
+void pParamValue::setColumnValue( const QString& cVal ) {
+    _columnValue = cVal;
 }
 
 QSharedPointer< pCatParameter > pParamValue::getCatParam() const {
