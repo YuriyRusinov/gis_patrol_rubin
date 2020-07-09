@@ -11,7 +11,7 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (11, 3, 'id_child', 'Подчиненная категория', 'Подчиненная категория', 'tbl_communication_categories', 'name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (12, 2, 'id_category', 'Категория объекта средств связи', 'Категория', 'tbl_communication_categories', 'name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (13, 2, 'id_author', 'Автор (создатель)', 'Автор', 'users', 'family_name', true);
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (14, 13, 'information', 'Информация об авторе', 'Информация об авторе', 'users', 'information', true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (14, 13, 'information', 'Информация об авторе', 'Информация об авторе', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (15, 1, 'is_system', 'Системный', 'Системный', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (16, 6, 'insert_time', 'Дата и время создания', 'Создан( внесен в БД)', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (17, 1, 'is_main', 'Основная категория', 'Основная категория', null::varchar, null::varchar, true);

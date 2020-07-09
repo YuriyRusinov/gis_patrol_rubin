@@ -113,10 +113,12 @@ void PatrolMainWindow::slotViewReferences() {
     qDebug() << __PRETTY_FUNCTION__;
     pDBLoader* dbl = _patrolS->getDbLoader();
     QSharedPointer< pIObject > io = dbl->loadIO( IO_IO_ID );
-    qDebug() << __PRETTY_FUNCTION__ << (io.isNull() ? -1 : io->getId());
+    if( io.isNull() )
+        return;
+    QMap< qint64, QSharedPointer< pRecordCopy > > recs = dbl->loadRecords( io->getCategory(), io->getTableName() );
+    qDebug() << __PRETTY_FUNCTION__ << io->getId() << recs.keys();
     pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
     pGuiFactory->GUIView();
-
 }
 
 void PatrolMainWindow::setEnabled(bool enable) {
