@@ -438,9 +438,38 @@ QSharedPointer< pIObject > pDBLoader::loadIO( qint64 id ) const {
 }
 
 QSharedPointer< pRecordCopy > pDBLoader::loadCopy( qint64 id, QSharedPointer< pIObject > io ) const {
-    Q_UNUSED( id );
-    Q_UNUSED( io );
-    return nullptr;
+    QSharedPointer< pCategory > pCat = io->getCategory();
+    QString sql_query = generateSelectRecQuery( pCat->getTableCat(), io->getTableName(), false, id );
+    qDebug() << __PRETTY_FUNCTION__ << sql_query;
+    //QMap< qint64, QSharedPointer< pRecordCopy > > recs = loadRecords( io );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return nullptr;
+    }
+    int i=0;
+    QSharedPointer< pRecordCopy > prc ( new pRecordCopy(id, QString(), io) );
+    int icol = 0;
+    QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i);
+    prc->setParamValues( pValues );
+    icol = 0;
+    QMap< qint64, QSharedPointer< pCatParameter > > cpars = pCat->getTableCat()->categoryPars();
+    for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
+            pc != cpars.constEnd();
+            pc++ ) {
+        if( pc.key() == ATTR_ID )
+            prc->setId( gpr->getCellAsInt64( i, icol ) );
+        else if( pc.key() == ATTR_NAME )
+            prc->setName( gpr->getCellAsString(i, icol ) );
+        else if( pc.key() == ATTR_CODE )
+            prc->setCode( gpr->getCellAsString(i, icol ) );
+        else if( pc.key() == ATTR_DESCRIPTION )
+            prc->setDesc( gpr->getCellAsString(i, icol ) );
+        icol++;
+    }
+    //QSharedPointer< pRecordCopy > rec = recs.value( id, nullptr );
+    return prc;
 }
 
 QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPointer< pIObject > io ) const {
@@ -472,36 +501,7 @@ QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPoi
         qint64 id = gpr->getCellAsInt64( i, 0 );
         QSharedPointer< pRecordCopy > prc ( new pRecordCopy(id, QString(), pIO) );
         int icol = 0;
-        QList< QSharedPointer< pParamValue > > pValues;
-        for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
-                pc != cpars.constEnd();
-                pc++ ) {
-
-            QVariant valueV = QVariant();
-            QString columnVal = QString();
-            pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
-            switch (pType) {
-                case pParamType::atList:
-                case pParamType::atParent:
-                case pParamType::atRecordColorRef:
-                case pParamType::atRecordTextColorRef: {
-                    valueV = gpr->getCellAsInt64(i, icol);
-                    icol++;
-                    columnVal = gpr->getCellAsString(i, icol);
-                    icol++;
-                    break;
-                }
-                default: {
-                    valueV = gpr->getCell(i, icol);
-                    icol++;
-                    break;
-                }
-            }
-            QSharedPointer< pParamValue > pVal ( new pParamValue( pc.value(), valueV ) );
-            if (!columnVal.isEmpty())
-                pVal->setColumnValue( columnVal );
-            pValues.append( pVal );
-        }
+        QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i);
         prc->setParamValues( pValues );
         icol = 0;
         for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
@@ -523,7 +523,45 @@ QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPoi
     return resRecords;
 }
 
-QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCat0, const QString& tableName, bool isSys ) const {
+QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointer< pCategory > pTableCat, GISPatrolResult * gpr, int i ) const {
+    if ( pTableCat.isNull() || gpr == nullptr || i<0 )
+        return QList< QSharedPointer< pParamValue > > ();
+    QMap< qint64, QSharedPointer< pCatParameter > > cpars = pTableCat->categoryPars();
+    QList< QSharedPointer< pParamValue > > pValues;
+    int icol = 0;
+    for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
+            pc != cpars.constEnd();
+            pc++ ) {
+
+        QVariant valueV = QVariant();
+        QString columnVal = QString();
+        pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
+        switch (pType) {
+            case pParamType::atList:
+            case pParamType::atParent:
+            case pParamType::atRecordColorRef:
+            case pParamType::atRecordTextColorRef: {
+                valueV = gpr->getCellAsInt64(i, icol);
+                icol++;
+                columnVal = gpr->getCellAsString(i, icol);
+                icol++;
+                break;
+            }
+            default: {
+                valueV = gpr->getCell(i, icol);
+                icol++;
+                break;
+            }
+        }
+        QSharedPointer< pParamValue > pVal ( new pParamValue( pc.value(), valueV ) );
+        if (!columnVal.isEmpty())
+            pVal->setColumnValue( columnVal );
+        pValues.append( pVal );
+    }
+    return pValues;
+}
+
+QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCat0, const QString& tableName, bool isSys, qint64 id ) const {
     Q_UNUSED( isSys );
     if( pCat0.isNull() || tableName.isEmpty() )
         return QString();
@@ -576,7 +614,7 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     sql_query += QString(" from %1 as tab_%2").arg( usedTables[0] ).arg( tNumbers[0] );
     int nt = usedTables.size();
     for (int i=1; i<nt; i++) {
-        sql_query += QString(" inner join %1 as tab_%2 on (tab_%3.%4=tab_%2.id)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]);
+        sql_query += QString(" inner join %1 as tab_%2 on (tab_%3.%4=tab_%2.id %5)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]).arg( id > 0 && i==1 ? QString(" and tab_0.id=%1").arg(id) : QString());
     }
     return sql_query;
 }

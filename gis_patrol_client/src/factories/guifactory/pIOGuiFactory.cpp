@@ -8,12 +8,26 @@
  */
 
 #include <QWidget>
+#include <defines.h>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
+#include <pIObject.h>
+#include <pRecord.h>
+#include <pRecordC.h>
+#include <pCategory.h>
+#include <pCIOEditor.h>
+
 #include "pIOGuiFactory.h"
 
 QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
-    QWidget* w = new QWidget (parent, flags );
+    QSharedPointer< pIObject > pIO = _dbLoader->loadIO( IO_IO_ID );
+    QSharedPointer< pRecordCopy > pRec = _dbLoader->loadCopy( IO_IO_ID, pIO );
+    if (pIO.isNull() || pRec.isNull() )
+        return nullptr;
+
+    QSharedPointer< pCategory > pCat = pIO->getCategory();
+
+    QWidget* w = new pCIOEditor( pCat, pRec, pIO, false, parent, flags );
     emit viewWidget( w );
     return w;
 }
