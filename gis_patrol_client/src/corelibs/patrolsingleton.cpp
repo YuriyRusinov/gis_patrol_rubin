@@ -13,6 +13,7 @@
 #include <patroldbwriter.h>
 #include <pParamGuiFactory.h>
 #include <pCatGuiFactory.h>
+#include <pIOGuiFactory.h>
 #include "patrolguiapp.h"
 #include "patrolsingleton.h"
 
@@ -33,7 +34,8 @@ PatrolSingleton::PatrolSingleton( QObject* parent )
     _pdbLoader( new pDBLoader( _dataBase ) ),
     _pdbWriter( new pDBWriter( _dataBase ) ),
     _pguif( new pParamGUIFactory( _pdbLoader, _pdbWriter ) ),
-    _pcatf( new pCatGuiFactory( _pdbLoader, _pdbWriter, _pguif ) )
+    _pcatf( new pCatGuiFactory( _pdbLoader, _pdbWriter, _pguif ) ),
+    _piof( new pIOGuiFactory( _pdbLoader, _pdbWriter ) )
 {
     if (_instance) {
         qFatal("There should be only one PatrolSingleton object");

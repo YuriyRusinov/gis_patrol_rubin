@@ -25,15 +25,14 @@
 #include "pParamGuiFactory.h"
 
 pParamGUIFactory::pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
-    : QObject( parent ), _dbLoader ( dbLoader ), _dbWriter ( dbWriter ) {
+    : pEntityFactory( parent ), _dbLoader ( dbLoader ), _dbWriter ( dbWriter ) {
 }
 
 pParamGUIFactory::~pParamGUIFactory () {
 }
 
 QWidget* pParamGUIFactory::GUIView(QWidget* parent, Qt::WindowFlags flags) {
-    QWidget* w = new QWidget( parent, flags );
-    emit viewWidget( w );
+    QWidget* w = GUIViewParams( false, parent, flags );
     return w;
 }
 

@@ -13,18 +13,20 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include "pEntityFactory.h"
+
 class QAbstractItemModel;
 class QWidget;
 class pDBLoader;
 class pDBWriter;
 class pParamGroup;
 
-class pParamGUIFactory : public QObject {
+class pParamGUIFactory : public pEntityFactory {
 public:
     //
-    // Пока заглушка для отладки механизмов отображения и редактирования
+    // Формирование и вывод в немодальном режиме древовидной структуры параметров и групп параметров
     //
-    QWidget* GUIView(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+    QWidget* GUIView(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags()) override;
     //
     // Метод выводит виджет со списком возможных параметров в модальном mode=true или немодальном режиме
     //
@@ -40,9 +42,6 @@ private slots:
     void deleteParameter( QAbstractItemModel* paramsModel, QModelIndex wIndex );
 
     void refreshParams();
-
-signals:
-    void viewWidget(QWidget* w);
 
 private:
     //
