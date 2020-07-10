@@ -26,14 +26,14 @@
 #include "pCatGuiFactory.h"
 
 pCatGuiFactory::pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* guif, QObject* parent )
-    : QObject( parent ), _dbLoader( dbLoader), _dbWriter( dbWriter ),
+    : pEntityFactory( parent ), _dbLoader( dbLoader), _dbWriter( dbWriter ),
     _guiFactory( guif ) {
 }
 
 pCatGuiFactory::~pCatGuiFactory() {
 }
 
-QWidget* pCatGuiFactory::GUICatView( QWidget* parent, Qt::WindowFlags flags ) {
+QWidget* pCatGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
     pCategoryListForm* pclf = new pCategoryListForm( parent, flags );
     QObject::connect( pclf, &pCategoryListForm::addCategory, this, &pCatGuiFactory::addPCategory );
     QObject::connect( pclf, &pCategoryListForm::editCategory, this, &pCatGuiFactory::editPCategory );
@@ -43,6 +43,7 @@ QWidget* pCatGuiFactory::GUICatView( QWidget* parent, Qt::WindowFlags flags ) {
     qDebug() << __PRETTY_FUNCTION__ << categories.size();
     pCategoryModel* pCatMod = new pCategoryModel( categories );
     pclf->setCatModel( pCatMod );
+    emit viewWidget( pclf );
     return pclf;
 }
 
@@ -88,7 +89,7 @@ void pCatGuiFactory::addPCategory( ) {
         pCat->setTableCat( pTableCat );
     }
     pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat ));
-    emit viewCatWidget( cEditor );
+    emit viewWidget( cEditor );
 }
 
 void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< pCategory > pCat, QModelIndex cIndex ) {
@@ -99,7 +100,7 @@ void pCatGuiFactory::editPCategory( QAbstractItemModel* catMod, QSharedPointer< 
     qDebug() << __PRETTY_FUNCTION__ << catMod << pCat.isNull() << cIndex;
     QMap< qint64, QSharedPointer< pCategoryType > > pCTypes = _dbLoader->loadAvailCatTypes();
     pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat ));
-    emit viewCatWidget( cEditor );
+    emit viewWidget( cEditor );
 }
 
 void pCatGuiFactory::delPCategory( QAbstractItemModel* catMod, QModelIndex cIndex ) {
@@ -218,5 +219,5 @@ void pCatGuiFactory::createCategory( QSharedPointer< pCategory > pCat, QWidget* 
         pCat->setTableCat( pTableCat );
     }
     pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat, parent, flags ));
-    emit viewCatWidget( cEditor );
+    emit viewWidget( cEditor );
 }

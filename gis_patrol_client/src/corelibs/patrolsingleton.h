@@ -16,6 +16,7 @@ class pParamGUIFactory;
 class pCatGuiFactory;
 class pDBLoader;
 class pDBWriter;
+class pIOGuiFactory;
 
 class PatrolSingleton : public QObject {
 public:
@@ -26,6 +27,7 @@ public:
     PatrolGuiApp* getGUIObj() const { return _pga; }
     pParamGUIFactory* getGUIFactory() const { return _pguif; }
     pCatGuiFactory* getCatGUIFactory() const { return _pcatf; }
+    pIOGuiFactory* getIOGUIFactory() const { return _piof; }
     pDBLoader* getDbLoader() const { return _pdbLoader; }
     pDBWriter* getDbWriter() const { return _pdbWriter; }
 
@@ -43,6 +45,7 @@ private:
     mutable pDBWriter* _pdbWriter;
     mutable pParamGUIFactory* _pguif;
     mutable pCatGuiFactory* _pcatf;
+    mutable pIOGuiFactory* _piof;
 
 private:
     Q_OBJECT

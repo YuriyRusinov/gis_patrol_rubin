@@ -13,6 +13,8 @@
 #include <QSharedPointer>
 #include <QObject>
 
+#include "pEntityFactory.h"
+
 class QAbstractItemModel;
 class QWidget;
 
@@ -22,9 +24,10 @@ class pParamGUIFactory;
 
 class pCategory;
 
-class pCatGuiFactory : public QObject {
+class pCatGuiFactory : public pEntityFactory {
 public:
-    QWidget* GUICatView( QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
+    QWidget* GUIView( QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() ) override;
+
     QWidget* GUICategoryEditor( QSharedPointer< pCategory > pCat, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
 
 public slots:
@@ -40,11 +43,10 @@ private slots:
     void removeParameterFromCat( QSharedPointer< pCategory > pc, qint64 idParameter, QModelIndex parIndex, QAbstractItemModel* cAttrModel );
     void saveCategory( QSharedPointer< pCategory > pCategory );
 
-signals:
-    void viewCatWidget( QWidget* w );
-
 private:
     pCatGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* guif, QObject* parent=nullptr );
+    pCatGuiFactory( const pCatGuiFactory& cf ) = delete;
+    pCatGuiFactory& operator= ( const pCatGuiFactory& cf ) = delete;
     ~pCatGuiFactory();
     friend class PatrolSingleton;
 
