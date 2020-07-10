@@ -13,6 +13,7 @@
 #include <QSharedPointer>
 
 class GISPatrolDatabase;
+class GISPatrolResult;
 class pParamGroup;
 class pParameter;
 class pParamType;
@@ -21,6 +22,7 @@ class pCategoryType;
 class pCatParameter;
 class pIObject;
 class pRecordCopy;
+class pParamValue;
 
 class pDBLoader : public QObject {
 public:
@@ -51,12 +53,17 @@ public:
     QMap< qint64, QSharedPointer< pRecordCopy > > loadRecords( QSharedPointer< pCategory > pCat, QString tableName ) const;
 
 private:
+    //
+    // Functions
+    //
     QSharedPointer< pCategory > loadChildCat( qint64 idCat ) const;
     QMap< qint64, QSharedPointer< pCatParameter > > loadCatParameters( qint64 idCat ) const;
 
-    QString generateSelectRecQuery( QSharedPointer< const pCategory > pCat0, const QString& tableName, bool isSys ) const;
+    QString generateSelectRecQuery( QSharedPointer< const pCategory > pCat0, const QString& tableName, bool isSys, qint64 id=-1 ) const;
 
     qint64 loadIOId(const QString& tableName) const;
+
+    QList< QSharedPointer< pParamValue > > loadParamValues( QSharedPointer< pCategory > pTableCat, GISPatrolResult * gpr, int i ) const;
 
 private:
     friend class PatrolSingleton;
