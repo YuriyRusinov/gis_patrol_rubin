@@ -45,6 +45,7 @@ public:
     QMap< qint64, QSharedPointer< pCatParameter > >& categoryPars();
     const QMap< qint64, QSharedPointer< pCatParameter > >& categoryPars() const;
     void setCategoryPars( const QMap< qint64, QSharedPointer< pCatParameter > >& cpars );
+    QList< qint64 > searchParametersByType(int pType ) const;
 
     void clearPars();
     void addParam( qint64 idParam, QSharedPointer< pCatParameter > p );

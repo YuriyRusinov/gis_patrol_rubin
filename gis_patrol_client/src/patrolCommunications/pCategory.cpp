@@ -11,6 +11,7 @@
 #include "pCatParameter.h"
 #include "pCategoryType.h"
 #include "pCategory.h"
+#include "pParamType.h"
 
 pCategory::pCategory(qint64 id, QString name, QString code, QSharedPointer< pCategoryType > pCatType) :
     _idCat( id ),
@@ -130,4 +131,15 @@ bool pCategory::isSystem() const {
 
 void pCategory::setSystem( bool val ) {
     _isSystemCat = val;
+}
+
+QList< qint64 > pCategory::searchParametersByType( int pType ) const {
+    QList< qint64 > resIds;
+    for (QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pcp = _categoryParams.constBegin();
+            pcp != _categoryParams.constEnd();
+            pcp++ ) {
+        if( !pcp.value().isNull() && !pcp.value()->getParamType().isNull() && pcp.value()->getParamType()->getId() == (pParamType::PatrolParamTypes)pType )
+            resIds.append( pcp.key() );
+    }
+    return resIds;
 }
