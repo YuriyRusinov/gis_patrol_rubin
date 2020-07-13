@@ -101,3 +101,7 @@ void pCIOEditor::editRecord() {
 void pCIOEditor::delRecord() {
     qDebug() << __PRETTY_FUNCTION__;
 }
+
+void pCIOEditor::appendTabWidget( QWidget* w, QString title ) {
+    _tabW->addTab( w, title );
+}

@@ -38,6 +38,8 @@ public:
     QSharedPointer< const pIObject > getObject() const;
     void setObject( QSharedPointer< pIObject > pIO );
 
+    void appendTabWidget( QWidget* w, QString title );
+
 private slots:
     void addRecord();
     void editRecord();

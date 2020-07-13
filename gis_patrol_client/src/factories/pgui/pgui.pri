@@ -11,6 +11,7 @@ HEADERS += \
            pItemDelegate.h \
            pCatParamDelegate.h \
            pCIOEditor.h \
+           pRecordDataModel.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -31,5 +32,6 @@ SOURCES += \
            pItemDelegate.cpp \
            pCatParamDelegate.cpp \
            pCIOEditor.cpp \
+           pRecordDataModel.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp
