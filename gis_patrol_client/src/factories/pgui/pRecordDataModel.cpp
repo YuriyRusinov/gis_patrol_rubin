@@ -19,7 +19,10 @@
 pRecordDataModel::pRecordDataModel( QSharedPointer< pCategory > pCategory, const QMap< qint64, QSharedPointer< pRecordCopy > >& records, QObject* parent )
     : QAbstractItemModel( parent ),
     _pCategory( pCategory ),
-    _records( records ) {
+    _records( records ),
+    cParamParent( nullptr ),
+    cParamBackground( nullptr ),
+    cParamForeground( nullptr ) {
     setupCategoryData();
 }
 

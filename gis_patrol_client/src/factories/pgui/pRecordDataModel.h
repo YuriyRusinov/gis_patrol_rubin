@@ -45,6 +45,9 @@ private:
     QSharedPointer< pCategory > _pCategory;
     QMap< qint64, QSharedPointer< pRecordCopy > > _records;
     QMap< int, QSharedPointer< pCatParameter > > sortedParams;
+    QSharedPointer< pCatParameter > cParamParent;
+    QSharedPointer< pCatParameter > cParamBackground;
+    QSharedPointer< pCatParameter > cParamForeground;
 
 private:
     Q_OBJECT
