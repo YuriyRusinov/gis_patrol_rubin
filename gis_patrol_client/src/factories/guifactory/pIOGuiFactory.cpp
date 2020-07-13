@@ -7,7 +7,9 @@
  *  Ю.Л.Русинов
  */
 
+#include <QTreeView>
 #include <QWidget>
+
 #include <defines.h>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
@@ -16,6 +18,7 @@
 #include <pRecordC.h>
 #include <pCategory.h>
 #include <pCIOEditor.h>
+#include <pRecordDataModel.h>
 
 #include "pIOGuiFactory.h"
 
@@ -27,9 +30,14 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
 
     QSharedPointer< pCategory > pCat = pIO->getCategory();
 
-    QWidget* w = new pCIOEditor( pCat, pRec, pIO, false, parent, flags );
-    emit viewWidget( w );
-    return w;
+    pCIOEditor* wEditor = new pCIOEditor( pCat, pRec, pIO, false, parent, flags );
+    QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pIO );
+    QTreeView* tvRecs = new QTreeView( wEditor );
+    QAbstractItemModel* recModel = new pRecordDataModel( pCat->getTableCat(), ioRecords );
+    tvRecs->setModel( recModel );
+    wEditor->appendTabWidget( tvRecs, tr("Records") );
+    emit viewWidget( wEditor );
+    return wEditor;
 }
 
 pIOGuiFactory::pIOGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
