@@ -158,16 +158,23 @@ QSharedPointer< const pCatParameter > pRecordDataModel::getFirstParameter( pPara
 }
 
 void pRecordDataModel::setupCategoryData(pRecTreeItem* parent) {
+    Q_UNUSED( parent );
 }
 
 pRecTreeItem* pRecordDataModel::getModelItem (qint64 val, pRecTreeItem* parent, QModelIndex & pIndex) {
+    Q_UNUSED( val );
+    Q_UNUSED( pIndex );
     if( parent == nullptr )
         return _rootItem;
 
     for( int i=0; i<parent->childCount(); i++) {
         pRecTreeItem* item = parent->child( i );
         QString refCol =_cParamParent->getColumnName();
+        Q_UNUSED( item );
+        Q_UNUSED( refCol );
     }
+
+    return nullptr;
 }
 
 pRecTreeItem* pRecordDataModel::getItem(const QModelIndex &index) const {
