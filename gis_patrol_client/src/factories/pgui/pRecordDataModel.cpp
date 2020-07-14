@@ -14,26 +14,38 @@
 #include <pParamType.h>
 #include <pParamValue.h>
 
+#include "pRecTreeItem.h"
 #include "pRecordDataModel.h"
 
 pRecordDataModel::pRecordDataModel( QSharedPointer< pCategory > pCategory, const QMap< qint64, QSharedPointer< pRecordCopy > >& records, QObject* parent )
     : QAbstractItemModel( parent ),
+    _rootItem( nullptr ),
     _pCategory( pCategory ),
     _records( records ),
-    cParamParent( nullptr ),
-    cParamBackground( nullptr ),
-    cParamForeground( nullptr ) {
-    setupCategoryData();
+    _cParamParent( nullptr ),
+    _cParamBackground( nullptr ),
+    _cParamForeground( nullptr ) {
+    _cParamParent = getFirstParameter( pParamType::atParent );
+    _cParamBackground = getFirstParameter( pParamType::atRecordColor );
+    if( _cParamBackground.isNull() )
+        _cParamBackground = getFirstParameter( pParamType::atRecordColorRef );
+    _cParamForeground = getFirstParameter( pParamType::atRecordTextColor );
+    if( _cParamForeground )
+        _cParamForeground = getFirstParameter( pParamType::atRecordTextColorRef );
+    setupParams();
+    _rootItem = new pRecTreeItem( -1, QSharedPointer<const pRecordCopy>( nullptr ), _sortedParams );
+    setupCategoryData( _rootItem );
 }
 
 pRecordDataModel::~pRecordDataModel() {
+    delete _rootItem;
 }
 
 int pRecordDataModel::columnCount (const QModelIndex& parent) const {
     if( parent.isValid() )
         return 0;
 
-    return sortedParams.count();
+    return _sortedParams.count();
 }
 
 int pRecordDataModel::rowCount (const QModelIndex& parent ) const {
@@ -82,10 +94,10 @@ bool pRecordDataModel::setData (const QModelIndex& index, const QVariant& value,
 }
 
 QVariant pRecordDataModel::headerData (int section, Qt::Orientation orientation, int role) const {
-    if( section < 0 || section >= sortedParams.count() || orientation != Qt::Horizontal || (role != Qt::DisplayRole && role != Qt::EditRole) )
+    if( section < 0 || section >= _sortedParams.count() || orientation != Qt::Horizontal || (role != Qt::DisplayRole && role != Qt::EditRole) )
         return QVariant();
 
-    QMap<int, QSharedPointer< pCatParameter > >::const_iterator pp = sortedParams.constBegin()+section;
+    QMap<int, QSharedPointer< const pCatParameter > >::const_iterator pp = _sortedParams.constBegin()+section;
     return pp.value()->getTitle();
 }
 
@@ -103,7 +115,7 @@ bool pRecordDataModel::removeRows (int row, int count, const QModelIndex& parent
     return false;
 }
 
-void pRecordDataModel::setupCategoryData() {
+void pRecordDataModel::setupParams() {
     if( _pCategory.isNull() )
         return;
 
@@ -111,7 +123,7 @@ void pRecordDataModel::setupCategoryData() {
     QList< QSharedPointer< pCatParameter > > wcpars = cpars.values();
     int n = wcpars.size();
     for(int i=0; i<n; i++) {
-        if( wcpars[i]->getParamType()->getId() == pParamType::atImage ||
+/*        if( wcpars[i]->getParamType()->getId() == pParamType::atImage ||
             wcpars[i]->getParamType()->getId() == pParamType::atCheckListEx ||
             wcpars[i]->getParamType()->getId() == pParamType::atRecordColor ||
             wcpars[i]->getParamType()->getId() == pParamType::atRecordColorRef ||
@@ -127,7 +139,42 @@ void pRecordDataModel::setupCategoryData() {
             wcpars[i]->getParamType()->getId() == pParamType::atJSON ||
             wcpars[i]->getParamType()->getId() == pParamType::atJSONb ||
             wcpars[i]->getParamType()->getId() == pParamType::atBinary )
-            continue;
-        sortedParams.insert( wcpars[i]->getOrder(), wcpars[i] );
+            continue;*/
+        _sortedParams.insert( wcpars[i]->getOrder(), wcpars[i] );
     }
+}
+
+QSharedPointer< const pCatParameter > pRecordDataModel::getFirstParameter( pParamType::PatrolParamTypes pType ) {
+    if ( _pCategory.isNull() )
+        return nullptr;
+
+    QList< qint64 > paramListId = _pCategory->searchParametersByType( pType );
+    if (paramListId.isEmpty() )
+        return nullptr;
+
+    qint64 pId = paramListId[0];
+    QSharedPointer< const pCatParameter > param = _pCategory->categoryPars().value( pId );
+    return param;
+}
+
+void pRecordDataModel::setupCategoryData(pRecTreeItem* parent) {
+}
+
+pRecTreeItem* pRecordDataModel::getModelItem (qint64 val, pRecTreeItem* parent, QModelIndex & pIndex) {
+    if( parent == nullptr )
+        return _rootItem;
+
+    for( int i=0; i<parent->childCount(); i++) {
+        pRecTreeItem* item = parent->child( i );
+        QString refCol =_cParamParent->getColumnName();
+    }
+}
+
+pRecTreeItem* pRecordDataModel::getItem(const QModelIndex &index) const {
+    if( index.isValid() ) {
+        pRecTreeItem* item = static_cast<pRecTreeItem*>( index.internalPointer() );
+        if( item != nullptr )
+            return item;
+    }
+    return _rootItem;
 }

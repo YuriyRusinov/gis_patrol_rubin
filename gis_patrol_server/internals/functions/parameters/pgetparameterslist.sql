@@ -20,10 +20,14 @@ begin
             null::boolean,
             null::boolean,
             null::integer,
-            null::int8
+            null::int8,
+            p1.id,
+            ptt1.id,
+            ptt1.name,
+            ptt1.code
         from
             tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id)
-            inner join tbl_parameters_groups pg on (p.id_param_group=pg.id and pg.id=idParamGroup) order by 1
+            inner join tbl_parameters_groups pg on (p.id_param_group=pg.id and pg.id=idParamGroup) left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id) order by 1
         loop
             return next r;
         end loop;

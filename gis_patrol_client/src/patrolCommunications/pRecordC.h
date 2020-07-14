@@ -9,6 +9,7 @@
 
 #pragma	once
 
+#include <QMetaType>
 #include <QSharedPointer>
 
 #include "pRecord.h"
@@ -47,3 +48,5 @@ private:
     QList< QSharedPointer< pParamValue > > _paramValues;
 };
 
+Q_DECLARE_METATYPE( QSharedPointer< const pRecordCopy > );
+Q_DECLARE_METATYPE( QSharedPointer< pRecordCopy > );

@@ -14,7 +14,12 @@ create type h_get_parameter as (id_parameter int8,
                                 is_mandatory boolean,
                                 is_read_only boolean,
                                 param_sort_order integer,
-                                id_ex int8);
+                                id_ex int8,
+                                id_param_ref int8,
+                                ref_type_id int8,
+                                ref_type_name varchar,
+                                ref_type_code varchar
+                            );
 
 create or replace function pGetParameter(int8) returns setof h_get_parameter as
 $BODY$
@@ -39,9 +44,13 @@ begin
             null::boolean,
             null::boolean,
             null::integer,
-            null::int8
+            null::int8,
+            p1.id,
+            ptt1.id,
+            ptt1.name,
+            ptt1.code
         from
-            tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and p.id=idParameter)
+            tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and p.id=idParameter) left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id)
     loop
         return next r;
     end loop;
@@ -74,9 +83,13 @@ begin
             null::boolean,
             null::boolean,
             null::integer,
-            null::int8
+            null::int8,
+            p1.id,
+            ptt1.id,
+            ptt1.name,
+            ptt1.code
         from
-            tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and lower(p.code)=lower(parameter_code))
+            tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type=ptt.id and lower(p.code)=lower(parameter_code)) left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id)
     loop
         return next r;
     end loop;
