@@ -26,10 +26,12 @@ public:
     qint64 getId() const override;
     void setId( qint64 id );
 
-    QSharedPointer< pParamType > getParamType() const;
+    QSharedPointer< const pParamType > getParamType() const;
+    QSharedPointer< pParamType > getParamType();
     void setParamType( QSharedPointer< pParamType > pType );
 
-    QSharedPointer< pParamGroup > getParamGroup() const;
+    QSharedPointer< const pParamGroup > getParamGroup() const;
+    QSharedPointer< pParamGroup > getParamGroup();
     void setParamGroup( QSharedPointer< pParamGroup > pGroup);
 
     QString getCode() const;
@@ -52,6 +54,10 @@ public:
 
     int getEntity() const override;
 
+    QSharedPointer< const pParamType > getRefParamType() const;
+    QSharedPointer< pParamType > getRefParamType();
+    void setRefParamType( QSharedPointer< pParamType > pRefType );
+
 private:
     qint64 _id;
     QSharedPointer< pParamType > _pType;
@@ -62,6 +68,7 @@ private:
     QString _tableName;
     QString _columnName;
     bool _isSystem;
+    QSharedPointer< pParamType > _pRefType;
 };
 
 Q_DECLARE_METATYPE( pParameter );

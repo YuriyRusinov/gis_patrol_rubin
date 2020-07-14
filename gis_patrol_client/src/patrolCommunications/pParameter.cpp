@@ -21,7 +21,8 @@ pParameter::pParameter(qint64 id, QSharedPointer< pParamType > pType, QSharedPoi
     _title( pTitle ),
     _tableName( tableName ),
     _columnName( columnName ),
-    _isSystem( isSystem ) {
+    _isSystem( isSystem ),
+    _pRefType( nullptr) {
 }
 
 pParameter::pParameter(const pParameter& P1)
@@ -34,7 +35,8 @@ pParameter::pParameter(const pParameter& P1)
     _title( P1._title ),
     _tableName( P1._tableName ),
     _columnName( P1._columnName ),
-    _isSystem( P1._isSystem ) {
+    _isSystem( P1._isSystem ),
+    _pRefType( P1._pRefType ) {
 }
 
 pParameter::~pParameter() {
@@ -48,7 +50,11 @@ void pParameter::setId( qint64 id ) {
     _id = id;
 }
 
-QSharedPointer< pParamType > pParameter::getParamType() const {
+QSharedPointer< const pParamType > pParameter::getParamType() const {
+    return _pType;
+}
+
+QSharedPointer< pParamType > pParameter::getParamType() {
     return _pType;
 }
 
@@ -56,7 +62,11 @@ void pParameter::setParamType( QSharedPointer< pParamType > pType ) {
     _pType = pType;
 }
 
-QSharedPointer< pParamGroup > pParameter::getParamGroup() const {
+QSharedPointer< const pParamGroup > pParameter::getParamGroup() const {
+    return _pGroup;
+}
+
+QSharedPointer< pParamGroup > pParameter::getParamGroup() {
     return _pGroup;
 }
 
@@ -114,4 +124,16 @@ void pParameter::setSystem( bool isSys ) {
 
 int pParameter::getEntity() const {
     return 1;
+}
+
+QSharedPointer< const pParamType > pParameter::getRefParamType() const {
+    return _pRefType;
+}
+
+QSharedPointer< pParamType > pParameter::getRefParamType() {
+    return _pRefType;
+}
+
+void pParameter::setRefParamType( QSharedPointer< pParamType > pRefType ) {
+    _pRefType = pRefType;
 }
