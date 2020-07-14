@@ -13,9 +13,12 @@
 #include <QList>
 #include <QSharedPointer>
 
+#include <pParamType.h>
+
 class pRecordCopy;
 class pCategory;
 class pCatParameter;
+class pRecTreeItem;
 
 class pRecordDataModel : public QAbstractItemModel {
 public:
@@ -39,15 +42,24 @@ public:
     bool removeRows (int row, int count, const QModelIndex& parent = QModelIndex() ) override;
 
 private:
-    void setupCategoryData();
+    //
+    // Functions
+    //
+    void setupParams();
+    void setupCategoryData(pRecTreeItem* parent);
+    QSharedPointer< const pCatParameter > getFirstParameter( pParamType::PatrolParamTypes pType );
+    pRecTreeItem * getModelItem (qint64 val, pRecTreeItem * parent, QModelIndex & pIndex);
+    pRecTreeItem * getItem(const QModelIndex &index) const;
+
 
 private:
+    pRecTreeItem* _rootItem;
     QSharedPointer< pCategory > _pCategory;
     QMap< qint64, QSharedPointer< pRecordCopy > > _records;
-    QMap< int, QSharedPointer< pCatParameter > > sortedParams;
-    QSharedPointer< pCatParameter > cParamParent;
-    QSharedPointer< pCatParameter > cParamBackground;
-    QSharedPointer< pCatParameter > cParamForeground;
+    QMap< int, QSharedPointer< const pCatParameter > > _sortedParams;
+    QSharedPointer< const pCatParameter > _cParamParent;
+    QSharedPointer< const pCatParameter > _cParamBackground;
+    QSharedPointer< const pCatParameter > _cParamForeground;
 
 private:
     Q_OBJECT

@@ -21,10 +21,14 @@ begin
             pcat.is_mandatory, 
             pcat.is_read_only,
             pcat.param_sort_order,
-            pcat.id
+            pcat.id,
+            p1.id as prefid,
+            ptt1.id as ref_type_id,
+            ptt1.name as ref_type_name,
+            ptt1.code as ref_type_code
         from
             tbl_cat_params pcat
-            inner join tbl_parameters p on (pcat.id = ' || idCategoryParam || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id);';
+            inner join tbl_parameters p on (pcat.id = ' || idCategoryParam || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id) left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id);';
             raise warning '%', query;
     for r in 
         execute query
@@ -62,11 +66,15 @@ begin
             pcat.is_mandatory, 
             pcat.is_read_only,
             pcat.param_sort_order,
-            pcat.id
+            pcat.id,
+            p1.id as prefid,
+            ptt1.id as ref_type_id,
+            ptt1.name as ref_type_name,
+            ptt1.code as ref_type_code
         from  
             tbl_cat_params pcat
             inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = ' || idParameter || E' and pcat.id_parameter = p.id) 
-            inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id)'; 
+            inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id) left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id)'; 
     for r in 
         execute query
     loop
@@ -153,9 +161,13 @@ begin
             pcat.is_mandatory, 
             pcat.is_read_only,
             pcat.param_sort_order,
-            pcat.id
+            pcat.id,
+            p1.id as prefid,
+            ptt1.id as ref_type_id,
+            ptt1.name as ref_type_name,
+            ptt1.code as ref_type_code
         from  
-            tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id) order by 14';
+            tbl_cat_params pcat inner join tbl_parameters p on (pcat.id_category = ' || idCategory || E' and pcat.id_parameter = p.id) inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id) inner join tbl_parameters_groups pgr on (p.id_param_group=pgr.id) left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id) order by 14';
     raise warning 'query is %', query;
 --(case when a.column_name isnull then NULL else (select a1.id_a_type from attributes a1 where a1.code = a.column_name) end) as ref_attr_type
     for r in 
