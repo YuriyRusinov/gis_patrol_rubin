@@ -7,7 +7,9 @@
  *  Ю.Л.Русинов
  */
 
+#include <QIcon>
 #include <QModelIndex>
+
 #include <pRecordC.h>
 #include <pCatParameter.h>
 #include <pCategory.h>
@@ -49,24 +51,38 @@ int pRecordDataModel::columnCount (const QModelIndex& parent) const {
 }
 
 int pRecordDataModel::rowCount (const QModelIndex& parent ) const {
-    if( parent.isValid() )
-        return 0;
+    pRecTreeItem* pItem = getItem( parent );
+    int nr = pItem->childCount();
 
-    return _records.count();
+    return nr;//_records.count();
 }
 
 QModelIndex pRecordDataModel::pRecordDataModel::index (int row, int column, const QModelIndex& parent) const {
-    if( parent.isValid() || row >= _records.count() )
+    if( parent.isValid() && parent.column() != 0 )
         return QModelIndex();
 
-    QMap<qint64, QSharedPointer< pRecordCopy > >::const_iterator prc = _records.constBegin()+row;
-    QSharedPointer< pRecordCopy > pRec = prc.value();
-    return createIndex( row, column, (void *)(pRec.get()));
+//    QMap<qint64, QSharedPointer< pRecordCopy > >::const_iterator prc = _records.constBegin()+row;
+//    QSharedPointer< pRecordCopy > pRec = prc.value();
+//    return createIndex( row, column, (void *)(pRec.get()));
+    pRecTreeItem* parentItem = getItem( parent );
+
+    pRecTreeItem* childItem = parentItem->child( row );
+    if( childItem )
+        return createIndex( row, column, childItem );
+    else
+        return QModelIndex();
 }
 
 QModelIndex pRecordDataModel::parent (const QModelIndex& index) const {
-    Q_UNUSED( index );
-    return QModelIndex();
+    if (!index.isValid())
+        return QModelIndex();
+
+    pRecTreeItem* childItem = getItem( index );
+    pRecTreeItem* parentItem = childItem ? childItem->parent() : nullptr ;
+    if( !parentItem || parentItem == _rootItem )
+        return QModelIndex();
+
+    return createIndex(parentItem->childNumber(), 0, parentItem);
 }
 
 Qt::ItemFlags pRecordDataModel::flags (const QModelIndex& index) const {
@@ -80,9 +96,24 @@ Qt::ItemFlags pRecordDataModel::flags (const QModelIndex& index) const {
 }
 
 QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
+    if( role == Qt::UserRole+2 )
+        return QVariant::fromValue< QSharedPointer< const pCategory > >( _pCategory );
+    else if( role == Qt::UserRole+3 )
+        return QVariant::fromValue< QSharedPointer< const pCatParameter > >( _cParamParent );
+    else if( role == Qt::UserRole+4 )
+        return QVariant::fromValue< QSharedPointer< const pCatParameter > >( _cParamBackground );
+    else if( role == Qt::UserRole+5 )
+        return QVariant::fromValue< QSharedPointer< const pCatParameter > >( _cParamForeground );
+
     if (!index.isValid() )
         return QVariant();
-    Q_UNUSED( role );
+
+    pRecTreeItem* wItem = static_cast< pRecTreeItem* >( index.internalPointer() );
+    if( wItem == nullptr )
+        return QVariant();
+    int iCol = index.column();
+    if( role == Qt::DisplayRole || role == Qt::ToolTipRole )
+        return wItem->columnData( iCol );
     return QVariant();
 }
 
@@ -123,23 +154,11 @@ void pRecordDataModel::setupParams() {
     QList< QSharedPointer< pCatParameter > > wcpars = cpars.values();
     int n = wcpars.size();
     for(int i=0; i<n; i++) {
-/*        if( wcpars[i]->getParamType()->getId() == pParamType::atImage ||
-            wcpars[i]->getParamType()->getId() == pParamType::atCheckListEx ||
-            wcpars[i]->getParamType()->getId() == pParamType::atRecordColor ||
+        if( wcpars[i]->getParamType()->getId() == pParamType::atRecordColor ||
             wcpars[i]->getParamType()->getId() == pParamType::atRecordColorRef ||
-            wcpars[i]->getParamType()->getId() == pParamType::atXML ||
-            wcpars[i]->getParamType()->getId() == pParamType::atSVG ||
-            wcpars[i]->getParamType()->getId() == pParamType::atVideo ||
             wcpars[i]->getParamType()->getId() == pParamType::atRecordTextColor ||
-            wcpars[i]->getParamType()->getId() == pParamType::atRecordTextColorRef ||
-            wcpars[i]->getParamType()->getId() == pParamType::atGeometry ||
-            wcpars[i]->getParamType()->getId() == pParamType::atGeography ||
-            wcpars[i]->getParamType()->getId() == pParamType::atHistogram ||
-            wcpars[i]->getParamType()->getId() == pParamType::atGISMap ||
-            wcpars[i]->getParamType()->getId() == pParamType::atJSON ||
-            wcpars[i]->getParamType()->getId() == pParamType::atJSONb ||
-            wcpars[i]->getParamType()->getId() == pParamType::atBinary )
-            continue;*/
+            wcpars[i]->getParamType()->getId() == pParamType::atRecordTextColorRef )
+            continue;
         _sortedParams.insert( wcpars[i]->getOrder(), wcpars[i] );
     }
 }
@@ -158,7 +177,82 @@ QSharedPointer< const pCatParameter > pRecordDataModel::getFirstParameter( pPara
 }
 
 void pRecordDataModel::setupCategoryData(pRecTreeItem* parent) {
-    Q_UNUSED( parent );
+    if( _cParamParent.isNull() ) {
+        for( QMap< qint64, QSharedPointer< pRecordCopy > >::const_iterator prec = _records.constBegin();
+                prec != _records.constEnd();
+                prec++ ) {
+            QSharedPointer< const pParamValue > pVal = prec.value().isNull() ? nullptr : prec.value()->paramValue("r_icon");
+            QString strIcon = pVal.isNull() ? QString() : pVal->value().toString();
+            QIcon wIcon;
+            if( !strIcon.isEmpty() ) {
+                QPixmap pIcon;
+                pIcon.loadFromData (strIcon.toUtf8());
+                wIcon = pIcon;
+            }
+            pRecTreeItem* wItem = new pRecTreeItem( prec.key(), prec.value(), _sortedParams, wIcon );
+            parent->appendChild( wItem );
+        }
+        return;
+    }
+
+    QModelIndex pIndex = QModelIndex ();
+    pRecTreeItem* prevItem( nullptr );
+    for( QMap< qint64, QSharedPointer< pRecordCopy > >::const_iterator prec = _records.constBegin();
+            prec != _records.constEnd();
+            prec++ ) {
+        QIcon wIcon;
+        if( !prec.value().isNull() ) {
+            QSharedPointer< const pParamValue > pVal = prec.value()->paramValue("r_icon");
+            QString strIcon = pVal.isNull() ? QString() : pVal->value().toString();
+            QPixmap pIcon;
+            pIcon.loadFromData( strIcon.toUtf8() );
+            wIcon = QIcon( pIcon );
+        }
+        pRecTreeItem* t = new pRecTreeItem( prec.value()->paramValue("id")->value().toLongLong(), prec.value(), _sortedParams, wIcon );
+        if( t->getData().isNull() )
+            continue;
+
+        QString valStr = prec.value()->paramValue( _cParamParent->getCode() )->value().toString();
+        if( valStr.isEmpty() )
+            parent->appendChild( t );
+        else {
+            bool ok;
+            qint64 iVal = valStr.toLongLong( &ok );
+            if( ok && iVal > 0 ) {
+                if( prevItem && prevItem->id() == iVal )
+                    prevItem->appendChild( t );
+                else if( prevItem ) {
+                    pRecTreeItem* p1( nullptr );
+                    while( prevItem && prevItem->id() != iVal && p1 == nullptr ) {
+                        prevItem = prevItem->parent();
+                        p1 = getModelItem( iVal, prevItem, pIndex );
+                    }
+                    if( p1 == nullptr )
+                        parent->appendChild( t );
+                    else {
+                        prevItem = p1;
+                        prevItem->appendChild( t );
+                    }
+                }
+                else {
+                    pRecTreeItem* parent1 = getModelItem( iVal, _rootItem, pIndex );
+                    if( parent1 == nullptr ) { //такая ситуация вообще-то является странной, признак того, что что-то не так
+                        parent->appendChild( t );
+                        prevItem = nullptr;
+                    }
+                    else {
+                        parent1->appendChild( t );
+                        prevItem = parent1;
+                    }
+                }
+            }
+            else {
+                parent->appendChild( t );
+                prevItem = nullptr;
+            }
+        }
+    }
+    return;
 }
 
 pRecTreeItem* pRecordDataModel::getModelItem (qint64 val, pRecTreeItem* parent, QModelIndex & pIndex) {
@@ -169,9 +263,19 @@ pRecTreeItem* pRecordDataModel::getModelItem (qint64 val, pRecTreeItem* parent, 
 
     for( int i=0; i<parent->childCount(); i++) {
         pRecTreeItem* item = parent->child( i );
-        QString refCol =_cParamParent->getColumnName();
-        Q_UNUSED( item );
-        Q_UNUSED( refCol );
+        //QString refCol = QString("id");//_cParamParent->getColumnName();
+        //QString pStr = item->getData()->paramValue( refCol )->value().toString();
+        //bool ok( true );
+        qint64 iVal = item->id();
+        if( iVal == val ) {
+            pIndex = index( i, 0, pIndex );
+            return item;
+        }
+        else if( item->childCount() > 0 ) {
+            pRecTreeItem* chItem = getModelItem( val, item, pIndex );
+            if( chItem )
+                return chItem;
+        }
     }
 
     return nullptr;

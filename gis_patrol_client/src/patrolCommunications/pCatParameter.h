@@ -59,4 +59,5 @@ inline bool compareCatParams( QSharedPointer< const pCatParameter > item1, QShar
 void findCatParamsByOrder( QVector< qint64 >& res, const QMap< qint64, QSharedPointer< pCatParameter > >& params, int order );
 
 Q_DECLARE_METATYPE( pCatParameter );
+Q_DECLARE_METATYPE( QSharedPointer< const pCatParameter > );
 Q_DECLARE_METATYPE( QSharedPointer< pCatParameter > );
