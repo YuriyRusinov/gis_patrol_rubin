@@ -40,10 +40,12 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
     return wEditor;
 }
 
-pIOGuiFactory::pIOGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
+pIOGuiFactory::pIOGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* paramF, pCatGuiFactory* catF, QObject* parent )
     : pEntityFactory( parent ),
     _dbLoader( dbLoader ),
-    _dbWriter( dbWriter ) {
+    _dbWriter( dbWriter ),
+    _paramFactory( paramF ),
+    _catFactory( catF ) {
 }
 
 pIOGuiFactory::~pIOGuiFactory( ) {}
