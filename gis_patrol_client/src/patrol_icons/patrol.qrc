@@ -17,5 +17,8 @@
     <file alias="save_db.png">192824_database_256x256.png</file>
     <file alias="up_arrow.svg">14486812511535694874.svg</file>
     <file alias="down_arrow.svg">11493561201553228077.svg</file>
+    <file alias="search.png">Loupe-icon.png</file>
+    <file alias="Earth.jpeg">Earth.jpeg</file>
+    <file alias="Earth.png">realms-icon.png</file>
 </qresource>
 </RCC>
