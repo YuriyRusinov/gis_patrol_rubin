@@ -112,8 +112,37 @@ QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
     if( wItem == nullptr )
         return QVariant();
     int iCol = index.column();
+    qint64 idw = wItem->id();
     if( role == Qt::DisplayRole || role == Qt::ToolTipRole )
         return wItem->columnData( iCol );
+    else if( role == Qt::UserRole )
+        return idw;
+    else if( role == Qt::BackgroundRole ) {
+        if( wItem->getData().isNull() )
+            return QVariant();
+        QSharedPointer< const pRecordCopy > pRec = wItem->getData();
+        QString pCode = _cParamBackground.isNull() ? QString("record_fill_color") :_cParamBackground->getCode();
+        bool ok;
+        quint64 retVal = pRec->paramValue( pCode )->value().toULongLong( &ok );
+        if( !ok )
+            return QVariant();
+        QVariant vc = QColor::fromRgba( retVal );
+        return vc;
+    }
+    else if( role == Qt::ForegroundRole ) {
+        if( wItem->getData().isNull() )
+            return QVariant();
+        QSharedPointer< const pRecordCopy > pRec = wItem->getData();
+        QString pCode = _cParamForeground.isNull() ? QString("record_text_color") :_cParamBackground->getCode();
+        bool ok;
+        quint64 retVal = pRec->paramValue( pCode )->value().toULongLong( &ok );
+        if( !ok )
+            return QVariant();
+        QVariant vc = QColor::fromRgba( retVal );
+        return vc;
+    }
+    else if( role == Qt::DecorationRole && index.column() == 0)
+        return QIcon(":/patrol/view.png");
     return QVariant();
 }
 
@@ -133,17 +162,26 @@ QVariant pRecordDataModel::headerData (int section, Qt::Orientation orientation,
 }
 
 bool pRecordDataModel::insertRows (int row, int count, const QModelIndex& parent ) {
-    Q_UNUSED( row );
-    Q_UNUSED( count );
-    Q_UNUSED( parent );
-    return false;
+    pRecTreeItem* pItem = getItem( parent );
+    bool ok ( true );
+    beginInsertRows( parent, row, row+count-1 );
+    ok = pItem->insertChildren( row, count );
+
+    endInsertRows();
+    return ok;
 }
 
 bool pRecordDataModel::removeRows (int row, int count, const QModelIndex& parent ) {
-    Q_UNUSED( row );
-    Q_UNUSED( count );
-    Q_UNUSED( parent );
-    return false;
+    if( count== 0 )
+        return true;
+
+    pRecTreeItem* pItem = getItem( parent );
+    bool ok ( true );
+    beginRemoveRows( parent, row, row+count-1 );
+    ok = pItem->removeChildren( row, count );
+    endRemoveRows( );
+
+    return ok;
 }
 
 void pRecordDataModel::setupParams() {
@@ -256,8 +294,6 @@ void pRecordDataModel::setupCategoryData(pRecTreeItem* parent) {
 }
 
 pRecTreeItem* pRecordDataModel::getModelItem (qint64 val, pRecTreeItem* parent, QModelIndex & pIndex) {
-    Q_UNUSED( val );
-    Q_UNUSED( pIndex );
     if( parent == nullptr )
         return _rootItem;
 
