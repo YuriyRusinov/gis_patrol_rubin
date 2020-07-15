@@ -90,7 +90,7 @@ QSharedPointer< const pParamValue > pRecordCopy::paramValue( QString code ) cons
     int n = _paramValues.size();
 
     for ( int i = 0; i < n && pV.isNull(); i++ ) {
-        if( QString::compare( _paramValues[i]->getCatParam()->getCode(), code) == 0 )
+        if( QString::compare( _paramValues[i]->getCatParam()->getCode(), code, Qt::CaseInsensitive ) == 0 )
             pV = _paramValues[i];
     }
     return pV;
@@ -101,7 +101,7 @@ QSharedPointer< pParamValue > pRecordCopy::paramValue( QString code ) {
     int n = _paramValues.size();
 
     for ( int i = 0; i < n && pV.isNull(); i++ ) {
-        if( QString::compare( _paramValues[i]->getCatParam()->getCode(), code) == 0 )
+        if( QString::compare( _paramValues[i]->getCatParam()->getCode(), code, Qt::CaseInsensitive ) == 0 )
             pV = _paramValues[i];
     }
     return pV;

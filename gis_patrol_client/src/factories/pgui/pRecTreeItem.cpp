@@ -7,6 +7,8 @@
  *  Ю.Л.Русинов
  */
 
+#include <QtDebug>
+
 #include <pCatParameter.h>
 #include <pRecordC.h>
 #include <pParameter.h>
@@ -158,42 +160,57 @@ void pRecTreeItem::initData( QSharedPointer< const pRecordCopy > pRec, const QMa
             pa != sortedParams.constEnd();
             pa++ ) {
         QSharedPointer< const pCatParameter > v = pa.value();
+        //qDebug() << __PRETTY_FUNCTION__ << pa.value()->getCode();
         QString pValue;
         if( v->getParamType()->getId() == pParamType::atCheckListEx ) {
             pValue = QObject::tr("<Set of references %1, dbl-click for details and see result table>").arg( iNum );
         }
-        else if( v->getParamType()->getId() == pParamType::atImage ) {
+        else if( v->getParamType()->getId() == pParamType::atImage ||
+                 ( !v->getRefParamType().isNull() && v->getRefParamType()->getId() == pParamType::atImage )) {
             pValue = QObject::tr("<Image data %1>").arg( iNum );
         }
-        else if( v->getParamType()->getId() == pParamType::atSVG ) {
+        else if( v->getParamType()->getId() == pParamType::atSVG || 
+                (!v->getRefParamType().isNull() && v->getRefParamType()->getId() == pParamType::atSVG) ) {
             pValue = QObject::tr("<SVG data %1>").arg( iNum );
         }
-        else if( v->getParamType()->getId() == pParamType::atXML ) {
+        else if( v->getParamType()->getId() == pParamType::atXML ||
+                (!v->getRefParamType().isNull() && v->getRefParamType()->getId() == pParamType::atXML )) {
             pValue = QObject::tr("<XML document %1>").arg( iNum );
         }
-        else if( v->getParamType()->getId() == pParamType::atVideo ) {
+        else if( v->getParamType()->getId() == pParamType::atVideo ||
+              (!v->getRefParamType().isNull() && v->getRefParamType()->getId() == pParamType::atVideo) ) {
             pValue = QObject::tr("<Video data %1>").arg( iNum );
         }
         else if( v->getParamType()->getId() == pParamType::atGeometry ||
                  v->getParamType()->getId() == pParamType::atGeography ||
-                 v->getParamType()->getId() == pParamType::atGISMap
+                 v->getParamType()->getId() == pParamType::atGISMap ||
+                 (!v->getRefParamType().isNull() && ( v->getRefParamType()->getId() == pParamType::atGeometry || v->getRefParamType()->getId() == pParamType::atGeography || v->getRefParamType()->getId() == pParamType::pParamType::atGISMap))
                ) {
             pValue = QObject::tr("<Geometry data %1>").arg( iNum );
         }
-        else if( v->getParamType()->getId() == pParamType::atComplex ) {
+        else if( v->getParamType()->getId() == pParamType::atComplex ||
+              (!v->getRefParamType().isNull() && v->getRefParamType()->getId() == pParamType::atComplex) ) {
             pValue = QObject::tr("<Complex value %1>").arg( iNum );
         }
         else if( v->getParamType()->getId() == pParamType::atJSON ||
-                 v->getParamType()->getId() == pParamType::atJSONb
+                 v->getParamType()->getId() == pParamType::atJSONb ||
+                 (!v->getRefParamType().isNull() && (v->getRefParamType()->getId() == pParamType::atJSON || v->getRefParamType()->getId() == pParamType::atJSONb ))
                ) {
             pValue = QObject::tr("<json value %1>").arg( iNum );
         }
-        else if( v->getParamType()->getId() == pParamType::atBinary ) {
+        else if( v->getParamType()->getId() == pParamType::atBinary ||
+               (!v->getRefParamType().isNull() && v->getRefParamType()->getId() == pParamType::atBinary ) ) {
             pValue = QObject::tr("<Binary data %1>").arg( iNum );
+        }
+        else if( v->getParamType()->getId() == pParamType::atList ||
+                 v->getParamType()->getId() == pParamType::atParent ) {
+            QString pCode = v->getCode();
+            pValue = pRec->paramValue( pCode )->getColumnValue();
         }
         else {
             QString pCode = v->getCode();
-            pValue = pRec->paramValue( pCode )->getColumnValue();
+            pValue = pRec->paramValue( pCode )->value().toString();//getColumnValue();
+            //qDebug() << __PRETTY_FUNCTION__ << pCode << pValue;
             if( pValue.contains ("\n") )
                 pValue = pValue.mid( 0, pValue.indexOf("\n")) + "...";
         }

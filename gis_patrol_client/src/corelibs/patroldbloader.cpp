@@ -120,7 +120,7 @@ QMap< qint64, QSharedPointer< pParameter > > pDBLoader::loadParameters( QSharedP
         return QMap< qint64, QSharedPointer< pParameter > >();
     qint64 idGroup = pGroup->getId();
     qDebug() << __PRETTY_FUNCTION__ << tr("Group id = %1").arg( idGroup );
-    QString sql_query = QString ("select id_parameter, id_param_type, id_param_group, parameter_code, parameter_name, parameter_title, table_name, column_name, parameter_type_name, parameter_type_code from pgetparameterslist(%1)").arg( idGroup );
+    QString sql_query = QString ("select id_parameter, id_param_type, id_param_group, parameter_code, parameter_name, parameter_title, table_name, column_name, parameter_type_name, parameter_type_code, id_param_ref, ref_type_id, ref_type_name, ref_type_code from pgetparameterslist(%1)").arg( idGroup );
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr || gpr->getRowCount() == 0 ) {
         if( gpr )
@@ -146,6 +146,14 @@ QMap< qint64, QSharedPointer< pParameter > > pDBLoader::loadParameters( QSharedP
         QString paramTypeCode = gpr->getCellAsString(i, 9);// type code
         pType.reset ( new pParamType( idType, paramTypeName, paramTypeCode) );
         param.reset ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+        if( !gpr->getCell(i, 10).isNull() ) {
+            qDebug() << __PRETTY_FUNCTION__ << QString( "Reference type" );
+            qint64 idRefType = gpr->getCellAsInt64(i, 11);
+            QString refTypeName = gpr->getCellAsString(i, 12);
+            QString refTypeCode = gpr->getCellAsString(i, 13);
+            QSharedPointer< pParamType > pRefType ( new pParamType( idRefType, refTypeName,refTypeCode ) );
+            param->setRefParamType( pRefType );
+        }
         res.insert( idParam, param );
     }
     delete gpr;
@@ -344,6 +352,14 @@ QMap< qint64, QSharedPointer< pCatParameter > > pDBLoader::loadCatParameters( qi
         QSharedPointer< pParamType > pType ( new pParamType( idParamType, paramTypeName, paramTypeCode) );
         QSharedPointer< pParamGroup > pGroup = loadParamGroup( gpr->getCellAsInt64( i, 2) );
         QSharedPointer< pParameter > param ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+        if( !gpr->getCell(i, 15).isNull() ) {
+            qint64 idRefType = gpr->getCellAsInt64(i, 16);
+            QString refTypeName = gpr->getCellAsString(i, 17);
+            QString refTypeCode = gpr->getCellAsString(i, 18);
+            qDebug() << __PRETTY_FUNCTION__ << gpr->getCellAsInt64(i, 15) << idRefType << refTypeName << refTypeCode;
+            QSharedPointer< pParamType > pRefType ( new pParamType( idRefType, refTypeName,refTypeCode ) );
+            param->setRefParamType( pRefType );
+        }
         QSharedPointer< pCatParameter > pcParam ( new pCatParameter (*(param.data()), isMandatory, isReadOnly, paramDefVal, sort_order, id_row ) );
         res.insert( idParam, pcParam );
     }
@@ -383,6 +399,14 @@ QSharedPointer< pParameter> pDBLoader::loadParameter( qint64 idParam ) const {
     QString paramTypeCode = gpr->getCellAsString(i, 9);// type code
     pType.reset ( new pParamType( idType, paramTypeName, paramTypeCode) );
     param.reset ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+    if( !gpr->getCell(i, 15).isNull() ) {
+        qint64 idRefType = gpr->getCellAsInt64(i, 16);
+        QString refTypeName = gpr->getCellAsString(i, 17);
+        QString refTypeCode = gpr->getCellAsString(i, 18);
+        qDebug() << __PRETTY_FUNCTION__ << gpr->getCellAsInt64(i, 15) << idRefType << refTypeName << refTypeCode;
+        QSharedPointer< pParamType > pRefType ( new pParamType( idRefType, refTypeName,refTypeCode ) );
+        param->setRefParamType( pRefType );
+    }
     delete gpr;
     return param;
 }
@@ -502,6 +526,12 @@ QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPoi
         QSharedPointer< pRecordCopy > prc ( new pRecordCopy(id, QString(), pIO) );
         int icol = 0;
         QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i);
+        /*
+         * Debug output
+         *
+        for (int ii=0; ii<pValues.count(); ii++) {
+            qDebug() << __PRETTY_FUNCTION__ << pValues[ii]->getCatParam()->getCode() << pValues[ii]->value().toString();
+        }*/
         prc->setParamValues( pValues );
         icol = 0;
         for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = cpars.constBegin();
@@ -517,6 +547,9 @@ QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPoi
                 prc->setDesc( gpr->getCellAsString(i, icol ) );
             icol++;
         }
+        // 
+        // qDebug() << __PRETTY_FUNCTION__ << prc->paramValue( QString("id") )->value() << id;
+        //
         resRecords.insert( id, prc );
     }
     delete gpr;
