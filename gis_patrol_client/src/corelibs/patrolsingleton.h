@@ -25,7 +25,7 @@ public:
 
     GISPatrolDatabase* getDb() const { return _dataBase; }
     PatrolGuiApp* getGUIObj() const { return _pga; }
-    pParamGUIFactory* getGUIFactory() const { return _pguif; }
+    pParamGUIFactory* getParamGUIFactory() const { return _pParamF; }
     pCatGuiFactory* getCatGUIFactory() const { return _pcatf; }
     pIOGuiFactory* getIOGUIFactory() const { return _piof; }
     pDBLoader* getDbLoader() const { return _pdbLoader; }
@@ -43,7 +43,7 @@ private:
     mutable PatrolGuiApp* _pga;
     mutable pDBLoader* _pdbLoader;
     mutable pDBWriter* _pdbWriter;
-    mutable pParamGUIFactory* _pguif;
+    mutable pParamGUIFactory* _pParamF;
     mutable pCatGuiFactory* _pcatf;
     mutable pIOGuiFactory* _piof;
 

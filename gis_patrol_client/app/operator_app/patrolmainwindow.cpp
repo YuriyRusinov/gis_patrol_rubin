@@ -39,7 +39,7 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     this->initActions();
     setEnabled( false );
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
-    pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
+    pParamGUIFactory* pGuiFactory = _patrolS->getParamGUIFactory();
     pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
     pIOGuiFactory* pIOGuiF = _patrolS->getIOGUIFactory();
     QObject::connect( pGuiApp, &PatrolGuiApp::disconnected, this, &PatrolMainWindow::slotDbDisconnected );
@@ -147,8 +147,8 @@ void PatrolMainWindow::slotAddWidget(QWidget* w) {
 
 void PatrolMainWindow::slotViewParameters() {
     qDebug() << __PRETTY_FUNCTION__;
-    pParamGUIFactory* pGuiFactory = _patrolS->getGUIFactory();
-    pGuiFactory->GUIView( );
+    pParamGUIFactory* pParamGuiFactory = _patrolS->getParamGUIFactory();
+    pParamGuiFactory->GUIView( );
 }
 
 void PatrolMainWindow::slotCreateCategory() {
