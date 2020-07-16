@@ -20,6 +20,7 @@ class QWidget;
 class pDBLoader;
 class pDBWriter;
 class pParamGroup;
+class pCatParameter;
 
 class pParamGUIFactory : public pEntityFactory {
 public:
@@ -31,6 +32,11 @@ public:
     // Метод выводит виджет со списком возможных параметров в модальном mode=true или немодальном режиме
     //
     QWidget* GUIViewParams(bool mode = false, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+    //
+    // Метод формирует для параметра специальный виджет для его дальнейшего размещения
+    // на форме и последующей инициализации данных
+    //
+    QWidget* createParamWidget( QSharedPointer< const pCatParameter > pCParam, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 
 private slots:
     void addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idParent, QModelIndex pIndex);
