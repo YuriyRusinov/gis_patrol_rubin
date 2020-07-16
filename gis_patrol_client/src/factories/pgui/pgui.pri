@@ -14,6 +14,7 @@ HEADERS += \
            pRecordDataModel.h \
            pRecTreeItem.h \
            pAbstractParamWidget.h \
+           pCheckBox.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -37,5 +38,6 @@ SOURCES += \
            pRecordDataModel.cpp \
            pRecTreeItem.cpp \
            pAbstractParamWidget.cpp \
+           pCheckBox.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp

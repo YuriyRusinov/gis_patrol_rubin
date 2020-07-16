@@ -10,8 +10,8 @@
 #include <pParamValue.h>
 #include "pAbstractParamWidget.h"
 
-pAbstractParamWidget::pAbstractParamWidget( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags ) :
-    QWidget( parent, flags ),
+pAbstractParamWidget::pAbstractParamWidget( QSharedPointer< pParamValue > pValue) : //, QWidget* parent, Qt::WindowFlags flags ) :
+//    QWidget( parent, flags ),
     _paramValue( pValue ) {
 }
 

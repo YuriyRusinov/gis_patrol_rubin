@@ -12,25 +12,24 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+class QLayout;
+
 class pParamValue;
 
-class pAbstractParamWidget : public QWidget {
+class pAbstractParamWidget {//: public QWidget {
 public:
-    pAbstractParamWidget( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
+    pAbstractParamWidget( QSharedPointer< pParamValue > pValue );
     virtual ~pAbstractParamWidget();
 
     QSharedPointer< const pParamValue > paramValue() const;
     QSharedPointer< pParamValue > paramValue();
     void setParamValue( QSharedPointer< pParamValue > pValue );
 
-    virtual void addParamWidget( QWidget* w ) = 0;
-
-signals:
-    void valueChanged( QSharedPointer< pParamValue > pValue );
+    virtual void setup( ) = 0;
 
 private:
     QSharedPointer< pParamValue > _paramValue;
 
-private:
-    Q_OBJECT
+//private:
+//    Q_OBJECT
 };
