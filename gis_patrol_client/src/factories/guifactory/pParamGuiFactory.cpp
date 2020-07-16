@@ -7,6 +7,9 @@
  *  Ю.Л.Русинов
  */
 #include <QAbstractItemModel>
+#include <QFont>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include <QWidget>
@@ -19,6 +22,7 @@
 #include <pParamModel.h>
 #include <pParamGroup.h>
 #include <pParameter.h>
+#include <pCatParameter.h>
 #include <pParamType.h>
 #include <paramsgroupform.h>
 #include <paramsform.h>
@@ -275,4 +279,25 @@ void pParamGUIFactory::buildParamModel( QAbstractItemModel* pMod, const QMap< qi
         }
         i++;
     }
+}
+
+QWidget* pParamGUIFactory::createParamWidget( QSharedPointer< const pCatParameter > pCParam, QWidget* parent, Qt::WindowFlags flags ) {
+    if( pCParam.isNull() )
+        return nullptr;
+    QWidget* w = new QWidget( parent, flags );
+    QLabel* lP = new QLabel( pCParam->getTitle(), w );
+    QFont lFont = lP->font();
+    if( pCParam->isMandatory() ) {
+        lFont.setBold( true );
+        lP->setText( lP->text() + QString("*") );
+    }
+    lP->setFont( lFont );
+    QHBoxLayout* hLay = new QHBoxLayout( w );
+    hLay->addWidget( lP );
+    pParamType::PatrolParamTypes pType = pCParam->getParamType()->getId();
+    Q_UNUSED( pType );
+//    switch( pType ) {
+//    }
+
+    return w;
 }

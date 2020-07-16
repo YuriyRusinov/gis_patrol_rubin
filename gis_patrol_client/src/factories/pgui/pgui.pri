@@ -13,6 +13,7 @@ HEADERS += \
            pCIOEditor.h \
            pRecordDataModel.h \
            pRecTreeItem.h \
+           pAbstractParamWidget.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -35,5 +36,6 @@ SOURCES += \
            pCIOEditor.cpp \
            pRecordDataModel.cpp \
            pRecTreeItem.cpp \
+           pAbstractParamWidget.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp
