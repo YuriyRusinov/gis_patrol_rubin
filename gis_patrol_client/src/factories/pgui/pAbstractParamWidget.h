@@ -16,9 +16,9 @@ class QLayout;
 
 class pParamValue;
 
-class pAbstractParamWidget {//: public QWidget {
+class pAbstractParamWidget : public QWidget {
 public:
-    pAbstractParamWidget( QSharedPointer< pParamValue > pValue );
+    pAbstractParamWidget( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pAbstractParamWidget();
 
     QSharedPointer< const pParamValue > paramValue() const;
@@ -27,9 +27,12 @@ public:
 
     virtual void setup( ) = 0;
 
+signals:
+    void valueChanged( QSharedPointer< pParamValue > pValue );
+
 private:
     QSharedPointer< pParamValue > _paramValue;
 
-//private:
-//    Q_OBJECT
+private:
+    Q_OBJECT
 };
