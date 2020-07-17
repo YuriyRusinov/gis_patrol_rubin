@@ -9,16 +9,16 @@
 
 #pragma once
 
-#include <QCheckBox>
 #include <QSharedPointer>
 
 #include "pAbstractParamWidget.h"
 
+class QCheckBox;
 class pParamValue;
 
-class pCheckBox : public QCheckBox, public pAbstractParamWidget {
+class pCheckBox : public pAbstractParamWidget {
 public:
-    pCheckBox( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr );
+    pCheckBox( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pCheckBox();
 
     void setup( ) override;
@@ -26,8 +26,8 @@ public:
 private slots:
     void pStateChanged( int state );
 
-signals:
-    void valueChanged( QSharedPointer< pParamValue > pValue );
+private:
+    QCheckBox* _pcbVal;
 
 private:
     Q_OBJECT

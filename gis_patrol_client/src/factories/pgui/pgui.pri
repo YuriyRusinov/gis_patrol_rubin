@@ -15,6 +15,9 @@ HEADERS += \
            pRecTreeItem.h \
            pAbstractParamWidget.h \
            pCheckBox.h \
+           pRefLineEdit.h \
+           pLineEdit.h \
+           pDateEdit.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -39,5 +42,8 @@ SOURCES += \
            pRecTreeItem.cpp \
            pAbstractParamWidget.cpp \
            pCheckBox.cpp \
+           pRefLineEdit.cpp \
+           pLineEdit.cpp \
+           pDateEdit.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp

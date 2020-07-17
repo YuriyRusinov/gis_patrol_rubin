@@ -6,24 +6,27 @@
  * @author
  *  Ю.Л.Русинов
  */
+
+#include <QCheckBox>
 #include <QHBoxLayout>
 
 #include <pParamValue.h>
+#include <pCatParameter.h>
 #include "pCheckBox.h"
 
-pCheckBox::pCheckBox( QSharedPointer< pParamValue > pValue, QWidget* parent  ) :
-    QCheckBox( parent ),
-    pAbstractParamWidget( pValue ) {
+pCheckBox::pCheckBox( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags  ) :
+    pAbstractParamWidget( pValue, parent, flags ), _pcbVal( new QCheckBox (pValue->getCatParam()->getTitle() ) ) {
     setup();
 }
 
 pCheckBox::~pCheckBox() {
+    delete _pcbVal;
 }
 
 void pCheckBox::setup( ) {
     QHBoxLayout* hLay = new QHBoxLayout( this );
-    setLayout( hLay );
-    QObject::connect( this, &QCheckBox::stateChanged, this, &pCheckBox::pStateChanged );
+    hLay->addWidget( _pcbVal );
+    QObject::connect( _pcbVal, &QCheckBox::stateChanged, this, &pCheckBox::pStateChanged );
 }
 
 void pCheckBox::pStateChanged( int state ) {
