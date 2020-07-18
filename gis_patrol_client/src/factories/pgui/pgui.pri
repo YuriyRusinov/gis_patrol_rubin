@@ -18,6 +18,9 @@ HEADERS += \
            pRefLineEdit.h \
            pLineEdit.h \
            pDateEdit.h \
+           pDateTimeEdit.h \
+           pTimeEdit.h \
+           pTextEdit.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -45,5 +48,8 @@ SOURCES += \
            pRefLineEdit.cpp \
            pLineEdit.cpp \
            pDateEdit.cpp \
+           pDateTimeEdit.cpp \
+           pTimeEdit.cpp \
+           pTextEdit.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp
