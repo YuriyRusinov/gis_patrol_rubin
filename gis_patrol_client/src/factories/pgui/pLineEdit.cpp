@@ -20,7 +20,7 @@
 pLineEdit::pLineEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags )
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
-    _pLE( new QLineEdit ) {
+    _pLE( new QLineEdit( pValue->value().toString() ) ) {
     setup();
 }
 

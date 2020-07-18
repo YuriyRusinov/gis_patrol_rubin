@@ -21,6 +21,8 @@ class pDBLoader;
 class pDBWriter;
 class pParamGroup;
 class pCatParameter;
+class pParamValue;
+class pAbstractParamWidget;
 
 class pParamGUIFactory : public pEntityFactory {
 public:
@@ -33,10 +35,10 @@ public:
     //
     QWidget* GUIViewParams(bool mode = false, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
     //
-    // Метод формирует для параметра специальный виджет для его дальнейшего размещения
-    // на форме и последующей инициализации данных
+    // Метод формирует для редактирования значения параметра специальный
+    // виджет для его дальнейшего размещения на форме
     //
-    QWidget* createParamWidget( QSharedPointer< const pCatParameter > pCParam, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+    pAbstractParamWidget* createParamWidget( QSharedPointer< pParamValue > pCParamValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 
 private slots:
     void addGroupOfParams(QAbstractItemModel* paramsModel, qint64 idParent, QModelIndex pIndex);

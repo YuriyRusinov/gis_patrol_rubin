@@ -24,8 +24,19 @@
 #include <pParameter.h>
 #include <pCatParameter.h>
 #include <pParamType.h>
+#include <pParamValue.h>
 #include <paramsgroupform.h>
 #include <paramsform.h>
+
+#include <pAbstractParamWidget.h>
+#include <pCheckBox.h>
+#include <pRefLineEdit.h>
+#include <pLineEdit.h>
+#include <pDateEdit.h>
+#include <pDateTimeEdit.h>
+#include <pTimeEdit.h>
+#include <pTextEdit.h>
+
 #include "pParamGuiFactory.h"
 
 pParamGUIFactory::pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
@@ -281,10 +292,10 @@ void pParamGUIFactory::buildParamModel( QAbstractItemModel* pMod, const QMap< qi
     }
 }
 
-QWidget* pParamGUIFactory::createParamWidget( QSharedPointer< const pCatParameter > pCParam, QWidget* parent, Qt::WindowFlags flags ) {
-    if( pCParam.isNull() )
+pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pParamValue > pCParamValue, QWidget* parent, Qt::WindowFlags flags ) {
+    if( pCParamValue.isNull() )
         return nullptr;
-    QWidget* w = new QWidget( parent, flags );
+    pAbstractParamWidget* wRes ( nullptr );/*= new QWidget( parent, flags );
     QLabel* lP = new QLabel( pCParam->getTitle(), w );
     QFont lFont = lP->font();
     if( pCParam->isMandatory() ) {
@@ -293,11 +304,17 @@ QWidget* pParamGUIFactory::createParamWidget( QSharedPointer< const pCatParamete
     }
     lP->setFont( lFont );
     QHBoxLayout* hLay = new QHBoxLayout( w );
-    hLay->addWidget( lP );
-    pParamType::PatrolParamTypes pType = pCParam->getParamType()->getId();
-    Q_UNUSED( pType );
-//    switch( pType ) {
-//    }
+    hLay->addWidget( lP );*/
+    pParamType::PatrolParamTypes pType = pCParamValue->getCatParam()->getParamType()->getId();
+    switch( pType ) {
+        case pParamType::atUndef: default: return wRes; break;
+        case pParamType::atBool: wRes = new pCheckBox( pCParamValue, parent, flags ); break;
+        case pParamType::atList: case pParamType::atParent: wRes = new pRefLineEdit( pCParamValue, parent, flags ); break;
+        case pParamType::atString: wRes = new pLineEdit( pCParamValue, parent, flags ); break;
+       //
+       // TODO: another types
+       //
+    }
 
-    return w;
+    return wRes;
 }
