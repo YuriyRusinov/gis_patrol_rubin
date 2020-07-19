@@ -21,6 +21,7 @@ HEADERS += \
            pDateTimeEdit.h \
            pTimeEdit.h \
            pTextEdit.h \
+           pColorEdit.h \
            ui/paramsgroupform.h \
            ui/paramsform.h
 
@@ -51,5 +52,6 @@ SOURCES += \
            pDateTimeEdit.cpp \
            pTimeEdit.cpp \
            pTextEdit.cpp \
+           pColorEdit.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp
