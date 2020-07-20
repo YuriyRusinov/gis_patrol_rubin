@@ -36,6 +36,7 @@
 #include <pDateTimeEdit.h>
 #include <pTimeEdit.h>
 #include <pTextEdit.h>
+#include <pColorEdit.h>
 
 #include "pParamGuiFactory.h"
 
@@ -311,6 +312,11 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
         case pParamType::atBool: wRes = new pCheckBox( pCParamValue, parent, flags ); break;
         case pParamType::atList: case pParamType::atParent: wRes = new pRefLineEdit( pCParamValue, parent, flags ); break;
         case pParamType::atString: wRes = new pLineEdit( pCParamValue, parent, flags ); break;
+        case pParamType::atRecordColor:
+        case pParamType::atRecordTextColor:
+        case pParamType::atRecordColorRef:
+        case pParamType::atRecordTextColorRef:
+                                   wRes = new pColorEdit( pCParamValue, parent, flags ); break;
        //
        // TODO: another types
        //

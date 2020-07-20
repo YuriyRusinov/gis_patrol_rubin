@@ -7,7 +7,7 @@
  *  Ю.Л.Русинов
  */
 
-#pragma	once			/*  */
+#pragma	once
 
 #include <QItemDelegate>
 

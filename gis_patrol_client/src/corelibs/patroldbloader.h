@@ -47,6 +47,7 @@ public:
     QSharedPointer< pParameter> loadParameter( qint64 idParam ) const;
 
     QSharedPointer< pIObject > loadIO( qint64 id ) const;
+    QSharedPointer< pIObject > loadIOByTableName( QString tableName ) const;
 
     QSharedPointer< pRecordCopy > loadCopy( qint64 id, QSharedPointer< pIObject > io ) const;
     QMap< qint64, QSharedPointer< pRecordCopy > > loadRecords( QSharedPointer< pIObject > io ) const;

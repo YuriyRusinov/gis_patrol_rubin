@@ -9,6 +9,7 @@
 
 #include <QIcon>
 #include <QModelIndex>
+#include <QtDebug>
 
 #include <pRecordC.h>
 #include <pCatParameter.h>
@@ -111,6 +112,7 @@ QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
     pRecTreeItem* wItem = static_cast< pRecTreeItem* >( index.internalPointer() );
     if( wItem == nullptr )
         return QVariant();
+    //qDebug() << __PRETTY_FUNCTION__ << role << Qt::UserRole << Qt::BackgroundRole << Qt::ForegroundRole << Qt::DecorationRole;
     int iCol = index.column();
     qint64 idw = wItem->id();
     if( role == Qt::DisplayRole || role == Qt::ToolTipRole )
@@ -123,7 +125,10 @@ QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
         QSharedPointer< const pRecordCopy > pRec = wItem->getData();
         QString pCode = _cParamBackground.isNull() ? QString("record_fill_color") :_cParamBackground->getCode();
         bool ok;
-        quint64 retVal = pRec->paramValue( pCode )->value().toULongLong( &ok );
+        QSharedPointer< const pParamValue > pVal = pRec->paramValue( pCode );
+        if( pVal.isNull() )
+            return QVariant();
+        quint64 retVal = pVal->value().toULongLong( &ok );
         if( !ok )
             return QVariant();
         QVariant vc = QColor::fromRgba( retVal );
@@ -135,7 +140,10 @@ QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
         QSharedPointer< const pRecordCopy > pRec = wItem->getData();
         QString pCode = _cParamForeground.isNull() ? QString("record_text_color") :_cParamBackground->getCode();
         bool ok;
-        quint64 retVal = pRec->paramValue( pCode )->value().toULongLong( &ok );
+        QSharedPointer< const pParamValue > pVal = pRec->paramValue( pCode );
+        if( pVal.isNull() )
+            return QVariant();
+        quint64 retVal = pVal->value().toULongLong( &ok );
         if( !ok )
             return QVariant();
         QVariant vc = QColor::fromRgba( retVal );

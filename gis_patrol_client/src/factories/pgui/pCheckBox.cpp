@@ -26,6 +26,8 @@ pCheckBox::~pCheckBox() {
 void pCheckBox::setup( ) {
     QHBoxLayout* hLay = new QHBoxLayout( this );
     hLay->addWidget( _pcbVal );
+    QSharedPointer< pParamValue > pValue = pAbstractParamWidget::paramValue();
+    _pcbVal->setCheckState( pValue->value().toBool() ? Qt::Checked : Qt::Unchecked );
     QObject::connect( _pcbVal, &QCheckBox::stateChanged, this, &pCheckBox::pStateChanged );
 }
 
