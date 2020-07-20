@@ -28,6 +28,7 @@
 #include <pRefLineEdit.h>
 #include <pRecordDataModel.h>
 #include <precdialog.h>
+#include <pCategoryModel.h>
 
 #include "pParamGuiFactory.h"
 #include "pIOGuiFactory.h"
@@ -117,8 +118,14 @@ void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString 
     }
     QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pRefIO );
     QSharedPointer< const pCategory > pCat = pRefIO->getCategory();
-    qDebug() << __PRETTY_FUNCTION__ << pCat->getId() << pCat->getTableCat()->getId();
-    QAbstractItemModel* recModel = new pRecordDataModel( pCat->getTableCat(), ioRecords );
+    qDebug() << __PRETTY_FUNCTION__ << pRefIO->getId() << pCat->getId() << pCat->getTableCat()->getId();
+    QAbstractItemModel* recModel = nullptr;
+    if( pRefIO->getId() == IO_CAT_ID ) {
+        QMap< qint64, QSharedPointer< pCategory > > categories = _dbLoader->loadCategories();
+        recModel = new pCategoryModel( categories );
+    }
+    else
+        recModel = new pRecordDataModel( pCat->getTableCat(), ioRecords );
     pRecDialog* pRecF = new pRecDialog;
     pRecF->setRecModel( recModel );
     if( pRecF == nullptr || pRecF->exec() != QDialog::Accepted ) {
