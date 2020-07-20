@@ -668,3 +668,17 @@ qint64 pDBLoader::loadIOId(const QString& tableName) const {
 
     return id;
 }
+
+QSharedPointer< pIObject > pDBLoader::loadIOByTableName( QString tableName ) const {
+    QString sql_query = QString("select * from ioGetObjectIDByTableName( '%1' );").arg( tableName );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return nullptr;
+    }
+    qint64 id = gpr->getCellAsInt64(0, 0);
+    QSharedPointer< pIObject > pIORes  = loadIO( id );
+    delete gpr;
+    return pIORes;
+}

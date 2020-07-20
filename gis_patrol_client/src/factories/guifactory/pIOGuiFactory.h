@@ -18,12 +18,17 @@ class pCatGuiFactory;
 
 class pCategory;
 class pRecordCopy;
+class pCIOEditor;
+class pParamValue;
  
 class pIOGuiFactory : public pEntityFactory {
 public:
     QWidget* GUIView( QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) override;
 
-    QWidget* viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
+    QWidget* viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, pCIOEditor* editor, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
+
+private slots:
+    void loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName );
 
 private:
     pIOGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* paramF, pCatGuiFactory* catF, QObject* parent = nullptr );

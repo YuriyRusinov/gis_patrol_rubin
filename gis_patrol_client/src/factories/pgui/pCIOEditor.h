@@ -19,6 +19,7 @@ class pCategory;
 class pRecord;
 class pRecordCopy;
 class pIObject;
+class pParamValue;
 
 class pCIOEditor : public QWidget {
 public:
@@ -45,6 +46,14 @@ private slots:
     void editRecord();
     void delRecord();
 
+    void slotParamRecChanged( QSharedPointer< pParamValue > pValue );
+
+    void slotSaveRecord();
+    void slotChangeReference();
+
+signals:
+    void loadReferenceRecords( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName );
+
 private:
     //
     // Functions
@@ -55,6 +64,8 @@ private:
     //
     // Variables
     //
+    friend class pIOGuiFactory;
+
     QSharedPointer< pCategory > _pCategory;
     QSharedPointer< pRecordCopy > _pRecord;
     QSharedPointer< pIObject > _pIO;
@@ -62,6 +73,8 @@ private:
 
     QToolBar* _tbIOActions;
     QTabWidget* _tabW;
+
+    bool _isChanged;
 
 private:
     Q_OBJECT

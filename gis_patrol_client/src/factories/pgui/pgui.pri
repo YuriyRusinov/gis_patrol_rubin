@@ -23,11 +23,13 @@ HEADERS += \
            pTextEdit.h \
            pColorEdit.h \
            ui/paramsgroupform.h \
-           ui/paramsform.h
+           ui/paramsform.h \
+           ui/precdialog.h
 
 FORMS += \
          ui/params_group_form.ui \
-         ui/params_form.ui
+         ui/params_form.ui \
+         ui/p_rec_dialog.ui
 
 SOURCES += \
            pCategoryListForm.cpp \
@@ -54,4 +56,5 @@ SOURCES += \
            pTextEdit.cpp \
            pColorEdit.cpp \
            ui/paramsgroupform.cpp \
-           ui/paramsform.cpp
+           ui/paramsform.cpp \
+           ui/precdialog.cpp

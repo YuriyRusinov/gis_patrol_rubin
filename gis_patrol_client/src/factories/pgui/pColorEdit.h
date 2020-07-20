@@ -29,7 +29,7 @@ private:
     // Variables
     //
     QLabel* _lParam;
-    QWidget* _wColorWidget;
+    QLabel* _lColorLabel;
     QToolButton* _tbColor;
 
 private:

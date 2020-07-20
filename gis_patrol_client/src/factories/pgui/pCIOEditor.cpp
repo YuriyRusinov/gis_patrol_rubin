@@ -17,6 +17,10 @@
 #include <pRecord.h>
 #include <pRecordC.h>
 #include <pIObject.h>
+#include <pCatParameter.h>
+#include <pParamValue.h>
+#include <pParamType.h>
+#include "pAbstractParamWidget.h"
 #include "pCIOEditor.h"
 
 pCIOEditor::pCIOEditor( QSharedPointer< pCategory > pCategory,
@@ -32,7 +36,8 @@ pCIOEditor::pCIOEditor( QSharedPointer< pCategory > pCategory,
     _pIO( pIO ),
     _isIO( isIO ),
     _tbIOActions( new QToolBar ),
-    _tabW( new QTabWidget ) {
+    _tabW( new QTabWidget ),
+    _isChanged( pRec->getId() < 0 ) {
     QGridLayout* grLay = new QGridLayout( this );
     grLay->addWidget( _tbIOActions, 0, 0, 1, 1 );
     grLay->addWidget( _tabW, 1, 0, 1, 1 );
@@ -70,6 +75,14 @@ void pCIOEditor::setObject( QSharedPointer< pIObject > pIO ) {
 }
 
 void pCIOEditor::initActions() {
+    QAction* actSaveRec = _tbIOActions->addAction( QIcon(":/patrol/save_db.png"), tr("Save record to DB") );
+    actSaveRec->setToolTip( tr("Save record to database") );
+    QKeySequence ksSave( Qt::CTRL | Qt::Key_S );
+    actSaveRec->setShortcut( ksSave );
+    QObject::connect( actSaveRec, &QAction::triggered, this, &pCIOEditor::slotSaveRecord );
+
+    _tbIOActions->addSeparator();
+
     QAction* actRecAdd = _tbIOActions->addAction( QIcon(":/patrol/add_parameter.svg"), tr("Create new record") );
     actRecAdd->setToolTip( tr("Create new record") );
     QKeySequence ksAdd( QKeySequence::New );//Qt::CTRL | Qt::Key_N );
@@ -104,4 +117,34 @@ void pCIOEditor::delRecord() {
 
 void pCIOEditor::appendTabWidget( QWidget* w, QString title ) {
     _tabW->addTab( w, title );
+}
+
+void pCIOEditor::slotParamRecChanged( QSharedPointer< pParamValue > pValue ) {
+    if( pValue.isNull() )
+        return;
+    qint64 pId = pValue->getCatParam()->getId();
+    QSharedPointer< pParamValue > pVal = _pRecord->paramValue( pId );
+    if( pVal.isNull() )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << QString("Old value is %1").arg(pVal->value().toString()) << pValue->value().toString();
+    pVal->setValue( pValue->value() );
+    _isChanged = true;
+}
+
+void pCIOEditor::slotSaveRecord() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void pCIOEditor::slotChangeReference() {
+    qDebug() << __PRETTY_FUNCTION__;
+    pAbstractParamWidget* paramW = qobject_cast< pAbstractParamWidget* >(this->sender());
+    if( !paramW )
+        return;
+    QSharedPointer< pParamValue > pValue = paramW->paramValue();
+    if( pValue.isNull() || pValue->getCatParam().isNull() )
+        return;
+    QString tableName = pValue->getCatParam()->getParamType()->getId() == pParamType::atParent ? _pIO->getTableName() : pValue->getCatParam()->getTableName();
+    QString columnName = pValue->getCatParam()->getColumnName();
+    qDebug() << __PRETTY_FUNCTION__ << tableName << columnName << _pIO->getTableName();
+    emit loadReferenceRecords( pValue, tableName, columnName );
 }
