@@ -15,6 +15,8 @@
 #include <pCategory.h>
 #include <pCategoryType.h>
 #include <pCatParameter.h>
+#include <pParamValue.h>
+#include <pRecordC.h>
 
 #include "patroldbwriter.h"
 
@@ -356,4 +358,28 @@ qint64 pDBWriter::updateCategoryParam( qint64 idCategory, QSharedPointer< pCatPa
     qint64 res = gpr->getCellAsInt64( 0, 0 );
     delete gpr;
     return res;
+}
+
+QString pDBWriter::generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName ) const {
+    if( pRecord.isNull() || tableName.isEmpty() )
+        return QString();
+
+    QString sql_query = QString("update %1 set ").arg( tableName );
+    int n = pRecord->paramValues().count();
+
+    for ( int i=0; i<n; i++ ) {
+        QSharedPointer< const pParamValue > pVal = pRecord->paramValueIndex( i );
+        if( pVal->getCatParam()->getId() == 1 ) // id
+            continue;
+        sql_query += QString(" %1=%2 ").arg( pVal->getCatParam()->getCode() ).arg( pVal->valueForInsert() );
+    }
+    sql_query += QString(" where id = %1; ").arg( pRecord->getId() );
+    return sql_query;
+}
+
+QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName ) const {
+    if( pRecord.isNull() || tableName.isEmpty() )
+        return QString();
+
+    QString sql_query = QString("insert into %1").arg( tableName );
 }

@@ -7,6 +7,7 @@
  *  Ю.Л.Русинов
  */
 
+#include "pParamType.h"
 #include "pCatParameter.h"
 #include "pIObject.h"
 #include "pParamValue.h"
@@ -74,11 +75,56 @@ void pParamValue::setValue( const QVariant& val ) {
 }
 
 QString pParamValue::valueForInsert() const {
-    //
-    // TODO: написать реальное строковое представление для различных типов параметров
-    //       пока для отработки элементов не актуально
-    //
-    return _value.toString();
+    pParamType::PatrolParamTypes pType = _parameter->getParamType()->getId();
+    QString resVal;
+    switch( pType ) {
+        case pParamType::atBool: resVal = (_value.toBool() ? QString("true::boolean") : QString("false::boolean")); break;
+        case pParamType::atList:
+        case pParamType::atParent:
+        case pParamType::atDouble:
+        case pParamType::atInt:
+        case pParamType::atRecordColorRef:
+        case pParamType::atRecordTextColorRef:
+        case pParamType::atRecordColor:
+        case pParamType::atRecordTextColor:
+        case pParamType::atInt64:
+                                 resVal = _value.toString(); break;
+        case pParamType::atString:
+        case pParamType::atText:
+        case pParamType::atFixString:
+        case pParamType::atUUID:
+        case pParamType::atXML:
+        case pParamType::atSVG:
+                                 resVal = QString("'%1'").arg( _value.toString() ); break;
+        case pParamType::atDate: resVal = QString("'%1'::timestamp").arg( _value.toDate().toString(Qt::ISODate) ); break;
+        case pParamType::atDateTime:
+        case pParamType::atDateTimeWithOffset:
+        case pParamType::atDateTimeEx:
+                                 resVal = QString("'%1'::timestamptz").arg( _value.toDateTime().toString(Qt::ISODate) ); break;
+        case pParamType::atTime: resVal = QString("'%1'::timestamptz").arg( _value.toTime().toString(Qt::ISODate) ); break;
+        case pParamType::atInterval: resVal = QString("interval '%1' day").arg( _value.toDouble() ); break;
+        case pParamType::atIntervalH: resVal = QString("interval '%1' hour").arg( _value.toDouble() ); break;
+        case pParamType::atBinary:
+        case pParamType::atVideo: {
+                                      QByteArray sVal (_value.toByteArray());
+                                      int nc = sVal.length();
+                                      for (int i=0; i<nc; i++) {
+                                          char s = sVal.at(i);
+                                          if (QChar (s) >= 0 && QChar (s)<=31)
+                                              resVal += QString("\\\\%1").arg (s);
+                                          else
+                                              resVal += QString(s);
+                                          }
+                                          resVal.prepend("'");
+                                          resVal.append("'");
+                                          break;
+                                    }
+        default: break;
+//
+// TODO: подумать и решить формат хранения и развертывания геоданных
+//
+    }
+    return resVal;
 }
 
 const QString& pParamValue::getColumnValue() const {
