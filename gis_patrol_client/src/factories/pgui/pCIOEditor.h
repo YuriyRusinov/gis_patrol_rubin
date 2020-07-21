@@ -12,6 +12,7 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+class QLineEdit;
 class QTabWidget;
 class QToolBar;
 
@@ -49,10 +50,10 @@ private slots:
     void slotParamRecChanged( QSharedPointer< pParamValue > pValue );
 
     void slotSaveRecord();
-    void slotChangeReference();
+    void slotChangeReference( QSharedPointer< pParamValue > pValue, QLineEdit* lE );
 
 signals:
-    void loadReferenceRecords( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName );
+    void loadReferenceRecords( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
 
 private:
     //

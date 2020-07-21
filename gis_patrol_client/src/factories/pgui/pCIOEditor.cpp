@@ -135,16 +135,12 @@ void pCIOEditor::slotSaveRecord() {
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-void pCIOEditor::slotChangeReference() {
+void pCIOEditor::slotChangeReference( QSharedPointer< pParamValue > pValue, QLineEdit* lE ) {
     qDebug() << __PRETTY_FUNCTION__;
-    pAbstractParamWidget* paramW = qobject_cast< pAbstractParamWidget* >(this->sender());
-    if( !paramW )
-        return;
-    QSharedPointer< pParamValue > pValue = paramW->paramValue();
     if( pValue.isNull() || pValue->getCatParam().isNull() )
         return;
     QString tableName = pValue->getCatParam()->getParamType()->getId() == pParamType::atParent ? _pIO->getTableName() : pValue->getCatParam()->getTableName();
     QString columnName = pValue->getCatParam()->getColumnName();
     qDebug() << __PRETTY_FUNCTION__ << tableName << columnName << _pIO->getTableName();
-    emit loadReferenceRecords( pValue, tableName, columnName );
+    emit loadReferenceRecords( pValue, tableName, columnName, lE );
 }

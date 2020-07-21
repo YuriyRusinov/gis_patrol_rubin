@@ -603,6 +603,7 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     QStringList usedTables;
     QStringList paramTableCodes;
     usedTables << tableName;
+    QList< bool > isMandatories;
     QList<int> tNumbers;
     int itable = 0;
     tNumbers << itable++;
@@ -618,15 +619,17 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
             ) {
             usedTables << pc.value()->getTableName();
             paramTableCodes << pc.value()->getCode();
+            isMandatories << pc.value()->isMandatory();
             tNumbers << itable++;
         }
         else if (pc.value()->getParamType()->getId() == pParamType::atParent ) {
             usedTables << tableName;
             paramTableCodes << pc.value()->getCode();
+            isMandatories << pc.value()->isMandatory();
             tNumbers << itable++;
         }
     }
-    qDebug() << __PRETTY_FUNCTION__ << usedTables << tNumbers << isSys;
+    qDebug() << __PRETTY_FUNCTION__ << usedTables << tNumbers << isSys << isMandatories;
     sql_query = QString("select ");
     itable = 0;
     for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = params.constBegin();
@@ -647,7 +650,7 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     sql_query += QString(" from %1 as tab_%2").arg( usedTables[0] ).arg( tNumbers[0] );
     int nt = usedTables.size();
     for (int i=1; i<nt; i++) {
-        sql_query += QString(" inner join %1 as tab_%2 on (tab_%3.%4=tab_%2.id %5)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]).arg( id > 0 && i==1 ? QString(" and tab_0.id=%1").arg(id) : QString());
+        sql_query += QString(" %6 join %1 as tab_%2 on (tab_%3.%4=tab_%2.id %5)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]).arg( id > 0 && i==1 ? QString(" and tab_0.id=%1").arg(id) : QString()).arg(isMandatories[i-1] ? QString("inner") : QString("left"));
     }
     return sql_query;
 }
@@ -681,4 +684,24 @@ QSharedPointer< pIObject > pDBLoader::loadIOByTableName( QString tableName ) con
     QSharedPointer< pIObject > pIORes  = loadIO( id );
     delete gpr;
     return pIORes;
+}
+
+QSharedPointer< pParamValue > pDBLoader::loadRecParamValue( qint64 id, QSharedPointer< pCatParameter > param, QSharedPointer< pIObject > refIO ) const {
+    if( refIO.isNull() || param.isNull() )
+        return QSharedPointer< pParamValue >( nullptr );
+    QString tableName = refIO->getTableName();
+    QString columnName = param->getColumnName();
+    if( tableName.isEmpty() || columnName.isEmpty() )
+        return QSharedPointer< pParamValue >( nullptr );
+    QString sql_query = QString("select %2.%1 from %2 where %2.id=%3").arg( columnName ).arg( tableName ).arg( id );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return QSharedPointer< pParamValue >( nullptr );
+    }
+    QSharedPointer< pParamValue > pValue( new pParamValue( param, QVariant( id ) ) );
+    pValue->setColumnValue( gpr->getCellAsString(0, 0) );
+    delete gpr;
+    return pValue;
 }

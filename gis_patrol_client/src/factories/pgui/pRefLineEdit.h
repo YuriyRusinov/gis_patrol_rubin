@@ -31,7 +31,7 @@ private slots:
     void changeRef();
 
 signals:
-    void changeRecord( QSharedPointer< pParamValue > pValue );
+    void changeRecord( QSharedPointer< pParamValue > pValue, QLineEdit* lE );
 
 private:
     QLabel* _lParam;
