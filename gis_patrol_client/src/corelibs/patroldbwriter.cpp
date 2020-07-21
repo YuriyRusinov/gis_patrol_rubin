@@ -16,6 +16,7 @@
 #include <pCategoryType.h>
 #include <pCatParameter.h>
 #include <pParamValue.h>
+#include <pIObject.h>
 #include <pRecordC.h>
 
 #include "patroldbwriter.h"
@@ -381,5 +382,71 @@ QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord
     if( pRecord.isNull() || tableName.isEmpty() )
         return QString();
 
+    qint64 id = getNextSeq( tableName );
+    pRecord->setId( id );
     QString sql_query = QString("insert into %1").arg( tableName );
+    QStringList columnsList;
+    QStringList valuesList;
+    QList< QSharedPointer< pParamValue > > pValues = pRecord->paramValues();
+    int n = pValues.count();
+
+    for ( int i = 0; i < n; i++ ) {
+        columnsList << pValues[i]->getCatParam()->getCode();
+        valuesList << (pValues[i]->getCatParam()->getId() == 1 ? QString::number( id ) : pValues[i]->valueForInsert() );
+    }
+    for ( int i = 0; i < n; i++ ) {
+        sql_query += QString("%1%2%3")
+                        .arg( i==0 ? QString("(") : QString() )
+                        .arg( columnsList[i] )
+                        .arg( i==n-1 ? QString(") values (") : QString(",") );
+    }
+    for ( int i = 0; i < n; i++ ) {
+        sql_query += QString("%1%2")
+                        .arg( valuesList[i] )
+                        .arg( i==n-1 ? QString(");") : QString(",") );
+    }
+    return sql_query;
+}
+
+qint64 pDBWriter::getNextSeq( QString tableName, QString columnName ) const {
+    QString sql_query = QString( "select getNextSeq('%1', '%2');").arg( tableName ).arg( columnName );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+
+    qint64 res = gpr->getCellAsInt64( 0, 0 );
+    delete gpr;
+    return res;
+}
+
+qint64 pDBWriter::insertRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const {
+    if( pIO.isNull() || pRecord.isNull() )
+        return -1;
+    QString tName = pIO->getTableName();
+    QString sql_query = generateInsertRecQuery( pRecord, tName );
+    qDebug() << __PRETTY_FUNCTION__ << sql_query;
+
+    qint64 resId = pRecord->getId();
+    return resId;
+}
+
+qint64 pDBWriter::updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const {
+    if( pIO.isNull() || pRecord.isNull() )
+        return -1;
+    QString tName = pIO->getTableName();
+    QString sql_query = generateUpdateRecQuery( pRecord, tName );
+    qDebug() << __PRETTY_FUNCTION__ << sql_query;
+
+    qint64 resId = pRecord->getId();
+    return resId;
+}
+
+qint64 pDBWriter::deleteRecord( qint64 idRec ) const {
+    //
+    //TODO: пока заглушка
+    //
+    return idRec;
 }
