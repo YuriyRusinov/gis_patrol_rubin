@@ -8,6 +8,7 @@
  */
 
 #include <QGridLayout>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -106,7 +107,7 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
     return paramWidget;
 }
 
-void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName ) {
+void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE ) {
     if( pValue.isNull() || pValue->getCatParam().isNull() || columnName.isEmpty() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << tableName;
@@ -121,6 +122,10 @@ void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString 
     qDebug() << __PRETTY_FUNCTION__ << pRefIO->getId() << pCat->getId() << pCat->getTableCat()->getId();
     QAbstractItemModel* recModel = nullptr;
     if( pRefIO->getId() == IO_CAT_ID ) {
+        //
+        // Наряду с моделью общего вида у нас есть несколько частных моделей
+        // для отображения параметров, имеет смысл их задействовать
+        //
         QMap< qint64, QSharedPointer< pCategory > > categories = _dbLoader->loadCategories();
         recModel = new pCategoryModel( categories );
     }
@@ -135,5 +140,9 @@ void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString 
     }
     qint64 idRec = pRecF->getRecId();
     qDebug() << __PRETTY_FUNCTION__ << idRec;
+    QSharedPointer< pParamValue > pVal = _dbLoader->loadRecParamValue( idRec, pValue->getCatParam(), pRefIO );
+    QString cVal = pVal->getColumnValue();
+    pValue->setColumnValue( cVal );
     delete pRecF;
+    lE->setText( cVal );
 }

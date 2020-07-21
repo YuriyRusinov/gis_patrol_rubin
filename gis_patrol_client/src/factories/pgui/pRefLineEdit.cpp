@@ -56,5 +56,5 @@ void pRefLineEdit::setParamValue( QSharedPointer< pParamValue > pValue ) {
 
 void pRefLineEdit::changeRef() {
     QSharedPointer< pParamValue > pValue = this->paramValue();
-    emit changeRecord( pValue );
+    emit changeRecord( pValue, _pLEValue );
 }

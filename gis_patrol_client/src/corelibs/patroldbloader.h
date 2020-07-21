@@ -53,6 +53,8 @@ public:
     QMap< qint64, QSharedPointer< pRecordCopy > > loadRecords( QSharedPointer< pIObject > io ) const;
     QMap< qint64, QSharedPointer< pRecordCopy > > loadRecords( QSharedPointer< pCategory > pCat, QString tableName ) const;
 
+    QSharedPointer< pParamValue > loadRecParamValue( qint64 id, QSharedPointer< pCatParameter > param, QSharedPointer< pIObject > refIO ) const;
+
 private:
     //
     // Functions

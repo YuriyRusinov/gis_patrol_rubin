@@ -11,6 +11,8 @@
 
 #include "pEntityFactory.h"
 
+class QLineEdit;
+
 class pDBLoader;
 class pDBWriter;
 class pParamGUIFactory;
@@ -28,7 +30,7 @@ public:
     QWidget* viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, pCIOEditor* editor, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
 
 private slots:
-    void loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName );
+    void loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
 
 private:
     pIOGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGUIFactory* paramF, pCatGuiFactory* catF, QObject* parent = nullptr );
