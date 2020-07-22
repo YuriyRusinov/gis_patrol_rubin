@@ -22,6 +22,7 @@ HEADERS += \
            pTimeEdit.h \
            pTextEdit.h \
            pColorEdit.h \
+           pSVGEdit.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
            ui/precdialog.h
@@ -55,6 +56,7 @@ SOURCES += \
            pTimeEdit.cpp \
            pTextEdit.cpp \
            pColorEdit.cpp \
+           pSVGEdit.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
            ui/precdialog.cpp
