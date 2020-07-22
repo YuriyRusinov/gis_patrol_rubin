@@ -22,6 +22,7 @@ public:
     virtual ~pTextEdit();
 
     void setup( ) override;
+    void setReadOnly( bool value ) override;
 
 private slots:
     void pTextChanged();

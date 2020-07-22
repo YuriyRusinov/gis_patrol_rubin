@@ -25,6 +25,9 @@ public:
     QSharedPointer< pParamValue > paramValue();
     void setParamValue( QSharedPointer< pParamValue > pValue );
 
+    virtual void setReadOnly( bool value ) = 0;
+
+private:
     virtual void setup( ) = 0;
 
 signals:

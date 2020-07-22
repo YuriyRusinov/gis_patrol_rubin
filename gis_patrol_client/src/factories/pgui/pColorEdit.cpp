@@ -15,6 +15,7 @@
 #include <QPalette>
 #include <QWidget>
 #include <QToolButton>
+#include <QtDebug>
 
 #include <pCatParameter.h>
 #include <pParamValue.h>
@@ -47,19 +48,40 @@ void pColorEdit::setup( ) {
         lFont.setBold( true );
         _lParam->setFont( lFont );
     }
+    QSharedPointer< pParamValue > pValue = paramValue();
+    bool ok;
+    quint64 rgba = pValue->value().toULongLong( &ok );
+    if( !ok )
+        return;
+    QColor wColor = QColor::fromRgba( rgba );//pValue->value().value<QColor>();
+    _lColorLabel->setAutoFillBackground( true );
+    if( pValue->getCatParam()->getParamType()->getId() == pParamType::atRecordColor ||
+        pValue->getCatParam()->getParamType()->getId() == pParamType::atRecordColorRef ) {
+        QPalette bgPal = _lParam->palette();
+        QBrush wBrush( wColor );
+        bgPal.setBrush( QPalette::Window, wBrush );
+        _lColorLabel->setPalette( bgPal );
+    }
+    else if ( pValue->getCatParam()->getParamType()->getId() == pParamType::atRecordTextColor ||
+        pValue->getCatParam()->getParamType()->getId() == pParamType::atRecordTextColorRef ) {
+        QColor fgCol( wColor);
+        QPalette pal = _lParam->palette ();
+        pal.setColor( QPalette::WindowText, fgCol );
+        _lColorLabel->setPalette( pal );
+    }
     QObject::connect( _tbColor, &QToolButton::clicked, this, &pColorEdit::setColor );
 
 }
 
 void pColorEdit::setColor() {
     QSharedPointer< pParamValue > pValue = paramValue();
-    QColor newCol = QColorDialog::getColor( pValue->value().value<QColor>() );
+    QColor newCol = QColorDialog::getColor( QColor::fromRgba( pValue->value().toLongLong()) );
     if( !newCol.isValid() ) {
         _lColorLabel->setAutoFillBackground( false );
         return;
     }
     _lColorLabel->setAutoFillBackground( true );
-    pValue->setValue( QVariant( newCol ) );
+    pValue->setValue( QVariant( newCol.rgba() ) );
     if( paramValue()->getCatParam()->getParamType()->getId() == pParamType::atRecordColor ||
         paramValue()->getCatParam()->getParamType()->getId() == pParamType::atRecordColorRef ) {
         QPalette bgPal = _lParam->palette();
@@ -75,4 +97,8 @@ void pColorEdit::setColor() {
         _lColorLabel->setPalette( pal );
     }
     emit valueChanged( pValue );
+}
+
+void pColorEdit::setReadOnly( bool value ) {
+    _tbColor->setEnabled( !value );
 }

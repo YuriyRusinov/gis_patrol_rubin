@@ -22,7 +22,7 @@ public:
     pRefLineEdit( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pRefLineEdit();
 
-    void setup( ) override;
+    void setReadOnly( bool value ) override;
 
 public slots:
     void setParamValue( QSharedPointer< pParamValue > pValue );
@@ -34,6 +34,15 @@ signals:
     void changeRecord( QSharedPointer< pParamValue > pValue, QLineEdit* lE );
 
 private:
+    //
+    // Functions
+    //
+    void setup( ) override;
+
+private:
+    //
+    // Variables
+    //
     QLabel* _lParam;
     QLineEdit* _pLEValue;
     QToolButton* _tbParam;

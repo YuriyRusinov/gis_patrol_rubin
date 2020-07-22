@@ -58,3 +58,7 @@ void pRefLineEdit::changeRef() {
     QSharedPointer< pParamValue > pValue = this->paramValue();
     emit changeRecord( pValue, _pLEValue );
 }
+
+void pRefLineEdit::setReadOnly( bool value ) {
+    _tbParam->setEnabled( !value );
+}

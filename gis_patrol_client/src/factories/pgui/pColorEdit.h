@@ -19,6 +19,9 @@ public:
     pColorEdit( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     ~pColorEdit();
 
+    void setReadOnly( bool value ) override;
+
+private:
     void setup( ) override;
 
 private slots:

@@ -22,7 +22,11 @@ public:
     pLineEdit( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pLineEdit();
 
+private:
     void setup( ) override;
+
+public:
+    void setReadOnly( bool value ) override;
 
     void setValidator( QValidator* val );
 

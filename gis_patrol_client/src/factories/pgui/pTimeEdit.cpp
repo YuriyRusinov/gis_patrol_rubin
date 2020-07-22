@@ -20,6 +20,7 @@ pTimeEdit::pTimeEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt:
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
     _pTE( new QTimeEdit( pValue->value().toTime() ) ) {
+    setup();
 }
 
 pTimeEdit::~pTimeEdit() {
@@ -42,4 +43,8 @@ void pTimeEdit::setup( ) {
 void pTimeEdit::pTimeChanged( const QTime &time ) {
     paramValue()->setValue( QVariant(time) );
     emit valueChanged( paramValue() );
+}
+
+void pTimeEdit::setReadOnly( bool value ) {
+    _pTE->setEnabled( !value );
 }

@@ -20,6 +20,7 @@ pDateEdit::pDateEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt:
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
     _pDE( new QDateEdit( pValue->value().toDate() ) ) {
+    setup();
 }
 
 pDateEdit::~pDateEdit() {
@@ -42,4 +43,8 @@ void pDateEdit::setup( ) {
 void pDateEdit::pDateChanged( const QDate &date ) {
     paramValue()->setValue( QVariant(date) );
     emit valueChanged( paramValue() );
+}
+
+void pDateEdit::setReadOnly( bool value ) {
+    _pDE->setEnabled( !value );
 }
