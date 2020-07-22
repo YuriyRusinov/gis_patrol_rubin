@@ -580,6 +580,14 @@ QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointe
                 icol++;
                 break;
             }
+            case pParamType::atRecordColor:
+            case pParamType::atRecordTextColor: {
+                bool ok;
+                qint64 valCol = gpr->getCellAsInt64(i, icol, &ok);
+                valueV = ok ? valCol : gpr->getCell(i, icol);
+                icol++;
+                break;
+            }
             default: {
                 valueV = gpr->getCell(i, icol);
                 icol++;

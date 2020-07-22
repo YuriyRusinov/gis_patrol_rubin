@@ -21,12 +21,14 @@ public:
     pDateEdit( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pDateEdit();
 
-    void setup( ) override;
+    void setReadOnly( bool value ) override;
 
 private slots:
     void pDateChanged( const QDate &date );
 
 private:
+    void setup( ) override;
+
     QLabel* _lParam;
     QDateEdit* _pDE;
 

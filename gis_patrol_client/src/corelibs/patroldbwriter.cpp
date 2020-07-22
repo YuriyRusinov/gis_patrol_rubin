@@ -370,9 +370,15 @@ QString pDBWriter::generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord
 
     for ( int i=0; i<n; i++ ) {
         QSharedPointer< const pParamValue > pVal = pRecord->paramValueIndex( i );
+        QVariant val = pVal->value();
+        QString valStr = pVal->valueForInsert();
+        if( valStr.isEmpty() || val.isNull() || val.toString().isEmpty() )
+            valStr = QString("null");
+        if( QString::compare( pVal->getCatParam()->getCode(), QString("description"), Qt::CaseInsensitive ) == 0 )
+            qDebug() << __PRETTY_FUNCTION__ << pVal->getCatParam()->getId() << valStr << val;
         if( pVal->getCatParam()->getId() == 1 ) // id
             continue;
-        sql_query += QString(" %1=%2 ").arg( pVal->getCatParam()->getCode() ).arg( pVal->valueForInsert() );
+        sql_query += QString(" %1=%2%3 ").arg( pVal->getCatParam()->getCode() ).arg( valStr ).arg( i==n-1 ? QString() : QString(","));
     }
     sql_query += QString(" where id = %1; ").arg( pRecord->getId() );
     return sql_query;
@@ -439,8 +445,13 @@ qint64 pDBWriter::updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     QString tName = pIO->getTableName();
     QString sql_query = generateUpdateRecQuery( pRecord, tName );
     qDebug() << __PRETTY_FUNCTION__ << sql_query;
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr ) {
+        return -1;
+    }
 
     qint64 resId = pRecord->getId();
+    delete gpr;
     return resId;
 }
 

@@ -84,12 +84,12 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (54, 49, 1, null, true, true, 1);-- id
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (55, 49, 63, null, false, false, 2);-- maclabel
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (56, 49, 22, null, true, false, 3);-- firstname
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (57, 49, 23, null, false, false, 3);-- surname
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (58, 49, 24, null, true, false, 4);-- lastname
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (59, 49, 16, 'current_timestamp', true, true, 5);-- insert_time
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (60, 49, 25, null, true, false, 6);-- family_name
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (61, 49, 66, null, false, false, 7);-- email
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (62, 49, 26, null, true,false, 8);-- db_user
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (57, 49, 23, null, false, false, 4);-- surname
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (58, 49, 24, null, true, false, 5);-- lastname
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (59, 49, 16, 'current_timestamp', true, true, 6);-- insert_time
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (60, 49, 25, null, true, false, 7);-- family_name
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (61, 49, 66, null, false, false, 8);-- email
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (62, 49, 26, null, true,false, 9);-- db_user
 
 --таблица значений атрибутов в информационных объектах
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (501, 183, 1, null, true, true, 1); -- id

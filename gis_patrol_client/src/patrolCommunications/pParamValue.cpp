@@ -85,10 +85,12 @@ QString pParamValue::valueForInsert() const {
         case pParamType::atInt:
         case pParamType::atRecordColorRef:
         case pParamType::atRecordTextColorRef:
+        case pParamType::atInt64:
+                                 resVal = QString("%1").arg( _value.toLongLong()); break;
         case pParamType::atRecordColor:
         case pParamType::atRecordTextColor:
-        case pParamType::atInt64:
-                                 resVal = _value.toString(); break;
+                                 resVal = QString("%1").arg( _value.toLongLong() ); break;
+                                 //value<QColor>().rgba() ); break;
         case pParamType::atString:
         case pParamType::atText:
         case pParamType::atFixString:

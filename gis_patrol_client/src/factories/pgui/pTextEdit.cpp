@@ -43,3 +43,7 @@ void pTextEdit::pTextChanged() {
     paramValue()->setValue( QVariant( _pTextE->toPlainText() ) );
     emit valueChanged( paramValue() );
 }
+
+void pTextEdit::setReadOnly( bool value ) {
+    _pTextE->setReadOnly( value );
+}

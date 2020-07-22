@@ -37,3 +37,7 @@ void pCheckBox::pStateChanged( int state ) {
     pValue->setValue( QVariant(st) );
     emit valueChanged( pValue );
 }
+
+void pCheckBox::setReadOnly( bool value ) {
+    _pcbVal->setEnabled( !value );
+}

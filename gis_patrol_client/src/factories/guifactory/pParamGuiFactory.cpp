@@ -12,6 +12,9 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QStandardItemModel>
+#include <QValidator>
+#include <QIntValidator>
+#include <QDoubleValidator>
 #include <QWidget>
 #include <QtDebug>
 
@@ -296,27 +299,52 @@ void pParamGUIFactory::buildParamModel( QAbstractItemModel* pMod, const QMap< qi
 pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pParamValue > pCParamValue, QWidget* parent, Qt::WindowFlags flags ) {
     if( pCParamValue.isNull() )
         return nullptr;
-    pAbstractParamWidget* wRes ( nullptr );/*= new QWidget( parent, flags );
-    QLabel* lP = new QLabel( pCParam->getTitle(), w );
-    QFont lFont = lP->font();
-    if( pCParam->isMandatory() ) {
-        lFont.setBold( true );
-        lP->setText( lP->text() + QString("*") );
-    }
-    lP->setFont( lFont );
-    QHBoxLayout* hLay = new QHBoxLayout( w );
-    hLay->addWidget( lP );*/
+    pAbstractParamWidget* wRes ( nullptr );
     pParamType::PatrolParamTypes pType = pCParamValue->getCatParam()->getParamType()->getId();
+    if( pCParamValue->getCatParam()->getId() == 16 )
+        qDebug() << __PRETTY_FUNCTION__ << pType <<pParamType::atDateTimeWithOffset;
     switch( pType ) {
         case pParamType::atUndef: default: return wRes; break;
         case pParamType::atBool: wRes = new pCheckBox( pCParamValue, parent, flags ); break;
         case pParamType::atList: case pParamType::atParent: wRes = new pRefLineEdit( pCParamValue, parent, flags ); break;
-        case pParamType::atString: wRes = new pLineEdit( pCParamValue, parent, flags ); break;
+        case pParamType::atString:
+        case pParamType::atFixString: {
+            wRes = new pLineEdit( pCParamValue, parent, flags );
+            break;
+        }
         case pParamType::atRecordColor:
         case pParamType::atRecordTextColor:
         case pParamType::atRecordColorRef:
-        case pParamType::atRecordTextColorRef:
-                                   wRes = new pColorEdit( pCParamValue, parent, flags ); break;
+        case pParamType::atRecordTextColorRef: {
+            wRes = new pColorEdit( pCParamValue, parent, flags );
+            break;
+        }
+        case pParamType::atInt:
+        case pParamType::atInt64: {
+            wRes = new pLineEdit( pCParamValue, parent, flags );
+            QValidator* val = new QIntValidator( wRes );
+            (qobject_cast< pLineEdit* >(wRes))->setValidator( val );
+            break;
+        }
+        case pParamType::atDouble: {
+            wRes = new pLineEdit( pCParamValue, parent, flags );
+            QValidator* val = new QDoubleValidator( wRes );
+            (qobject_cast< pLineEdit* >(wRes))->setValidator( val );
+            break;
+        }
+        case pParamType::atDate: {
+            wRes = new pDateEdit( pCParamValue, parent, flags );
+            break;
+        }
+        case pParamType::atDateTime:
+        case pParamType::atDateTimeWithOffset: {
+            wRes = new pDateTimeEdit( pCParamValue, parent, flags );
+            break;
+        }
+        case pParamType::atTime: {
+            wRes = new pTimeEdit( pCParamValue, parent, flags );
+            break;
+        }
        //
        // TODO: another types
        //

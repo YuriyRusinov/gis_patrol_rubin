@@ -21,12 +21,21 @@ public:
     pTimeEdit( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pTimeEdit();
 
-    void setup( ) override;
+    void setReadOnly( bool value ) override;
 
 private slots:
     void pTimeChanged( const QTime &time );
 
 private:
+    //
+    // Functions
+    //
+    void setup( ) override;
+
+private:
+    //
+    // Variables
+    //
     QLabel* _lParam;
     QTimeEdit* _pTE;
 

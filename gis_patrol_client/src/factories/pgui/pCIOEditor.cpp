@@ -128,11 +128,12 @@ void pCIOEditor::slotParamRecChanged( QSharedPointer< pParamValue > pValue ) {
         return;
     qDebug() << __PRETTY_FUNCTION__ << QString("Old value is %1").arg(pVal->value().toString()) << pValue->value().toString();
     pVal->setValue( pValue->value() );
+    _pRecord->paramValue( pId ) = pVal;
     _isChanged = true;
 }
 
 void pCIOEditor::slotSaveRecord() {
-    qDebug() << __PRETTY_FUNCTION__;
+    emit saveRecord( _pRecord, _pIO );
 }
 
 void pCIOEditor::slotChangeReference( QSharedPointer< pParamValue > pValue, QLineEdit* lE ) {

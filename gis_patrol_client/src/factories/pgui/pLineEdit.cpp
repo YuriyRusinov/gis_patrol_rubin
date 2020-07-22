@@ -49,3 +49,7 @@ void pLineEdit::pTextChanged(const QString& text) {
 void pLineEdit::setValidator( QValidator* val ) {
     _pLE->setValidator( val );
 }
+
+void pLineEdit::setReadOnly( bool value ) {
+    _pLE->setReadOnly( value );
+}

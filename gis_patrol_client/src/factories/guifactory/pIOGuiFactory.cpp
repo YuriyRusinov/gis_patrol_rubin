@@ -48,6 +48,11 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
                       this,
                       &pIOGuiFactory::loadParamRef
             );
+    QObject::connect( wEditor,
+                      &pCIOEditor::saveRecord,
+                      this,
+                      &pIOGuiFactory::saveRecToDb
+            );
 
     QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pIO );
     QTreeView* tvRecs = new QTreeView( wEditor );
@@ -94,7 +99,11 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
         //
         QSharedPointer< pParamValue > pval ( new pParamValue (*pRec->paramValue( pca.value()->getId() )));
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
+        bool readOnlyVal = pca.value()->isReadOnly() && pRec->getId() > 0;
+//        if( pca.value()->getId() == 16)
+        qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId();
         if( pw != nullptr ) {
+            pw->setReadOnly( readOnlyVal );
             grLay->addWidget( pw, i, 0, 1, 1 );
             QObject::connect( pw, &pAbstractParamWidget::valueChanged, editor, &pCIOEditor::slotParamRecChanged );
             i++;
@@ -145,4 +154,17 @@ void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString 
     pValue->setColumnValue( cVal );
     delete pRecF;
     lE->setText( cVal );
+}
+
+void pIOGuiFactory::saveRecToDb( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO ) {
+    int res = 0;
+    if( pr->getId() < 0 )
+        res = _dbWriter->insertRecord( pr, pIO );
+    else
+        res = _dbWriter->updateRecord( pr, pIO );
+
+    if( res < 0 ) {
+        QWidget* w = qobject_cast<QWidget*>( this->sender() );
+        QMessageBox::warning( w, tr("Save record"), tr("Save record %1, DB error code %2").arg( pr->getId() ).arg( res ), QMessageBox::Ok );
+    }
 }

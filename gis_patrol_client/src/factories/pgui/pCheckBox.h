@@ -21,12 +21,14 @@ public:
     pCheckBox( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pCheckBox();
 
-    void setup( ) override;
+    void setReadOnly( bool value ) override;
 
 private slots:
     void pStateChanged( int state );
 
 private:
+    void setup( ) override;
+
     QCheckBox* _pcbVal;
 
 private:
