@@ -643,12 +643,18 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = params.constBegin();
             pc != params.constEnd();
             pc++ ) {
-        sql_query += QString("tab_%1.%2, ").arg( tNumbers[0] ).arg( pc.value()->getCode() );
+        pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
+        if( pType == pParamType::atGeometry ||
+            pType == pParamType::atGeography ||
+            pType == pParamType::atGISMap )
+            sql_query += QString("st_asewkt( tab_%1.%2 ), ").arg( tNumbers[0] ).arg( pc.value()->getCode() );
+        else
+            sql_query += QString("tab_%1.%2, ").arg( tNumbers[0] ).arg( pc.value()->getCode() );
         if( !pc.value()->getTableName().isEmpty() ) {
             sql_query += QString("tab_%1.%2, ").arg( tNumbers[itable+1] ).arg( pc.value()->getColumnName() );
             itable++;
         }
-        else if ( pc.value()->getParamType()->getId() == pParamType::atParent ) {
+        else if ( pType == pParamType::atParent ) {
             sql_query += QString("tab_%1.%2, ").arg( tNumbers[itable+1] ).arg( pc.value()->getColumnName().isEmpty() ? QString("name") : pc.value()->getColumnName() );
             itable++;
         }
