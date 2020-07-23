@@ -7,6 +7,10 @@
  *  Ю.Л.Русинов
  */
 
+#include <QByteArray>
+#include <QBuffer>
+#include <QString>
+
 #include "pParamType.h"
 #include "pCatParameter.h"
 #include "pIObject.h"
@@ -76,8 +80,11 @@ void pParamValue::setValue( const QVariant& val ) {
 
 QString pParamValue::valueForInsert() const {
     pParamType::PatrolParamTypes pType = _parameter->getParamType()->getId();
+    if( _value.isNull() || _value.toString().isEmpty() )
+        return ("null");
     QString resVal;
     switch( pType ) {
+        case pParamType::atUndef: break;
         case pParamType::atBool: resVal = (_value.toBool() ? QString("true::boolean") : QString("false::boolean")); break;
         case pParamType::atList:
         case pParamType::atParent:
@@ -121,10 +128,34 @@ QString pParamValue::valueForInsert() const {
                                           resVal.append("'");
                                           break;
                                     }
-        default: break;
-//
-// TODO: подумать и решить формат хранения и развертывания геоданных
-//
+        case pParamType::atGeometry:
+        case pParamType::atGeography:
+        case pParamType::atGISMap: {
+            resVal = QString("GeomFromEWKT('%1')::geometry").arg( _value.toString() );
+            break;
+        }
+        case pParamType::atImage: {
+            QByteArray ba;
+            QBuffer buffer(&ba);
+            buffer.open(QIODevice::WriteOnly);
+            QImage im = _value.value< QImage >();
+            im.save( &buffer, "XPM" );
+            resVal = QString("'%1'").arg( QString(ba) );
+            break;
+        }
+        case pParamType::atCheckListEx: case pParamType::atComplex: case pParamType::atHistogram: {
+            resVal = QString("'{%1}'").arg( _value.toStringList().join(",") );
+            break;
+        }
+        case pParamType::atSysChildCategoryRef: case pParamType::atUserDef: break;
+        case pParamType::atJSON: {
+            resVal = QString("to_json('%1'::text)").arg( _value.toString() );
+            break;
+        }
+        case pParamType::atJSONb: {
+            resVal = QString("to_jsonb('%1'::text)").arg( _value.toString() );
+            break;
+        }
     }
     return resVal;
 }
