@@ -139,5 +139,5 @@ void pCIOEditor::slotChangeReference( QSharedPointer< pParamValue > pValue, QLin
     QString tableName = pValue->getCatParam()->getParamType()->getId() == pParamType::atParent ? _pIO->getTableName() : pValue->getCatParam()->getTableName();
     QString columnName = pValue->getCatParam()->getColumnName();
     qDebug() << __PRETTY_FUNCTION__ << tableName << columnName << _pIO->getTableName();
-    emit loadReferenceRecords( pValue, tableName, columnName, lE );
+    emit loadReferenceRecords( _pRecord, pValue, tableName, columnName, lE );
 }

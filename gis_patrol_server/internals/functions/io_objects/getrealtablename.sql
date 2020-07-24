@@ -4,7 +4,8 @@
 --такая логика необходима, поскольку мы позволяем пользователям самостоятельно задавать названия таблиц справочников
 --в этом случае, если таблица с заданным названием существует,
 --то необходимо ей сгенерировать автоматическое уникальное
-create or replace function getRealTableName(varchar, int4) returns varchar as
+drop function if exists getRealTableName(varchar, int4);
+create or replace function getRealTableName(varchar, bigint) returns varchar as
 $BODY$
 declare
     io_tableName alias for $1;

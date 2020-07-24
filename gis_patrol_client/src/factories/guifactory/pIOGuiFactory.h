@@ -51,7 +51,7 @@ public:
     pRecWidget* createRecordsWidget( QSharedPointer< pIObject > pRefIO, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
 
 private slots:
-    void loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
+    void loadParamRef( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
     void saveRecToDb( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO );
     void createNewRec( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel );
     void openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );

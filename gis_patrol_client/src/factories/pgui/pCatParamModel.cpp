@@ -146,7 +146,10 @@ bool pCatParametersModel::setData(const QModelIndex& index, const QVariant &valu
     else if( index.column()==1 && (role == Qt::DisplayRole || role== Qt::EditRole) ) {
         qint64 wKey = ckeys[ index.row() ];
         QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pct = _pCategoryParams.constFind( wKey );
-        pct.value()->setDefaultValue( value );
+        if( value.isNull() || value.toString().isEmpty() )
+            pct.value()->setDefaultValue( QVariant() );
+        else
+            pct.value()->setDefaultValue( value );
         emit dataChanged( index, index, {Qt::DisplayRole, Qt::EditRole});
         return true;
     }
