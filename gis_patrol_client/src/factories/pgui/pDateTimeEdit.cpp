@@ -19,7 +19,7 @@
 pDateTimeEdit::pDateTimeEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags )
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
-    _pDTE( new QDateTimeEdit( pValue->value().toDateTime() ) ) {
+    _pDTE( new QDateTimeEdit( pValue->value().isNull() ? QDateTime::currentDateTime() : pValue->value().toDateTime() ) ) {
     setup();
 }
 

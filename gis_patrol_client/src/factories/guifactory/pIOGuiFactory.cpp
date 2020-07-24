@@ -107,17 +107,16 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
     for(QMap<int, QSharedPointer< pCatParameter > >::const_iterator pca = sortedParams.constBegin();
         pca != sortedParams.constEnd();
         pca++ ) {
-        //
-        // Тут важно, что параметр будет скопирован, так как есть необходимость на уровне редактирования
-        // вносить возможные изменения в слоте редактора
-        //
         QSharedPointer< pParamValue > pval ( nullptr );
         if( pRec->paramValue( pca.value()->getId() ).isNull() ) {
+            //
+            // Something incorrect, debug output
+            //
             qDebug() << __PRETTY_FUNCTION__ << QString("Null parameter %1 in record, category is %2").arg( pca.value()->getCode() ).arg ( pCategory->getId() );
             continue;
         }
         else
-            pval = QSharedPointer< pParamValue >(new pParamValue (*pRec->paramValue( pca.value()->getId() )));
+            pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
         bool readOnlyVal = pca.value()->isReadOnly() && pRec->getId() > 0;
 //        if( pca.value()->getId() == 16)
@@ -136,7 +135,7 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
     return paramWidget;
 }
 
-void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE ) {
+void pIOGuiFactory::loadParamRef( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE ) {
     if( pValue.isNull() || pValue->getCatParam().isNull() || columnName.isEmpty() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << tableName;
@@ -168,12 +167,14 @@ void pIOGuiFactory::loadParamRef( QSharedPointer< pParamValue > pValue, QString 
         return;
     }
     qint64 idRec = pRecF->getRecId();
-    qDebug() << __PRETTY_FUNCTION__ << idRec;
     QSharedPointer< pParamValue > pVal = _dbLoader->loadRecParamValue( idRec, pValue->getCatParam(), pRefIO );
+    qDebug() << __PRETTY_FUNCTION__ << idRec << pVal->value();
+    pValue->setValue( QVariant( idRec ) );
     QString cVal = pVal->getColumnValue();
     pValue->setColumnValue( cVal );
     delete pRecF;
     lE->setText( cVal );
+    pRec->paramValue( pValue->getCatParam()->getId() )->setValue( QVariant( idRec ) );
 }
 
 void pIOGuiFactory::saveRecToDb( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO ) {
@@ -212,6 +213,12 @@ pRecWidget* pIOGuiFactory::createRecordsWidget( QSharedPointer< pIObject > pRefI
 
 void pIOGuiFactory::createNewRec( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel ) {
     qDebug() << __PRETTY_FUNCTION__ << pRec.isNull() << pRefIO.isNull() << (recModel == nullptr);
+    if( pRec.isNull() || pRefIO.isNull() )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId();
+    QSharedPointer< pCategory > pCat = pRec->getIO()->getCategory();
+    pCIOEditor* wEditor = createRecEditor( pCat, pRefIO, pRec );
+    emit viewWidget( wEditor );
 }
 
 void pIOGuiFactory::openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex ) {
@@ -228,11 +235,11 @@ void pIOGuiFactory::removeRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoi
     qDebug() << __PRETTY_FUNCTION__ << pRec.isNull() << pRefIO.isNull() << (recModel == nullptr) << recIndex.isValid();
 }
 
-pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QWidget* parent, Qt::WindowFlags flags ) const {
-    if( pCategory.isNull() || pRefIO.isNull() || pRec.isNull() )
+pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QWidget* parent, Qt::WindowFlags flags ) const {
+    if( pRecCategory.isNull() || pRefIO.isNull() || pRec.isNull() )
         return nullptr;
 
-    pCIOEditor* wEditor = new pCIOEditor( pCategory, pRec, pRefIO, false, parent, flags );
+    pCIOEditor* wEditor = new pCIOEditor( pRecCategory, pRec, pRefIO, false, parent, flags );
     QObject::connect( wEditor,
                       &pCIOEditor::loadReferenceRecords,
                       this,
@@ -259,7 +266,18 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pCategor
                       &pIOGuiFactory::removeRecord
             );
 
-    QWidget* parWidget = viewRecParams( pCategory->getTableCat(), pRec, wEditor );
+    if( pRec->getId() < 0 ) {
+        QList< QSharedPointer< pParamValue > > pVals;
+        QSharedPointer< pCategory > pTabC = pRecCategory->getTableCat();
+        for (QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pca = pTabC->categoryPars().constBegin();
+                pca != pTabC->categoryPars().constEnd();
+                pca++ ) {
+            QSharedPointer< pParamValue > pValue( new pParamValue( pca.value(), pca.value()->getDefaultValue() ) );
+            pVals.append( pValue );
+        }
+        pRec->setParamValues( pVals );
+    }
+    QWidget* parWidget = viewRecParams( pRecCategory->getTableCat(), pRec, wEditor );
     if( parWidget )
         wEditor->appendTabWidget( parWidget, tr("System properties") );
     QSharedPointer< pIObject > pRecIO ( nullptr );
