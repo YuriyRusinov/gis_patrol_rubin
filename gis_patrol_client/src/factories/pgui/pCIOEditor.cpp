@@ -9,6 +9,7 @@
 #include <QAction>
 #include <QKeySequence>
 #include <QGridLayout>
+#include <QModelIndex>
 #include <QTabWidget>
 #include <QToolBar>
 #include <QtDebug>
@@ -82,37 +83,32 @@ void pCIOEditor::initActions() {
     QObject::connect( actSaveRec, &QAction::triggered, this, &pCIOEditor::slotSaveRecord );
 
     _tbIOActions->addSeparator();
-
-    QAction* actRecAdd = _tbIOActions->addAction( QIcon(":/patrol/add_parameter.svg"), tr("Create new record") );
-    actRecAdd->setToolTip( tr("Create new record") );
-    QKeySequence ksAdd( QKeySequence::New );//Qt::CTRL | Qt::Key_N );
-    actRecAdd->setShortcut( ksAdd );
-    QObject::connect( actRecAdd, &QAction::triggered, this, &pCIOEditor::addRecord );
-
-    QAction* actRecEdit = _tbIOActions->addAction( QIcon(":/patrol/edit_parameter.svg"), tr("Edit record") );
-    actRecEdit->setToolTip( tr("Edit record") );
-    QKeySequence ksEdit( QKeySequence::Open );//Qt::Key_F4 );
-    actRecEdit->setShortcut( ksEdit );
-    QObject::connect( actRecEdit, &QAction::triggered, this, &pCIOEditor::editRecord );
-
-    QAction* actRecDel = _tbIOActions->addAction( QIcon(":/patrol/del_parameter.svg"), tr("Delete record") );
-    actRecDel->setToolTip( tr("Delete record") );
-    QKeySequence ksDel( QKeySequence::Delete );
-    //Qt::Key_Delete | Qt::Key_F8 );
-    actRecDel->setShortcut( ksDel );
-    QObject::connect( actRecDel, &QAction::triggered, this, &pCIOEditor::delRecord );
 }
 
-void pCIOEditor::addRecord() {
+void pCIOEditor::createNewRecord( QAbstractItemModel* recModel ) {
+    if( !recModel )
+        return;
+    QSharedPointer< pRecordCopy > rec( new pRecordCopy( -1, QString(), _pIO ) );
+    emit createRecord( rec, _pIO, recModel );
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-void pCIOEditor::editRecord() {
-    qDebug() << __PRETTY_FUNCTION__;
+void pCIOEditor::editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex ) {
+    if( !recMod || !recIndex.isValid() )
+        return;
+    QSharedPointer< const pRecordCopy > recC = recMod->data( recIndex, Qt::UserRole+1 ).value< QSharedPointer< const pRecordCopy > >();
+    QSharedPointer< pRecordCopy > rec( qSharedPointerConstCast< pRecordCopy >(recC) );
+    emit openRecord( rec, _pIO, recMod, recIndex );
+    qDebug() << __PRETTY_FUNCTION__ << (rec.isNull() ? -1 : rec->getId() );
 }
 
-void pCIOEditor::delRecord() {
-    qDebug() << __PRETTY_FUNCTION__;
+void pCIOEditor::delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex ) {
+    if( !recMod || !recIndex.isValid() )
+        return;
+    QSharedPointer< const pRecordCopy > recC = recMod->data( recIndex, Qt::UserRole+1 ).value< QSharedPointer< const pRecordCopy > >();
+    QSharedPointer< pRecordCopy > rec( qSharedPointerConstCast< pRecordCopy >(recC) );
+    emit delRecord( rec, _pIO, recMod, recIndex );
+    qDebug() << __PRETTY_FUNCTION__ << (rec.isNull() ? -1 : rec->getId() );
 }
 
 void pCIOEditor::appendTabWidget( QWidget* w, QString title ) {

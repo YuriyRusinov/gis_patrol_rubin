@@ -12,7 +12,9 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+class QAbstractItemModel;
 class QLineEdit;
+class QModelIndex;
 class QTabWidget;
 class QToolBar;
 
@@ -43,9 +45,9 @@ public:
     void appendTabWidget( QWidget* w, QString title );
 
 private slots:
-    void addRecord();
-    void editRecord();
-    void delRecord();
+    void createNewRecord( QAbstractItemModel* recModel );
+    void editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
+    void delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
 
     void slotParamRecChanged( QSharedPointer< pParamValue > pValue );
 
@@ -54,8 +56,10 @@ private slots:
 
 signals:
     void loadReferenceRecords( QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
-    void saveRecord( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO );
-    void createRecord( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO );
+    void saveRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO );
+    void createRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel );
+    void openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
+    void delRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
 
 private:
     //

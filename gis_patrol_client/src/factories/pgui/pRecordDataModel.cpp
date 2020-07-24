@@ -119,6 +119,8 @@ QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
         return wItem->columnData( iCol );
     else if( role == Qt::UserRole )
         return idw;
+    else if( role == Qt::UserRole+1 )
+        return QVariant::fromValue< QSharedPointer< const pRecordCopy >>(wItem->getData());
     else if( role == Qt::BackgroundRole ) {
         if( wItem->getData().isNull() )
             return QVariant();
