@@ -215,9 +215,18 @@ void pIOGuiFactory::createNewRec( QSharedPointer< pRecordCopy > pRec, QSharedPoi
     qDebug() << __PRETTY_FUNCTION__ << pRec.isNull() << pRefIO.isNull() << (recModel == nullptr);
     if( pRec.isNull() || pRefIO.isNull() )
         return;
-    qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId();
-    QSharedPointer< pCategory > pCat = pRec->getIO()->getCategory();
-    pCIOEditor* wEditor = createRecEditor( pCat, pRefIO, pRec );
+    qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId() << pRefIO->getId();
+    QSharedPointer< pCategory > pCat = nullptr;//pRec->getIO()->getCategory();
+    QSharedPointer< pIObject > pRecordIO = nullptr;
+    if( pRec->getIO()->getId() == IO_IO_ID ) {
+        QSharedPointer< pIObject > pRecordIO_w = _dbLoader->loadIO( pRec->getId() );
+        pCat = pRecordIO_w->getCategory();
+    }
+    else {
+        pCat = pRec->getIO()->getCategory();
+    }
+    pRecordIO = pRec->getIO();
+    pCIOEditor* wEditor = createRecEditor( pCat, pRecordIO, pRec );
     emit viewWidget( wEditor );
 }
 
@@ -226,7 +235,10 @@ void pIOGuiFactory::openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoint
     if( pRec.isNull() || pRefIO.isNull() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId();
-    QSharedPointer< pCategory > pCat = pRec->getIO()->getCategory();
+    QSharedPointer< pCategory > pCat = nullptr;//pRec->getIO()->getCategory();
+    QSharedPointer< pIObject > pRecordIO = nullptr;
+    pRecordIO = pRec->getIO();
+    pCat = pRefIO->getCategory();//pRec->getIO()->getCategory();
     pCIOEditor* wEditor = createRecEditor( pCat, pRefIO, pRec );
     emit viewWidget( wEditor );
 }
@@ -239,7 +251,18 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
     if( pRecCategory.isNull() || pRefIO.isNull() || pRec.isNull() )
         return nullptr;
 
-    pCIOEditor* wEditor = new pCIOEditor( pRecCategory, pRec, pRefIO, false, parent, flags );
+    QSharedPointer< pIObject > pRecordIO = nullptr;
+    QSharedPointer< pCategory > pRecCat = nullptr;
+    if( pRefIO->getId() == IO_IO_ID && pRec->getId() > 0 ) {
+        pRecordIO = _dbLoader->loadIO( pRec->getId() );
+        pRecCat = pRecordIO->getCategory();
+    }
+    else {
+        pRecordIO = pRefIO;
+        pRecCat = pRecCategory;
+    }
+
+    pCIOEditor* wEditor = new pCIOEditor( pRecCat, pRec, pRecordIO, false, parent, flags );
     QObject::connect( wEditor,
                       &pCIOEditor::loadReferenceRecords,
                       this,
