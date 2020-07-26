@@ -218,14 +218,20 @@ void pIOGuiFactory::createNewRec( QSharedPointer< pRecordCopy > pRec, QSharedPoi
     qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId() << pRefIO->getId();
     QSharedPointer< pCategory > pCat = nullptr;//pRec->getIO()->getCategory();
     QSharedPointer< pIObject > pRecordIO = nullptr;
-    if( pRec->getIO()->getId() == IO_IO_ID ) {
+    if( pRec->getId() < 0 && pRec->getIO()->getId() == IO_IO_ID ) {
+        pCat = pRec->getIO()->getCategory();
+        pRecordIO = pRec->getIO();
+    }
+    else if( pRec->getId() > 0 && pRec->getIO()->getId() == IO_IO_ID ) {
         QSharedPointer< pIObject > pRecordIO_w = _dbLoader->loadIO( pRec->getId() );
         pCat = pRecordIO_w->getCategory();
+        qDebug() << __PRETTY_FUNCTION__ << pCat.isNull();
+        pRecordIO = pRec->getIO();
     }
     else {
         pCat = pRec->getIO()->getCategory();
+        pRecordIO = pRec->getIO();
     }
-    pRecordIO = pRec->getIO();
     pCIOEditor* wEditor = createRecEditor( pCat, pRecordIO, pRec );
     emit viewWidget( wEditor );
 }
@@ -237,9 +243,15 @@ void pIOGuiFactory::openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoint
     qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId();
     QSharedPointer< pCategory > pCat = nullptr;//pRec->getIO()->getCategory();
     QSharedPointer< pIObject > pRecordIO = nullptr;
-    pRecordIO = pRec->getIO();
+//    if( pRefIO->getId() == IO_IO_ID && pRec->getId() > 0 ) {
+//        pRecordIO = _dbLoader->loadIO( pRec->getId() );
+//        pCat = pRecordIO->getCategory();
+//    }
+//    else {
+    pRecordIO = pRefIO;//pRec->getIO();
     pCat = pRefIO->getCategory();//pRec->getIO()->getCategory();
-    pCIOEditor* wEditor = createRecEditor( pCat, pRefIO, pRec );
+//    }
+    pCIOEditor* wEditor = createRecEditor( pCat, pRecordIO, pRec );
     emit viewWidget( wEditor );
 }
 

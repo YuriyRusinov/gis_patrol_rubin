@@ -105,12 +105,12 @@ QString pParamValue::valueForInsert() const {
         case pParamType::atXML:
         case pParamType::atSVG:
                                  resVal = QString("'%1'").arg( _value.toString() ); break;
-        case pParamType::atDate: resVal = QString("'%1'::timestamp").arg( _value.toDate().toString(Qt::ISODate) ); break;
+        case pParamType::atDate: resVal = _value.toDate().isValid() ?QString("'%1'::timestamp").arg( _value.toDate().toString(Qt::ISODate) ) : QString("null"); break;
         case pParamType::atDateTime:
         case pParamType::atDateTimeWithOffset:
         case pParamType::atDateTimeEx:
-                                 resVal = QString("'%1'::timestamptz").arg( _value.toDateTime().toString(Qt::ISODate) ); break;
-        case pParamType::atTime: resVal = QString("'%1'::timestamptz").arg( _value.toTime().toString(Qt::ISODate) ); break;
+                                 resVal = _value.toDateTime().isValid() ? QString("'%1'::timestamptz").arg( _value.toDateTime().toString(Qt::ISODate) ) : QString("null"); break;
+        case pParamType::atTime: _value.toTime().isValid() ? resVal = QString("'%1'::timestamptz").arg( _value.toTime().toString(Qt::ISODate) ) : QString("null"); break;
         case pParamType::atInterval: resVal = QString("interval '%1' day").arg( _value.toDouble() ); break;
         case pParamType::atIntervalH: resVal = QString("interval '%1' hour").arg( _value.toDouble() ); break;
         case pParamType::atBinary:

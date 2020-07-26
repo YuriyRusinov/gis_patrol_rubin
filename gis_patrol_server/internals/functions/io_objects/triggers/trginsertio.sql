@@ -66,6 +66,10 @@ begin
             raise exception 'Cannot generate table with given name! -- %', new.table_name;
             return NULL;
         end if;
+        if( new.insert_time is null ) then
+            new.insert_time = current_timestamp;
+            return new;
+        end if;
 
     end if;
 
