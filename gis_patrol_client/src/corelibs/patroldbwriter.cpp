@@ -398,7 +398,11 @@ QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord
 
     for ( int i = 0; i < n; i++ ) {
         columnsList << pValues[i]->getCatParam()->getCode();
-        valuesList << (pValues[i]->getCatParam()->getId() == 1 ? QString::number( id ) : pValues[i]->valueForInsert() );
+        QString valStr = pValues[i]->valueForInsert();
+        QVariant val = pValues[i]->value();
+        if( valStr.isEmpty() || val.isNull() || val.toString().isEmpty() )
+            valStr = QString("null");
+        valuesList << (pValues[i]->getCatParam()->getId() == 1 ? QString::number( id ) : valStr );
     }
     for ( int i = 0; i < n; i++ ) {
         sql_query += QString("%1%2%3")
@@ -434,8 +438,13 @@ qint64 pDBWriter::insertRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     QString tName = pIO->getTableName();
     QString sql_query = generateInsertRecQuery( pRecord, tName );
     qDebug() << __PRETTY_FUNCTION__ << sql_query;
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr ) {
+        return -1;
+    }
 
     qint64 resId = pRecord->getId();
+    delete gpr;
     return resId;
 }
 
