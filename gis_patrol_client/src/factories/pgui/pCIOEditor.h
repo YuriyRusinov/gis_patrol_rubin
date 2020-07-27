@@ -57,6 +57,7 @@ private slots:
 signals:
     void loadReferenceRecords( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
     void saveRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO );
+    void saveRecordIO( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO );
     void createRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel );
     void openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
     void delRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );

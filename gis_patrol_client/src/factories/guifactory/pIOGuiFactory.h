@@ -52,7 +52,8 @@ public:
 
 private slots:
     void loadParamRef( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
-    void saveRecToDb( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO );
+    void saveRecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pIO );
+    void saveIORecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pIO );
     void createNewRec( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel );
     void openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
     void removeRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );

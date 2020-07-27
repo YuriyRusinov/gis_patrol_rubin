@@ -89,8 +89,8 @@ void pCIOEditor::createNewRecord( QAbstractItemModel* recModel ) {
     if( !recModel )
         return;
     QSharedPointer< pRecordCopy > rec( new pRecordCopy( -1, QString(), _pIO ) );
+    qDebug() << __PRETTY_FUNCTION__ << _pIO->getId();
     emit createRecord( rec, _pIO, recModel );
-    qDebug() << __PRETTY_FUNCTION__;
 }
 
 void pCIOEditor::editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex ) {
@@ -98,8 +98,8 @@ void pCIOEditor::editSelRecord( QAbstractItemModel* recMod, const QModelIndex& r
         return;
     QSharedPointer< const pRecordCopy > recC = recMod->data( recIndex, Qt::UserRole+1 ).value< QSharedPointer< const pRecordCopy > >();
     QSharedPointer< pRecordCopy > rec( qSharedPointerConstCast< pRecordCopy >(recC) );
+    qDebug() << __PRETTY_FUNCTION__ << (rec.isNull() ? -1 : rec->getId() ) << _pIO->getId();
     emit openRecord( rec, _pIO, recMod, recIndex );
-    qDebug() << __PRETTY_FUNCTION__ << (rec.isNull() ? -1 : rec->getId() );
 }
 
 void pCIOEditor::delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex ) {
@@ -129,6 +129,11 @@ void pCIOEditor::slotParamRecChanged( QSharedPointer< pParamValue > pValue ) {
 }
 
 void pCIOEditor::slotSaveRecord() {
+    if( _isIO ) {
+        qDebug() << __PRETTY_FUNCTION__ << _pRecord->getId() << _pIO->getId();
+        emit saveRecordIO( _pRecord, _pIO );
+        return;
+    }
     emit saveRecord( _pRecord, _pIO );
 }
 
