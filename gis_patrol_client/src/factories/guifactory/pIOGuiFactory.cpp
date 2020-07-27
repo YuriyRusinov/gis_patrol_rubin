@@ -43,7 +43,7 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
 
     QSharedPointer< pCategory > pCat = pIO->getCategory();
 
-    pCIOEditor* wEditor = new pCIOEditor( pCat, pRec, pIO, false, parent, flags );
+    pCIOEditor* wEditor = new pCIOEditor( pCat, pRec, pIO, true, parent, flags );
     QObject::connect( wEditor,
                       &pCIOEditor::loadReferenceRecords,
                       this,
@@ -119,7 +119,6 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
             pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
         bool readOnlyVal = pca.value()->isReadOnly() && pRec->getId() > 0;
-//        if( pca.value()->getId() == 16)
         qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId();
         if( pw != nullptr ) {
             pw->setReadOnly( readOnlyVal );
@@ -177,16 +176,36 @@ void pIOGuiFactory::loadParamRef( QSharedPointer< pRecordCopy > pRec, QSharedPoi
     pRec->paramValue( pValue->getCatParam()->getId() )->setValue( QVariant( idRec ) );
 }
 
-void pIOGuiFactory::saveRecToDb( QSharedPointer< pRecordCopy > pr, QSharedPointer< pIObject > pIO ) {
+void pIOGuiFactory::saveRecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pIO ) {
+    if( pRec.isNull() || pIO.isNull() )
+        return;
     int res = 0;
-    if( pr->getId() < 0 )
-        res = _dbWriter->insertRecord( pr, pIO );
+    if( pRec->getId() < 0 )
+        res = _dbWriter->insertRecord( pRec, pIO );
     else
-        res = _dbWriter->updateRecord( pr, pIO );
+        res = _dbWriter->updateRecord( pRec, pIO );
 
     if( res < 0 ) {
         QWidget* w = qobject_cast<QWidget*>( this->sender() );
-        QMessageBox::warning( w, tr("Save record"), tr("Save record %1, DB error code %2").arg( pr->getId() ).arg( res ), QMessageBox::Ok );
+        QMessageBox::warning( w, tr("Save record"), tr("Save record %1, DB error code %2").arg( pRec->getId() ).arg( res ), QMessageBox::Ok );
+    }
+}
+
+void pIOGuiFactory::saveIORecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pIO ) {
+    if( pRec.isNull() || pIO.isNull() )
+        return;
+    int res( 0 );
+    if( pRec->getId() < 0 )
+        res = _dbWriter->insertRecord( pRec, pIO );
+    else if( pRec->getId() >= 0 && pIO->getId() == IO_IO_ID )
+        res = _dbWriter->updateRecord( pRec, pIO );
+    else {
+        QSharedPointer< pIObject > pRecordIO = _dbLoader->loadIO( IO_IO_ID );
+        res = _dbWriter->updateRecord( pRec, pRecordIO );
+    }
+    if( res < 0 ) {
+        QWidget* w = qobject_cast<QWidget*>( this->sender() );
+        QMessageBox::warning( w, tr("Save record"), tr("Save record %1, DB error code %2").arg( pRec->getId() ).arg( res ), QMessageBox::Ok );
     }
 }
 
@@ -265,16 +284,22 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
 
     QSharedPointer< pIObject > pRecordIO = nullptr;
     QSharedPointer< pCategory > pRecCat = nullptr;
+    bool isIO = false;
     if( pRefIO->getId() == IO_IO_ID && pRec->getId() > 0 ) {
+        qDebug() << __PRETTY_FUNCTION__ << pRec->getId() << pRefIO->getId();
+        isIO = true;
         pRecordIO = _dbLoader->loadIO( pRec->getId() );
         pRecCat = pRecordIO->getCategory();
+//        pRecordIO = pRefIO;
     }
     else {
         pRecordIO = pRefIO;
         pRecCat = pRecCategory;
     }
+    isIO = isIO || pRefIO->getId() == IO_IO_ID;
+    qDebug() << __PRETTY_FUNCTION__ << isIO;
 
-    pCIOEditor* wEditor = new pCIOEditor( pRecCat, pRec, pRecordIO, false, parent, flags );
+    pCIOEditor* wEditor = new pCIOEditor( pRecCat, pRec, pRecordIO, isIO, parent, flags );
     QObject::connect( wEditor,
                       &pCIOEditor::loadReferenceRecords,
                       this,
@@ -284,6 +309,11 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
                       &pCIOEditor::saveRecord,
                       this,
                       &pIOGuiFactory::saveRecToDb
+            );
+    QObject::connect( wEditor,
+                      &pCIOEditor::saveRecordIO,
+                      this,
+                      &pIOGuiFactory::saveIORecToDb
             );
     QObject::connect( wEditor,
                       &pCIOEditor::createRecord,
