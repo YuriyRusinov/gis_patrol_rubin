@@ -119,7 +119,7 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
             pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
         bool readOnlyVal = pca.value()->isReadOnly() && pRec->getId() > 0;
-        qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId();
+        qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId() << readOnlyVal;
         if( pw != nullptr ) {
             pw->setReadOnly( readOnlyVal );
             grLay->addWidget( pw, i, 0, 1, 1 );
