@@ -21,7 +21,7 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (24, 9, 'lastname', 'Фамилия', 'Фамилия', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (25, 9, 'family_name', 'Фамилия, инициалы', 'Фамилия, инициалы', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (26, 9, 'db_user', 'Пользователь БД', 'Пользователь БД', null::varchar, null::varchar, true);
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (27, 3, 'id_parent', 'Родитель', 'Входит в', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (27, 3, 'id_parent', 'Родитель', 'Входит в', null::varchar, 'name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (32, 2, 'id_user', 'Пользователь', 'Пользователь', 'users', 'family_name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (48, 2, 'id_communication_object', 'Ресурс связи', 'Ресурс', 'tbl_io_communication_objects_references', 'name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (63, 2, 'id_maclabel', 'Гриф секретности', 'Гриф секретности', 'maclabels', 'name', true);
@@ -45,7 +45,7 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (313, 6, 'start_time', 'Начало потока', 'Начало потока', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (314, 6, 'finish_time', 'Окончание потока', 'Окончание потока', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (348, 31, 'uuid_t', 'Уникальный идентификатор (UUID)', 'UUID', null::varchar, null::varchar, true);
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (359, 3, 'id_parent', 'Родитель', 'Родитель', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (359, 3, 'id_parent', 'Родитель', 'Родитель', null::varchar, 'id', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (392, 9, 'user_name', 'Имя пользователя', 'Имя пользователя', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (393, 8, 'id_user', 'ИД пользователя', 'ИД пользователя', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (404, 8, 'param_sort_order', 'Порядок следования параметра', 'Порядок следования параметра', null::varchar, null::varchar, true);
