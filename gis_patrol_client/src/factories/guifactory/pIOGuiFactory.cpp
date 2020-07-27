@@ -135,6 +135,7 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
 }
 
 void pIOGuiFactory::loadParamRef( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE ) {
+    qDebug() << pValue.isNull() << pValue->getCatParam().isNull() << columnName;
     if( pValue.isNull() || pValue->getCatParam().isNull() || columnName.isEmpty() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << tableName;
