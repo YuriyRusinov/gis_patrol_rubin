@@ -29,6 +29,8 @@ pColorEdit::pColorEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Q
     _lColorLabel( new QLabel( tr("Sample text") ) ),
     _tbColor( new QToolButton ) {
     setup();
+
+    QObject::connect( _tbColor, &QToolButton::clicked, this, &pColorEdit::setColor );
 }
 
 pColorEdit::~pColorEdit() {
@@ -69,8 +71,6 @@ void pColorEdit::setup( ) {
         pal.setColor( QPalette::WindowText, fgCol );
         _lColorLabel->setPalette( pal );
     }
-    QObject::connect( _tbColor, &QToolButton::clicked, this, &pColorEdit::setColor );
-
 }
 
 void pColorEdit::setColor() {
