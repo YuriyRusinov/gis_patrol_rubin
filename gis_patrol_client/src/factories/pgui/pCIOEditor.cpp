@@ -150,5 +150,7 @@ void pCIOEditor::slotChangeReference( QSharedPointer< pParamValue > pValue, QLin
 void pCIOEditor::refreshRecords( QAbstractItemModel* recModel ) {
     if( recModel == nullptr )
         return;
-    qDebug() << __PRETTY_FUNCTION__ << recModel << _pIO->getId();
+    qDebug() << __PRETTY_FUNCTION__ << recModel << _pIO->getId() << _pIO->getCategory()->getId();
+    QSharedPointer< pCategory > pCat = _pIO->getCategory();
+    emit refreshRecordModel( pCat, _pIO, recModel );
 }
