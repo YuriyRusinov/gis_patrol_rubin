@@ -69,6 +69,11 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
                       this,
                       &pIOGuiFactory::removeRecord
             );
+    QObject::connect( wEditor,
+                      &pCIOEditor::refreshRecordModel,
+                      this,
+                      &pIOGuiFactory::refreshRecModel
+            );
 
     QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pIO );
     pRecWidget* recWidget = createRecordsWidget( pIO, wEditor );// new pRecWidget( wEditor );
@@ -332,6 +337,11 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
                       this,
                       &pIOGuiFactory::removeRecord
             );
+    QObject::connect( wEditor,
+                      &pCIOEditor::refreshRecordModel,
+                      this,
+                      &pIOGuiFactory::refreshRecModel
+            );
 
     if( pRec->getId() < 0 ) {
         QList< QSharedPointer< pParamValue > > pVals;
@@ -357,4 +367,22 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
         wEditor->appendTabWidget( recWidget, tr("Records") );
     }
     return wEditor;
+}
+
+void pIOGuiFactory::refreshRecModel( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recMod ) {
+    if( pCat.isNull() || pRefIO.isNull() || recMod == nullptr )
+        return;
+
+    QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pRefIO );
+    int nr = recMod->rowCount();
+    recMod->removeRows(0, nr);
+    recMod->insertRows(0, ioRecords.size());
+    int i=0;
+    for( QMap<qint64, QSharedPointer< pRecordCopy > >::const_iterator pr = ioRecords.constBegin();
+            pr != ioRecords.constEnd();
+            pr++ ) {
+        QModelIndex wIndex = recMod->index( i, 0 );
+        recMod->setData( wIndex, QVariant::fromValue< QSharedPointer< const pRecordCopy >>( pr.value() ), Qt::UserRole+1 );
+        i++;
+    }
 }
