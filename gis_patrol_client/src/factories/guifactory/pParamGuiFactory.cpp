@@ -40,6 +40,7 @@
 #include <pTimeEdit.h>
 #include <pTextEdit.h>
 #include <pColorEdit.h>
+#include <pXMLEdit.h>
 
 #include "pParamGuiFactory.h"
 
@@ -343,6 +344,10 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
         }
         case pParamType::atTime: {
             wRes = new pTimeEdit( pCParamValue, parent, flags );
+            break;
+        }
+        case pParamType::atXML: {
+            wRes = new pXMLEdit( pCParamValue, parent, flags );
             break;
         }
        //

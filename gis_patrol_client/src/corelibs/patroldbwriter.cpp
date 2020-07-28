@@ -288,7 +288,7 @@ qint64 pDBWriter::insertCategoryParam( qint64 idCategory, QSharedPointer< pCatPa
     QString sql_query = QString("select cAddAttr( %1, %2, %3, %4, %5, %6 );")
                             .arg( idCategory )
                             .arg( pCParam->getId() )
-                            .arg( pCParam->getDefaultValue().isNull() ? QString("null::varchar") : QString("'%1'").arg (pCParam->getDefaultValue().toString()) )
+                            .arg( pCParam->getDefaultValue().isNull() || pCParam->getDefaultValue().toString().isEmpty() ? QString("null::varchar") : QString("'%1'").arg (pCParam->getDefaultValue().toString()) )
                             .arg( pCParam->isMandatory() ? QString( "true" ) : QString( "false" ) )
                             .arg( pCParam->isReadOnly() ? QString( "true" ) : QString( "false" ) )
                             .arg( pCParam->getOrder() );
