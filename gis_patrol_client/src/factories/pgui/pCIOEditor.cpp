@@ -146,3 +146,9 @@ void pCIOEditor::slotChangeReference( QSharedPointer< pParamValue > pValue, QLin
     qDebug() << __PRETTY_FUNCTION__ << tableName << columnName << _pIO->getTableName();
     emit loadReferenceRecords( _pRecord, pValue, tableName, columnName, lE );
 }
+
+void pCIOEditor::refreshRecords( QAbstractItemModel* recModel ) {
+    if( recModel == nullptr )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << recModel << _pIO->getId();
+}

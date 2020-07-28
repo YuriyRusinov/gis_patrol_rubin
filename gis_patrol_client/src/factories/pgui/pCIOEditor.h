@@ -45,6 +45,7 @@ public:
     void appendTabWidget( QWidget* w, QString title );
 
 private slots:
+    void refreshRecords( QAbstractItemModel* recModel );
     void createNewRecord( QAbstractItemModel* recModel );
     void editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
     void delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );

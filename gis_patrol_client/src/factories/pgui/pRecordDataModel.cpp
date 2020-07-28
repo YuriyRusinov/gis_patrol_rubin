@@ -156,9 +156,21 @@ QVariant pRecordDataModel::data (const QModelIndex& index, int role) const {
 }
 
 bool pRecordDataModel::setData (const QModelIndex& index, const QVariant& value, int role) {
-    Q_UNUSED( index );
-    Q_UNUSED( role );
-    Q_UNUSED( value );
+    if (!index.isValid() )
+        return false;
+
+    pRecTreeItem* wItem = static_cast< pRecTreeItem* >( index.internalPointer() );
+    if( wItem == nullptr )
+        return false;
+    int iRow = index.row();
+    QModelIndex topL = index.sibling( iRow, 0 );
+    QModelIndex bottomR = index.sibling( iRow, _sortedParams.count()-1 );
+    if( role == Qt::UserRole+1 ) {
+        QSharedPointer< const pRecordCopy > pRec = value.value< QSharedPointer< const pRecordCopy > >();
+        wItem->setData( pRec, _sortedParams );
+        emit dataChanged( topL, bottomR );
+        return true;
+    }
     return false;
 }
 

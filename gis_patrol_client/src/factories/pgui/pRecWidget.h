@@ -41,7 +41,7 @@ private slots:
     void delSelectedRecord();
 
 signals:
-    void refreshRecords();
+    void refreshRecords( QAbstractItemModel* recMod );
     void addRecord( QAbstractItemModel* recMod );
     void editRecord( QAbstractItemModel* recMod, const QModelIndex& wIndex );
     void delRecord( QAbstractItemModel* recMod, const QModelIndex& wIndex );
@@ -50,6 +50,7 @@ private:
     /* ====================  METHODS       ======================================= */
     void setup( );
 
+    friend class pIOGuiFactory;
     /* ====================  DATA MEMBERS  ======================================= */
     QToolBar* _tbRecActions;
     QTreeView* _tvRecords;
