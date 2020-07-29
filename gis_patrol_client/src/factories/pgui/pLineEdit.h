@@ -32,6 +32,7 @@ public:
 
 private slots:
     void pTextChanged(const QString& text);
+    void editFinished();
 
 private:
     QLabel* _lParam;

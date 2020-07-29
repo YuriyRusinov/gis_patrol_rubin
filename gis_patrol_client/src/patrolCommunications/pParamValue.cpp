@@ -88,7 +88,6 @@ QString pParamValue::valueForInsert() const {
         case pParamType::atBool: resVal = (_value.toBool() ? QString("true::boolean") : QString("false::boolean")); break;
         case pParamType::atList:
         case pParamType::atParent:
-        case pParamType::atDouble:
         case pParamType::atInt:
         case pParamType::atRecordColorRef:
         case pParamType::atRecordTextColorRef:
@@ -97,7 +96,8 @@ QString pParamValue::valueForInsert() const {
         case pParamType::atRecordColor:
         case pParamType::atRecordTextColor:
                                  resVal = QString("%1").arg( _value.toLongLong() ); break;
-                                 //value<QColor>().rgba() ); break;
+        case pParamType::atDouble:
+                                 resVal = QString("%1").arg( _value.toDouble() ); break;
         case pParamType::atString:
         case pParamType::atText:
         case pParamType::atFixString:
