@@ -39,6 +39,7 @@ void pLineEdit::setup( ) {
         _lParam->setFont( lFont );
     }
     QObject::connect( _pLE, &QLineEdit::textChanged, this, &pLineEdit::pTextChanged );
+    QObject::connect( _pLE, &QLineEdit::editingFinished, this, &pLineEdit::editFinished );
 }
 
 void pLineEdit::pTextChanged(const QString& text) {
@@ -52,4 +53,9 @@ void pLineEdit::setValidator( QValidator* val ) {
 
 void pLineEdit::setReadOnly( bool value ) {
     _pLE->setReadOnly( value );
+}
+
+void pLineEdit::editFinished( ) {
+    QString wText = _pLE->text();
+    pTextChanged( wText );
 }

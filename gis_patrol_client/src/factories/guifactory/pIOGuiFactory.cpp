@@ -231,16 +231,8 @@ void pIOGuiFactory::openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoint
     if( pRec.isNull() || pRefIO.isNull() )
         return;
     qDebug() << __PRETTY_FUNCTION__ << pRec->getIO()->getId() << pRec->getId();
-    QSharedPointer< pCategory > pCat = nullptr;//pRec->getIO()->getCategory();
-    QSharedPointer< pIObject > pRecordIO = nullptr;
-//    if( pRefIO->getId() == IO_IO_ID && pRec->getId() > 0 ) {
-//        pRecordIO = _dbLoader->loadIO( pRec->getId() );
-//        pCat = pRecordIO->getCategory();
-//    }
-//    else {
-    pRecordIO = pRefIO;//pRec->getIO();
-    pCat = pRefIO->getCategory();//pRec->getIO()->getCategory();
-//    }
+    QSharedPointer< pCategory > pCat( pRefIO->getCategory() );
+    QSharedPointer< pIObject > pRecordIO ( pRefIO );
     pCIOEditor* wEditor = createRecEditor( pCat, pRecordIO, pRec );
     emit viewWidget( wEditor );
 }
