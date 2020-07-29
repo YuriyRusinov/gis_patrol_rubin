@@ -44,6 +44,8 @@ public:
     void setObject( QSharedPointer< pIObject > pIO );
 
     void appendTabWidget( QWidget* w, QString title );
+    int getTabCount() const;
+    void setCurrentPage( int num );
 
 private slots:
     void refreshRecords( QAbstractItemView* recView );

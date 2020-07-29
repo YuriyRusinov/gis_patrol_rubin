@@ -155,3 +155,11 @@ void pCIOEditor::refreshRecords( QAbstractItemView* recView ) {
     QSharedPointer< pCategory > pCat = _pIO->getCategory();
     emit refreshRecordModel( pCat, _pIO, recView );
 }
+
+int pCIOEditor::getTabCount() const {
+    return _tabW->count();
+}
+
+void pCIOEditor::setCurrentPage( int num ) {
+    _tabW->setCurrentIndex( num );
+}
