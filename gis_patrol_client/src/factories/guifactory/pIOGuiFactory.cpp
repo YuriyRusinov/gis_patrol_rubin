@@ -44,44 +44,7 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
 
     QSharedPointer< pCategory > pCat = pIO->getCategory();
 
-    pCIOEditor* wEditor = new pCIOEditor( pCat, pRec, pIO, true, parent, flags );
-    QObject::connect( wEditor,
-                      &pCIOEditor::loadReferenceRecords,
-                      this,
-                      &pIOGuiFactory::loadParamRef
-            );
-    QObject::connect( wEditor,
-                      &pCIOEditor::saveRecord,
-                      this,
-                      &pIOGuiFactory::saveRecToDb
-            );
-    QObject::connect( wEditor,
-                      &pCIOEditor::createRecord,
-                      this,
-                      &pIOGuiFactory::createNewRec
-            );
-    QObject::connect( wEditor,
-                      &pCIOEditor::openRecord,
-                      this,
-                      &pIOGuiFactory::openRecord
-            );
-    QObject::connect( wEditor,
-                      &pCIOEditor::delRecord,
-                      this,
-                      &pIOGuiFactory::removeRecord
-            );
-    QObject::connect( wEditor,
-                      &pCIOEditor::refreshRecordModel,
-                      this,
-                      &pIOGuiFactory::refreshRecModel
-            );
-
-    QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pIO );
-    pRecWidget* recWidget = createRecordsWidget( pIO, wEditor );// new pRecWidget( wEditor );
-    QWidget* parWidget = viewRecParams( pCat->getTableCat(), pRec, wEditor );
-    if( parWidget )
-        wEditor->appendTabWidget( parWidget, tr("System properties") );
-    wEditor->appendTabWidget( recWidget, tr("Records") );
+    pCIOEditor* wEditor = createRecEditor ( pCat, pIO, pRec, parent, flags );
     emit viewWidget( wEditor );
     return wEditor;
 }
