@@ -7,6 +7,7 @@
  *  Ю.Л.Русинов
  */
 #include <QAction>
+#include <QAbstractItemView>
 #include <QKeySequence>
 #include <QGridLayout>
 #include <QModelIndex>
@@ -147,10 +148,10 @@ void pCIOEditor::slotChangeReference( QSharedPointer< pParamValue > pValue, QLin
     emit loadReferenceRecords( _pRecord, pValue, tableName, columnName, lE );
 }
 
-void pCIOEditor::refreshRecords( QAbstractItemModel* recModel ) {
-    if( recModel == nullptr )
+void pCIOEditor::refreshRecords( QAbstractItemView* recView ) {
+    if( recView == nullptr )
         return;
-    qDebug() << __PRETTY_FUNCTION__ << recModel << _pIO->getId() << _pIO->getCategory()->getId();
+    qDebug() << __PRETTY_FUNCTION__ << _pIO->getId() << _pIO->getCategory()->getId();
     QSharedPointer< pCategory > pCat = _pIO->getCategory();
-    emit refreshRecordModel( pCat, _pIO, recModel );
+    emit refreshRecordModel( pCat, _pIO, recView );
 }

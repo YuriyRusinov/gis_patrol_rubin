@@ -13,6 +13,7 @@
 #include <QWidget>
 
 class QAbstractItemModel;
+class QAbstractItemView;
 class QLineEdit;
 class QModelIndex;
 class QTabWidget;
@@ -45,7 +46,7 @@ public:
     void appendTabWidget( QWidget* w, QString title );
 
 private slots:
-    void refreshRecords( QAbstractItemModel* recModel );
+    void refreshRecords( QAbstractItemView* recView );
     void createNewRecord( QAbstractItemModel* recModel );
     void editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
     void delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
@@ -62,7 +63,7 @@ signals:
     void createRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel );
     void openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
     void delRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
-    void refreshRecordModel( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recMod );
+    void refreshRecordModel( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pRefIO, QAbstractItemView* recView );
 
 private:
     //
