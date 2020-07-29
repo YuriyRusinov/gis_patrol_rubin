@@ -328,6 +328,8 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
         pRecWidget* recWidget = createRecordsWidget( pRecIO, wEditor );
         wEditor->appendTabWidget( recWidget, tr("Records") );
     }
+    if( wEditor->getTabCount() > 1 )
+        wEditor->setCurrentPage( 1 );
     return wEditor;
 }
 
