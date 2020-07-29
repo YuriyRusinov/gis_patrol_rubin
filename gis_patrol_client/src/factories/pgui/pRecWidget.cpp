@@ -64,8 +64,7 @@ void pRecWidget::setSourceModel( QAbstractItemModel* recModel ) {
 }
 
 void pRecWidget::refreshModel() {
-    QAbstractItemModel* recMod = getSourceModel();
-    emit refreshRecords( recMod );
+    emit refreshRecords( _tvRecords );
     qDebug() << __PRETTY_FUNCTION__;
 }
 

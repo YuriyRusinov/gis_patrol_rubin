@@ -12,6 +12,7 @@
 #include <QWidget>
 
 class QAbstractItemModel;
+class QAbstractItemView;
 class QAction;
 class QModelIndex;
 class QToolBar;
@@ -41,7 +42,7 @@ private slots:
     void delSelectedRecord();
 
 signals:
-    void refreshRecords( QAbstractItemModel* recMod );
+    void refreshRecords( QAbstractItemView* recView );
     void addRecord( QAbstractItemModel* recMod );
     void editRecord( QAbstractItemModel* recMod, const QModelIndex& wIndex );
     void delRecord( QAbstractItemModel* recMod, const QModelIndex& wIndex );

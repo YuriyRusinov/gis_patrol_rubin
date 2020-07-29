@@ -7,6 +7,7 @@
  *  Ю.Л.Русинов
  */
 
+#include <QAbstractItemView>
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QMessageBox>
@@ -362,27 +363,19 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
         pRecIO = _dbLoader->loadIO( pRec->getId() );
         QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pRecIO );
         pRecWidget* recWidget = createRecordsWidget( pRecIO, wEditor );
-        //QAbstractItemModel* recModel = new pRecordDataModel( pRefIO->getCategory()->getTableCat(), ioRecords );
-        //recWidget->setSourceModel( recModel );
         wEditor->appendTabWidget( recWidget, tr("Records") );
     }
     return wEditor;
 }
 
-void pIOGuiFactory::refreshRecModel( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recMod ) {
-    if( pCat.isNull() || pRefIO.isNull() || recMod == nullptr )
+void pIOGuiFactory::refreshRecModel( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pRefIO, QAbstractItemView* recView ) {
+    if( pCat.isNull() || pRefIO.isNull() || recView == nullptr )
         return;
 
     QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pRefIO );
-    int nr = recMod->rowCount();
-    recMod->removeRows(0, nr);
-    recMod->insertRows(0, ioRecords.size());
-    int i=0;
-    for( QMap<qint64, QSharedPointer< pRecordCopy > >::const_iterator pr = ioRecords.constBegin();
-            pr != ioRecords.constEnd();
-            pr++ ) {
-        QModelIndex wIndex = recMod->index( i, 0 );
-        recMod->setData( wIndex, QVariant::fromValue< QSharedPointer< const pRecordCopy >>( pr.value() ), Qt::UserRole+1 );
-        i++;
-    }
+    QAbstractItemModel* recModel = new pRecordDataModel( pCat->getTableCat(), ioRecords );
+    QAbstractItemModel* oldModel = recView->model();
+    recView->setModel( recModel );
+    if( oldModel )
+        delete oldModel;
 }
