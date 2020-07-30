@@ -7,12 +7,16 @@
  *  Ю.Л.Русинов
  */
 
+#include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include <QFont>
 #include <QGridLayout>
 #include <QTextEdit>
 #include <QToolButton>
 #include <QLabel>
+#include <QMessageBox>
+#include <QXmlStreamReader>
 #include <QtDebug>
 
 #include <pCatParameter.h>
@@ -54,4 +58,22 @@ void pXMLEdit::setup( ) {
 
 void pXMLEdit::loadXml() {
     qDebug() << __PRETTY_FUNCTION__;
+    QString xmlFileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath(), tr("XML files (*.xml);;All files (*.*)") );
+    if( xmlFileName.isEmpty() )
+        return;
+    QFile xmlFile( xmlFileName );
+    bool isOpenOk = xmlFile.open( QIODevice::ReadOnly );
+    if( !isOpenOk ) {
+        QMessageBox::warning( this, tr("Open xml file"), tr( "Cannot open xml file %1 for reading" ).arg( xmlFileName ), QMessageBox::Ok );
+        return;
+    }
+    QXmlStreamReader xmlStream( &xmlFile );
+    QStringList elements;
+    while( !xmlStream.atEnd() ) {
+        QXmlStreamReader::TokenType tType = xmlStream.readNext();
+        QString tString = xmlStream.tokenString();
+        //QString xmlStr = xmlStream.readElementText();
+        //elements.append( xmlStr );
+        qDebug() << __PRETTY_FUNCTION__ << tType << tString;
+    }
 }
