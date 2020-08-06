@@ -10,6 +10,7 @@
 #include <QAbstractItemView>
 #include <QKeySequence>
 #include <QGridLayout>
+#include <QMessageBox>
 #include <QModelIndex>
 #include <QTabWidget>
 #include <QToolBar>
@@ -22,6 +23,7 @@
 #include <pCatParameter.h>
 #include <pParamValue.h>
 #include <pParamType.h>
+#include "pRecWidget.h"
 #include "pAbstractParamWidget.h"
 #include "pCIOEditor.h"
 
@@ -92,6 +94,9 @@ void pCIOEditor::createNewRecord( QAbstractItemModel* recModel ) {
     QSharedPointer< pRecordCopy > rec( new pRecordCopy( -1, QString(), _pIO ) );
     qDebug() << __PRETTY_FUNCTION__ << _pIO->getId();
     emit createRecord( rec, _pIO, recModel );
+    pRecWidget* prw = qobject_cast< pRecWidget* >(sender());
+    if( prw )
+        prw->refreshModel();
 }
 
 void pCIOEditor::editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex ) {
@@ -101,15 +106,24 @@ void pCIOEditor::editSelRecord( QAbstractItemModel* recMod, const QModelIndex& r
     QSharedPointer< pRecordCopy > rec( qSharedPointerConstCast< pRecordCopy >(recC) );
     qDebug() << __PRETTY_FUNCTION__ << (rec.isNull() ? -1 : rec->getId() ) << _pIO->getId();
     emit openRecord( rec, _pIO, recMod, recIndex );
+    pRecWidget* prw = qobject_cast< pRecWidget* >(sender());
+    if( prw )
+        prw->refreshModel();
 }
 
 void pCIOEditor::delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex ) {
     if( !recMod || !recIndex.isValid() )
         return;
     QSharedPointer< const pRecordCopy > recC = recMod->data( recIndex, Qt::UserRole+1 ).value< QSharedPointer< const pRecordCopy > >();
+    QMessageBox::StandardButton res = QMessageBox::question( this, tr("Delete record"), tr("Do you really want to delete ?"), QMessageBox::Yes | QMessageBox::No );
+    if( res != QMessageBox::Yes )
+        return;
     QSharedPointer< pRecordCopy > rec( qSharedPointerConstCast< pRecordCopy >(recC) );
     emit delRecord( rec, _pIO, recMod, recIndex );
     qDebug() << __PRETTY_FUNCTION__ << (rec.isNull() ? -1 : rec->getId() );
+    pRecWidget* prw = qobject_cast< pRecWidget* >(sender());
+    if( prw )
+        prw->refreshModel();
 }
 
 void pCIOEditor::appendTabWidget( QWidget* w, QString title ) {

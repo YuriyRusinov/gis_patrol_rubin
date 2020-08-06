@@ -34,9 +34,10 @@ public:
 
     /* ====================  OPERATORS     ======================================= */
 
-private slots:
+public slots:
     void refreshModel();
 
+private slots:
     void addNewRecord();
     void editSelectedRecord();
     void delSelectedRecord();
