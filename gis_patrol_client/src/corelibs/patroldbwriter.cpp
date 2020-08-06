@@ -472,16 +472,38 @@ qint64 pDBWriter::deleteRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
         return -1;
 
     qint64 idRec = pRecord->getId();
-    QString sql_query = QString("select ioDelete( %1 );")
-                            .arg( idRec );
+    QString parent_sql_query;
+    QString sql_query;
+    if( pIO->getId() == IO_IO_ID )
+        sql_query = QString("select ioDelete( %1 );").arg( idRec );
+    else {
+        sql_query = QString("delete from %1 where id = %2;").arg( pIO->getTableName() ).arg( idRec );
+        QSharedPointer< pCategory > pC = pIO->getCategory();
+        QSharedPointer< pCategory > pCT = pC->getTableCat();
+        QList< qint64 > idParents = pCT->searchParametersByType(pParamType::atParent);
+        QMap< qint64, QSharedPointer< pCatParameter > > catParams = pCT->categoryPars();
+        int np = idParents.size();
+        for(int i=0; i<np; i++) {
+            QSharedPointer< pCatParameter > pCParam = catParams.value( idParents[i] );
+            parent_sql_query = QString("update %1 set %2=null where %2=%3;").arg( pIO->getTableName() ).arg( pCParam->getCode() ).arg( idRec );
+            qDebug() << __PRETTY_FUNCTION__ << parent_sql_query;
+            GISPatrolResult * parent_gpr = _db->execute( parent_sql_query );
+            if( !parent_gpr || parent_gpr->getRowCount() != 1) {
+                if( parent_gpr )
+                    delete parent_gpr;
+                continue;
+            }
+            delete parent_gpr;
+        }
+    }
     GISPatrolResult * gpr = _db->execute( sql_query );
-    if( !gpr || gpr->getRowCount() != 1 ) {
+    if( !gpr || ( gpr->getRowCount() != 1 && pIO->getId() == IO_IO_ID ) ) {
         if( gpr )
             delete gpr;
         return -1;
     }
 
-    qint64 res = gpr->getCellAsInt64( 0, 0 );
+    qint64 res = (pIO->getId() == IO_IO_ID ? gpr->getCellAsInt64( 0, 0 ) : idRec);
     delete gpr;
     return res;
 }

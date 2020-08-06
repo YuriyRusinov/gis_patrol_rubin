@@ -247,9 +247,6 @@ void pIOGuiFactory::removeRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoi
         QMessageBox::warning(pw, tr("Delete record"), tr("Cannot delete record with id %1").arg( pRec->getId() ), QMessageBox::Ok );
         return;
     }
-    int iRow = recIndex.row();
-    QModelIndex pIndex = recIndex.parent();
-    recModel->removeRows( iRow, 1, pIndex );
 }
 
 pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QWidget* parent, Qt::WindowFlags flags ) const {
