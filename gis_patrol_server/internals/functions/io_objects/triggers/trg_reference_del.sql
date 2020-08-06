@@ -5,6 +5,8 @@ begin
     if( old.is_system or old.id <= 300 ) then
         return null;
     end if;
+
+    return old;
 end
 $BODY$
 language 'plpgsql';

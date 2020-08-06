@@ -38,7 +38,7 @@ public:
 
     qint64 insertRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const;
     qint64 updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const;
-    qint64 deleteRecord( qint64 idRec ) const;
+    qint64 deleteRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const;
 
 private:
     qint64 insertCategoryParam( qint64 idCategory, QSharedPointer< pCatParameter> pCParam ) const;
