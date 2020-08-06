@@ -302,8 +302,10 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
         return nullptr;
     pAbstractParamWidget* wRes ( nullptr );
     pParamType::PatrolParamTypes pType = pCParamValue->getCatParam()->getParamType()->getId();
-    if( pCParamValue->getCatParam()->getId() == 16 )
-        qDebug() << __PRETTY_FUNCTION__ << pType <<pParamType::atDateTimeWithOffset;
+//    if( pCParamValue->getCatParam()->getId() == 16 )
+//        qDebug() << __PRETTY_FUNCTION__ << pType << pParamType::atDateTimeWithOffset;
+    if( pCParamValue->getCatParam()->getId() == ATTR_IS_SYSTEM )
+        qDebug() << __PRETTY_FUNCTION__ << pCParamValue->value().toBool();
     switch( pType ) {
         case pParamType::atUndef: default: return wRes; break;
         case pParamType::atBool: wRes = new pCheckBox( pCParamValue, parent, flags ); break;

@@ -238,7 +238,18 @@ void pIOGuiFactory::openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoint
 }
 
 void pIOGuiFactory::removeRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex ) {
-    qDebug() << __PRETTY_FUNCTION__ << pRec.isNull() << pRefIO.isNull() << (recModel == nullptr) << recIndex.isValid();
+    if( pRec.isNull() || pRefIO.isNull() || (recModel == nullptr) || !recIndex.isValid() )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << pRefIO->getId() << pRec->getIO()->getId() << pRec->getId();
+    qint64 res = _dbWriter->deleteRecord( pRec, pRefIO );
+    if( res < 0 ) {
+        QWidget* pw = qobject_cast<QWidget*>(this->sender());
+        QMessageBox::warning(pw, tr("Delete record"), tr("Cannot delete record with id %1").arg( pRec->getId() ), QMessageBox::Ok );
+        return;
+    }
+    int iRow = recIndex.row();
+    QModelIndex pIndex = recIndex.parent();
+    recModel->removeRows( iRow, 1, pIndex );
 }
 
 pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QWidget* parent, Qt::WindowFlags flags ) const {

@@ -7,6 +7,7 @@
  *  Ю.Л.Русинов
  */
 #include <algorithm>
+#include <defines.h>
 #include <QtDebug>
 #include <gis_patroldatabase.h>
 #include <pParamGroup.h>
@@ -399,10 +400,12 @@ QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord
     for ( int i = 0; i < n; i++ ) {
         columnsList << pValues[i]->getCatParam()->getCode();
         QString valStr = pValues[i]->valueForInsert();
+        if( pValues[i]->getCatParam()->getId() == ATTR_IS_SYSTEM && id >= 300 )
+            valStr = QString("false");
         QVariant val = pValues[i]->value();
         if( valStr.isEmpty() || val.isNull() || val.toString().isEmpty() )
             valStr = QString("null");
-        valuesList << (pValues[i]->getCatParam()->getId() == 1 ? QString::number( id ) : valStr );
+        valuesList << (pValues[i]->getCatParam()->getId() == ATTR_ID ? QString::number( id ) : valStr );
     }
     for ( int i = 0; i < n; i++ ) {
         sql_query += QString("%1%2%3")
@@ -464,9 +467,21 @@ qint64 pDBWriter::updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     return resId;
 }
 
-qint64 pDBWriter::deleteRecord( qint64 idRec ) const {
-    //
-    //TODO: пока заглушка
-    //
-    return idRec;
+qint64 pDBWriter::deleteRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const {
+    if( pIO.isNull() || pRecord.isNull() )
+        return -1;
+
+    qint64 idRec = pRecord->getId();
+    QString sql_query = QString("select ioDelete( %1 );")
+                            .arg( idRec );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+
+    qint64 res = gpr->getCellAsInt64( 0, 0 );
+    delete gpr;
+    return res;
 }

@@ -570,6 +570,11 @@ QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointe
         QString columnVal = QString();
         pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
         switch (pType) {
+            case pParamType::atBool: {
+                valueV = gpr->getCellAsBool(i, icol);
+                icol++;
+                break;
+            }
             case pParamType::atList:
             case pParamType::atParent:
             case pParamType::atRecordColorRef:

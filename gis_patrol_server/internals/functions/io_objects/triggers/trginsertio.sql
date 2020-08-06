@@ -6,6 +6,7 @@ declare
 --    m1 maclabel;
     isGlobal bool;
     idChild int4;
+    query varchar;
 begin
     
     if(TG_OP = 'UPDATE') then
@@ -15,6 +16,10 @@ begin
         
         if(not new.is_global  and old.is_global ) then
             raise exception 'Change global object to nonglobal is not allowed!';
+            return NULL;
+        end if;
+        if(not new.is_system  and old.is_system ) then
+            raise exception 'Change system object to user is not allowed!';
             return NULL;
         end if;
     end if;
@@ -71,6 +76,16 @@ begin
             return new;
         end if;
 
+    end if;
+    if( TG_OP = 'UPDATE' and old.table_name <> new.table_name and new.table_name is not null ) then
+        if( not new.is_system ) then
+            query := E'alter table ' || old.table_name || E' rename to ' || new.table_name || E';';
+            raise warning '%', query;
+            execute query;
+        else
+            raise warning 'Change table of system object is not allowed';
+            new.table_name = old.table_name;
+        end if;
     end if;
 
     return new;
