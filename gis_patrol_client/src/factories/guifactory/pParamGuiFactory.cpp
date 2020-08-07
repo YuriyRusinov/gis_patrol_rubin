@@ -165,7 +165,7 @@ void pParamGUIFactory::addParameter( QAbstractItemModel* paramsModel, qint64 idP
     QString paramTitle = parForm->getTitle();
     QString tableName = QString();
     QString columnName = QString();
-    if (pType->getId() == 2 || pType->getId() == 27) {
+    if( pType->getId() == pParamType::atList || pType->getId() == pParamType::atCheckListEx ) {
         tableName = parForm->getTableName();
         columnName = parForm->getColumnName();
     }
