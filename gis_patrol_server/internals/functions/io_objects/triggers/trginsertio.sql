@@ -145,6 +145,7 @@ begin
 */
 --        new.id_search_template = NULL;
     new.ref_table_name = null;
+    raise warning '% %', table_name, id_io_child_category;
     real_table_name = createIOTable (table_name, id_io_child_category, true);
     table_name = real_table_name;
 --    end if;
