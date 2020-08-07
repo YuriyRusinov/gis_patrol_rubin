@@ -41,7 +41,7 @@
 #include <pTextEdit.h>
 #include <pColorEdit.h>
 #include <pXMLEdit.h>
-
+#include <pParamCheckWidget.h>
 #include "pParamGuiFactory.h"
 
 pParamGUIFactory::pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
@@ -209,7 +209,7 @@ void pParamGUIFactory::editParameter( QAbstractItemModel* paramsModel, qint64 id
     QString paramTitle = parForm->getTitle();
     QString tableName = QString();
     QString columnName = QString();
-    if (pType->getId() == 2 || pType->getId() == 27) {
+    if (pType->getId() == pParamType::atList || pType->getId() == pParamType::atCheckListEx ) {
         tableName = parForm->getTableName();
         columnName = parForm->getColumnName();
     }
@@ -350,6 +350,10 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
         }
         case pParamType::atXML: {
             wRes = new pXMLEdit( pCParamValue, parent, flags );
+            break;
+        }
+        case pParamType::atCheckListEx: {
+            wRes = new pParamCheckWidget( pCParamValue, parent, flags );
             break;
         }
        //

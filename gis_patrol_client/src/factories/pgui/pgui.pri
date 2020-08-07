@@ -25,6 +25,8 @@ HEADERS += \
            pSVGEdit.h \
            pRecWidget.h \
            pXMLEdit.h \
+           pCheckableDataModel.h \
+           pParamCheckWidget.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
            ui/precdialog.h
@@ -61,6 +63,8 @@ SOURCES += \
            pSVGEdit.cpp \
            pRecWidget.cpp \
            pXMLEdit.cpp \
+           pCheckableDataModel.cpp \
+           pParamCheckWidget.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
            ui/precdialog.cpp

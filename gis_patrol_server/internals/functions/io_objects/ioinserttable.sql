@@ -61,6 +61,7 @@ begin
                    tbl_parameters a 
                    inner join tbl_cat_params ac on (a.id = ac.id_parameter and ac.id_category=' || id_category || ' and a.id > 1) 
                    inner join tbl_parameter_types at on (a.id_param_type = at.id);';
+    raise warning '%', query;
 
     alter_query = '';
     create_ref_table = '';
@@ -76,6 +77,7 @@ begin
 
         --atCheckListEx
         if(r.atypeid = 17) then --atCheckListEx
+            raise warning '% % %', r.atypeid, table_name, r.atabname;
 
             tName := table_name || '_' || r.atabname || '_ref_' || r.id;
 
@@ -96,7 +98,8 @@ begin
                     else
                         create_ref_table := create_ref_table || ' alter table '  || tName || ' ADD CONSTRAINT FK_ID_' || tName || '_2 FOREIGN KEY (ID_'|| r.atabname || ') REFERENCES ' || r.atabname || ' (ID) ON DELETE RESTRICT ON UPDATE CASCADE; ';
                     end if;
-                    create_ref_table := create_ref_table || ' select setGrants1(' || quote_literal(tName) || '); ';
+                    --create_ref_table := create_ref_table || ' select setGrants1(' || quote_literal(tName) || '); ';
+                    raise warning 'ref table query is %', create_ref_table;
                 end if;
             end loop;
 
@@ -203,6 +206,7 @@ begin
     
     create_query := create_query || ' constraint PK_' || table_name || ' primary key (id)) ';
     create_query := create_query || ';';
+    raise warning 'Create query is %', create_query;
 
     s_user = session_user;
 
@@ -214,6 +218,21 @@ begin
     if (not FOUND) then
         raise exception E'Cannot create table % \n The  query is %', table_name, create_query;
         return NULL;
+    end if;
+    if (alter_query is not null and length (alter_query) > 0) then
+        execute alter_query;
+        if (not FOUND) then
+            raise exception 'Cannot create reference';
+            return NULL;
+        end if;
+    end if;
+
+    if(create_ref_table is not null and length (create_ref_table) > 5) then
+        execute create_ref_table;
+        if(not FOUND) then
+            raise exception 'Cannot create reference tables!';
+            return NULL;
+        end if;
     end if;
     return table_name;
 end

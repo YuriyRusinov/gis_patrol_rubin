@@ -77,10 +77,10 @@ qint64 ParamsForm::getType() const {
 }
 
 QString ParamsForm::getTableName() const {
-   if (getType() != 2 && getType() != 17)
-       return QString();
+    if (getType() == pParamType::atList || getType() == pParamType::atCheckListEx)
+        return _UI->lETableName->text();
 
-   return _UI->lETableName->text();
+    return QString();
 }
 
 void ParamsForm::setTableName( QString tName ) {
@@ -88,10 +88,10 @@ void ParamsForm::setTableName( QString tName ) {
 }
 
 QString ParamsForm::getColumnName() const {
-   if (getType() != 2 && getType() != 17)
-       return QString();
+    if (getType() == pParamType::atList || getType() == pParamType::atCheckListEx)
+        return _UI->lEColumnName->text();
 
-   return _UI->lEColumnName->text();
+    return QString();
 }
 
 void ParamsForm::setColumnName( QString colName ) {
@@ -99,8 +99,8 @@ void ParamsForm::setColumnName( QString colName ) {
 }
 
 void ParamsForm::cbTypeActivated(int index) {
-    bool isEnable = _UI->cbType->itemData(index).toInt() == 2 || 
-                    _UI->cbType->itemData(index).toInt() == 17;
+    bool isEnable = _UI->cbType->itemData(index).toInt() == pParamType::atList || 
+                    _UI->cbType->itemData(index).toInt() == pParamType::atCheckListEx;
     _UI->gbTable->setEnabled( isEnable );
 }
 
