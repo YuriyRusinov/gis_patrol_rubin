@@ -35,7 +35,7 @@ private:
     /* ====================  METHODS       ======================================= */
 
     /* ====================  DATA MEMBERS  ======================================= */
-    QSharedPointer< const pParamValue > _pReferenceParameterValue;
+    QSharedPointer< pParamValue > _pReferenceParameterValue;
 
 private:
     Q_OBJECT

@@ -362,15 +362,23 @@ qint64 pDBWriter::updateCategoryParam( qint64 idCategory, QSharedPointer< pCatPa
     return res;
 }
 
-QString pDBWriter::generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName ) const {
+QString pDBWriter::generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName, QString& exQuery ) const {
     if( pRecord.isNull() || tableName.isEmpty() )
         return QString();
 
     QString sql_query = QString("update %1 set ").arg( tableName );
     int n = pRecord->paramValues().count();
+    int nm( 0 );
 
     for ( int i=0; i<n; i++ ) {
         QSharedPointer< const pParamValue > pVal = pRecord->paramValueIndex( i );
+        pParamType::PatrolParamTypes pType = pVal->getCatParam()->getParamType()->getId();
+        if( pType == pParamType::atCheckListEx ) {
+            exQuery = generateExternalQuery( tableName, pVal, pRecord->getId() );
+            nm++;
+            qDebug() << __PRETTY_FUNCTION__ << exQuery << nm;
+            continue;
+        }
         QVariant val = pVal->value();
         QString valStr = pVal->valueForInsert();
         if( valStr.isEmpty() || val.isNull() || val.toString().isEmpty() )
@@ -379,13 +387,17 @@ QString pDBWriter::generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord
             qDebug() << __PRETTY_FUNCTION__ << pVal->getCatParam()->getId() << valStr << val;
         if( pVal->getCatParam()->getId() == 1 ) // id
             continue;
-        sql_query += QString(" %1=%2%3 ").arg( pVal->getCatParam()->getCode() ).arg( valStr ).arg( i==n-1 ? QString() : QString(","));
+        sql_query += QString(" %1=%2%3 ").arg( pVal->getCatParam()->getCode() ).arg( valStr ).arg( i==n-nm-1 ? QString() : QString(","));
+    }
+    if( nm > 0 ) {
+        int lcomma = sql_query.lastIndexOf( QString(",") );
+        sql_query.replace( lcomma, 1, QString() );
     }
     sql_query += QString(" where id = %1; ").arg( pRecord->getId() );
     return sql_query;
 }
 
-QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName ) const {
+QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName, QString& exQuery ) const {
     if( pRecord.isNull() || tableName.isEmpty() )
         return QString();
 
@@ -396,8 +408,18 @@ QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord
     QStringList valuesList;
     QList< QSharedPointer< pParamValue > > pValues = pRecord->paramValues();
     int n = pValues.count();
+    exQuery.clear();
+    QString refTable;
+    int nm( 0 );
 
     for ( int i = 0; i < n; i++ ) {
+        pParamType::PatrolParamTypes pType = pValues[i]->getCatParam()->getParamType()->getId();
+        if( pType == pParamType::atCheckListEx ) {
+            exQuery = generateExternalQuery( tableName, pValues[i], pRecord->getId() );
+            qDebug() << __PRETTY_FUNCTION__ << exQuery;
+            nm++;
+            continue;
+        }
         columnsList << pValues[i]->getCatParam()->getCode();
         QString valStr = pValues[i]->valueForInsert();
         if( pValues[i]->getCatParam()->getId() == ATTR_IS_SYSTEM && id >= 300 )
@@ -407,17 +429,19 @@ QString pDBWriter::generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord
             valStr = QString("null");
         valuesList << (pValues[i]->getCatParam()->getId() == ATTR_ID ? QString::number( id ) : valStr );
     }
-    for ( int i = 0; i < n; i++ ) {
+    int nCols = columnsList.count();
+    for ( int i = 0; i < nCols; i++ ) {
         sql_query += QString("%1%2%3")
                         .arg( i==0 ? QString("(") : QString() )
                         .arg( columnsList[i] )
-                        .arg( i==n-1 ? QString(") values (") : QString(",") );
+                        .arg( i==nCols-1 ? QString(") values (") : QString(",") );
     }
-    for ( int i = 0; i < n; i++ ) {
+    for ( int i = 0; i < nCols; i++ ) {
         sql_query += QString("%1%2")
                         .arg( valuesList[i] )
-                        .arg( i==n-1 ? QString(");") : QString(",") );
+                        .arg( i==nCols-1 ? QString(");") : QString(",") );
     }
+    qDebug() << __PRETTY_FUNCTION__ << sql_query;
     return sql_query;
 }
 
@@ -439,7 +463,8 @@ qint64 pDBWriter::insertRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     if( pIO.isNull() || pRecord.isNull() )
         return -1;
     QString tName = pIO->getTableName();
-    QString sql_query = generateInsertRecQuery( pRecord, tName );
+    QString exQuery;
+    QString sql_query = generateInsertRecQuery( pRecord, tName, exQuery );
     qDebug() << __PRETTY_FUNCTION__ << sql_query;
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr ) {
@@ -448,6 +473,12 @@ qint64 pDBWriter::insertRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
 
     qint64 resId = pRecord->getId();
     delete gpr;
+    if( !exQuery.isEmpty() ) {
+        GISPatrolResult* gprEx = _db->execute( exQuery );
+        if( !gprEx )
+            return -1;
+        delete gprEx;
+    }
     return resId;
 }
 
@@ -455,7 +486,8 @@ qint64 pDBWriter::updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     if( pIO.isNull() || pRecord.isNull() )
         return -1;
     QString tName = pIO->getTableName();
-    QString sql_query = generateUpdateRecQuery( pRecord, tName );
+    QString exQuery;
+    QString sql_query = generateUpdateRecQuery( pRecord, tName, exQuery );
     qDebug() << __PRETTY_FUNCTION__ << sql_query;
     GISPatrolResult * gpr = _db->execute( sql_query );
     if( !gpr ) {
@@ -464,6 +496,12 @@ qint64 pDBWriter::updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
 
     qint64 resId = pRecord->getId();
     delete gpr;
+    if( !exQuery.isEmpty() ) {
+        GISPatrolResult* gprEx = _db->execute( exQuery );
+        if( !gprEx )
+            return -1;
+        delete gprEx;
+    }
     return resId;
 }
 
@@ -506,4 +544,24 @@ qint64 pDBWriter::deleteRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     qint64 res = (pIO->getId() == IO_IO_ID ? gpr->getCellAsInt64( 0, 0 ) : idRec);
     delete gpr;
     return res;
+}
+
+QString pDBWriter::generateExternalQuery( QString tableName, QSharedPointer< const pParamValue > pValue, qint64 idRecord ) const {
+    if( tableName.isEmpty() || pValue.isNull() || idRecord <= 0 )
+        return QString();
+    QString exQuery;
+    QString pTable = pValue->getCatParam()->getTableName();
+    QString refTable = QString("%1_%2_ref_%3").arg( tableName ).arg( pTable ).arg( pValue->getCatParam()->getId() );
+    QString refDelQuery = QString("delete from %1 where id_%2=%3;").arg( refTable ).arg( tableName ).arg( idRecord );
+    qDebug() << __PRETTY_FUNCTION__ << refDelQuery;
+    QString refInsQuery = QString("insert into %1 ( id_%2, id_%3 ) values ( %4, unnest(%5::int8[]) );")
+                            .arg( refTable )
+                            .arg( tableName )
+                            .arg( pTable )
+                            .arg( idRecord )
+                            .arg( pValue->valueForInsert() );
+    qDebug() << __PRETTY_FUNCTION__ << refInsQuery;
+    exQuery += refDelQuery;
+    exQuery += refInsQuery;
+    return exQuery;
 }

@@ -19,6 +19,7 @@ class pCategory;
 class pCatParameter;
 class pRecordCopy;
 class pIObject;
+class pParamValue;
 
 class pDBWriter : public QObject {
 public:
@@ -45,9 +46,10 @@ private:
     QList< qint64 > getCategoryParams( qint64 idCat ) const;
     qint64 deleteCategoryParam( qint64 idCat, qint64 idPar ) const;
     qint64 updateCategoryParam( qint64 idCategory, QSharedPointer< pCatParameter> pCParam ) const;
-    QString generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName ) const;
-    QString generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName ) const;
+    QString generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName, QString& exQuery ) const;
+    QString generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName, QString& exQuery ) const;
     qint64 getNextSeq( QString tableName, QString columnName=QString("id") ) const;
+    QString generateExternalQuery( QString tableName, QSharedPointer< const pParamValue > pValue, qint64 idRecord ) const;
 
 public:
     GISPatrolDatabase* getDb() const;

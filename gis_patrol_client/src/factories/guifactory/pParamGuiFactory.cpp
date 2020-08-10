@@ -30,6 +30,9 @@
 #include <pParamValue.h>
 #include <paramsgroupform.h>
 #include <paramsform.h>
+#include <pCheckableDataModel.h>
+#include <pIObject.h>
+#include <pCategory.h>
 
 #include <pAbstractParamWidget.h>
 #include <pCheckBox.h>
@@ -353,7 +356,12 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
             break;
         }
         case pParamType::atCheckListEx: {
-            wRes = new pParamCheckWidget( pCParamValue, parent, flags );
+            QString pTableName = pCParamValue->getCatParam()->getTableName();
+            qDebug() << __PRETTY_FUNCTION__ << pTableName;
+            QSharedPointer< pIObject > pRefIO = _dbLoader->loadIOByTableName( pTableName );
+            QMap< qint64, QSharedPointer< pRecordCopy > > pRecs = _dbLoader->loadRecords( pRefIO );
+            pCheckableDataModel* pCheckListMod = new pCheckableDataModel( pCParamValue, pRefIO->getCategory()->getTableCat(), pRecs );
+            wRes = new pParamCheckWidget( pCParamValue, pCheckListMod, parent, flags );
             break;
         }
        //

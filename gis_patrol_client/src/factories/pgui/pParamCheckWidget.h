@@ -13,11 +13,13 @@
 
 #include "pAbstractParamWidget.h"
 
+class QLabel;
 class QTreeView;
+class QAbstractItemModel;
 
 class pParamCheckWidget : public pAbstractParamWidget {
 public:
-    pParamCheckWidget( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
+    pParamCheckWidget( QSharedPointer< pParamValue > pValue, QAbstractItemModel* valuesModel, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
     virtual ~pParamCheckWidget();
 
     void setReadOnly( bool value ) override;
@@ -28,6 +30,7 @@ private slots:
 private:
     void setup( ) override;
 
+    QLabel* _lParam;
     QTreeView* _tvValues;
 
 private:
