@@ -18,7 +18,9 @@
 \i ./functions/general/generateuuid.sql
 /*
 \i ./functions/general/geteio.sql
+*/
 \i ./functions/general/getexvaluesid.sql
+/*
 \i ./functions/general/getidobjectbyrecorduid.sql
 \i ./functions/general/getrecattrvalue.sql
 \i ./functions/general/getrecattrvaluehistory.sql

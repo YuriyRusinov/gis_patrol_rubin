@@ -625,10 +625,12 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pc = params.constBegin();
             pc != params.constEnd();
             pc++ ) {
-        if( pc.value()->getParamType()->getId() == pParamType::atList ||
-            pc.value()->getParamType()->getId() == pParamType::atCheckListEx ||
-            pc.value()->getParamType()->getId() == pParamType::atRecordColorRef ||
-            pc.value()->getParamType()->getId() == pParamType::atRecordTextColorRef
+        pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
+        if( pType == pParamType::atCheckListEx )
+            continue;
+        else if( pType == pParamType::atList ||
+            pType == pParamType::atRecordColorRef ||
+            pType == pParamType::atRecordTextColorRef
             ) {
             usedTables << pc.value()->getTableName();
             paramTableCodes << pc.value()->getCode();
@@ -649,7 +651,9 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
             pc != params.constEnd();
             pc++ ) {
         pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
-        if( pType == pParamType::atGeometry ||
+        if( pType == pParamType::atCheckListEx )
+            continue;
+        else if( pType == pParamType::atGeometry ||
             pType == pParamType::atGeography ||
             pType == pParamType::atGISMap )
             sql_query += QString("st_asewkt( tab_%1.%2 ), ").arg( tNumbers[0] ).arg( pc.value()->getCode() );

@@ -10,6 +10,7 @@
 #include <QByteArray>
 #include <QBuffer>
 #include <QString>
+#include <QtDebug>
 
 #include "pParamType.h"
 #include "pCatParameter.h"
@@ -80,7 +81,7 @@ void pParamValue::setValue( const QVariant& val ) {
 
 QString pParamValue::valueForInsert() const {
     pParamType::PatrolParamTypes pType = _parameter->getParamType()->getId();
-    if( _value.isNull() || _value.toString().isEmpty() )
+    if( _value.isNull() || ( _value.toString().isEmpty() && pType != pParamType::atCheckListEx ) )
         return ("null");
     QString resVal;
     switch( pType ) {
@@ -144,6 +145,7 @@ QString pParamValue::valueForInsert() const {
             break;
         }
         case pParamType::atCheckListEx: case pParamType::atComplex: case pParamType::atHistogram: {
+            qDebug() << __PRETTY_FUNCTION__ << _value;
             resVal = QString("'{%1}'").arg( _value.toStringList().join(",") );
             break;
         }

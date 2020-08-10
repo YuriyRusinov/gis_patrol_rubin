@@ -6,6 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
+#include <QtDebug>
 #include <pCategory.h>
 #include <pCatParameter.h>
 #include <pParamValue.h>
@@ -26,7 +27,16 @@ QVariant pCheckableDataModel::data (const QModelIndex& index, int role) const {
         //
         // TODO: необходимо прописать сохранение данных из промежуточных таблиц
         //
-        return QVariant();
+        QList< qint64 > p_values;
+        QVariant val = _pReferenceParameterValue->value();
+        QList< QVariant > vals = val.toList();
+        for( int i=0; i<vals.size(); i++ )
+            p_values.append( vals[i].toLongLong() );
+        qint64 id = pRecordDataModel::data(index, Qt::UserRole).toLongLong();
+        if( p_values.contains( id ) )
+            return QVariant( Qt::Checked );
+        else
+            return QVariant( Qt::Unchecked );
     }
 
     return pRecordDataModel::data(index, role);
@@ -37,7 +47,29 @@ bool pCheckableDataModel::setData (const QModelIndex& index, const QVariant& val
         //
         // TODO: необходимо прописать сохранение данных из промежуточных таблиц
         //
-        return false;
+        QList< qint64 > p_values;
+        QVariant val = _pReferenceParameterValue->value();
+        QList< QVariant > vals = val.toList();
+        for( int i=0; i<vals.size(); i++ )
+            p_values.append( vals[i].toLongLong() );
+        qint64 id = pRecordDataModel::data(index, Qt::UserRole).toLongLong();
+        //qDebug() << __PRETTY_FUNCTION__ << role << index << value << id << (value.toInt() == Qt::Checked);
+        if( value.toInt() == Qt::Checked ) {
+            p_values.append( id );
+        }
+        else {
+            int id_f = p_values.indexOf( id );
+            p_values.erase( p_values.begin() + id_f );
+        }
+        vals.clear();
+        for ( int i = 0; i < p_values.size(); i++ ) {
+            vals.append( QVariant( p_values[i] ) );
+        }
+        QVariant listVal(vals);
+        //qDebug() << __PRETTY_FUNCTION__ << p_values << listVal;
+        _pReferenceParameterValue->setValue( listVal );
+        emit dataChanged( index, index );
+        return true;
     }
     bool isSet = pRecordDataModel::setData( index, value, role );
     return isSet;
