@@ -82,6 +82,8 @@ begin
             query := E'alter table ' || old.table_name || E' rename to ' || new.table_name || E';';
             raise warning '%', query;
             execute query;
+            query := E'alter sequence ' || old.table_name || E'_id_seq rename to ' || new.table_name || E'_id_seq;';
+            execute query;
         else
             raise warning 'Change table of system object is not allowed';
             new.table_name = old.table_name;
