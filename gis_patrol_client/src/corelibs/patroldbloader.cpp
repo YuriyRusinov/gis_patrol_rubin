@@ -475,7 +475,7 @@ QSharedPointer< pRecordCopy > pDBLoader::loadCopy( qint64 id, QSharedPointer< pI
     int i=0;
     QSharedPointer< pRecordCopy > prc ( new pRecordCopy(id, QString(), io) );
     int icol = 0;
-    QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i);
+    QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i, io->getTableName() );
     prc->setParamValues( pValues );
     icol = 0;
     QMap< qint64, QSharedPointer< pCatParameter > > cpars = pCat->getTableCat()->categoryPars();
@@ -525,7 +525,7 @@ QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPoi
         qint64 id = gpr->getCellAsInt64( i, 0 );
         QSharedPointer< pRecordCopy > prc ( new pRecordCopy(id, QString(), pIO) );
         int icol = 0;
-        QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i);
+        QList< QSharedPointer< pParamValue > > pValues = loadParamValues( pCat->getTableCat(), gpr, i, tableName );
         /*
          * Debug output
          *
@@ -556,7 +556,7 @@ QMap< qint64, QSharedPointer< pRecordCopy > > pDBLoader::loadRecords( QSharedPoi
     return resRecords;
 }
 
-QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointer< pCategory > pTableCat, GISPatrolResult * gpr, int i ) const {
+QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointer< pCategory > pTableCat, GISPatrolResult * gpr, int i, const QString& tableName ) const {
     if ( pTableCat.isNull() || gpr == nullptr || i<0 )
         return QList< QSharedPointer< pParamValue > > ();
     QMap< qint64, QSharedPointer< pCatParameter > > cpars = pTableCat->categoryPars();
@@ -573,6 +573,24 @@ QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointe
             case pParamType::atBool: {
                 valueV = gpr->getCellAsBool(i, icol);
                 icol++;
+                break;
+            }
+            case pParamType::atCheckListEx: {
+                qint64 id = gpr->getCellAsInt64(i, 0);
+                QString refTable = QString("%1_%2_ref_%3").arg( tableName ).arg( pc.value()->getTableName() ).arg( pc.key() );
+                QString mainColumn = QString("id_%1").arg( tableName );
+                QString childColumn = QString("id_%1").arg( pc.value()->getTableName() );
+                QString sql_ex = QString("select * from getExValuesId(%1, '%2', '%3', '%4');").arg( id ).arg( refTable ).arg( mainColumn ).arg( childColumn );
+                GISPatrolResult* gpr_ex = _db->execute( sql_ex );
+                if( !gpr_ex )
+                    break;
+                QList< QVariant > idVals;
+                int nr = gpr_ex->getRowCount();
+                for ( int ii = 0; ii < nr; ii++ ) {
+                    idVals.append( QVariant( gpr_ex->getCellAsInt64( ii, 1 )) );
+                }
+                valueV = QVariant( idVals );
+                qDebug() << __PRETTY_FUNCTION__ << valueV;
                 break;
             }
             case pParamType::atList:
@@ -626,8 +644,9 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
             pc != params.constEnd();
             pc++ ) {
         pParamType::PatrolParamTypes pType = pc.value()->getParamType()->getId();
-        if( pType == pParamType::atCheckListEx )
+        if( pType == pParamType::atCheckListEx ) {
             continue;
+        }
         else if( pType == pParamType::atList ||
             pType == pParamType::atRecordColorRef ||
             pType == pParamType::atRecordTextColorRef

@@ -1,4 +1,10 @@
-create or replace function getExValuesId(int8, varchar, varchar, varchar) returns int8[] as
+select f_safe_drop_type('h_get_int_pair');
+create type h_get_int_pair as (
+                            id_copy int8,
+                            id_rec int8
+                        );
+drop function if exists getExValuesId(int8, varchar, varchar, varchar) ;
+create or replace function getExValuesId(int8, varchar, varchar, varchar) returns setof h_get_int_pair as
 $BODY$
 declare
     idRecord alias for $1;
@@ -6,21 +12,25 @@ declare
     mainColumn alias for $3;
     childColumn alias for $4;
 
-    r record;
+    r h_get_int_pair%rowtype;--record;
     q varchar;
-    iValues int8[];
+--    iValues int8[];
 begin
 
-    iValues := '{}'::int8[];
+--    iValues := '{}'::int8[];
 
-    q = 'select ' || childColumn || '::int8 as ids from ' || refTable || ' where ' || mainColumn || ' = ' || idRecord;
+    if( idRecord is null ) then
+        q := 'select ' || mainColumn || ', ' || childColumn || ' from ' || refTable || ' group by ' || mainColumn || ', ' || childColumn || ' order by 1,2;';
+    else
+        q := 'select ' || mainColumn || ', ' || childColumn || ' from ' || refTable || ' where ' || mainColumn || ' = ' || idRecord || ' group by ' || mainColumn || ', ' || childColumn || ' order by 1,2;';
+    end if;
 
     for r in execute q
     loop
-        iValues = iValues || r.ids;
+        return next r;--iValues = iValues || r.ids;
     end loop;
 
-    return iValues;
+    return;-- iValues;
 
 end
 $BODY$

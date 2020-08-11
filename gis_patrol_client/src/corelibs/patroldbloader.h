@@ -66,7 +66,7 @@ private:
 
     qint64 loadIOId(const QString& tableName) const;
 
-    QList< QSharedPointer< pParamValue > > loadParamValues( QSharedPointer< pCategory > pTableCat, GISPatrolResult * gpr, int i ) const;
+    QList< QSharedPointer< pParamValue > > loadParamValues( QSharedPointer< pCategory > pTableCat, GISPatrolResult * gpr, int i, const QString& tableName=QString() ) const;
 
 private:
     friend class PatrolSingleton;
