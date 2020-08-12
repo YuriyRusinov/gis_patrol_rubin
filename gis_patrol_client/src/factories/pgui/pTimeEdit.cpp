@@ -6,7 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
-
+#include <QTime>
 #include <QTimeEdit>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -19,7 +19,7 @@
 pTimeEdit::pTimeEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags )
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
-    _pTE( new QTimeEdit( pValue->value().toTime() ) ) {
+    _pTE( new QTimeEdit( pValue->value().isNull() || QString::compare( pValue->value().toString(), QString("current_time"), Qt::CaseInsensitive ) ==0 || pValue->value().toString().isEmpty() ? QTime::currentTime() : pValue->value().toTime() ) ) {
     setup();
 }
 

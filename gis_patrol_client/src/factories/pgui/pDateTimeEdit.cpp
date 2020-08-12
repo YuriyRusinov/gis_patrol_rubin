@@ -6,10 +6,11 @@
  * @author
  *  Ю.Л.Русинов
  */
-
+#include <QDateTime>
 #include <QDateTimeEdit>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QtDebug>
 
 #include <pCatParameter.h>
 #include <pParamValue.h>
@@ -19,7 +20,8 @@
 pDateTimeEdit::pDateTimeEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags )
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
-    _pDTE( new QDateTimeEdit( pValue->value().isNull() || pValue->value().toString().isEmpty() ? QDateTime::currentDateTime() : pValue->value().toDateTime() ) ) {
+    _pDTE( new QDateTimeEdit( pValue->value().isNull() || QString::compare( pValue->value().toString(), QString("current_timestamp"), Qt::CaseInsensitive ) ==0 || pValue->value().toString().isEmpty() ? QDateTime::currentDateTime() : pValue->value().toDateTime() ) ) {
+    qDebug() << __PRETTY_FUNCTION__ << pValue->value();
     setup();
 }
 

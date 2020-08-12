@@ -6,7 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
-
+#include <QDate>
 #include <QDateEdit>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -19,7 +19,7 @@
 pDateEdit::pDateEdit( QSharedPointer< pParamValue > pValue, QWidget* parent, Qt::WindowFlags flags )
     : pAbstractParamWidget( pValue, parent, flags ),
     _lParam( new QLabel( pValue->getCatParam()->getTitle() ) ),
-    _pDE( new QDateEdit( pValue->value().toDate() ) ) {
+    _pDE( new QDateEdit( pValue->value().isNull() || QString::compare( pValue->value().toString(), QString("current_date"), Qt::CaseInsensitive ) ==0 || pValue->value().toString().isEmpty() ? QDate::currentDate() : pValue->value().toDate() ) ) {
     setup();
 }
 
