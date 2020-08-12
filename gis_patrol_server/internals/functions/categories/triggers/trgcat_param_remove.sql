@@ -1,5 +1,5 @@
 --
--- триггер проверяет существование информационных объектов в категории, из которой добавляется
+-- триггер проверяет существование информационных объектов в категории, из которой удаляется
 -- параметр, если таковые существуют, то удаление параметра должно быть пресечено
 --  
 create or replace function catParamRemoveCheck() returns trigger as
@@ -11,7 +11,7 @@ declare
 begin
     select into cnt count(*) from tbl_io_communication_objects_references io inner join tbl_communication_categories c on (io.id_category=c.id and (c.id=old.id_category or c.id_child=old.id_category));
     if (cnt is not null and cnt > 0) then
-        raise exception 'Cannot remove parameter into existing objects';
+        raise exception 'Cannot remove parameter from existing objects';
         return null;
     end if;
 

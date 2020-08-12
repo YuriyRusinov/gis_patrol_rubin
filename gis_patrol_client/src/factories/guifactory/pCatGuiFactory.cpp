@@ -11,6 +11,7 @@
 #include <QVector>
 #include <QtDebug>
 
+#include <defines.h>
 #include <patroldbloader.h>
 #include <patroldbwriter.h>
 #include <pCategoryListForm.h>
@@ -189,14 +190,29 @@ void pCatGuiFactory::saveCategory( QSharedPointer< pCategory > pCategory ) {
         if( pCategory->getTableCat() && !pCategory->getTableCat()->categoryPars().contains( 1 ) ) {
             QMessageBox::StandardButton res = QMessageBox::question(qobject_cast<QWidget*>(this->sender()), tr("Create/edit category"), tr("Table category does not contains ID. Do you want to add it ?"), QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No), QMessageBox::Yes);
             if (res == QMessageBox::Yes) {
-                QSharedPointer< pParameter > pId = _dbLoader->loadParameter( (qint64)1 );
-                QSharedPointer< pCatParameter> pcId ( new pCatParameter( *pId, false, false ) );
-                pCategory->getTableCat()->addParam( 1, pcId );
+                QSharedPointer< pParameter > pId = _dbLoader->loadParameter( ATTR_ID );
+                QSharedPointer< pCatParameter> pcId ( new pCatParameter( *pId, false, false, QVariant(), 1 ) );
+                pCategory->getTableCat()->addParam( ATTR_ID, pcId );
+                for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pca= pCategory->getTableCat()->categoryPars().constBegin();
+                        pca != pCategory->getTableCat()->categoryPars().constEnd();
+                        pca++ ) {
+                    if( pca.key() == ATTR_ID )
+                        continue;
+                    pca.value()->paramOrder()++;
+                }
+
             }
             else
                 return;
         }
+        if( !pCategory->getTableCat().isNull() )
+            for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pca= pCategory->getTableCat()->categoryPars().constBegin();
+                    pca != pCategory->getTableCat()->categoryPars().constEnd();
+                    pca++ ) {
+                qDebug() << __PRETTY_FUNCTION__ << pca.value()->getCode() << pca.value()->paramOrder();
+            }
         idCategory = _dbWriter->writeCategory( pCategory );
+        qDebug() << __PRETTY_FUNCTION__ << "Category was saved";
     }
     else
         idCategory = _dbWriter->updateCategory( pCategory );
