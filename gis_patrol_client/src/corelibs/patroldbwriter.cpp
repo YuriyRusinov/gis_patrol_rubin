@@ -183,10 +183,15 @@ qint64 pDBWriter::writeCategory( QSharedPointer< pCategory > pCat ) const {
     pCat->setId( idCat );
     delete gpr;
     QMap< qint64, QSharedPointer< pCatParameter > > pCategoryParams = pCat->categoryPars();
+    for( QMap< qint64, QSharedPointer< pCatParameter > >::const_iterator pca= pCategoryParams.constBegin();
+            pca != pCategoryParams.constEnd();
+            pca++ ) {
+        qDebug() << __PRETTY_FUNCTION__ << pca.value()->getCode() << pca.value()->paramOrder();
+    }
     QList< QSharedPointer< pCatParameter > > pCList = pCategoryParams.values();
     std::sort( pCList.begin(), pCList.end() );
     for (int i=0; i<pCList.size(); i++) {
-        pCList[i]->setOrder( i+1 );
+        //pCList[i]->setOrder( i+1 );
         qint64 idCPar = insertCategoryParam( idCat, pCList[i] );
         if( idCPar <= 0) {
             _db->rollback();
