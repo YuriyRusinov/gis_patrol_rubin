@@ -570,3 +570,21 @@ QString pDBWriter::generateExternalQuery( QString tableName, QSharedPointer< con
     exQuery += refInsQuery;
     return exQuery;
 }
+
+qint64 pDBWriter::insertRecordParams( QSharedPointer< pIObject > pIO ) const {
+    if( pIO.isNull() )
+        return -1;
+    QList< QSharedPointer< pParamValue > > pVals = pIO->paramValues();
+    if( pVals.isEmpty() )
+        return pIO->getId();
+    int nVals = pVals.size();
+    for( int i=0; i<nVals; i++ ) {
+        QSharedPointer< pParamValue > pValue = pVals[i];
+        QString sql_query = QString("select recinsertvalue(%1, %2, %3, %4);").arg( pValue->getCatParam()->getId() ).arg( pIO->getId() ).arg( pValue->valueForInsert() ).arg( pValue->description().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pValue->description() ) );
+        GISPatrolResult * gpr = _db->execute( sql_query );
+        if( !gpr )
+            return -1;
+        delete gpr;
+    }
+    return pIO->getId();
+}

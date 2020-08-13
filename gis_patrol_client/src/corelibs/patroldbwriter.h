@@ -50,6 +50,7 @@ private:
     QString generateInsertRecQuery( QSharedPointer< pRecordCopy > pRecord, QString tableName, QString& exQuery ) const;
     qint64 getNextSeq( QString tableName, QString columnName=QString("id") ) const;
     QString generateExternalQuery( QString tableName, QSharedPointer< const pParamValue > pValue, qint64 idRecord ) const;
+    qint64 insertRecordParams( QSharedPointer< pIObject > pIO ) const;
 
 public:
     GISPatrolDatabase* getDb() const;
