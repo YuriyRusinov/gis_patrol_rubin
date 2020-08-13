@@ -456,6 +456,8 @@ QSharedPointer< pIObject > pDBLoader::loadIO( qint64 id ) const {
     pIORes->setAuthorEmail( authEmail );
     pIORes->setIcon( rIcon );
     pIORes->setUUID( uuidStr );
+    QList< QSharedPointer< pParamValue > > pIOParams = loadRecParamValues( pIORes );
+    pIORes->setParamValues( pIOParams );
 
     delete gpr;
     return pIORes;
@@ -747,3 +749,60 @@ QSharedPointer< pParamValue > pDBLoader::loadRecParamValue( qint64 id, QSharedPo
     delete gpr;
     return pValue;
 }
+
+QList< QSharedPointer< pParamValue > > pDBLoader::loadRecParamValues( QSharedPointer< pIObject > io ) const {
+    QList< QSharedPointer< pParamValue > > resParams;
+    if( io.isNull() || io->getId() <= 0 )
+        return resParams;
+    qint64 ioRecId = io->getId();
+    QString sql_query = QString("select * from getRecParamValues(%1);").arg( ioRecId );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() == 0 ) {
+        if( gpr )
+            delete gpr;
+        return resParams;
+    }
+    int nr = gpr->getRowCount();
+    for ( int i = 0; i < nr; i++ ) {
+        qint64 idParam = gpr->getCellAsInt64( i, 0 );
+        qint64 idParamType = gpr->getCellAsInt64( i, 1 );
+        QString paramCode = gpr->getCellAsString( i, 3 );// parameter_code
+        QString paramName = gpr->getCellAsString( i, 4 );// parameter_name
+        QString paramTitle = gpr->getCellAsString( i, 5 );// parameter_title
+        QString paramTable = gpr->getCellAsString( i, 6 );// table_name
+        QString paramColumn = gpr->getCellAsString( i, 7 );// column_name
+        QString paramTypeName = gpr->getCellAsString( i, 8 );// type name
+        QString paramTypeCode = gpr->getCellAsString( i, 9 );// type code
+        bool isMandatory = gpr->getCellAsBool( i, 10 );
+        bool isReadOnly = gpr->getCellAsBool( i, 11 );
+        int sort_order = gpr->getCellAsInt( i, 12 );
+        qint64 id_row = gpr->getCellAsInt64( i, 13 );
+        QSharedPointer< pParamType > pType ( new pParamType( idParamType, paramTypeName, paramTypeCode) );
+        QSharedPointer< pParamGroup > pGroup = loadParamGroup( gpr->getCellAsInt64( i, 2) );
+        QSharedPointer< pParameter > param ( new pParameter( idParam, pType, pGroup, paramCode, paramName, paramTitle, paramTable, paramColumn) );
+        if( !gpr->getCell(i, 14).isNull() ) {
+            qint64 idRefType = gpr->getCellAsInt64(i, 15);
+            QString refTypeName = gpr->getCellAsString(i, 16);
+            QString refTypeCode = gpr->getCellAsString(i, 17);
+            QSharedPointer< pParamType > pRefType ( new pParamType( idRefType, refTypeName,refTypeCode ) );
+            param->setRefParamType( pRefType );
+        }
+        QSharedPointer< pCatParameter > pcParam ( new pCatParameter (*(param.data()), isMandatory, isReadOnly, QVariant(), sort_order, id_row ) );
+        QVariant pValue = gpr->getCell(i, 18);
+        QString pDesc = gpr->getCellAsString( i, 19 );
+        QDateTime startDateTime = gpr->getCellAsDateTime( i, 20 );
+        QDateTime finishDateTime = gpr->getCellAsDateTime( i, 21 );
+        QDateTime insertDateTime = gpr->getCellAsDateTime( i, 22 );
+        bool isActual = gpr->getCellAsBool( i, 23 );
+        QSharedPointer< pParamValue > paramValue( new pParamValue( pcParam, pValue ) );
+        paramValue->setDescription( pDesc );
+        paramValue->setStartDateTime( startDateTime );
+        paramValue->setFinishDateTime( finishDateTime );
+        paramValue->setInsertDateTime( insertDateTime );
+        paramValue->setActual( isActual );
+        resParams.append( paramValue );
+    }
+    delete gpr;
+    return resParams;
+}
+

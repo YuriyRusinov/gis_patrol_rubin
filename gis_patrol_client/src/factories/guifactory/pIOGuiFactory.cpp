@@ -165,10 +165,12 @@ void pIOGuiFactory::saveIORecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPo
     if( pRec.isNull() || pIO.isNull() )
         return;
     int res( 0 );
-    if( pRec->getId() < 0 )
+    if( pRec->getId() < 0 ) {
         res = _dbWriter->insertRecord( pRec, pIO );
-    else if( pRec->getId() >= 0 && pIO->getId() == IO_IO_ID )
+    }
+    else if( pRec->getId() >= 0 && pIO->getId() == IO_IO_ID ) {
         res = _dbWriter->updateRecord( pRec, pIO );
+    }
     else {
         QSharedPointer< pIObject > pRecordIO = _dbLoader->loadIO( IO_IO_ID );
         res = _dbWriter->updateRecord( pRec, pRecordIO );
