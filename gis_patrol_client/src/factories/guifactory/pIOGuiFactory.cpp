@@ -323,6 +323,10 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
     QWidget* parWidget = viewRecParams( pRecCategory->getTableCat(), pRec, wEditor );
     if( parWidget )
         wEditor->appendTabWidget( parWidget, tr("System properties") );
+    QWidget* userParamWidget = viewRecParams( pRecCategory, pRec, wEditor );
+    if( userParamWidget )
+        wEditor->appendTabWidget( userParamWidget, tr("User properties") );
+
     QSharedPointer< pIObject > pRecIO ( nullptr );
     if( pRefIO->getId() == IO_IO_ID && pRec->getIO()->getId() == IO_IO_ID ) {
         pRecIO = _dbLoader->loadIO( pRec->getId() );
