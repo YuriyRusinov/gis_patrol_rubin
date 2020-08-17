@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-alpha1" last-position="470,0" last-zoom="0.95" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,0" last-zoom="0.95" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -298,7 +298,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_param_category" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<column name="value" not-null="true">
+	<column name="value">
 		<type name="varchar" length="0"/>
 	</column>
 	<column name="description">
@@ -482,9 +482,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="834.859" y="144.292"/>
-	<position x="834.859" y="37"/>
-	<position x="707.906" y="37"/>
+		<position x="831.66" y="144.294"/>
+	<position x="831.66" y="39.3"/>
+	<position x="707.307" y="39.3"/>
 	</line>
 </relationship>
 

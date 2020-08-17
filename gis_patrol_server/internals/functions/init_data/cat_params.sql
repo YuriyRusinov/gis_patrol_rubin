@@ -96,7 +96,7 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (502, 183, 3, null, false, false, 2); -- description
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (503, 183, 48, null, true, false, 3); -- id_communication_object
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (504, 183, 300, null, true, false, 4);--id_param_category
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (505, 183, 301, null, true, false, 5);-- value
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (505, 183, 301, null, false, false, 5);-- value
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (506, 183, 297, 'current_timestamp', true, false, 6); --start_time
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (507, 183, 298, null, false, false, 7);-- finish_time
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (508, 183, 16, 'current_timestamp', true, false, 8);-- insert_time

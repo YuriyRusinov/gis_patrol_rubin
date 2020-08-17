@@ -49,4 +49,4 @@
 --invoked in /internals/initdb.sql
 --\i ./functions/general/generateuid.sql
 \i ./functions/general/getrecvalues.sql
-\i ./functions/general/recinsertvalues.sql
+--\i ./functions/general/recinsertvalues.sql
