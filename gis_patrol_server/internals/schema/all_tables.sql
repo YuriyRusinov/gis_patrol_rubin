@@ -1,5 +1,5 @@
 -- Database generated with pgModeler (PostgreSQL Database Modeler).
--- pgModeler  version: 0.9.3-alpha1
+-- pgModeler  version: 0.9.3-beta
 -- PostgreSQL version: 12.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
@@ -239,7 +239,7 @@ CREATE TABLE public.tbl_parameter_values (
 	id bigserial NOT NULL,
 	id_communication_object bigint,
 	id_param_category bigint NOT NULL,
-	value varchar NOT NULL,
+	value varchar,
 	description varchar,
 	start_time timestamptz NOT NULL DEFAULT current_timestamp,
 	finish_time timestamptz,
