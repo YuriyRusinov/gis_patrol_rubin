@@ -17,11 +17,13 @@
 #include <pCategoryListForm.h>
 #include <pCategoryModel.h>
 #include <pCategory.h>
+#include <pCategoryType.h>
 #include <pCatEditor.h>
 #include <pCatParamModel.h>
 #include <pParameter.h>
 #include <pCatParameter.h>
 #include <pParamListForm.h>
+#include <precdialog.h>
 
 #include "pParamGuiFactory.h"
 #include "pCatGuiFactory.h"
@@ -236,4 +238,22 @@ void pCatGuiFactory::createCategory( QSharedPointer< pCategory > pCat, QWidget* 
     }
     pCatEditor* cEditor = qobject_cast<pCatEditor*>(GUICategoryEditor( pCat, parent, flags ));
     emit viewWidget( cEditor );
+}
+
+QSharedPointer< pCategory > pCatGuiFactory::GUISelectCategory( QWidget* parent, Qt::WindowFlags flags ) {
+    QMap< qint64, QSharedPointer< pCategory > > categories = _dbLoader->loadCategories();
+    pCategoryModel* pCatMod = new pCategoryModel( categories );
+    pRecDialog* pCatForm = new pRecDialog( parent, flags );
+    pCatForm->setRecModel( pCatMod );
+    if( pCatForm->exec() != QDialog::Accepted )
+        return nullptr;
+    qint64 idCat = pCatForm->getRecId();
+    QSharedPointer< pCategory > wcat = _dbLoader->loadCategory( idCat );
+    QSharedPointer< pCategory > resCat( nullptr );
+    if( wcat->getType()->getId() == CAT_TABLE_TYPE_ID )
+        resCat = _dbLoader->loadParentCategory( idCat );
+    else
+        resCat = wcat;//_dbLoader->loadCategory( idCat );
+    qDebug() << __PRETTY_FUNCTION__ << resCat->getId();
+    return resCat;
 }

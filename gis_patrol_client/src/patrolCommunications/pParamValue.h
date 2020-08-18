@@ -73,3 +73,5 @@ private:
     QDateTime _insertDateTime;
     bool _isActual;
 };
+
+int searchValue( const QList< QSharedPointer< pParamValue > >& paramValues, QSharedPointer< pCatParameter > pCatParam );

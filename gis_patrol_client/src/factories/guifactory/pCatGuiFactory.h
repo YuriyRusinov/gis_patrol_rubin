@@ -30,6 +30,8 @@ public:
 
     QWidget* GUICategoryEditor( QSharedPointer< pCategory > pCat, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
 
+    QSharedPointer< pCategory > GUISelectCategory( QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
+
 public slots:
     void createCategory( QSharedPointer< pCategory > pCat, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags() );
     void addPCategory( );

@@ -18,7 +18,12 @@
 #include <pParamGuiFactory.h>
 #include <pCatGuiFactory.h>
 #include <pIObject.h>
+#include <pCatParameter.h>
+#include <pParamValue.h>
+#include <pCategory.h>
+#include <pRecordC.h>
 #include <pIOGuiFactory.h>
+#include <pCIOEditor.h>
 #include <patroldbloader.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
@@ -106,6 +111,8 @@ void PatrolMainWindow::initActions() {
     _UI->actViewParameters->setIcon(QIcon(":/patrol/view_parameters.svg"));
     _tbActReferences->addAction(_UI->actViewParameters);
     QObject::connect(_UI->actViewParameters, &QAction::triggered, this, &PatrolMainWindow::slotViewParameters);
+
+    QObject::connect( _UI->actCreateRef, &QAction::triggered, this, &PatrolMainWindow::slotCreateDocument );
 }
 
 void PatrolMainWindow::slotDbDisconnected() {
@@ -132,6 +139,7 @@ void PatrolMainWindow::setEnabled(bool enable) {
     _UI->actAddParametersIntoCat->setEnabled( enable );
     _UI->actViewCat->setEnabled( enable );
     _UI->actViewParameters->setEnabled( enable );
+    _UI->actCreateRef->setEnabled( enable );
 }
 
 void PatrolMainWindow::slotAddWidget(QWidget* w) {
@@ -165,4 +173,25 @@ void PatrolMainWindow::slotViewCategories() {
     qDebug() << __PRETTY_FUNCTION__;
     pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
     pCatGuiF->GUIView();
+}
+
+void PatrolMainWindow::slotCreateDocument() {
+    qDebug() << __PRETTY_FUNCTION__;
+    pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
+    QSharedPointer< pCategory > refCat = pCatGuiF->GUISelectCategory();
+    if( refCat.isNull() )
+        return;
+    pDBLoader* dbl = _patrolS->getDbLoader();
+    QSharedPointer< pParameter> pCategParam = dbl->loadParameter( ATTR_ID_IO_CATEGORY );
+    QSharedPointer< pCatParameter > pCategoryP( new pCatParameter( *(pCategParam.get() ) ) );
+    QSharedPointer< pParamValue > pCategoryVal( new pParamValue( pCategoryP, QVariant( refCat->getId() ) ) );
+    pCategoryVal->setColumnValue( refCat->getName() );
+    QList< QSharedPointer< pParamValue > > pValues;
+    pValues.append( pCategoryVal );
+    pIOGuiFactory* pIOGuiF = _patrolS->getIOGUIFactory();
+    QSharedPointer< pIObject > pIO = dbl->loadIO( IO_IO_ID );
+    QSharedPointer< pRecordCopy > pRec( new pRecordCopy( -1, QString(), pIO ) );//= dbl->loadCopy( IO_IO_ID, pIO );
+    QSharedPointer< pCategory > pCat = pIO->getCategory();
+    QWidget * pRefW = pIOGuiF->createRecEditor( pCat, pIO, pRec, pValues );
+    slotAddWidget( pRefW );
 }

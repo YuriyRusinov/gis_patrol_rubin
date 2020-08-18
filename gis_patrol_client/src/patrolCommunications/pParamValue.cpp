@@ -225,3 +225,14 @@ bool pParamValue::isActual() const {
 void pParamValue::setActual( bool val ) {
     _isActual = val;
 }
+
+int searchValue( const QList< QSharedPointer< pParamValue > >& paramValues, QSharedPointer< pCatParameter > pCatParam ) {
+    int numInd( -1 );
+    if( pCatParam.isNull() )
+        return numInd;
+    for(int i=0; i<paramValues.size() && numInd < 0; i++) {
+        if(paramValues[i]->getCatParam()->getId() == pCatParam->getId())
+            numInd = i;
+    }
+    return numInd;
+}

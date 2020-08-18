@@ -26,8 +26,9 @@ const int IO_TABLE_CATEGORY_ID = 13;
 //
 //задает идентификатор системной категории, которая описывает таблицу с категориями
 //
-#define CAT_CATEGORY_ID 12
-#define CAT_TABLE_CATEGORY_ID 11
+const int CAT_CATEGORY_ID = 12;
+const int CAT_TABLE_CATEGORY_ID = 11;
+const int CAT_TABLE_TYPE_ID = 10;
 
 
 //
@@ -179,7 +180,7 @@ const int ATTR_DESCRIPTION = 3;
 #define ATTR_ID_DL_RECEIVER 52
 #define ATTR_ID_DL_SENDER 51
 #define ATTR_ID_DL_TO 34
-#define ATTR_ID_IO_CATEGORY 12
+const int ATTR_ID_IO_CATEGORY = 12;
 #define ATTR_ID_IO_OBJECT 48
 #define ATTR_ID_IO_OBJECT_ATT 167
 const int ATTR_ID_IO_STATE = 18;

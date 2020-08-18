@@ -806,3 +806,42 @@ QList< QSharedPointer< pParamValue > > pDBLoader::loadRecParamValues( QSharedPoi
     return resParams;
 }
 
+QSharedPointer< pCategory > pDBLoader::loadParentCategory( qint64 idCat ) const {
+    QString sql_query = QString("select * from cgetparentcategory(%1);").arg( idCat );
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return nullptr;//QMap< qint64, QSharedPointer< pCategory > >();
+    }
+    QMap< qint64, QSharedPointer< pCategory > > res;
+    int i=0;
+
+    qint64 idCatNew = gpr->getCellAsInt64(i, 0); // id
+    qDebug() << __PRETTY_FUNCTION__ << idCatNew << idCat;
+    qint64 idCatType = gpr->getCellAsInt64(i, 1); // id_type
+    qint64 idChildCat = gpr->getCellAsInt64(i, 2); // id_child
+    QString cName = gpr->getCellAsString(i, 3); // name
+    QString cDesc = gpr->getCellAsString(i, 4); // description
+    QString ctName = gpr->getCellAsString(i, 5); // type_name
+    QString ctDesc = gpr->getCellAsString(i, 6); // type_desc
+    bool isMain = gpr->getCellAsBool(i, 7); // is_main
+    QString cCode = gpr->getCellAsString(i, 8); // code
+    bool isSys = gpr->getCellAsBool(i, 9); // is_system
+    bool isGlobal = gpr->getCellAsBool(i, 10);
+    bool isRef = false;
+    Q_UNUSED( isGlobal );
+    QSharedPointer< pCategoryType > pcType ( new pCategoryType( idCatType, ctName, ctDesc, isRef ) );
+    QSharedPointer< pCategory > pc ( new pCategory( idCatNew, cName, cCode, pcType ) );
+    if (idChildCat > 0) {
+        QSharedPointer< pCategory > childCat = loadCategory( idCat );
+        pc->setTableCat( childCat );
+    }
+    pc->setMain( isMain );
+    pc->setSystem( isSys );
+    QMap< qint64, QSharedPointer< pCatParameter > > pcp = loadCatParameters( idCatNew );
+    pc->setCategoryPars( pcp );
+
+    delete gpr;
+    return pc;
+}
