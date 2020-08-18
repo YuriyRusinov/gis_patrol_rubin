@@ -43,6 +43,7 @@ public:
     QMap< qint64, QSharedPointer< pCategoryType > > loadAvailCatTypes() const;
 
     QSharedPointer< pCategory > loadCategory( qint64 idCat ) const;
+    QSharedPointer< pCategory > loadParentCategory( qint64 idCat ) const;
 
     QSharedPointer< pParameter> loadParameter( qint64 idParam ) const;
 

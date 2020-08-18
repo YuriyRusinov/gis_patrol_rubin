@@ -43,8 +43,8 @@ QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
         return nullptr;
 
     QSharedPointer< pCategory > pCat = pIO->getCategory();
-
-    pCIOEditor* wEditor = createRecEditor ( pCat, pIO, pRec, parent, flags );
+    QList< QSharedPointer< pParamValue > > paramValues;
+    pCIOEditor* wEditor = createRecEditor ( pCat, pIO, pRec, paramValues, parent, flags );
     emit viewWidget( wEditor );
     return wEditor;
 }
@@ -59,7 +59,7 @@ pIOGuiFactory::pIOGuiFactory( pDBLoader* dbLoader, pDBWriter* dbWriter, pParamGU
 
 pIOGuiFactory::~pIOGuiFactory( ) {}
 
-QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, pCIOEditor* editor, QWidget* parent, Qt::WindowFlags flags ) const {
+QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, pCIOEditor* editor, QList< QSharedPointer< pParamValue > > paramValues, QWidget* parent, Qt::WindowFlags flags ) const {
     if( pCategory.isNull() || pRec.isNull() )
         return nullptr;
     QMap<int, QSharedPointer< pCatParameter > > sortedParams;
@@ -77,6 +77,7 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
         pca != sortedParams.constEnd();
         pca++ ) {
         QSharedPointer< pParamValue > pval ( nullptr );
+        int iValNum = searchValue(paramValues, pca.value());
         if( pRec->paramValue( pca.value()->getId() ).isNull() ) {
             //
             // Something incorrect, debug output
@@ -84,11 +85,17 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
             qDebug() << __PRETTY_FUNCTION__ << QString("Null parameter %1 in record, category is %2").arg( pca.value()->getCode() ).arg ( pCategory->getId() );
             continue;
         }
+        else if( pRec->getId() < 0 && iValNum >= 0 ) {
+            pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
+            pval->setValue( paramValues[iValNum]->value() );
+            pval->setColumnValue( paramValues[iValNum]->getColumnValue() );
+            qDebug() << __PRETTY_FUNCTION__ << paramValues[iValNum]->value();
+        }
         else
             pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
         bool readOnlyVal = pca.value()->isReadOnly() && pRec->getId() > 0;
-        qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId() << readOnlyVal;
+        //qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId() << readOnlyVal;
         if( pw != nullptr ) {
             pw->setReadOnly( readOnlyVal );
             grLay->addWidget( pw, i, 0, 1, 1 );
@@ -251,7 +258,7 @@ void pIOGuiFactory::removeRecord( QSharedPointer< pRecordCopy > pRec, QSharedPoi
     }
 }
 
-pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QWidget* parent, Qt::WindowFlags flags ) const {
+pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QList< QSharedPointer< pParamValue > > paramValues, QWidget* parent, Qt::WindowFlags flags ) const {
     if( pRecCategory.isNull() || pRefIO.isNull() || pRec.isNull() )
         return nullptr;
 
@@ -320,12 +327,12 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
         }
         pRec->setParamValues( pVals );
     }
-    QWidget* parWidget = viewRecParams( pRecCategory->getTableCat(), pRec, wEditor );
+    QWidget* parWidget = viewRecParams( pRecCategory->getTableCat(), pRec, wEditor, paramValues );
     if( parWidget )
         wEditor->appendTabWidget( parWidget, tr("System properties") );
-    QWidget* userParamWidget = viewRecParams( pRecCategory, pRec, wEditor );
-    if( userParamWidget )
-        wEditor->appendTabWidget( userParamWidget, tr("User properties") );
+//    QWidget* userParamWidget = viewRecParams( pRecCategory, pRec, wEditor );
+//    if( userParamWidget )
+//        wEditor->appendTabWidget( userParamWidget, tr("User properties") );
 
     QSharedPointer< pIObject > pRecIO ( nullptr );
     if( pRefIO->getId() == IO_IO_ID && pRec->getIO()->getId() == IO_IO_ID ) {

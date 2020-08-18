@@ -38,9 +38,9 @@ public:
      */
     QWidget* GUIView( QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) override;
 
-    QWidget* viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, pCIOEditor* editor, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
+    QWidget* viewRecParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pRecordCopy > pRec, pCIOEditor* editor, QList< QSharedPointer< pParamValue > > paramValues = QList< QSharedPointer< pParamValue > >(), QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
 
-    pCIOEditor* createRecEditor( QSharedPointer< pCategory > pCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
+    pCIOEditor* createRecEditor( QSharedPointer< pCategory > pCategory, QSharedPointer< pIObject > pRefIO, QSharedPointer< pRecordCopy > pRec, QList< QSharedPointer< pParamValue > > paramValues = QList< QSharedPointer< pParamValue > >(), QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
 
     /*
      *--------------------------------------------------------------------------------------

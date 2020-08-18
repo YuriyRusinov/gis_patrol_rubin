@@ -40,6 +40,8 @@ private slots:
 
     void slotAddWidget(QWidget* w);
 
+    void slotCreateDocument();
+
 private:
     //
     // Functions
