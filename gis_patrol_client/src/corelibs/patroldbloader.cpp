@@ -845,3 +845,16 @@ QSharedPointer< pCategory > pDBLoader::loadParentCategory( qint64 idCat ) const 
     delete gpr;
     return pc;
 }
+
+qint64 pDBLoader::getCurrentUser() const {
+    QString sql_query = QString("select * from getcurrentuser();");
+    GISPatrolResult * gpr = _db->execute( sql_query );
+    if( !gpr || gpr->getRowCount() != 1 ) {
+        if( gpr )
+            delete gpr;
+        return -1;
+    }
+    qint64 idUser = gpr->getCellAsInt64(0, 0);
+    delete gpr;
+    return idUser;
+}

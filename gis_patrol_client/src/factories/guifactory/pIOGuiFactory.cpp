@@ -78,6 +78,7 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
         pca++ ) {
         QSharedPointer< pParamValue > pval ( nullptr );
         int iValNum = searchValue(paramValues, pca.value());
+        bool readOnlyVal = false;
         if( pRec->paramValue( pca.value()->getId() ).isNull() ) {
             //
             // Something incorrect, debug output
@@ -90,11 +91,22 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
             pval->setValue( paramValues[iValNum]->value() );
             pval->setColumnValue( paramValues[iValNum]->getColumnValue() );
             qDebug() << __PRETTY_FUNCTION__ << paramValues[iValNum]->value();
+            readOnlyVal = true;
+        }
+        else if( pRec->getId() < 0 && pca.value()->getId() == ATTR_AUTHOR ) {
+            pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
+            qint64 idUser = _dbLoader->getCurrentUser();
+            QSharedPointer< pIObject > pAuthors = _dbLoader->loadIO( IO_USERS_ID );
+            QSharedPointer< pRecordCopy > rcUser = _dbLoader->loadCopy( idUser, pAuthors );
+            pval->setValue( idUser );
+            pval->setColumnValue( rcUser->paramValue( ATTR_FIO )->value().toString() );
+            qDebug() << __PRETTY_FUNCTION__ << tr("Author is %1 %2").arg(idUser).arg( rcUser->paramValue( ATTR_FIO )->value().toString() );
+            readOnlyVal = true;
         }
         else
             pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
-        bool readOnlyVal = pca.value()->isReadOnly() && pRec->getId() > 0;
+        readOnlyVal = readOnlyVal || (pca.value()->isReadOnly() && pRec->getId() > 0);
         //qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId() << readOnlyVal;
         if( pw != nullptr ) {
             pw->setReadOnly( readOnlyVal );
