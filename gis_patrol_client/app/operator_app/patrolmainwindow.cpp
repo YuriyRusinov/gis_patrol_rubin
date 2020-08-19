@@ -182,7 +182,7 @@ void PatrolMainWindow::slotCreateDocument() {
     if( refCat.isNull() )
         return;
     pDBLoader* dbl = _patrolS->getDbLoader();
-    QSharedPointer< pParameter> pCategParam = dbl->loadParameter( ATTR_ID_IO_CATEGORY );
+    QSharedPointer< pParameter > pCategParam = dbl->loadParameter( ATTR_ID_IO_CATEGORY );
     QSharedPointer< pCatParameter > pCategoryP( new pCatParameter( *(pCategParam.get() ) ) );
     QSharedPointer< pParamValue > pCategoryVal( new pParamValue( pCategoryP, QVariant( refCat->getId() ) ) );
     pCategoryVal->setColumnValue( refCat->getName() );
