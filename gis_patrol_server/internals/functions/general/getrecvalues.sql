@@ -59,12 +59,21 @@ begin
             pval.finish_time as finish_time,
             pval.insert_time as insert_time,
             pval.is_actual
-        from
+        from 
+            tbl_parameters p 
+            inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id)
+            inner join tbl_cat_params as pcat on (pcat.id_parameter = p.id)
+            inner join tbl_io_communication_objects_references io on (io.id_category=pcat.id_category and io.id=idRecord)
+            left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null)
+            left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id)
+            left join tbl_parameter_values pval on (pval.id_param_category = pcat.id and pval.is_actual and (pval.finish_time is null or pval.finish_time >= current_timestamp )) 
+/*            from
             tbl_parameters p inner join tbl_parameter_types ptt on (p.id_param_type = ptt.id)
             inner join tbl_cat_params as pcat on (pcat.id_parameter = p.id)
-            left join tbl_parameter_values pval on (pval.id_param_category = pcat.id_category and pval.is_actual and (pval.finish_time is null or pval.finish_time >= current_timestamp ))
-            inner join tbl_io_communication_objects_references io on (pval.id_communication_object=io.id and io.id=idRecord)
-            left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null) left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id)
+            left join tbl_parameters p1 on (p.column_name=p1.code and p.column_name is not null)
+            left join tbl_parameter_types ptt1 on (p1.id_param_type=ptt1.id)
+            left join tbl_parameter_values pval on (pval.id_param_category = pcat.id_category)
+            inner join tbl_io_communication_objects_references io on (pval.id_communication_object=io.id and io.id=idRecord and pval.is_actual and (pval.finish_time is null or pval.finish_time >= current_timestamp ))*/
         loop
             return next r;
         end loop;
