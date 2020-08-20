@@ -34,6 +34,7 @@
 #include <pRecWidget.h>
 
 #include "pParamGuiFactory.h"
+#include "pCatGuiFactory.h"
 #include "pIOGuiFactory.h"
 
 QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
@@ -368,4 +369,21 @@ void pIOGuiFactory::refreshRecModel( QSharedPointer< pCategory > pCat, QSharedPo
     recView->setModel( recModel );
     if( oldModel )
         delete oldModel;
+}
+
+void pIOGuiFactory::createRecordCatEditor( ) {
+    QSharedPointer< pCategory > refCat = _catFactory->GUISelectCategory();
+    if( refCat.isNull() )
+        return;
+    QSharedPointer< pParameter > pCategParam = _dbLoader->loadParameter( ATTR_ID_IO_CATEGORY );
+    QSharedPointer< pCatParameter > pCategoryP( new pCatParameter( *(pCategParam.get() ) ) );
+    QSharedPointer< pParamValue > pCategoryVal( new pParamValue( pCategoryP, QVariant( refCat->getId() ) ) );
+    pCategoryVal->setColumnValue( refCat->getName() );
+    QList< QSharedPointer< pParamValue > > pValues;
+    pValues.append( pCategoryVal );
+    QSharedPointer< pIObject > pIO = _dbLoader->loadIO( IO_IO_ID );
+    QSharedPointer< pRecordCopy > pRec( new pRecordCopy( -1, QString(), pIO ) );//= dbl->loadCopy( IO_IO_ID, pIO );
+    QSharedPointer< pCategory > pCat = pIO->getCategory();
+    pCIOEditor * pRefW = this->createRecEditor( pCat, pIO, pRec, pValues );
+    emit viewWidget( pRefW );
 }
