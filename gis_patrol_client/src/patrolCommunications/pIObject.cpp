@@ -149,6 +149,16 @@ void pIObject::addParamValue( QSharedPointer< pParamValue > pVal ) {
     _paramValues.append( pVal );
 }
 
+QSharedPointer< pParamValue > pIObject::paramValue( qint64 id ) const {
+    int np = _paramValues.size();
+    QSharedPointer< pParamValue > pVal( nullptr );
+    for( int i=0; i<np && pVal.isNull(); i++ ) {
+        if( _paramValues[i]->getCatParam()->getId() == id )
+            pVal = _paramValues[i];
+    }
+    return pVal;
+}
+
 qint64 pIObject::removeParamValue( qint64 _id ) {
     int count = _paramValues.size();
     int cnt = 0;

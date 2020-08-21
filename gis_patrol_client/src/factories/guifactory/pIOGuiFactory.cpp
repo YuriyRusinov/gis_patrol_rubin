@@ -343,13 +343,14 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
     QWidget* parWidget = viewRecParams( pRecCategory->getTableCat(), pRec, wEditor, paramValues );
     if( parWidget )
         wEditor->appendTabWidget( parWidget, tr("System properties") );
-//    QWidget* userParamWidget = viewRecParams( pRecCategory, pRec, wEditor );
-//    if( userParamWidget )
-//        wEditor->appendTabWidget( userParamWidget, tr("User properties") );
 
     QSharedPointer< pIObject > pRecIO ( nullptr );
     if( pRefIO->getId() == IO_IO_ID && pRec->getIO()->getId() == IO_IO_ID ) {
         pRecIO = _dbLoader->loadIO( pRec->getId() );
+        qDebug() << __PRETTY_FUNCTION__ << (pRecIO.isNull() || pRecIO->getCategory().isNull() );
+        QWidget* userParamWidget = pRecIO.isNull() ? nullptr : viewRecIOParams( pRecIO->getCategory(), pRecIO, wEditor );
+        if( userParamWidget )
+            wEditor->appendTabWidget( userParamWidget, tr("User properties") );
         QMap< qint64, QSharedPointer< pRecordCopy > > ioRecords = _dbLoader->loadRecords( pRecIO );
         pRecWidget* recWidget = createRecordsWidget( pRecIO, wEditor );
         wEditor->appendTabWidget( recWidget, tr("Records") );
@@ -386,4 +387,66 @@ void pIOGuiFactory::createRecordCatEditor( ) {
     QSharedPointer< pCategory > pCat = pIO->getCategory();
     pCIOEditor * pRefW = this->createRecEditor( pCat, pIO, pRec, pValues );
     emit viewWidget( pRefW );
+}
+
+QWidget* pIOGuiFactory::viewRecIOParams( QSharedPointer< pCategory > pCategory, QSharedPointer< pIObject > pIORec, pCIOEditor* editor, QList< QSharedPointer< pParamValue > > paramValues, QWidget* parent, Qt::WindowFlags flags ) const {
+    if( pIORec.isNull() || pCategory.isNull() || pIORec->getCategory().isNull() )
+        return nullptr;
+    int nparams = pIORec->paramValues().size();
+    qDebug() << __PRETTY_FUNCTION__ << nparams;
+    for( int i=0; i<nparams; i++) {
+        qDebug() << __PRETTY_FUNCTION__ << pIORec->paramValues().at(i)->getCatParam()->getId() << pIORec->paramValues().at(i)->getCatParam()->getCode();
+    }
+    QMap<int, QSharedPointer< pCatParameter > > sortedParams;
+    QMap<qint64, QSharedPointer< pCatParameter > > cpars = pCategory->categoryPars();
+    if( cpars.size() == 0 )
+        return nullptr;
+    for(QMap<qint64, QSharedPointer< pCatParameter > >::const_iterator pca = cpars.constBegin();
+            pca != cpars.constEnd();
+            pca++ )
+        sortedParams.insert( pca.value()->getOrder(), pca.value() );
+    QWidget* paramWidget = new QWidget( parent, flags );
+    QGridLayout* grLay = new QGridLayout( paramWidget );
+    int i=0;
+    for(QMap<int, QSharedPointer< pCatParameter > >::const_iterator pca = sortedParams.constBegin();
+        pca != sortedParams.constEnd();
+        pca++ ) {
+        QSharedPointer< pParamValue > pval ( nullptr );
+        int iValNum = searchValue(paramValues, pca.value());
+        bool readOnlyVal = false;
+        if( pIORec->paramValue( pca.value()->getId() ).isNull() ) {
+            //
+            // Something incorrect, debug output
+            //
+            qDebug() << __PRETTY_FUNCTION__ << QString("Null parameter %1 in record, category is %2").arg( pca.value()->getCode() ).arg ( pCategory->getId() );
+            continue;
+        }
+        else if( pIORec->getId() < 0 && iValNum >= 0 ) {
+            pval = QSharedPointer< pParamValue >( pIORec->paramValue( pca.value()->getId() ));
+            if( pval.isNull() )
+                continue;
+            pval->setValue( paramValues[iValNum]->value() );
+            pval->setColumnValue( paramValues[iValNum]->getColumnValue() );
+            qDebug() << __PRETTY_FUNCTION__ << paramValues[iValNum]->value();
+            readOnlyVal = true;
+        }
+        else {
+            pval = QSharedPointer< pParamValue >( pIORec->paramValue( pca.value()->getId() ));
+            qDebug() << __PRETTY_FUNCTION__ << pval.isNull();
+        }
+        pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
+        readOnlyVal = readOnlyVal || (pca.value()->isReadOnly() && pIORec->getId() > 0);
+        //qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId() << readOnlyVal;
+        if( pw != nullptr ) {
+            pw->setReadOnly( readOnlyVal );
+            grLay->addWidget( pw, i, 0, 1, 1 );
+            QObject::connect( pw, &pAbstractParamWidget::valueChanged, editor, &pCIOEditor::slotParamRecChanged );
+            i++;
+        }
+        if( qobject_cast<pRefLineEdit*>(pw) ) {
+            pRefLineEdit* pRefLE = qobject_cast<pRefLineEdit*>(pw);
+            QObject::connect( pRefLE, &pRefLineEdit::changeRecord, editor, &pCIOEditor::slotChangeReference );
+        }
+    }
+    return paramWidget;
 }
