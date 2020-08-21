@@ -66,6 +66,7 @@ public:
     QList< QSharedPointer< pParamValue > >& paramValues();
     void setParamValues( QList< QSharedPointer< pParamValue > >& pVals );
     void addParamValue( QSharedPointer< pParamValue > pVal );
+    QSharedPointer< pParamValue > paramValue( qint64 id ) const;
     //
     // удаляет из списка значений все значения атрибута с указанным id
     //
