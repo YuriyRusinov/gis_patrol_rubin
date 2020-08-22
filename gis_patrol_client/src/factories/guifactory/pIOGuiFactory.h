@@ -52,6 +52,9 @@ public:
      */
     pRecWidget* createRecordsWidget( QSharedPointer< pIObject > pRefIO, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() ) const;
 
+public slots:
+    void createRecordCatEditor( );
+
 private slots:
     void loadParamRef( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pParamValue > pValue, QString tableName, QString columnName, QLineEdit* lE );
     void saveRecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pIO );

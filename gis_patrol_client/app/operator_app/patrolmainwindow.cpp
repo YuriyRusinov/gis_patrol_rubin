@@ -177,21 +177,6 @@ void PatrolMainWindow::slotViewCategories() {
 
 void PatrolMainWindow::slotCreateDocument() {
     qDebug() << __PRETTY_FUNCTION__;
-    pCatGuiFactory* pCatGuiF = _patrolS->getCatGUIFactory();
-    QSharedPointer< pCategory > refCat = pCatGuiF->GUISelectCategory();
-    if( refCat.isNull() )
-        return;
-    pDBLoader* dbl = _patrolS->getDbLoader();
-    QSharedPointer< pParameter > pCategParam = dbl->loadParameter( ATTR_ID_IO_CATEGORY );
-    QSharedPointer< pCatParameter > pCategoryP( new pCatParameter( *(pCategParam.get() ) ) );
-    QSharedPointer< pParamValue > pCategoryVal( new pParamValue( pCategoryP, QVariant( refCat->getId() ) ) );
-    pCategoryVal->setColumnValue( refCat->getName() );
-    QList< QSharedPointer< pParamValue > > pValues;
-    pValues.append( pCategoryVal );
     pIOGuiFactory* pIOGuiF = _patrolS->getIOGUIFactory();
-    QSharedPointer< pIObject > pIO = dbl->loadIO( IO_IO_ID );
-    QSharedPointer< pRecordCopy > pRec( new pRecordCopy( -1, QString(), pIO ) );//= dbl->loadCopy( IO_IO_ID, pIO );
-    QSharedPointer< pCategory > pCat = pIO->getCategory();
-    QWidget * pRefW = pIOGuiF->createRecEditor( pCat, pIO, pRec, pValues );
-    slotAddWidget( pRefW );
+    pIOGuiF->createRecordCatEditor();
 }

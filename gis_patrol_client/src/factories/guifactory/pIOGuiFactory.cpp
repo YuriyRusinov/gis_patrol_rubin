@@ -34,6 +34,7 @@
 #include <pRecWidget.h>
 
 #include "pParamGuiFactory.h"
+#include "pCatGuiFactory.h"
 #include "pIOGuiFactory.h"
 
 QWidget* pIOGuiFactory::GUIView( QWidget* parent, Qt::WindowFlags flags ) {
