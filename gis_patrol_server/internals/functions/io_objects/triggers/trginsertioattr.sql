@@ -29,7 +29,7 @@ begin
         return NULL;
     end if;
 */
-    select count(*) into cnt from tbl_cat_params where id = new.id_attr_category;
+    select count(*) into cnt from tbl_cat_params where id = new.id_param_category;
     if(cnt is null or cnt = 0) then
         raise exception 'You cannot add the attribute value to the object because of its category does not contain that!';
         return NULL;
@@ -39,7 +39,7 @@ begin
         new.start_time := current_timestamp;
     end if;
 
-    if(new.stop_time isnull) then
+    if(new.finish_time isnull) then
         new.is_actual := true;
     else
         if(new.start_time > new.finish_time) then
@@ -84,7 +84,7 @@ begin
             from tbl_parameters a inner join tbl_cat_params ac on
             ( ac.id = new.id_param_category and ac.id_parameter = a.id )
         loop
-            if(r.id_a_type <> 17) then --CheckBoxListEx
+            if(r.id_param_type <> 17) then --CheckBoxListEx
                 return new;
             end if;
 

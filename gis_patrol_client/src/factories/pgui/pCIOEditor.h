@@ -54,6 +54,7 @@ private slots:
     void delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
 
     void slotParamRecChanged( QSharedPointer< pParamValue > pValue );
+    void slotParamIORecChanged( QSharedPointer< pParamValue > pValue );
 
     void slotSaveRecord();
     void slotChangeReference( QSharedPointer< pParamValue > pValue, QLineEdit* lE );

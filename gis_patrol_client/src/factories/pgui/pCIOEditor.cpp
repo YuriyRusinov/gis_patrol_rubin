@@ -143,6 +143,19 @@ void pCIOEditor::slotParamRecChanged( QSharedPointer< pParamValue > pValue ) {
     _isChanged = true;
 }
 
+void pCIOEditor::slotParamIORecChanged( QSharedPointer< pParamValue > pValue ) {
+    if( pValue.isNull() )
+        return;
+    qint64 pId = pValue->getCatParam()->getId();
+    QSharedPointer< pParamValue > pVal = _pIO->paramValue( pId );
+    if( pVal.isNull() )
+        return;
+    qDebug() << __PRETTY_FUNCTION__ << QString("Old value is %1").arg(pVal->value().toString()) << pValue->value().toString();
+    pVal->setValue( pValue->value() );
+    _pIO->paramValue( pId ) = pVal;
+    _isChanged = true;
+}
+
 void pCIOEditor::slotSaveRecord() {
     if( _isIO ) {
         qDebug() << __PRETTY_FUNCTION__ << _pRecord->getId() << _pIO->getId();

@@ -510,6 +510,17 @@ qint64 pDBWriter::updateRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPo
     return resId;
 }
 
+qint64 pDBWriter::updateIORec( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO, QSharedPointer< pIObject > pRecIO ) const {
+    qint64 idRes = updateRecord( pRecord, pRecIO );
+    if( idRes < 0 )
+        return idRes;
+    qint64 idRecParams = insertRecordParams( pIO );
+    if ( idRecParams < 0 )
+        return ERROR_CODE;
+
+    return idRes;
+}
+
 qint64 pDBWriter::deleteRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const {
     if( pIO.isNull() || pRecord.isNull() )
         return -1;
@@ -580,7 +591,12 @@ qint64 pDBWriter::insertRecordParams( QSharedPointer< pIObject > pIO ) const {
     int nVals = pVals.size();
     for( int i=0; i<nVals; i++ ) {
         QSharedPointer< pParamValue > pValue = pVals[i];
-        QString sql_query = QString("select recinsertvalue(%1, %2, %3, %4);").arg( pValue->getCatParam()->getId() ).arg( pIO->getId() ).arg( pValue->valueForInsert() ).arg( pValue->description().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pValue->description() ) );
+        QString sql_query = QString("select ioInsertParameter(%1, %2, '%3', %4, %5, %6);").arg( pIO->getId() )
+                                                                                        .arg( pValue->getCatParam()->getId() )
+                                                                                        .arg( pValue->valueForInsert() )
+                                                                                        .arg( pValue->startDateTime().isValid() ? pValue->startDateTime().toString( Qt::ISODate) : QString("current_timestamp") )
+                                                                                        .arg( pValue->finishDateTime().isValid() ? pValue->finishDateTime().toString( Qt::ISODate) : QString("null::timestamptz"))
+                                                                                        .arg( pValue->description().isEmpty() ? QString("null::varchar") : QString("'%1'").arg( pValue->description() ) );
         GISPatrolResult * gpr = _db->execute( sql_query );
         if( !gpr )
             return -1;

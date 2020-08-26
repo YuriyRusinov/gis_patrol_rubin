@@ -192,8 +192,9 @@ void pIOGuiFactory::saveIORecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPo
         res = _dbWriter->updateRecord( pRec, pIO );
     }
     else {
+        qDebug() << __PRETTY_FUNCTION__ << pRec->getId() << pIO->getId();
         QSharedPointer< pIObject > pRecordIO = _dbLoader->loadIO( IO_IO_ID );
-        res = _dbWriter->updateRecord( pRec, pRecordIO );
+        res = _dbWriter->updateIORec( pRec, pIO, pRecordIO );
     }
     if( res < 0 ) {
         QWidget* w = qobject_cast<QWidget*>( this->sender() );
@@ -440,7 +441,7 @@ QWidget* pIOGuiFactory::viewRecIOParams( QSharedPointer< pCategory > pCategory, 
         if( pw != nullptr ) {
             pw->setReadOnly( readOnlyVal );
             grLay->addWidget( pw, i, 0, 1, 1 );
-            QObject::connect( pw, &pAbstractParamWidget::valueChanged, editor, &pCIOEditor::slotParamRecChanged );
+            QObject::connect( pw, &pAbstractParamWidget::valueChanged, editor, &pCIOEditor::slotParamIORecChanged );
             i++;
         }
         if( qobject_cast<pRefLineEdit*>(pw) ) {
