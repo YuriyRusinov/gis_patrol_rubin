@@ -295,7 +295,7 @@ CREATE TABLE public.tbl_parameters_groups (
 
 -- object: i_param_code | type: INDEX --
 -- DROP INDEX IF EXISTS public.i_param_code CASCADE;
-CREATE UNIQUE INDEX i_param_code ON public.tbl_parameters
+CREATE INDEX i_param_code ON public.tbl_parameters
 	USING btree
 	(
 	  code
