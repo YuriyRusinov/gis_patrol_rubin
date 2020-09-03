@@ -392,6 +392,65 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<index name="i_param_code" table="public.tbl_parameters"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="code"/>
+		</idxelement>
+</index>
+
+<index name="i_param_cat" table="public.tbl_cat_params"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="id_category"/>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<column name="id_parameter"/>
+		</idxelement>
+</index>
+
+<index name="i_p_category" table="public.tbl_cat_params"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="id_category"/>
+		</idxelement>
+</index>
+
+<index name="I_cat_code" table="public.tbl_communication_categories"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="code"/>
+		</idxelement>
+</index>
+
+<index name="i_io_table" table="public.tbl_io_communication_objects_references"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="table_name"/>
+		</idxelement>
+</index>
+
+<index name="i_author" table="public.tbl_io_communication_objects_references"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="id_author"/>
+		</idxelement>
+</index>
+
+<index name="i_category" table="public.tbl_io_communication_objects_references"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="id_category"/>
+		</idxelement>
+</index>
+
 <constraint name="fk_category_ref" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communication_categories" table="public.tbl_communication_categories">
 	<columns names="id_child" ref-type="src-columns"/>
@@ -482,9 +541,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="831.66" y="144.294"/>
-	<position x="831.66" y="39.3"/>
-	<position x="707.307" y="39.3"/>
+		<position x="876.147" y="137.489"/>
+	<position x="876.147" y="39.3"/>
+	<position x="736.965" y="39.3"/>
 	</line>
 </relationship>
 
