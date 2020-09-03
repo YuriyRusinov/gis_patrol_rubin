@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,0" last-zoom="0.95" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,360" last-zoom="0.95" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="main_db0" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true" sql-disabled="true">
 	<tablespace name="pg_default"/>
@@ -393,7 +393,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </table>
 
 <index name="i_param_code" table="public.tbl_parameters"
-	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">
 			<column name="code"/>
