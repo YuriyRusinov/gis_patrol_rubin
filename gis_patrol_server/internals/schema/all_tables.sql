@@ -7,13 +7,9 @@
 
 -- Database creation must be done outside a multicommand file.
 -- These commands were put in this file only as a convenience.
--- -- object: main_db0 | type: DATABASE --
--- -- DROP DATABASE IF EXISTS main_db0;
--- CREATE DATABASE main_db0
--- 	ENCODING = 'UTF8'
--- 	LC_COLLATE = 'en_US.utf8'
--- 	LC_CTYPE = 'en_US.utf8'
--- 	TABLESPACE = pg_default;
+-- -- object: new_database | type: DATABASE --
+-- -- DROP DATABASE IF EXISTS new_database;
+-- CREATE DATABASE new_database;
 -- -- ddl-end --
 -- 
 
@@ -252,20 +248,13 @@ CREATE TABLE public.tbl_parameter_values (
 COMMENT ON TABLE public.tbl_parameter_values IS E'Таблица содержит значения параметров, в случае изменения значения, прежняя величина остается в таблице, но для нее устанавливается время окончания и поле is_actual становится равным false';
 -- ddl-end --
 
--- object: public.users | type: TABLE --
--- DROP TABLE IF EXISTS public.users CASCADE;
-CREATE TABLE public.users (
+-- object: public.patrol_roles | type: TABLE --
+-- DROP TABLE IF EXISTS public.patrol_roles CASCADE;
+CREATE TABLE public.patrol_roles (
 	id bigserial NOT NULL,
-	id_maclabel smallint NOT NULL DEFAULT 1,
-	firstname varchar NOT NULL,
-	surname varchar,
-	lastname varchar NOT NULL,
-	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
-	family_name varchar NOT NULL,
-	information text,
-	email varchar,
-	db_user varchar NOT NULL,
-	CONSTRAINT users_pk PRIMARY KEY (id)
+	role_name varchar NOT NULL,
+	with_inheritance boolean NOT NULL DEFAULT true,
+	CONSTRAINT patrol_roles_pk PRIMARY KEY (id)
 
 );
 -- ddl-end --
@@ -291,6 +280,105 @@ CREATE TABLE public.tbl_parameters_groups (
 	CONSTRAINT tbl_parameters_groups_pk PRIMARY KEY (id)
 
 );
+-- ddl-end --
+
+-- object: i_param_code | type: INDEX --
+-- DROP INDEX IF EXISTS public.i_param_code CASCADE;
+CREATE INDEX i_param_code ON public.tbl_parameters
+	USING btree
+	(
+	  code
+	);
+-- ddl-end --
+
+-- object: i_param_cat | type: INDEX --
+-- DROP INDEX IF EXISTS public.i_param_cat CASCADE;
+CREATE UNIQUE INDEX i_param_cat ON public.tbl_cat_params
+	USING btree
+	(
+	  id_category,
+	  id_parameter
+	);
+-- ddl-end --
+
+-- object: i_p_category | type: INDEX --
+-- DROP INDEX IF EXISTS public.i_p_category CASCADE;
+CREATE INDEX i_p_category ON public.tbl_cat_params
+	USING btree
+	(
+	  id_category
+	);
+-- ddl-end --
+
+-- object: "I_cat_code" | type: INDEX --
+-- DROP INDEX IF EXISTS public."I_cat_code" CASCADE;
+CREATE UNIQUE INDEX "I_cat_code" ON public.tbl_communication_categories
+	USING btree
+	(
+	  code
+	);
+-- ddl-end --
+
+-- object: i_io_table | type: INDEX --
+-- DROP INDEX IF EXISTS public.i_io_table CASCADE;
+CREATE UNIQUE INDEX i_io_table ON public.tbl_io_communication_objects_references
+	USING btree
+	(
+	  table_name
+	);
+-- ddl-end --
+
+-- object: i_author | type: INDEX --
+-- DROP INDEX IF EXISTS public.i_author CASCADE;
+CREATE INDEX i_author ON public.tbl_io_communication_objects_references
+	USING btree
+	(
+	  id_author
+	);
+-- ddl-end --
+
+-- object: i_category | type: INDEX --
+-- DROP INDEX IF EXISTS public.i_category CASCADE;
+CREATE INDEX i_category ON public.tbl_io_communication_objects_references
+	USING btree
+	(
+	  id_category
+	);
+-- ddl-end --
+
+-- object: public.access_table | type: TABLE --
+-- DROP TABLE IF EXISTS public.access_table CASCADE;
+CREATE TABLE public.access_table (
+	id bigserial NOT NULL,
+	id_communication_object bigint,
+	id_role bigint NOT NULL,
+	allow_readlist boolean NOT NULL DEFAULT true,
+	allow_read boolean NOT NULL DEFAULT true,
+	allow_update boolean NOT NULL DEFAULT false,
+	allow_delete boolean NOT NULL DEFAULT false,
+	CONSTRAINT access_table_pk PRIMARY KEY (id)
+
+);
+-- ddl-end --
+
+-- object: public.users | type: TABLE --
+-- DROP TABLE IF EXISTS public.users CASCADE;
+CREATE TABLE public.users (
+	id_maclabel smallint NOT NULL DEFAULT 1,
+	firstname varchar NOT NULL,
+	surname varchar,
+	lastname varchar NOT NULL,
+	insert_time timestamptz NOT NULL DEFAULT current_timestamp,
+	family_name varchar NOT NULL,
+	information text,
+	email varchar,
+	db_user varchar NOT NULL
+-- 	id bigint NOT NULL,
+-- 	role_name varchar NOT NULL,
+-- 	with_inheritance boolean NOT NULL DEFAULT true,
+
+)
+ INHERITS(public.patrol_roles);
 -- ddl-end --
 
 -- object: fk_category_ref | type: CONSTRAINT --
@@ -367,6 +455,20 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ALTER TABLE public.tbl_parameter_values DROP CONSTRAINT IF EXISTS fk_cat_param CASCADE;
 ALTER TABLE public.tbl_parameter_values ADD CONSTRAINT fk_cat_param FOREIGN KEY (id_param_category)
 REFERENCES public.tbl_cat_params (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_communication_object | type: CONSTRAINT --
+-- ALTER TABLE public.access_table DROP CONSTRAINT IF EXISTS fk_communication_object CASCADE;
+ALTER TABLE public.access_table ADD CONSTRAINT fk_communication_object FOREIGN KEY (id_communication_object)
+REFERENCES public.tbl_io_communication_objects_references (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_role | type: CONSTRAINT --
+-- ALTER TABLE public.access_table DROP CONSTRAINT IF EXISTS fk_role CASCADE;
+ALTER TABLE public.access_table ADD CONSTRAINT fk_role FOREIGN KEY (id_role)
+REFERENCES public.patrol_roles (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
