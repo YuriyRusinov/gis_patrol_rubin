@@ -49,6 +49,7 @@ public:
 
 private slots:
     void refreshRecords( QAbstractItemView* recView );
+    void searchDbRecords( QAbstractItemView* recView );
     void createNewRecord( QAbstractItemModel* recModel );
     void editSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
     void delSelRecord( QAbstractItemModel* recMod, const QModelIndex& recIndex );
