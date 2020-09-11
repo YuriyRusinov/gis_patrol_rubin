@@ -38,11 +38,13 @@ public slots:
     void refreshModel();
 
 private slots:
+    void searchRecords();
     void addNewRecord();
     void editSelectedRecord();
     void delSelectedRecord();
 
 signals:
+    void searchRecordsDb( QAbstractItemView* recView );
     void refreshRecords( QAbstractItemView* recView );
     void addRecord( QAbstractItemModel* recMod );
     void editRecord( QAbstractItemModel* recMod, const QModelIndex& wIndex );

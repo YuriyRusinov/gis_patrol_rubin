@@ -216,6 +216,7 @@ pRecWidget* pIOGuiFactory::createRecordsWidget( QSharedPointer< pIObject > pRefI
     pCIOEditor* wEditor = qobject_cast< pCIOEditor*> (parent);
     if( wEditor ) {
         QObject::connect( recWidget, &pRecWidget::refreshRecords, wEditor, &pCIOEditor::refreshRecords );
+        QObject::connect( recWidget, &pRecWidget::searchRecordsDb, wEditor, &pCIOEditor::searchDbRecords );
         QObject::connect( recWidget, &pRecWidget::addRecord, wEditor, &pCIOEditor::createNewRecord );
         QObject::connect( recWidget, &pRecWidget::editRecord, wEditor, &pCIOEditor::editSelRecord );
         QObject::connect( recWidget, &pRecWidget::delRecord, wEditor, &pCIOEditor::delSelRecord );

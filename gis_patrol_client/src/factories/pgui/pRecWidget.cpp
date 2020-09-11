@@ -119,6 +119,10 @@ void pRecWidget::setup( ) {
     actRefresh->setShortcut( ksRefresh );
     QObject::connect( actRefresh, &QAction::triggered, this, &pRecWidget::refreshModel );
 
+    QAction* actSearch = _tbRecActions->addAction( QIcon(":/patrol/search.png"), tr("Search ...") );
+    actSearch->setToolTip( tr("Search") );
+    QObject::connect( actSearch, &QAction::triggered, this, &pRecWidget::searchRecords );
+
     QAction* actRecAdd = _tbRecActions->addAction( QIcon(":/patrol/add_parameter.svg"), tr("Create new record") );
     actRecAdd->setToolTip( tr("Create new record") );
     QKeySequence ksAdd( QKeySequence::New );//Qt::CTRL | Qt::Key_N );
@@ -137,4 +141,8 @@ void pRecWidget::setup( ) {
     //Qt::Key_Delete | Qt::Key_F8 );
     actRecDel->setShortcut( ksDel );
     QObject::connect( actRecDel, &QAction::triggered, this, &pRecWidget::delSelectedRecord );
+}
+
+void pRecWidget::searchRecords() {
+    emit searchRecordsDb( _tvRecords );
 }
