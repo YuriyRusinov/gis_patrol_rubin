@@ -32,6 +32,7 @@
 #include <precdialog.h>
 #include <pCategoryModel.h>
 #include <pRecWidget.h>
+#include <psearchform.h>
 
 #include "pParamGuiFactory.h"
 #include "pCatGuiFactory.h"
@@ -330,6 +331,11 @@ pCIOEditor* pIOGuiFactory::createRecEditor( QSharedPointer< pCategory > pRecCate
                       this,
                       &pIOGuiFactory::refreshRecModel
             );
+    QObject::connect( wEditor,
+                      &pCIOEditor::searchRecords,
+                      this,
+                      &pIOGuiFactory::searchIORecords
+            );
 
     if( pRec->getId() < 0 ) {
         QList< QSharedPointer< pParamValue > > pVals;
@@ -451,4 +457,14 @@ QWidget* pIOGuiFactory::viewRecIOParams( QSharedPointer< pCategory > pCategory, 
         }
     }
     return paramWidget;
+}
+
+void pIOGuiFactory::searchIORecords( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pIO, QString tableName, QAbstractItemView* recView ) {
+    if( pCat.isNull() || pIO.isNull() || tableName.isEmpty() || recView == nullptr )
+        return;
+    qDebug() << __PRETTY_FUNCTION__;
+    pSearchForm* pSForm = new pSearchForm( pCat, tableName );
+    if( !pSForm || pSForm->exec() != QDialog::Accepted )
+        return;
+    qDebug() << __PRETTY_FUNCTION__;
 }

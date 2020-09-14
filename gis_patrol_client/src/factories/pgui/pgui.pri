@@ -29,12 +29,14 @@ HEADERS += \
            pParamCheckWidget.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
-           ui/precdialog.h
+           ui/precdialog.h \
+           ui/psearchform.h
 
 FORMS += \
          ui/params_group_form.ui \
          ui/params_form.ui \
-         ui/p_rec_dialog.ui
+         ui/p_rec_dialog.ui \
+         ui/p_search_form.ui
 
 SOURCES += \
            pCategoryListForm.cpp \
@@ -67,4 +69,5 @@ SOURCES += \
            pParamCheckWidget.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
-           ui/precdialog.cpp
+           ui/precdialog.cpp \
+           ui/psearchform.cpp
