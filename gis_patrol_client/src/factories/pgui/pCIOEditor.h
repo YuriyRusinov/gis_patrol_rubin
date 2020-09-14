@@ -68,6 +68,7 @@ signals:
     void openRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
     void delRecord( QSharedPointer< pRecordCopy > pRec, QSharedPointer< pIObject > pRefIO, QAbstractItemModel* recModel, const QModelIndex& recIndex );
     void refreshRecordModel( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pRefIO, QAbstractItemView* recView );
+    void searchRecords( QSharedPointer< pCategory > pCat, QSharedPointer< pIObject > pIO, QString tableName, QAbstractItemView* recView );
 
 private:
     //

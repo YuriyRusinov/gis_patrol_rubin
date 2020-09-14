@@ -195,5 +195,7 @@ void pCIOEditor::searchDbRecords( QAbstractItemView* recView ) {
     if( recView == nullptr )
         return;
     QSharedPointer< pCategory > pCat = _pIO->getCategory();
-    qDebug() << __PRETTY_FUNCTION__ << _pIO->getId() << pCat->getId() << (pCat->getTableCat().isNull() ? -1 : pCat->getTableCat()->getId() );
+    QString tableName = _pIO->getTableName();
+    qDebug() << __PRETTY_FUNCTION__ << _pIO->getId() << pCat->getId() << (pCat->getTableCat().isNull() ? -1 : pCat->getTableCat()->getId() ) << tableName;
+    emit searchRecords( pCat, _pIO, tableName, recView );
 }
