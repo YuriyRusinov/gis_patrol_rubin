@@ -14,7 +14,9 @@ HEADERS += \
            pIObject.h \
            pParamValue.h \
            pRecord.h \
-           pRecordC.h
+           pRecordC.h \
+           pFilter.h \
+           pFilterGroup.h
 
 SOURCES += \
            pCommCenter.cpp \
@@ -30,4 +32,6 @@ SOURCES += \
            pIObject.cpp \
            pParamValue.cpp \
            pRecord.cpp \
-           pRecordC.cpp
+           pRecordC.cpp \
+           pFilter.cpp \
+           pFilterGroup.cpp
