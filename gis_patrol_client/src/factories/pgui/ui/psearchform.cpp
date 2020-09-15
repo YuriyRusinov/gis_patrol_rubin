@@ -6,7 +6,7 @@
  * @author
  *  Ю.Л.Русинов
  */
-
+#include <QAction>
 #include <pCategory.h>
 #include <pParameter.h>
 
