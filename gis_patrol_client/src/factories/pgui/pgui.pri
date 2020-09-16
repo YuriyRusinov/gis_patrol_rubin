@@ -27,6 +27,7 @@ HEADERS += \
            pXMLEdit.h \
            pCheckableDataModel.h \
            pParamCheckWidget.h \
+           pEventFilter.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
            ui/precdialog.h \
@@ -67,6 +68,7 @@ SOURCES += \
            pXMLEdit.cpp \
            pCheckableDataModel.cpp \
            pParamCheckWidget.cpp \
+           pEventFilter.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
            ui/precdialog.cpp \
