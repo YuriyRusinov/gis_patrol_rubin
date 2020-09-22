@@ -67,7 +67,7 @@ begin
             raise exception 'Invalid table parameters';
             return NULL;
         elsif (new.table_name is null and idChild is not null) then
-            new.table_name := 'eio_table_' || new.id;
+            new.table_name := 'rec_table_' || new.id;
         end if;
 
         new.table_name = getRealTableName(new.table_name, new.id);
