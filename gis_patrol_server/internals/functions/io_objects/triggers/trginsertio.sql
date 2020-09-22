@@ -7,8 +7,12 @@ declare
     isGlobal bool;
     idChild int4;
     query varchar;
+    idUser bigint;
 begin
-    
+    select into idUser id from users where id=new.id_author;
+    if( idUser is null ) then
+        return null;
+    end if;
     if(TG_OP = 'UPDATE') then
         if(new.id_author <> old.id_author) then
             return NULL; 

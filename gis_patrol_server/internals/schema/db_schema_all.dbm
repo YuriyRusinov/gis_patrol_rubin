@@ -3,8 +3,10 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="265,0" last-zoom="0.95" max-obj-count="15"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,0" last-zoom="0.95" max-obj-count="15"
 	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
 
 <schema name="public" layer="0" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true" faded-out="true">
 </schema>
@@ -16,7 +18,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_communication_categories" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
-	<position x="500" y="60"/>
+	<position x="500" y="100"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -55,11 +57,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_io_communication_objects_references" layer="0" collapse-mode="2" max-obj-count="18" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит перечень контейнеров информационных объектов, относящихся к ресурсам связи]]></comment>
-	<position x="1020" y="40"/>
+	<position x="1020" y="80"/>
 	<column name="id" not-null="true" sequence="public.tbl_communication_objects_references_id_seq">
 		<type name="bigint" length="0"/>
 	</column>
-	<column name="id_author" not-null="true">
+	<column name="id_author">
 		<type name="bigint" length="0"/>
 	</column>
 	<column name="id_category" not-null="true">
@@ -163,7 +165,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="version_table" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="public"/>
-	<position x="1680" y="440"/>
+	<position x="1680" y="480"/>
 	<column name="version">
 		<type name="character varying" length="0"/>
 	</column>
@@ -174,7 +176,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameters" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
 	<schema name="public"/>
-	<position x="480" y="760"/>
+	<position x="480" y="800"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -209,7 +211,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameter_types" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<position x="460" y="1140"/>
+	<position x="460" y="1180"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -229,7 +231,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_cat_params" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
-	<position x="500" y="420"/>
+	<position x="500" y="460"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -267,7 +269,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 - сообщение;
 - шаблон документа.
 Ряд других.]]></comment>
-	<position x="120" y="80"/>
+	<position x="120" y="120"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -285,7 +287,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_parameter_values" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит значения параметров, в случае изменения значения, прежняя величина остается в таблице, но для нее устанавливается время окончания и поле is_actual становится равным false]]></comment>
-	<position x="1020" y="560"/>
+	<position x="1020" y="600"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -320,7 +322,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="patrol_roles" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="1440" y="0"/>
+	<position x="1440" y="40"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -339,7 +341,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<comment><![CDATA[Таблица содержит перечень элементов управления, при помощи которых должны отображаться атрибуты различных типов.
 Так, например, атрибуты типа элемент справочника должны отображаться при помощи элемента управления выпадающий список и т.д.]]></comment>
-	<position x="520" y="1400"/>
+	<position x="520" y="1440"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -353,7 +355,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_parameters_groups" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="80" y="840"/>
+	<position x="80" y="880"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -429,7 +431,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="access_table" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
-	<position x="1500" y="520"/>
+	<position x="1500" y="560"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -458,7 +460,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="users" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
 	<schema name="public"/>
-	<position x="1440" y="180"/>
+	<position x="1440" y="220"/>
 	<column name="id_maclabel" not-null="true" default-value="1">
 		<type name="smallint" length="0"/>
 	</column>
@@ -494,6 +496,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.users"
 	 dst-table="public.patrol_roles"/>
 
+<constraint name="u_id_user" type="uq-constr" table="public.users">
+	<columns names="id" ref-type="src-columns"/>
+</constraint>
+
 <constraint name="fk_category_ref" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_communication_categories" table="public.tbl_communication_categories">
 	<columns names="id_child" ref-type="src-columns"/>
@@ -513,7 +519,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_author" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.users" table="public.tbl_io_communication_objects_references">
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.users" table="public.tbl_io_communication_objects_references">
 	<columns names="id_author" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -596,9 +602,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_communication_categories" reference-fk="fk_category_ref"
 	 src-required="false" dst-required="false">
 	<line>
-		<position x="864.652" y="146.154"/>
-	<position x="864.652" y="50.1"/>
-	<position x="736.501" y="50.1"/>
+		<position x="876.147" y="177.489"/>
+	<position x="876.147" y="79.3"/>
+	<position x="736.965" y="79.3"/>
 	</line>
 </relationship>
 
@@ -637,14 +643,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_io_communication_objects_references" reference-fk="fk_communication_object"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_tbl_io_communication_objects_references_users" type="relfk" layer="0"
-	 src-table="public.tbl_io_communication_objects_references"
-	 dst-table="public.users" reference-fk="fk_author"
-	 src-required="false" dst-required="true"/>
-
 <relationship name="rel_access_table_patrol_roles" type="relfk" layer="0"
 	 src-table="public.access_table"
 	 dst-table="public.patrol_roles" reference-fk="fk_role"
 	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_io_communication_objects_references_users" type="relfk" layer="0"
+	 src-table="public.tbl_io_communication_objects_references"
+	 dst-table="public.users" reference-fk="fk_author"
+	 src-required="false" dst-required="false"/>
 
 </dbmodel>
