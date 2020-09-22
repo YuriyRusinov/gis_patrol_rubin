@@ -57,7 +57,7 @@ ALTER SEQUENCE public.tbl_communication_objects_references_id_seq OWNER TO postg
 -- DROP TABLE IF EXISTS public.tbl_io_communication_objects_references CASCADE;
 CREATE TABLE public.tbl_io_communication_objects_references (
 	id bigint NOT NULL DEFAULT nextval('public.tbl_communication_objects_references_id_seq'::regclass),
-	id_author bigint NOT NULL,
+	id_author bigint,
 	id_category bigint NOT NULL,
 	name varchar NOT NULL,
 	description varchar,
@@ -381,6 +381,11 @@ CREATE TABLE public.users (
  INHERITS(public.patrol_roles);
 -- ddl-end --
 
+-- object: u_id_user | type: CONSTRAINT --
+-- ALTER TABLE public.users DROP CONSTRAINT IF EXISTS u_id_user CASCADE;
+ALTER TABLE public.users ADD CONSTRAINT u_id_user UNIQUE (id);
+-- ddl-end --
+
 -- object: fk_category_ref | type: CONSTRAINT --
 -- ALTER TABLE public.tbl_communication_categories DROP CONSTRAINT IF EXISTS fk_category_ref CASCADE;
 ALTER TABLE public.tbl_communication_categories ADD CONSTRAINT fk_category_ref FOREIGN KEY (id_child)
@@ -406,7 +411,7 @@ ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- ALTER TABLE public.tbl_io_communication_objects_references DROP CONSTRAINT IF EXISTS fk_author CASCADE;
 ALTER TABLE public.tbl_io_communication_objects_references ADD CONSTRAINT fk_author FOREIGN KEY (id_author)
 REFERENCES public.users (id) MATCH FULL
-ON DELETE NO ACTION ON UPDATE NO ACTION;
+ON DELETE RESTRICT ON UPDATE RESTRICT;
 -- ddl-end --
 
 -- object: fk_param_type | type: CONSTRAINT --
