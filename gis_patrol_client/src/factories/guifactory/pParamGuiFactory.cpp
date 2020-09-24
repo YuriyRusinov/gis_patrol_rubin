@@ -45,6 +45,7 @@
 #include <pColorEdit.h>
 #include <pXMLEdit.h>
 #include <pParamCheckWidget.h>
+#include <pImageLabel.h>
 #include "pParamGuiFactory.h"
 
 pParamGUIFactory::pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
@@ -362,6 +363,10 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
             QMap< qint64, QSharedPointer< pRecordCopy > > pRecs = _dbLoader->loadRecords( pRefIO );
             pCheckableDataModel* pCheckListMod = new pCheckableDataModel( pCParamValue, pRefIO->getCategory()->getTableCat(), pRecs );
             wRes = new pParamCheckWidget( pCParamValue, pCheckListMod, parent, flags );
+            break;
+        }
+        case pParamType::atImage: {
+            wRes = new pImageLabel( pCParamValue, parent, flags );
             break;
         }
        //

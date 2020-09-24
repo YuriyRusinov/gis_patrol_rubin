@@ -8,6 +8,7 @@
  */
 
 #include <QAbstractItemView>
+#include <QFrame>
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QMessageBox>

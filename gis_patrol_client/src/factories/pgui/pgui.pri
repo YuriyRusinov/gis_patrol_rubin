@@ -28,6 +28,7 @@ HEADERS += \
            pCheckableDataModel.h \
            pParamCheckWidget.h \
            pEventFilter.h \
+           pImageLabel.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
            ui/precdialog.h \
@@ -69,6 +70,7 @@ SOURCES += \
            pCheckableDataModel.cpp \
            pParamCheckWidget.cpp \
            pEventFilter.cpp \
+           pImageLabel.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
            ui/precdialog.cpp \

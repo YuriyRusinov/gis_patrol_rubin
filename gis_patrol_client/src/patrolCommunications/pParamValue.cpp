@@ -9,6 +9,7 @@
 
 #include <QByteArray>
 #include <QBuffer>
+#include <QPixmap>
 #include <QString>
 #include <QtDebug>
 
@@ -81,7 +82,7 @@ void pParamValue::setValue( const QVariant& val ) {
 
 QString pParamValue::valueForInsert() const {
     pParamType::PatrolParamTypes pType = _parameter->getParamType()->getId();
-    if( _value.isNull() || ( _value.toString().isEmpty() && pType != pParamType::atCheckListEx ) )
+    if( _value.isNull() || ( _value.toString().isEmpty() && pType != pParamType::atCheckListEx && pType != pParamType::atImage ) )
         return ("null");
     QString resVal;
     switch( pType ) {
@@ -139,7 +140,7 @@ QString pParamValue::valueForInsert() const {
             QByteArray ba;
             QBuffer buffer(&ba);
             buffer.open(QIODevice::WriteOnly);
-            QImage im = _value.value< QImage >();
+            QPixmap im = _value.value< QPixmap >();
             im.save( &buffer, "XPM" );
             resVal = QString("'%1'").arg( QString(ba) );
             break;
