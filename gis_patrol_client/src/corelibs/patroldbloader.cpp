@@ -613,6 +613,14 @@ QList< QSharedPointer< pParamValue > > pDBLoader::loadParamValues( QSharedPointe
                 icol++;
                 break;
             }
+            case pParamType::atImage: {
+                QByteArray ba = gpr->getCellAsByteArray(i, icol);
+                QPixmap px;
+                px.loadFromData(ba, "XPM");
+                valueV = px;
+                icol++;
+                break;
+            }
             default: {
                 valueV = gpr->getCell(i, icol);
                 icol++;

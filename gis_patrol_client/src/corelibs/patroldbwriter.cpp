@@ -386,7 +386,7 @@ QString pDBWriter::generateUpdateRecQuery( QSharedPointer< pRecordCopy > pRecord
         }
         QVariant val = pVal->value();
         QString valStr = pVal->valueForInsert();
-        if( valStr.isEmpty() || val.isNull() || val.toString().isEmpty() )
+        if( valStr.isEmpty() || val.isNull() || ( val.toString().isEmpty() && pType != pParamType::atCheckListEx && pType != pParamType::atImage ))
             valStr = QString("null");
         if( QString::compare( pVal->getCatParam()->getCode(), QString("description"), Qt::CaseInsensitive ) == 0 )
             qDebug() << __PRETTY_FUNCTION__ << pVal->getCatParam()->getId() << valStr << val;
