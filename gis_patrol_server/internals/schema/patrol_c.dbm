@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,270" last-zoom="1" max-obj-count="7"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,480" last-zoom="1" max-obj-count="8"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -165,7 +165,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_object_buildings" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
 	<schema name="public"/>
-	<position x="860" y="660"/>
+	<position x="840" y="720"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -203,6 +203,30 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tbl_rooms" layer="0" gen-alter-cmds="true" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="460" y="760"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_floor_room" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер помещения на этаже]]></comment>
+	</column>
+	<column name="floor_number" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="id_buildings" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер здания]]></comment>
+	</column>
+<constraint name="tbl_rooms_pk" type="pk-constr" table="public.tbl_rooms">
+	<columns names="id" ref-type="src-columns"/>
+</constraint>
+
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -221,6 +245,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_object_buildings" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_buildings" table="public.tbl_rooms">
+	<columns names="id_buildings" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -234,6 +264,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_stationary_part_vols_tbl_linear_part_vols" type="relfk" layer="0"
 	 src-table="public.tbl_stationary_part_vols"
 	 dst-table="public.tbl_linear_part_vols" reference-fk="fk_vols"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_rooms_tbl_object_buildings" type="relfk" layer="0"
+	 src-table="public.tbl_rooms"
+	 dst-table="public.tbl_object_buildings" reference-fk="fk_object_buildings"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
