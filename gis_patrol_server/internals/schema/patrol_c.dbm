@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,270" last-zoom="1" max-obj-count="7"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="tbl_linear_part_vols" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<position x="100" y="120"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_well" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер колодца кабеля сигнализации]]></comment>
+	</column>
+	<column name="vols_length" not-null="true">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="sections_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Количество секций]]></comment>
+	</column>
+	<column name="section_length" not-null="true">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="id_regenerator" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="vols_type">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_linear_part_vols_pk" type="pk-constr" table="public.tbl_linear_part_vols">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_well_shaft" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<position x="520" y="60"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="longitude" not-null="true">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude" not-null="true">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="altitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_well_shaft_pk" type="pk-constr" table="public.tbl_well_shaft">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<extension name="postgis">
+	<schema name="public"/>
+</extension>
+
+<table name="tbl_regenerator" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<position x="520" y="300"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="regenerator_type" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="cable_mark">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="longitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_regenerator_pk" type="pk-constr" table="public.tbl_regenerator">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_stationary_part_vols" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
+	<schema name="public"/>
+	<position x="60" y="480"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_vols" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="opt_crosses_purpose">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Назначение оптических кроссов]]></comment>
+	</column>
+	<column name="cross_type" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Тип оптического кросса]]></comment>
+	</column>
+	<column name="cross_place_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер места на оптическом кроссе]]></comment>
+	</column>
+	<column name="vols_number" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер оптоволокна]]></comment>
+	</column>
+	<column name="column_number" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер шкафа места подключения]]></comment>
+	</column>
+	<column name="number_reflection">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер рефлектограммы]]></comment>
+	</column>
+	<column name="date_reflection">
+		<type name="date" length="0"/>
+	</column>
+	<column name="periturbation_description">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Описание неоднородностей]]></comment>
+	</column>
+	<constraint name="tbl_stationary_part_vols_pk" type="pk-constr" table="public.tbl_stationary_part_vols">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_fire_alarm" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="540" y="540"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_device" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер датчика]]></comment>
+	</column>
+	<column name="device_model" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Модель датчика]]></comment>
+	</column>
+	<column name="is_fire" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+		<comment><![CDATA[Пожарная сигнализация (true) или охранная сигнализация (false).]]></comment>
+	</column>
+	<constraint name="tbl_fire_alarm_pk" type="pk-constr" table="public.tbl_fire_alarm">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_object_buildings" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="public"/>
+	<position x="860" y="660"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Наименование]]></comment>
+	</column>
+	<column name="width" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Ширина]]></comment>
+	</column>
+	<column name="height" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Длина основания]]></comment>
+	</column>
+	<column name="depth" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[высота]]></comment>
+	</column>
+	<column name="number_floors" not-null="true" default-value="1">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Этажность]]></comment>
+	</column>
+	<column name="longitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_object_buildings_pk" type="pk-constr" table="public.tbl_object_buildings">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
+	<columns names="id_well" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_regenerator" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_regenerator" table="public.tbl_linear_part_vols">
+	<columns names="id_regenerator" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_vols" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_linear_part_vols" table="public.tbl_stationary_part_vols">
+	<columns names="id_vols" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
+	 src-table="public.tbl_linear_part_vols"
+	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_linear_part_vols_tbl_regenerator" type="relfk" layer="0"
+	 src-table="public.tbl_linear_part_vols"
+	 dst-table="public.tbl_regenerator" reference-fk="fk_regenerator"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_stationary_part_vols_tbl_linear_part_vols" type="relfk" layer="0"
+	 src-table="public.tbl_stationary_part_vols"
+	 dst-table="public.tbl_linear_part_vols" reference-fk="fk_vols"
+	 src-required="false" dst-required="true"/>
+
+</dbmodel>
