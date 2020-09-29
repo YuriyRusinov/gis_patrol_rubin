@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,480" last-zoom="1" max-obj-count="8"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,360" last-zoom="1" max-obj-count="10"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -140,7 +140,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_fire_alarm" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="tbl_fire_security_alarm" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<position x="540" y="540"/>
 	<column name="id" not-null="true">
@@ -158,13 +158,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="boolean" length="0"/>
 		<comment><![CDATA[Пожарная сигнализация (true) или охранная сигнализация (false).]]></comment>
 	</column>
-	<constraint name="tbl_fire_alarm_pk" type="pk-constr" table="public.tbl_fire_alarm">
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер сооружения]]></comment>
+	</column>
+	<constraint name="tbl_fire_alarm_pk" type="pk-constr" table="public.tbl_fire_security_alarm">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="tbl_object_buildings" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
+<table name="tbl_object_buildings" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
 	<schema name="public"/>
+	<comment><![CDATA[Сооружения объекта]]></comment>
 	<position x="840" y="720"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
@@ -198,6 +203,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="srid">
 		<type name="integer" length="0"/>
 	</column>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
 	<constraint name="tbl_object_buildings_pk" type="pk-constr" table="public.tbl_object_buildings">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
@@ -205,6 +213,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_rooms" layer="0" gen-alter-cmds="true" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
+	<comment><![CDATA[Помещения сооружения]]></comment>
 	<position x="460" y="760"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
@@ -227,6 +236,61 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 </table>
 
+<table name="tbl_iss_objects" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Объекты ИСС]]></comment>
+	<position x="1240" y="780"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+		<comment><![CDATA[Номер объекта]]></comment>
+	</column>
+	<column name="id_class_object" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Учетный номер объекта]]></comment>
+	</column>
+	<column name="full_name" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Полное название]]></comment>
+	</column>
+	<column name="short_name">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Сокращенное название]]></comment>
+	</column>
+	<column name="control_border">
+		<type name="geometry" length="0"/>
+		<comment><![CDATA[Границы контрольной зоны]]></comment>
+	</column>
+	<column name="post_address" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="longitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_iss_objects_pk" type="pk-constr" table="public.tbl_iss_objects">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_iss_object_adjucent_objects" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="880" y="1040"/>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_iss_adjucent_object" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_iss_object_adjucent_objects_pk" type="pk-constr" table="public.tbl_iss_object_adjucent_objects">
+		<columns names="id_iss_object,id_iss_adjucent_object" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -245,9 +309,33 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_buildings" table="public.tbl_fire_security_alarm">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_object_buildings">
+	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <constraint name="fk_object_buildings" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_buildings" table="public.tbl_rooms">
 	<columns names="id_buildings" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjucent_objects">
+	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_adjucent_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjucent_objects">
+	<columns names="id_iss_adjucent_object" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -269,6 +357,26 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_rooms_tbl_object_buildings" type="relfk" layer="0"
 	 src-table="public.tbl_rooms"
 	 dst-table="public.tbl_object_buildings" reference-fk="fk_object_buildings"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_object_buildings_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_object_buildings"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_object_adjucent_objects_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_iss_object_adjucent_objects"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_object_adjucent_objects_tbl_iss_objects1" type="relfk" layer="0"
+	 src-table="public.tbl_iss_object_adjucent_objects"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_adjucent_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_fire_security_alarm_tbl_object_buildings" type="relfk" layer="0"
+	 src-table="public.tbl_fire_security_alarm"
+	 dst-table="public.tbl_object_buildings" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
