@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,270" last-zoom="1" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,90" last-zoom="1" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -389,6 +389,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_iss_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_node">
+	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -433,5 +439,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.tbl_fire_alarm_room_device"
 	 dst-table="public.tbl_rooms" reference-fk="fk_room"
 	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_iss_node_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_iss_node"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_iss_node"
+	 src-required="false" dst-required="true"/>
 
 </dbmodel>
