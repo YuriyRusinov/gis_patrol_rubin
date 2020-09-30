@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,358" last-zoom="1" max-obj-count="10"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,270" last-zoom="1" max-obj-count="13"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -140,9 +140,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_fire_security_alarm" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+<table name="tbl_fire_security_alarm" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
-	<position x="480" y="520"/>
+	<position x="860" y="460"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -161,6 +161,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_building" not-null="true">
 		<type name="bigint" length="0"/>
 		<comment><![CDATA[Номер сооружения]]></comment>
+	</column>
+	<column name="central_control">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="cable_mark">
+		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="tbl_fire_alarm_pk" type="pk-constr" table="public.tbl_fire_security_alarm">
 		<columns names="id" ref-type="src-columns"/>
@@ -291,6 +297,44 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tbl_fire_alarm_room_device" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="60" y="780"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="device_name">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="device_model" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_room">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_fire_alarm_room_device_pk" type="pk-constr" table="public.tbl_fire_alarm_room_device">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="1180" y="320"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_stat_number" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Учетный номер узла]]></comment>
+	</column>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_iss_node_pk" type="pk-constr" table="public.tbl_iss_node">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -339,6 +383,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_room" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_rooms" table="public.tbl_fire_alarm_room_device">
+	<columns names="id_room" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -378,5 +428,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.tbl_fire_security_alarm"
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_fire_alarm_room_device_tbl_rooms" type="relfk" layer="0"
+	 src-table="public.tbl_fire_alarm_room_device"
+	 dst-table="public.tbl_rooms" reference-fk="fk_room"
+	 src-required="false" dst-required="false"/>
 
 </dbmodel>
