@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,360" last-zoom="1" max-obj-count="10"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,358" last-zoom="1" max-obj-count="10"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -142,7 +142,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_fire_security_alarm" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
-	<position x="540" y="540"/>
+	<position x="480" y="520"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -167,7 +167,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_object_buildings" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
+<table name="tbl_object_building" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Сооружения объекта]]></comment>
 	<position x="840" y="720"/>
@@ -206,7 +206,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<constraint name="tbl_object_buildings_pk" type="pk-constr" table="public.tbl_object_buildings">
+	<constraint name="tbl_object_buildings_pk" type="pk-constr" table="public.tbl_object_building">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -226,7 +226,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер этажа]]></comment>
 	</column>
-	<column name="id_buildings" not-null="true">
+	<column name="id_building" not-null="true">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер здания]]></comment>
 	</column>
@@ -310,20 +310,20 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_buildings" table="public.tbl_fire_security_alarm">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_fire_security_alarm">
 	<columns names="id_building" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_object_buildings">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_object_building">
 	<columns names="id_iss_object" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_object_buildings" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_buildings" table="public.tbl_rooms">
-	<columns names="id_buildings" ref-type="src-columns"/>
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_rooms">
+	<columns names="id_building" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -356,11 +356,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tbl_rooms_tbl_object_buildings" type="relfk" layer="0"
 	 src-table="public.tbl_rooms"
-	 dst-table="public.tbl_object_buildings" reference-fk="fk_object_buildings"
+	 dst-table="public.tbl_object_building" reference-fk="fk_object_buildings"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_object_buildings_tbl_iss_objects" type="relfk" layer="0"
-	 src-table="public.tbl_object_buildings"
+	 src-table="public.tbl_object_building"
 	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
 	 src-required="false" dst-required="true"/>
 
@@ -376,7 +376,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tbl_fire_security_alarm_tbl_object_buildings" type="relfk" layer="0"
 	 src-table="public.tbl_fire_security_alarm"
-	 dst-table="public.tbl_object_buildings" reference-fk="fk_building"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
