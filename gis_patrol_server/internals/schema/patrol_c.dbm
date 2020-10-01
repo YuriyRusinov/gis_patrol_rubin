@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,90" last-zoom="1" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,630" last-zoom="1" max-obj-count="15"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -71,7 +71,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_regenerator" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
 	<schema name="public"/>
-	<position x="520" y="300"/>
+	<position x="520" y="260"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -317,7 +317,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
 	<position x="1180" y="320"/>
 	<column name="id" not-null="true">
@@ -330,7 +330,81 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
+	<column name="control_level" not-null="true" default-value="3">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[Уровень управления
+3й 
+2й 
+1й]]></comment>
+	</column>
+	<column name="state_number" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Количество обслуживающего персонала]]></comment>
+	</column>
+	<column name="special_user_category" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[1я, 2я, 3я]]></comment>
+	</column>
+	<column name="node_border">
+		<type name="geometry" length="0"/>
+		<comment><![CDATA[Границы контролируемой зоны узла]]></comment>
+	</column>
 	<constraint name="tbl_iss_node_pk" type="pk-constr" table="public.tbl_iss_node">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_ground_system" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Система заземления]]></comment>
+	<position x="520" y="440"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_tread">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер шины заземления]]></comment>
+	</column>
+	<column name="wire_mark">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Марка провода]]></comment>
+	</column>
+	<column name="resistance" not-null="true" default-value="15">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Сопротивление заземления]]></comment>
+	</column>
+	<column name="contour_type" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[1 -- защитный 
+2 -- рабочий]]></comment>
+	</column>
+	<column name="contour_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер контура заземления]]></comment>
+	</column>
+	<column name="id_floor" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="id_electrical_file">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер файла электропитания на этаже]]></comment>
+	</column>
+	<column name="id_building">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_ground_system_pk" type="pk-constr" table="public.tbl_ground_system">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electrical_systems" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<position x="420" y="980"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<constraint name="tbl_electrical_systems_pk" type="pk-constr" table="public.tbl_electrical_systems">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -395,6 +469,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_ground_system">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -444,5 +524,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.tbl_iss_node"
 	 dst-table="public.tbl_iss_objects" reference-fk="fk_iss_node"
 	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_ground_system_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_ground_system"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="false"/>
 
 </dbmodel>
