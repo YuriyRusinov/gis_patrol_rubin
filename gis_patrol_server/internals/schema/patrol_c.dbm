@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,630" last-zoom="1" max-obj-count="15"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,900" last-zoom="1" max-obj-count="19"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -398,13 +398,76 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_electrical_systems" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+<table name="tbl_electrical_systems" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<position x="420" y="980"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
 	<constraint name="tbl_electrical_systems_pk" type="pk-constr" table="public.tbl_electrical_systems">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electrical_shield" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="60" y="1120"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="serial_number" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="mark">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_electrical_system" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_electrical_shield_pk" type="pk-constr" table="public.tbl_electrical_shield">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electrical_transform" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="460" y="1180"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="serial_number" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="mark">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_electrical_system" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_electrical_transform_pk" type="pk-constr" table="public.tbl_electrical_transform">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electric_shield_transform" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="40" y="1360"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_shield" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_transformator" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_electric_shield_transform_pk" type="pk-constr" table="public.tbl_electric_shield_transform">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -475,6 +538,36 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_electrical_systems">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_electrical_system" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_systems" table="public.tbl_electrical_shield">
+	<columns names="id_electrical_system" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_electrical_system" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_systems" table="public.tbl_electrical_transform">
+	<columns names="id_electrical_system" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_shield" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_shield" table="public.tbl_electric_shield_transform">
+	<columns names="id_shield" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_transform" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_transform" table="public.tbl_electric_shield_transform">
+	<columns names="id_transformator" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -529,5 +622,30 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.tbl_ground_system"
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_electrical_systems_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_electrical_systems"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electrical_shield_tbl_electrical_systems" type="relfk" layer="0"
+	 src-table="public.tbl_electrical_shield"
+	 dst-table="public.tbl_electrical_systems" reference-fk="fk_electrical_system"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electrical_transform_tbl_electrical_systems" type="relfk" layer="0"
+	 src-table="public.tbl_electrical_transform"
+	 dst-table="public.tbl_electrical_systems" reference-fk="fk_electrical_system"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electric_shield_transform_tbl_electrical_shield" type="relfk" layer="0"
+	 src-table="public.tbl_electric_shield_transform"
+	 dst-table="public.tbl_electrical_shield" reference-fk="fk_shield"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electric_shield_transform_tbl_electrical_transform" type="relfk" layer="0"
+	 src-table="public.tbl_electric_shield_transform"
+	 dst-table="public.tbl_electrical_transform" reference-fk="fk_transform"
+	 src-required="false" dst-required="true"/>
 
 </dbmodel>
