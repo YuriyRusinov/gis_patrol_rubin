@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,900" last-zoom="1" max-obj-count="19"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,900" last-zoom="1" max-obj-count="20"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -285,7 +285,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_iss_object_adjucent_objects" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="880" y="1040"/>
+	<position x="1340" y="1060"/>
 	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
@@ -472,6 +472,45 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tbl_grounding_system" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Система заземления]]></comment>
+	<position x="900" y="1240"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="grounding_bar_mark">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Маркировка шины заземления]]></comment>
+	</column>
+	<column name="grounding_cord">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Марка провода заземления]]></comment>
+	</column>
+	<column name="grounding_resistance">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Сопротивление заземления]]></comment>
+	</column>
+	<column name="grounding_type">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="grounding_contour_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер контура заземления]]></comment>
+	</column>
+	<column name="id_floor">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер строения]]></comment>
+	</column>
+	<constraint name="tbl_grounding_system_pk" type="pk-constr" table="public.tbl_grounding_system">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -568,6 +607,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_grounding_system">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -646,6 +691,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_electric_shield_transform_tbl_electrical_transform" type="relfk" layer="0"
 	 src-table="public.tbl_electric_shield_transform"
 	 dst-table="public.tbl_electrical_transform" reference-fk="fk_transform"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_grounding_system_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_grounding_system"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
