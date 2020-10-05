@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,900" last-zoom="1" max-obj-count="20"
+<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,900" last-zoom="1" max-obj-count="21"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -507,6 +507,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<comment><![CDATA[Номер строения]]></comment>
 	</column>
 	<constraint name="tbl_grounding_system_pk" type="pk-constr" table="public.tbl_grounding_system">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_state_tko" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<position x="860" y="1120"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<constraint name="tbl_state_tko_pk" type="pk-constr" table="public.tbl_state_tko">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
