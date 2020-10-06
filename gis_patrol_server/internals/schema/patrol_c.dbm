@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta" use-changelog="false" last-position="0,900" last-zoom="1" max-obj-count="21"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,944" last-zoom="1" max-obj-count="21"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -297,7 +297,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_fire_alarm_room_device" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="tbl_fire_alarm_room_device" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<position x="60" y="780"/>
 	<column name="id" not-null="true">
@@ -311,6 +311,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="id_room">
 		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_state" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Состояние устройства]]></comment>
 	</column>
 	<constraint name="tbl_fire_alarm_room_device_pk" type="pk-constr" table="public.tbl_fire_alarm_room_device">
 		<columns names="id" ref-type="src-columns"/>
@@ -511,11 +515,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_state_tko" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+<table name="tbl_state_tko" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="860" y="1120"/>
+	<position x="80" y="1000"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="description">
+		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="tbl_state_tko_pk" type="pk-constr" table="public.tbl_state_tko">
 		<columns names="id" ref-type="src-columns"/>
@@ -573,6 +583,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <constraint name="fk_room" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_rooms" table="public.tbl_fire_alarm_room_device">
 	<columns names="id_room" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_state" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_state_tko" table="public.tbl_fire_alarm_room_device">
+	<columns names="id_state" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -707,6 +723,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_grounding_system_tbl_object_building" type="relfk" layer="0"
 	 src-table="public.tbl_grounding_system"
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_fire_alarm_room_device_tbl_state_tko" type="relfk" layer="0"
+	 src-table="public.tbl_fire_alarm_room_device"
+	 dst-table="public.tbl_state_tko" reference-fk="fk_state"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
