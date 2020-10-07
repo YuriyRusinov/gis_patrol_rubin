@@ -15,6 +15,7 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (15, 1, 'is_system', 'Системный', 'Системный', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (16, 6, 'insert_time', 'Дата и время создания', 'Создан( внесен в БД)', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (17, 1, 'is_main', 'Основная категория', 'Основная категория', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (19, 9, 'short_name', 'Короткое название', 'Короткое название', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (21, 9, 'role_name', 'Системный пользователь', 'Системный пользователь', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (22, 9, 'firstname', 'Имя', 'Имя', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (23, 9, 'surname', 'Отчество', 'Отчество', null::varchar, null::varchar, true);
@@ -27,6 +28,8 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (63, 2, 'id_maclabel', 'Гриф секретности', 'Гриф секретности', 'maclabels', 'name', true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (64, 9, 'mac_value', 'Мандатная метка', 'Мандатная метка', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (66, 9, 'email', 'Адрес эл. почты', 'Адрес электронной почты', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (88, 7, 'latitude', 'Широта', 'Широта', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (89, 7, 'longitude', 'Долгота', 'Долгота', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (111, 1, 'is_global', 'Является глобальным', 'Глобальный', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (128, 1, 'is_mandatory', 'Является обязательным', 'Является обязательным', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (206, 18, 'record_fill_color', 'Цвет фона при отображении в таблице', 'Цвет фона при отображении в таблице', null::varchar, null::varchar, true);

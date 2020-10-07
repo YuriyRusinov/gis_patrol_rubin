@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,945" last-zoom="1" max-obj-count="22"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,360" last-zoom="1" max-obj-count="22"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -257,7 +257,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Учетный номер объекта]]></comment>
 	</column>
-	<column name="full_name" not-null="true">
+	<column name="name" not-null="true">
 		<type name="varchar" length="0"/>
 		<comment><![CDATA[Полное название]]></comment>
 	</column>
