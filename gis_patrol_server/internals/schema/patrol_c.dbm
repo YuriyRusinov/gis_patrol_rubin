@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,944" last-zoom="1" max-obj-count="21"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,945" last-zoom="1" max-obj-count="22"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -95,7 +95,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_stationary_part_vols" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
+<table name="tbl_stationary_part_vols" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="public"/>
 	<position x="60" y="480"/>
 	<column name="id" not-null="true">
@@ -134,6 +134,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="periturbation_description">
 		<type name="varchar" length="0"/>
 		<comment><![CDATA[Описание неоднородностей]]></comment>
+	</column>
+	<column name="id_object" not-null="true">
+		<type name="bigint" length="0"/>
 	</column>
 	<constraint name="tbl_stationary_part_vols_pk" type="pk-constr" table="public.tbl_stationary_part_vols">
 		<columns names="id" ref-type="src-columns"/>
@@ -550,6 +553,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_stationary_part_vols">
+	<columns names="id_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_fire_security_alarm">
 	<columns names="id_building" ref-type="src-columns"/>
@@ -728,6 +737,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_fire_alarm_room_device_tbl_state_tko" type="relfk" layer="0"
 	 src-table="public.tbl_fire_alarm_room_device"
 	 dst-table="public.tbl_state_tko" reference-fk="fk_state"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_stationary_part_vols_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_stationary_part_vols"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
