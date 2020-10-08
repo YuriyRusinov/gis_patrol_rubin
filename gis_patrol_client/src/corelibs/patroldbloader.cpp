@@ -702,7 +702,10 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     sql_query += QString(" from %1 as tab_%2").arg( usedTables[0] ).arg( tNumbers[0] );
     int nt = usedTables.size();
     for (int i=1; i<nt; i++) {
-        sql_query += QString(" %6 join %1 as tab_%2 on (tab_%3.%4=tab_%2.id %5)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]).arg( id > 0 && i==1 ? QString(" and tab_0.id=%1").arg(id) : QString()).arg(isMandatories[i-1] ? QString("inner") : QString("left"));
+        if( QString::compare(usedTables[i], "spatial_ref_sys", Qt::CaseInsensitive) == 0 )
+            sql_query += QString(" %6 join %1 as tab_%2 on (tab_%3.%4=tab_%2.srid %5)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]).arg( id > 0 && i==1 ? QString(" and tab_0.id=%1").arg(id) : QString()).arg(isMandatories[i-1] ? QString("inner") : QString("left"));
+        else
+            sql_query += QString(" %6 join %1 as tab_%2 on (tab_%3.%4=tab_%2.id %5)").arg( usedTables[i] ).arg( tNumbers[i] ).arg(tNumbers[0]).arg(paramTableCodes[i-1]).arg( id > 0 && i==1 ? QString(" and tab_0.id=%1").arg(id) : QString()).arg(isMandatories[i-1] ? QString("inner") : QString("left"));
     }
     return sql_query;
 }

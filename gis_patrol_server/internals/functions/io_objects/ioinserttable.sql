@@ -90,7 +90,11 @@ begin
                 if(rr.is_exist <> 1) then
                     create_ref_table := create_ref_table || ' create table ' || tName || ' (id_' || table_name || ' int8, id_' || r.atabname || ' int8); ';
                     --На эту таблицу пока проверку на префикс tbl_ делать не надо, ибо она еще не переименована (находится в процессе создания в данном триггере)
-                    create_ref_table := create_ref_table || ' alter table '  || tName || ' ADD CONSTRAINT FK_ID_' || tName || '_1 FOREIGN KEY (ID_' || table_name || ') REFERENCES ' || table_name || ' (ID) ON DELETE CASCADE ON UPDATE CASCADE; ';
+                    if( lower(table_name) = 'spatial_ref_sys' ) then
+                        create_ref_table := create_ref_table || ' alter table '  || tName || ' ADD CONSTRAINT FK_ID_' || tName || '_1 FOREIGN KEY (ID_' || table_name || ') REFERENCES ' || table_name || ' (srid) ON DELETE CASCADE ON UPDATE CASCADE; ';
+                    else
+                        create_ref_table := create_ref_table || ' alter table '  || tName || ' ADD CONSTRAINT FK_ID_' || tName || '_1 FOREIGN KEY (ID_' || table_name || ') REFERENCES ' || table_name || ' (ID) ON DELETE CASCADE ON UPDATE CASCADE; ';
+                    end if;
 
                     select f_is_view_exist(r.atabname) into isExist; --Если представление с таким названием существует, то это означает, что реальная таблица имеет название с префиксом tbl_
                     if(isExist = 1) then
@@ -198,7 +202,11 @@ begin
                         alter_query := alter_query || r.atabname;
                     end if;
                 end if;
-                alter_query := alter_query || ' ("' || refColumnName || '") on delete restrict on update cascade;';
+                if( lower(r.atabname) = 'spatial_ref_sys' ) then
+                    alter_query := alter_query || ' ( srid ) on delete restrict on update cascade;';
+                else
+                    alter_query := alter_query || ' ("' || refColumnName || '") on delete restrict on update cascade;';
+                end if;
             end if;
         --i := i+1;
         end if;
