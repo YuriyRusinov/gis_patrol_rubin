@@ -1,14 +1,3 @@
-create or replace view v_spatial_ref_sys as select srid as id, proj4text, srtext from spatial_ref_sys order by 1;--insert into tbl_parameters_groups (name) values ('Географические атрибуты');  --4
-
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (88, 7, 'latitude', 'Широта', 'Широта', null::varchar, null::varchar, true) on conflict do nothing;
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (89, 7, 'longitude', 'Долгота', 'Долгота', null::varchar, null::varchar, true) on conflict do nothing;
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (90, 7, 'altitude', 'Высота', 'Высота', null::varchar, null::varchar, true) on conflict do nothing;
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (100, 2, 'srid', 'Проекция', 'Проекция', 'v_spatial_ref_sys', 'proj4text', true) on conflict do nothing;
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (101, 9, 'srtext', 'Описание проекции', 'Описание проекции', null::varchar, null::varchar, true) on conflict do nothing;
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (102, 9, 'proj4text', 'Описание проекции (proj)', 'Описание проекции(proj)', null::varchar, null::varchar, true) on conflict do nothing;
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (19, 9, 'short_name', 'Короткое название', 'Короткое название', null::varchar, null::varchar, true) on conflict do nothing;
-
-
 insert into tbl_parameters_groups (id, name) values( 4, 'Электротехнические атрибуты') on conflict do nothing;
 
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (410, 28, 4, 'control_border', 'Граница объекта ИСС', 'Граница объекта ИСС', null::varchar, null::varchar, false) on conflict do nothing;
@@ -16,18 +5,9 @@ insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title,
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (412, 8, 4, 'id_class_object', 'Класс объекта ИСС', 'Класс объекта ИСС', null::varchar, null::varchar, false) on conflict do nothing;
 
 select setval('tbl_parameters_id_seq', 1000, true);
-insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (51, 10, null::integer, false, 'Проекции', 'SYSCATEGORY_51', null::varchar, true) on conflict do nothing;
-insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (52, 8, 51, true, 'Справочник проекций', 'SYSCATEGORY_52', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (200, 10, null::integer, false, 'Узлы ИСС', 'ELECTRIC_CATEGORY_200', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (201, 8, 200, true, 'Справочник узлов ИСС', 'ELECTRIC_CATEGORY_201', null::varchar, true) on conflict do nothing;
 select setval('tbl_communication_categories_id_seq', 500, true);
---
--- проекции
---
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (65, 51, 1, null, true, true, 1) on conflict do nothing; -- id
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (66, 51, 101, null, true, true, 2) on conflict do nothing; -- srtext
-insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (67, 51, 102, null, true, true, 3) on conflict do nothing; -- proj4text
-
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (601, 200, 1, null, true, true, 1) on conflict do nothing; -- id
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (602, 200, 412, null, true, false, 2) on conflict do nothing;
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (603, 200, 2, null, true, false, 3) on conflict do nothing; -- name
@@ -40,10 +20,5 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 
 select setval('tbl_cat_params_id_seq', 1000, true);
 
-alter table tbl_io_communication_objects_references disable trigger trgioinsert;
-alter table tbl_io_communication_objects_references disable trigger zz_trgzioinserttableafter;
-insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (50, 1, 52, 'Справочник проекций', null::varchar, 'v_spatial_ref_sys', 'Системный объект', true, current_timestamp, true) on conflict do nothing;
-alter table tbl_io_communication_objects_references enable trigger trgioinsert;
-alter table tbl_io_communication_objects_references enable trigger zz_trgzioinserttableafter;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (100, 1, 201, 'Справочник узлов ИСС', null::varchar, 'tbl_iss_objects', 'Узлы ИСС', false, current_timestamp, true) on conflict do nothing;
 select setval('tbl_communication_objects_references_id_seq', 300, true);

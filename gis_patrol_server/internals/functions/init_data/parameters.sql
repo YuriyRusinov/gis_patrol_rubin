@@ -31,7 +31,9 @@ insert into tbl_parameters(id, id_param_type, code, name, title, table_name, col
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (88, 7, 'latitude', 'Широта', 'Широта', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (89, 7, 'longitude', 'Долгота', 'Долгота', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (90, 7, 'altitude', 'Высота', 'Высота', null::varchar, null::varchar, true);
-insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (100, 2, 'srid', 'Проекция', 'Проекция', 'spatial_ref_sys', 'proj4text', true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (100, 2, 'srid', 'Проекция', 'Проекция', 'v_spatial_ref_sys', 'proj4text', true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (101, 9, 'srtext', 'Описание проекции', 'Описание проекции', null::varchar, null::varchar, true);
+insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (102, 9, 'proj4text', 'Описание проекции (proj)', 'Описание проекции(proj)', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (111, 1, 'is_global', 'Является глобальным', 'Глобальный', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (128, 1, 'is_mandatory', 'Является обязательным', 'Является обязательным', null::varchar, null::varchar, true);
 insert into tbl_parameters(id, id_param_type, code, name, title, table_name, column_name, is_system) values (206, 18, 'record_fill_color', 'Цвет фона при отображении в таблице', 'Цвет фона при отображении в таблице', null::varchar, null::varchar, true);

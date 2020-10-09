@@ -90,6 +90,12 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (60, 49, 25, null, true, false, 7);-- family_name
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (61, 49, 66, null, false, false, 8);-- email
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (62, 49, 26, null, true,false, 9);-- db_user
+--
+-- проекции
+--
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (65, 51, 1, null, true, true, 1); -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (66, 51, 101, null, true, true, 2); -- srtext
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (67, 51, 102, null, true, true, 3); -- proj4text
 
 --таблица значений атрибутов в информационных объектах
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (501, 183, 1, null, true, true, 1); -- id

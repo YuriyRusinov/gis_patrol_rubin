@@ -196,13 +196,15 @@ begin
                     parentCode = r.code;
                 else
                     select f_is_view_exist(r.atabname) into isExist; --Если представление с таким названием существует, то это означает, что реальная таблица имеет название с префиксом tbl_
-                    if(isExist = 1) then
+                    if(isExist = 1 and lower( r.atabname ) != 'v_spatial_ref_sys' ) then
                         alter_query := alter_query || 'tbl_' || r.atabname;
+                    elsif (isExist = 1 and lower( r.atabname ) = 'v_spatial_ref_sys' ) then
+                        alter_query := alter_query || ' spatial_ref_sys';
                     else
                         alter_query := alter_query || r.atabname;
                     end if;
                 end if;
-                if( lower(r.atabname) = 'spatial_ref_sys' ) then
+                if( lower(r.atabname) = 'v_spatial_ref_sys' ) then
                     alter_query := alter_query || ' ( srid ) on delete restrict on update cascade;';
                 else
                     alter_query := alter_query || ' ("' || refColumnName || '") on delete restrict on update cascade;';
