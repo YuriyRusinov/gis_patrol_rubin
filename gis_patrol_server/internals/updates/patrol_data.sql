@@ -18,8 +18,8 @@ insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title,
 select setval('tbl_parameters_id_seq', 1000, true);
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (51, 10, null::integer, false, 'Проекции', 'SYSCATEGORY_51', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (52, 8, 51, true, 'Справочник проекций', 'SYSCATEGORY_52', null::varchar, true) on conflict do nothing;
-insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (200, 10, null::integer, false, 'Узлы ИСС', 'ELECTRIC_CATEGORY_200', null::varchar, true) on conflict do nothing;
-insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (201, 8, 200, true, 'Справочник узлов ИСС', 'ELECTRIC_CATEGORY_201', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (200, 10, null::integer, false, 'Объекты ИСС', 'ELECTRIC_CATEGORY_200', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (201, 8, 200, true, 'Справочник объектов ИСС', 'ELECTRIC_CATEGORY_201', null::varchar, true) on conflict do nothing;
 select setval('tbl_communication_categories_id_seq', 500, true);
 --
 -- проекции
