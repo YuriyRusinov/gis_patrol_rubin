@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,360" last-zoom="1" max-obj-count="22"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,359" last-zoom="1" max-obj-count="22"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -187,17 +187,20 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar" length="0"/>
 		<comment><![CDATA[Наименование]]></comment>
 	</column>
-	<column name="width" not-null="true">
-		<type name="float8" length="0"/>
-		<comment><![CDATA[Ширина]]></comment>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
 	</column>
-	<column name="height" not-null="true">
+	<column name="building_length" not-null="true">
 		<type name="float8" length="0"/>
 		<comment><![CDATA[Длина основания]]></comment>
 	</column>
-	<column name="depth" not-null="true">
+	<column name="building_width" not-null="true">
 		<type name="float8" length="0"/>
-		<comment><![CDATA[высота]]></comment>
+		<comment><![CDATA[Ширина основания]]></comment>
+	</column>
+	<column name="building_altitude" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Высота строения]]></comment>
 	</column>
 	<column name="number_floors" not-null="true" default-value="1">
 		<type name="integer" length="0"/>
@@ -211,9 +214,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="srid">
 		<type name="integer" length="0"/>
-	</column>
-	<column name="id_iss_object" not-null="true">
-		<type name="bigint" length="0"/>
 	</column>
 	<constraint name="tbl_object_buildings_pk" type="pk-constr" table="public.tbl_object_building">
 		<columns names="id" ref-type="src-columns"/>
@@ -231,7 +231,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер помещения на этаже]]></comment>
 	</column>
-	<column name="floor_number" not-null="true" default-value="0">
+	<column name="id_floor" not-null="true" default-value="0">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер этажа]]></comment>
 	</column>
