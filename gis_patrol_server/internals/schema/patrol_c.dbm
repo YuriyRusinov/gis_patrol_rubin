@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,359" last-zoom="1" max-obj-count="22"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,358" last-zoom="1" max-obj-count="22"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -312,7 +312,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="device_model" not-null="true">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="id_room">
+	<column name="id_room" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
 	<column name="id_state" not-null="true">
@@ -692,7 +692,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_fire_alarm_room_device_tbl_rooms" type="relfk" layer="0"
 	 src-table="public.tbl_fire_alarm_room_device"
 	 dst-table="public.tbl_rooms" reference-fk="fk_room"
-	 src-required="false" dst-required="false"/>
+	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_iss_node_tbl_iss_objects" type="relfk" layer="0"
 	 src-table="public.tbl_iss_node"
