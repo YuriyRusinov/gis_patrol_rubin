@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,358" last-zoom="1" max-obj-count="22"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,402" last-zoom="1" max-obj-count="21"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -361,50 +361,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_ground_system" layer="0" collapse-mode="2" max-obj-count="10" z-value="0">
-	<schema name="public"/>
-	<comment><![CDATA[Система заземления]]></comment>
-	<position x="520" y="440"/>
-	<column name="id" not-null="true">
-		<type name="bigserial" length="0"/>
-	</column>
-	<column name="id_tread">
-		<type name="bigint" length="0"/>
-		<comment><![CDATA[Номер шины заземления]]></comment>
-	</column>
-	<column name="wire_mark">
-		<type name="varchar" length="0"/>
-		<comment><![CDATA[Марка провода]]></comment>
-	</column>
-	<column name="resistance" not-null="true" default-value="15">
-		<type name="float8" length="0"/>
-		<comment><![CDATA[Сопротивление заземления]]></comment>
-	</column>
-	<column name="contour_type" not-null="true" default-value="1">
-		<type name="smallint" length="0"/>
-		<comment><![CDATA[1 -- защитный 
-2 -- рабочий]]></comment>
-	</column>
-	<column name="contour_number">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[Номер контура заземления]]></comment>
-	</column>
-	<column name="id_floor" not-null="true">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[Номер этажа]]></comment>
-	</column>
-	<column name="id_electrical_file">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[Номер файла электропитания на этаже]]></comment>
-	</column>
-	<column name="id_building">
-		<type name="bigint" length="0"/>
-	</column>
-	<constraint name="tbl_ground_system_pk" type="pk-constr" table="public.tbl_ground_system">
-		<columns names="id" ref-type="src-columns"/>
-	</constraint>
-</table>
-
 <table name="tbl_electrical_systems" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<position x="420" y="980"/>
@@ -431,8 +387,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="serial_number" not-null="true">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="mark">
+	<column name="shield_mark" not-null="true">
 		<type name="varchar" length="0"/>
+		<comment><![CDATA[Марка щита.]]></comment>
 	</column>
 	<column name="id_electrical_system" not-null="true">
 		<type name="bigint" length="0"/>
@@ -442,7 +399,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_electrical_transform" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="tbl_electrical_transformator" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<position x="460" y="1180"/>
 	<column name="id" not-null="true">
@@ -451,13 +408,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="serial_number" not-null="true">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="mark">
+	<column name="transfomator_mark">
 		<type name="varchar" length="0"/>
 	</column>
 	<column name="id_electrical_system" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<constraint name="tbl_electrical_transform_pk" type="pk-constr" table="public.tbl_electrical_transform">
+	<constraint name="tbl_electrical_transform_pk" type="pk-constr" table="public.tbl_electrical_transformator">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -608,12 +565,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_ground_system">
-	<columns names="id_building" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
-<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_electrical_systems">
 	<columns names="id_building" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
@@ -626,7 +577,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_electrical_system" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_systems" table="public.tbl_electrical_transform">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_systems" table="public.tbl_electrical_transformator">
 	<columns names="id_electrical_system" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -638,7 +589,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_transform" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_transform" table="public.tbl_electric_shield_transform">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_transformator" table="public.tbl_electric_shield_transform">
 	<columns names="id_transformator" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -699,11 +650,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_iss_objects" reference-fk="fk_iss_node"
 	 src-required="false" dst-required="true"/>
 
-<relationship name="rel_tbl_ground_system_tbl_object_building" type="relfk" layer="0"
-	 src-table="public.tbl_ground_system"
-	 dst-table="public.tbl_object_building" reference-fk="fk_building"
-	 src-required="false" dst-required="false"/>
-
 <relationship name="rel_tbl_electrical_systems_tbl_object_building" type="relfk" layer="0"
 	 src-table="public.tbl_electrical_systems"
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
@@ -715,7 +661,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_electrical_transform_tbl_electrical_systems" type="relfk" layer="0"
-	 src-table="public.tbl_electrical_transform"
+	 src-table="public.tbl_electrical_transformator"
 	 dst-table="public.tbl_electrical_systems" reference-fk="fk_electrical_system"
 	 src-required="false" dst-required="true"/>
 
@@ -726,7 +672,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tbl_electric_shield_transform_tbl_electrical_transform" type="relfk" layer="0"
 	 src-table="public.tbl_electric_shield_transform"
-	 dst-table="public.tbl_electrical_transform" reference-fk="fk_transform"
+	 dst-table="public.tbl_electrical_transformator" reference-fk="fk_transform"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_grounding_system_tbl_object_building" type="relfk" layer="0"
