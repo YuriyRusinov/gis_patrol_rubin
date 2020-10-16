@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,402" last-zoom="1" max-obj-count="21"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,630" last-zoom="1" max-obj-count="21"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -21,15 +21,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bigint" length="0"/>
 		<comment><![CDATA[Номер колодца кабеля сигнализации]]></comment>
 	</column>
-	<column name="vols_length" not-null="true">
+	<column name="vols_length" not-null="true" default-value="0.0">
 		<type name="float8" length="0"/>
 	</column>
 	<column name="sections_number">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Количество секций]]></comment>
 	</column>
-	<column name="section_length" not-null="true">
+	<column name="section_length" not-null="true" default-value="0.0">
 		<type name="float8" length="0"/>
+		<comment><![CDATA[Длина секции]]></comment>
 	</column>
 	<column name="id_regenerator" not-null="true">
 		<type name="bigint" length="0"/>
@@ -42,11 +43,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_well_shaft" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+<table name="tbl_well_shaft" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
 	<schema name="public"/>
-	<position x="520" y="60"/>
+	<position x="600" y="60"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
+	</column>
+	<column name="well_mark" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Маркировка колодца]]></comment>
 	</column>
 	<column name="longitude" not-null="true">
 		<type name="float8" length="0"/>
@@ -69,11 +74,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 </extension>
 
-<table name="tbl_regenerator" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+<table name="tbl_regenerator" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
 	<position x="520" y="260"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
+	</column>
+	<column name="regenerator_mark" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Маркировка регенератора]]></comment>
 	</column>
 	<column name="regenerator_type" not-null="true">
 		<type name="varchar" length="0"/>
@@ -124,18 +133,19 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер шкафа места подключения]]></comment>
 	</column>
-	<column name="number_reflection">
+	<column name="reflection_number">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер рефлектограммы]]></comment>
 	</column>
 	<column name="date_reflection">
 		<type name="date" length="0"/>
+		<comment><![CDATA[Дата рефлектограммы]]></comment>
 	</column>
 	<column name="periturbation_description">
 		<type name="varchar" length="0"/>
 		<comment><![CDATA[Описание неоднородностей]]></comment>
 	</column>
-	<column name="id_object" not-null="true">
+	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
 	<constraint name="tbl_stationary_part_vols_pk" type="pk-constr" table="public.tbl_stationary_part_vols">
@@ -512,7 +522,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_stationary_part_vols">
-	<columns names="id_object" ref-type="src-columns"/>
+	<columns names="id_iss_object" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
