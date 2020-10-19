@@ -369,6 +369,12 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
             wRes = new pImageLabel( pCParamValue, parent, flags );
             break;
         }
+        case pParamType::atGeometry:
+        case pParamType::atGeography:
+        case pParamType::atGISMap: {
+            qDebug() << __PRETTY_FUNCTION__;
+            break;
+        }
        //
        // TODO: another types
        //

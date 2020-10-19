@@ -29,6 +29,7 @@ HEADERS += \
            pParamCheckWidget.h \
            pEventFilter.h \
            pImageLabel.h \
+           pGeomForm.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
            ui/precdialog.h \
@@ -71,6 +72,7 @@ SOURCES += \
            pParamCheckWidget.cpp \
            pEventFilter.cpp \
            pImageLabel.cpp \
+           pGeomForm.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
            ui/precdialog.cpp \
