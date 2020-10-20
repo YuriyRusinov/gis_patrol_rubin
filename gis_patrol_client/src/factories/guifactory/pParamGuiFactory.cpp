@@ -46,6 +46,7 @@
 #include <pXMLEdit.h>
 #include <pParamCheckWidget.h>
 #include <pImageLabel.h>
+#include <pGeomForm.h>
 #include "pParamGuiFactory.h"
 
 pParamGUIFactory::pParamGUIFactory(pDBLoader* dbLoader, pDBWriter* dbWriter, QObject* parent )
@@ -373,6 +374,7 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
         case pParamType::atGeography:
         case pParamType::atGISMap: {
             qDebug() << __PRETTY_FUNCTION__;
+            wRes = new pGeomForm( pCParamValue, parent, flags );
             break;
         }
        //

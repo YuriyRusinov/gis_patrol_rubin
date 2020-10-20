@@ -32,7 +32,7 @@ DEPENDPATH *= ../pgui ../pgui/ui
 INCLUDEPATH *= ../../corelibs
 DEPENDPATH *= ../../corelibs
 
-QT += core widgets
+QT += core widgets location
 
 LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpatrolCommunications -lpgui -lcorelibs
 include( guifactory.pri )

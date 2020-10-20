@@ -20,6 +20,15 @@ class QToolButton;
 
 class pParamValue;
 
+enum GeometryType {
+    pPoint = 0,
+    pMultiPoint,
+    pLineString,
+    pMultiLineString,
+    pPolygon,
+    pMultiPolygon
+};
+
 class pGeomForm : public pAbstractParamWidget {
 public:
     pGeomForm( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
@@ -31,7 +40,7 @@ private:
     void setup( ) override;
 
 private slots:
-    void geomTypeChanged();
+    void geomTypeChanged( int gType );
     void addPoint();
     void removePoint();
 
