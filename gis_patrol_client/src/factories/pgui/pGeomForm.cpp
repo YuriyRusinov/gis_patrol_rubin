@@ -8,9 +8,11 @@
  */
 #include <QtDebug>
 #include <QComboBox>
+#include <QGridLayout>
 #include <QLabel>
 #include <QTableView>
 #include <QToolButton>
+#include <QVBoxLayout>
 
 #include <pParamValue.h>
 #include <pCatParameter.h>
@@ -41,14 +43,45 @@ void pGeomForm::setReadOnly( bool value ) {
 }
 
 void pGeomForm::setup( ) {
+    QGridLayout* grLay = new QGridLayout( this );
+    grLay->addWidget( _lParam, 0, 0, 1, 1 );
+    QStringList strGeomTypes;
+    strGeomTypes << tr("Point")
+                 << tr("MultiPoint")
+                 << tr("LineString")
+                 << tr("MultiLineString")
+                 << tr("Polygon")
+                 << tr("MultiPolygon");
+    for( int i=pPoint; i <= pMultiPolygon; i++ ) {
+        _cbGeomType->addItem(strGeomTypes[i], i);
+    }
+    grLay->addWidget( _cbGeomType, 0, 1, 1, 1 );
+    QGridLayout* grPointsLay = new QGridLayout; 
+    grPointsLay->addWidget( _tvPoints, 0, 0, 1, 1 );
+    QVBoxLayout* vButtonsLay = new QVBoxLayout;
+    vButtonsLay->addWidget( _tbAddPoint );
+    vButtonsLay->addWidget( _tbRemovePoint );
+    vButtonsLay->addStretch();
+    grPointsLay->addLayout( vButtonsLay, 0, 1, 1, 1 );
+    grLay->addLayout( grPointsLay, 1, 0, 1, 2 );
+    _tbAddPoint->setText( tr("...") );
+    _tbAddPoint->setToolTip( tr("Add point to geometry") );
+    _tbRemovePoint->setText( tr("...") );
+    _tbRemovePoint->setToolTip( tr("Remove point from geometry") );
+
+    QObject::connect( _cbGeomType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, QOverload<int>::of(&pGeomForm::geomTypeChanged) );
+    QObject::connect( _tbAddPoint, &QAbstractButton::clicked, this, &pGeomForm::addPoint );
+    QObject::connect( _tbRemovePoint, &QAbstractButton::clicked, this, &pGeomForm::removePoint );
 }
 
-void pGeomForm::geomTypeChanged() {
+void pGeomForm::geomTypeChanged( int gType ) {
+    qDebug() << __PRETTY_FUNCTION__ << gType;
 }
 
 void pGeomForm::addPoint() {
+    qDebug() << __PRETTY_FUNCTION__;
 }
 
 void pGeomForm::removePoint() {
-
+    qDebug() << __PRETTY_FUNCTION__;
 }
