@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,630" last-zoom="1" max-obj-count="21"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,628" last-zoom="1" max-obj-count="21"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -296,17 +296,21 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_iss_object_adjucent_objects" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="tbl_iss_object_adjacent_objects" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
+	<comment><![CDATA[Соседние объекты ИСС]]></comment>
 	<position x="1340" y="1060"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
 	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<column name="id_iss_adjucent_object" not-null="true">
+	<column name="id_iss_adjacent_object" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<constraint name="tbl_iss_object_adjucent_objects_pk" type="pk-constr" table="public.tbl_iss_object_adjucent_objects">
-		<columns names="id_iss_object,id_iss_adjucent_object" ref-type="src-columns"/>
+	<constraint name="tbl_iss_object_adjucent_objects_pk" type="pk-constr" table="public.tbl_iss_object_adjacent_objects">
+		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -545,14 +549,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjucent_objects">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjacent_objects">
 	<columns names="id_iss_object" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_adjucent_object" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjucent_objects">
-	<columns names="id_iss_adjucent_object" ref-type="src-columns"/>
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjacent_objects">
+	<columns names="id_iss_adjacent_object" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -636,12 +640,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_iss_object_adjucent_objects_tbl_iss_objects" type="relfk" layer="0"
-	 src-table="public.tbl_iss_object_adjucent_objects"
+	 src-table="public.tbl_iss_object_adjacent_objects"
 	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_iss_object_adjucent_objects_tbl_iss_objects1" type="relfk" layer="0"
-	 src-table="public.tbl_iss_object_adjucent_objects"
+	 src-table="public.tbl_iss_object_adjacent_objects"
 	 dst-table="public.tbl_iss_objects" reference-fk="fk_adjucent_object"
 	 src-required="false" dst-required="true"/>
 
