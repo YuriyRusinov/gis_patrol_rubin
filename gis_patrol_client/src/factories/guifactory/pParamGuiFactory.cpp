@@ -43,6 +43,7 @@
 #include <pTimeEdit.h>
 #include <pTextEdit.h>
 #include <pColorEdit.h>
+#include <pSVGWidget.h>
 #include <pXMLEdit.h>
 #include <pParamCheckWidget.h>
 #include <pImageLabel.h>
@@ -375,6 +376,10 @@ pAbstractParamWidget* pParamGUIFactory::createParamWidget( QSharedPointer< pPara
         case pParamType::atGISMap: {
             qDebug() << __PRETTY_FUNCTION__;
             wRes = new pGeomForm( pCParamValue, parent, flags );
+            break;
+        }
+        case pParamType::atSVG: {
+            wRes = new pSVGWidget( pCParamValue, parent, flags );
             break;
         }
        //

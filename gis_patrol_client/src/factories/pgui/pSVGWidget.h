@@ -1,6 +1,6 @@
 /*
  * @brief Класс-виджет для параметров вида SVG
- * pSVGEdit.h
+ * pSVGWidget.h
  *
  * (C) НИИ "Рубин"
  * @author
@@ -17,10 +17,10 @@ class QToolButton;
 
 class pParamValue;
 
-class pSVGEdit : public pAbstractParamWidget {
+class pSVGWidget : public pAbstractParamWidget {
 public:
-    pSVGEdit( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
-    virtual ~pSVGEdit();
+    pSVGWidget( QSharedPointer< pParamValue > pValue, QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
+    virtual ~pSVGWidget();
 
     void setReadOnly( bool value ) override;
 
@@ -37,4 +37,5 @@ private:
     QLabel* _lParam;
     QSvgWidget* _svgWidget;
     QToolButton* _tbLoad;
+    QByteArray _SVGContents;
 };
