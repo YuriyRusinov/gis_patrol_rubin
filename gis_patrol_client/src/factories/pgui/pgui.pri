@@ -22,7 +22,7 @@ HEADERS += \
            pTimeEdit.h \
            pTextEdit.h \
            pColorEdit.h \
-           pSVGEdit.h \
+           pSVGWidget.h \
            pRecWidget.h \
            pXMLEdit.h \
            pCheckableDataModel.h \
@@ -65,7 +65,7 @@ SOURCES += \
            pTimeEdit.cpp \
            pTextEdit.cpp \
            pColorEdit.cpp \
-           pSVGEdit.cpp \
+           pSVGWidget.cpp \
            pRecWidget.cpp \
            pXMLEdit.cpp \
            pCheckableDataModel.cpp \
