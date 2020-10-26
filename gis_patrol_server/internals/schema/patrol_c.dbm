@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="93,443" last-zoom="1" max-obj-count="22"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="93,173" last-zoom="1" max-obj-count="24"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -350,7 +350,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<position x="1180" y="320"/>
 	<column name="id" not-null="true">
@@ -381,6 +381,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="node_border">
 		<type name="geometry" length="0"/>
 		<comment><![CDATA[Границы контролируемой зоны узла]]></comment>
+	</column>
+	<column name="id_node_type" not-null="true">
+		<type name="bigint" length="0"/>
 	</column>
 	<constraint name="tbl_iss_node_pk" type="pk-constr" table="public.tbl_iss_node">
 		<columns names="id" ref-type="src-columns"/>
@@ -532,6 +535,20 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tbl_iss_node_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<position x="1560" y="340"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_iss_node_type_pk" type="pk-constr" table="public.tbl_iss_node_type">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -607,6 +624,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <constraint name="fk_iss_node" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_node">
 	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node_type" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_node_type" table="public.tbl_iss_node">
+	<columns names="id_node_type" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -739,6 +762,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_iss_objects_tbl_iss_object_type" type="relfk" layer="0"
 	 src-table="public.tbl_iss_objects"
 	 dst-table="public.tbl_iss_object_type" reference-fk="fk_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_node_tbl_iss_node_type" type="relfk" layer="0"
+	 src-table="public.tbl_iss_node"
+	 dst-table="public.tbl_iss_node_type" reference-fk="fk_node_type"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
