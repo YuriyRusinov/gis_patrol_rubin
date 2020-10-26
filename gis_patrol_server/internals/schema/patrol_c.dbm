@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="195,626" last-zoom="1" max-obj-count="22"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="93,443" last-zoom="1" max-obj-count="22"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -255,13 +255,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 </table>
 
-<table name="tbl_iss_objects" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
+<table name="tbl_iss_objects" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Объекты ИСС]]></comment>
 	<position x="1240" y="780"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 		<comment><![CDATA[Номер объекта]]></comment>
+	</column>
+	<column name="iss_object_number" not-null="true">
+		<type name="bigint" length="0"/>
 	</column>
 	<column name="id_type" not-null="true">
 		<type name="bigint" length="0"/>
@@ -281,6 +284,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="control_border">
 		<type name="geometry" length="0"/>
 		<comment><![CDATA[Границы контрольной зоны]]></comment>
+	</column>
+	<column name="control_border_pic">
+		<type name="xml" length="0"/>
 	</column>
 	<column name="post_address" not-null="true">
 		<type name="varchar" length="0"/>
@@ -302,7 +308,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_iss_object_adjacent_objects" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Соседние объекты ИСС]]></comment>
-	<position x="1340" y="1060"/>
+	<position x="1300" y="1180"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
