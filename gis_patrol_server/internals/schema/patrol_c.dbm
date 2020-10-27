@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="93,173" last-zoom="1" max-obj-count="24"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="92,172" last-zoom="1" max-obj-count="24"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -350,7 +350,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
+<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="public"/>
 	<position x="1180" y="320"/>
 	<column name="id" not-null="true">
@@ -360,8 +360,21 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bigint" length="0"/>
 		<comment><![CDATA[Учетный номер узла]]></comment>
 	</column>
+	<column name="id_node_type" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Тип узла]]></comment>
+	</column>
 	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
+		<comment><![CDATA[К какому объекту относится]]></comment>
+	</column>
+	<column name="control_management_system">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Подсистема центрального управления]]></comment>
+	</column>
+	<column name="security_system">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[системы мониторинга информационной безопасности]]></comment>
 	</column>
 	<column name="control_level" not-null="true" default-value="3">
 		<type name="smallint" length="0"/>
@@ -374,16 +387,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Количество обслуживающего персонала]]></comment>
 	</column>
-	<column name="special_user_category" not-null="true" default-value="1">
+	<column name="special_user_category" default-value="1">
 		<type name="smallint" length="0"/>
-		<comment><![CDATA[1я, 2я, 3я]]></comment>
+		<comment><![CDATA[Категория спецпотребителей]]></comment>
 	</column>
 	<column name="node_border">
 		<type name="geometry" length="0"/>
 		<comment><![CDATA[Границы контролируемой зоны узла]]></comment>
 	</column>
-	<column name="id_node_type" not-null="true">
-		<type name="bigint" length="0"/>
+	<column name="node_border_pic">
+		<type name="xml" length="0"/>
+		<comment><![CDATA[Граница контрольной зоны узла]]></comment>
 	</column>
 	<constraint name="tbl_iss_node_pk" type="pk-constr" table="public.tbl_iss_node">
 		<columns names="id" ref-type="src-columns"/>
@@ -537,7 +551,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_iss_node_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="public"/>
-	<position x="1560" y="340"/>
+	<position x="1660" y="360"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
