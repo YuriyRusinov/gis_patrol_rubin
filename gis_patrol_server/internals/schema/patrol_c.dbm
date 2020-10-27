@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="92,172" last-zoom="1" max-obj-count="24"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="91,441" last-zoom="1" max-obj-count="24"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -255,7 +255,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 </table>
 
-<table name="tbl_iss_objects" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
+<table name="tbl_iss_objects" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Объекты ИСС]]></comment>
 	<position x="1240" y="780"/>
@@ -264,14 +264,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<comment><![CDATA[Номер объекта]]></comment>
 	</column>
 	<column name="iss_object_number" not-null="true">
-		<type name="bigint" length="0"/>
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Учетный номер объекта вида O-00001]]></comment>
 	</column>
-	<column name="id_type" not-null="true">
+	<column name="id_iss_object_type" not-null="true">
 		<type name="bigint" length="0"/>
-	</column>
-	<column name="id_class_object" not-null="true">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[Учетный номер объекта]]></comment>
+		<comment><![CDATA[Тип объекта]]></comment>
 	</column>
 	<column name="full_name" not-null="true">
 		<type name="varchar" length="0"/>
@@ -374,7 +372,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="security_system">
 		<type name="varchar" length="0"/>
-		<comment><![CDATA[системы мониторинга информационной безопасности]]></comment>
+		<comment><![CDATA[Система мониторинга информационной безопасности]]></comment>
 	</column>
 	<column name="control_level" not-null="true" default-value="3">
 		<type name="smallint" length="0"/>
@@ -607,7 +605,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_type" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_object_type" table="public.tbl_iss_objects">
-	<columns names="id_type" ref-type="src-columns"/>
+	<columns names="id_iss_object_type" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
