@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="91,441" last-zoom="1" max-obj-count="24"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="383,720" last-zoom="1" max-obj-count="33"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -186,7 +186,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_object_building" layer="0" collapse-mode="2" max-obj-count="12" z-value="0">
+<table name="tbl_object_building" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Сооружения объекта]]></comment>
 	<position x="840" y="720"/>
@@ -196,6 +196,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name" not-null="true">
 		<type name="varchar" length="0"/>
 		<comment><![CDATA[Наименование]]></comment>
+	</column>
+	<column name="id_building_type" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Тип сооружения]]></comment>
 	</column>
 	<column name="id_iss_object" not-null="true">
 		<type name="bigint" length="0"/>
@@ -350,7 +354,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="public"/>
-	<position x="1180" y="320"/>
+	<position x="1480" y="340"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -535,7 +539,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_iss_object_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="public"/>
-	<position x="1580" y="800"/>
+	<position x="1660" y="840"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -549,7 +553,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_iss_node_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="public"/>
-	<position x="1660" y="360"/>
+	<position x="2120" y="380"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -557,6 +561,136 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="tbl_iss_node_type_pk" type="pk-constr" table="public.tbl_iss_node_type">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_sertificates" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<position x="1520" y="20"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_iss_node" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Узел ИСС, которому относится сертификат]]></comment>
+	</column>
+	<column name="sertification_date" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата сертификации]]></comment>
+	</column>
+	<column name="agreement_number">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Номер заключительного соответствия.]]></comment>
+	</column>
+	<column name="id_sertificate" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_sertificates_pk" type="pk-constr" table="public.tbl_node_sertificates">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_sertificates" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="2040" y="40"/>
+	<column name="id">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="sertification_number" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="sertification_date" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+</table>
+
+<table name="tbl_software" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="2240" y="200"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="software_list" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Состав пакета ПО]]></comment>
+	</column>
+	<column name="software_version" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Версия ПО]]></comment>
+	</column>
+	<column name="software_crc" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[CRC - sums]]></comment>
+	</column>
+	<constraint name="tbl_software_pk" type="pk-constr" table="public.tbl_software">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_soft" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1900" y="180"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_iss_node" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_soft" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_soft_pk" type="pk-constr" table="public.tbl_node_soft">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_security" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[атрибуты политик безопасности]]></comment>
+	<position x="2160" y="500"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="confidential_levels">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_iss_node">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_security_pk" type="pk-constr" table="public.tbl_node_security">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_buildings" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="1180" y="400"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_iss_node" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_buildings_pk" type="pk-constr" table="public.tbl_node_buildings">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_object_building_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<position x="1740" y="700"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_object_building_type_pk" type="pk-constr" table="public.tbl_object_building_type">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -592,8 +726,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_object_building">
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_iss_objects" table="public.tbl_object_building">
 	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object_building_type" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building_type" table="public.tbl_object_building">
+	<columns names="id_building_type" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -677,6 +817,48 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_grounding_system">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_iss_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_iss_node" table="public.tbl_node_sertificates">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_sertification" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_sertificates" table="public.tbl_node_sertificates">
+	<columns names="id_sertificate" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_node" table="public.tbl_node_soft">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_soft" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_software" table="public.tbl_node_soft">
+	<columns names="id_soft" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_node" table="public.tbl_node_security">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_iss_node" table="public.tbl_node_buildings">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_node_buildings">
 	<columns names="id_building" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -779,6 +961,46 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_iss_node_tbl_iss_node_type" type="relfk" layer="0"
 	 src-table="public.tbl_iss_node"
 	 dst-table="public.tbl_iss_node_type" reference-fk="fk_node_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_sertificates_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_sertificates"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_iss_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_sertificates_tbl_sertificates" type="relfk" layer="0"
+	 src-table="public.tbl_node_sertificates"
+	 dst-table="public.tbl_sertificates" reference-fk="fk_sertification"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_soft_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_soft"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_soft_tbl_software" type="relfk" layer="0"
+	 src-table="public.tbl_node_soft"
+	 dst-table="public.tbl_software" reference-fk="fk_soft"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_security_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_security"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_node_buildings_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_buildings"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_buildings_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_node_buildings"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_object_building_tbl_object_building_type" type="relfk" layer="0"
+	 src-table="public.tbl_object_building"
+	 dst-table="public.tbl_object_building_type" reference-fk="fk_object_building_type"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
