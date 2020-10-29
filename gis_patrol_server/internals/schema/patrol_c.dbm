@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="383,720" last-zoom="1" max-obj-count="33"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,449" last-zoom="1" max-obj-count="37"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -234,7 +234,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_rooms" layer="0" gen-alter-cmds="true" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="tbl_rooms" layer="0" gen-alter-cmds="true" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Помещения сооружения]]></comment>
 	<position x="460" y="760"/>
@@ -245,6 +245,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер помещения на этаже]]></comment>
 	</column>
+	<column name="room_number">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Кодовый номер комнаты.]]></comment>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
 	<column name="id_floor" not-null="true" default-value="0">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер этажа]]></comment>
@@ -252,6 +259,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_building" not-null="true">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Номер здания]]></comment>
+	</column>
+	<column name="width">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Размер помещения, длина]]></comment>
+	</column>
+	<column name="height">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Размер помещения, ширина]]></comment>
 	</column>
 <constraint name="tbl_rooms_pk" type="pk-constr" table="public.tbl_rooms">
 	<columns names="id" ref-type="src-columns"/>
@@ -484,7 +499,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_grounding_system" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Система заземления]]></comment>
-	<position x="900" y="1240"/>
+	<position x="520" y="1420"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -695,6 +710,72 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tbl_venting" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Системы вентиляции по этажам]]></comment>
+	<position x="540" y="480"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_floor">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="floor_venting">
+		<type name="xml" length="0"/>
+		<comment><![CDATA[Система вентиляции на этаже]]></comment>
+	</column>
+	<constraint name="tbl_venting_pk" type="pk-constr" table="public.tbl_venting">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_heating" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Система отопления на этаже]]></comment>
+	<position x="900" y="1080"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер здания]]></comment>
+	</column>
+	<column name="id_floor" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="heating">
+		<type name="xml" length="0"/>
+	</column>
+	<constraint name="tbl_heating_pk" type="pk-constr" table="public.tbl_heating">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_cond" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="900" y="1260"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_floor" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="sys_cond">
+		<type name="xml" length="0"/>
+	</column>
+	<constraint name="tbl_cond_pk" type="pk-constr" table="public.tbl_cond">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -863,6 +944,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building" table="public.tbl_venting">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building" table="public.tbl_heating">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building" table="public.tbl_cond">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -963,11 +1062,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_iss_node_type" reference-fk="fk_node_type"
 	 src-required="false" dst-required="true"/>
 
-<relationship name="rel_tbl_node_sertificates_tbl_iss_node" type="relfk" layer="0"
-	 src-table="public.tbl_node_sertificates"
-	 dst-table="public.tbl_iss_node" reference-fk="fk_iss_node"
-	 src-required="false" dst-required="true"/>
-
 <relationship name="rel_tbl_node_sertificates_tbl_sertificates" type="relfk" layer="0"
 	 src-table="public.tbl_node_sertificates"
 	 dst-table="public.tbl_sertificates" reference-fk="fk_sertification"
@@ -1001,6 +1095,26 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_object_building_tbl_object_building_type" type="relfk" layer="0"
 	 src-table="public.tbl_object_building"
 	 dst-table="public.tbl_object_building_type" reference-fk="fk_object_building_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_sertificates_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_sertificates"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_iss_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_venting_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_venting"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_heating_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_heating"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_cond_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_cond"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
 
 </dbmodel>
