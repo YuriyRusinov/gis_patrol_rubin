@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,449" last-zoom="1" max-obj-count="37"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,1128" last-zoom="1" max-obj-count="39"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -237,7 +237,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_rooms" layer="0" gen-alter-cmds="true" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Помещения сооружения]]></comment>
-	<position x="460" y="760"/>
+	<position x="520" y="720"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -343,31 +343,57 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_fire_alarm_room_device" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+<table name="tbl_telecom_equipment" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="public"/>
-	<position x="60" y="780"/>
+	<comment><![CDATA[Телекоммуникационное оборудование]]></comment>
+	<position x="20" y="760"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
-	<column name="device_name">
+	<column name="equipment_name">
 		<type name="varchar" length="0"/>
+		<comment><![CDATA[Наименование ТКО]]></comment>
 	</column>
-	<column name="device_model" not-null="true">
-		<type name="varchar" length="0"/>
-	</column>
-	<column name="id_room" not-null="true">
+	<column name="serial_number" not-null="true">
 		<type name="bigint" length="0"/>
+		<comment><![CDATA[Заводской номер]]></comment>
+	</column>
+	<column name="serial_number_minor">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="serial_number_minor_minor">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="date_of_production" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата производства]]></comment>
+	</column>
+	<column name="date_of_entry" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата ввода в эксплуатацию]]></comment>
 	</column>
 	<column name="id_state" not-null="true">
 		<type name="bigint" length="0"/>
 		<comment><![CDATA[Состояние устройства]]></comment>
 	</column>
-	<constraint name="tbl_fire_alarm_room_device_pk" type="pk-constr" table="public.tbl_fire_alarm_room_device">
+	<column name="solid_equipment">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Состав ЗИП]]></comment>
+	</column>
+	<column name="solid_equipment_type">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Тип ЗИП]]></comment>
+	</column>
+	<column name="equipment_purpose">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Назначение модуля ТКО]]></comment>
+	</column>
+	<constraint name="tbl_fire_alarm_room_device_pk" type="pk-constr" table="public.tbl_telecom_equipment">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
+<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
 	<schema name="public"/>
 	<position x="1480" y="340"/>
 	<column name="id" not-null="true">
@@ -390,8 +416,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<comment><![CDATA[Подсистема центрального управления]]></comment>
 	</column>
 	<column name="security_system">
-		<type name="varchar" length="0"/>
+		<type name="boolean" length="0"/>
 		<comment><![CDATA[Система мониторинга информационной безопасности]]></comment>
+	</column>
+	<column name="system_management_security">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Система управления информационной безопасностью]]></comment>
 	</column>
 	<column name="control_level" not-null="true" default-value="3">
 		<type name="smallint" length="0"/>
@@ -423,7 +453,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_electrical_systems" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="420" y="980"/>
+	<position x="620" y="1020"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -440,7 +470,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_electrical_shield" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<position x="60" y="1120"/>
+	<position x="60" y="1400"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -461,7 +491,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_electrical_transformator" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<position x="460" y="1180"/>
+	<position x="460" y="1260"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -481,7 +511,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_electric_shield_transform" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="40" y="1360"/>
+	<position x="20" y="1660"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -499,7 +529,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tbl_grounding_system" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="public"/>
 	<comment><![CDATA[Система заземления]]></comment>
-	<position x="520" y="1420"/>
+	<position x="600" y="1500"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -537,7 +567,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_state_tko" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<position x="80" y="1000"/>
+	<position x="40" y="1100"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
@@ -776,6 +806,84 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tbl_equipment_distr" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Размещение ТКО по помещениям]]></comment>
+	<position x="300" y="1040"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_room" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_equipment_module" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер модуля]]></comment>
+	</column>
+	<column name="id_board" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер шкафа]]></comment>
+	</column>
+	<column name="id_shelf">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер полки в шкафу]]></comment>
+	</column>
+	<column name="id_board_place">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер места модуля в шкафу]]></comment>
+	</column>
+	<column name="id_basket">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер места модуля в корзине]]></comment>
+	</column>
+	<constraint name="tbl_equipment_distr_pk" type="pk-constr" table="public.tbl_equipment_distr">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_telekom_submodules" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="1240" y="1620"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="submodule_name">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Наименование субмодуля]]></comment>
+	</column>
+	<column name="submodule_purpose">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Назначение субмодуля ТКО]]></comment>
+	</column>
+	<constraint name="tbl_telekom_submodules_pk" type="pk-constr" table="public.tbl_telekom_submodules">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_submodules_distr" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Размещение субмодулей]]></comment>
+	<position x="960" y="1460"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_submodule" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер субмодуля]]></comment>
+	</column>
+	<column name="place_number">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер места]]></comment>
+	</column>
+	<column name="id_module">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер модуля]]></comment>
+	</column>
+	<constraint name="tbl_submodules_distr_pk" type="pk-constr" table="public.tbl_submodules_distr">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
 	<columns names="id_well" ref-type="src-columns"/>
@@ -842,14 +950,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_room" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_rooms" table="public.tbl_fire_alarm_room_device">
-	<columns names="id_room" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
 <constraint name="fk_state" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_state_tko" table="public.tbl_fire_alarm_room_device">
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_state_tko" table="public.tbl_telecom_equipment">
 	<columns names="id_state" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -962,6 +1064,30 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_room" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_rooms" table="public.tbl_equipment_distr">
+	<columns names="id_room" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_equipment" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_telecom_equipment" table="public.tbl_equipment_distr">
+	<columns names="id_equipment_module" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_submodule" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_telekom_submodules" table="public.tbl_submodules_distr">
+	<columns names="id_submodule" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_module" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_telecom_equipment" table="public.tbl_submodules_distr">
+	<columns names="id_module" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
 	 src-table="public.tbl_linear_part_vols"
 	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
@@ -1002,11 +1128,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
 
-<relationship name="rel_tbl_fire_alarm_room_device_tbl_rooms" type="relfk" layer="0"
-	 src-table="public.tbl_fire_alarm_room_device"
-	 dst-table="public.tbl_rooms" reference-fk="fk_room"
-	 src-required="false" dst-required="true"/>
-
 <relationship name="rel_tbl_iss_node_tbl_iss_objects" type="relfk" layer="0"
 	 src-table="public.tbl_iss_node"
 	 dst-table="public.tbl_iss_objects" reference-fk="fk_iss_node"
@@ -1043,7 +1164,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_fire_alarm_room_device_tbl_state_tko" type="relfk" layer="0"
-	 src-table="public.tbl_fire_alarm_room_device"
+	 src-table="public.tbl_telecom_equipment"
 	 dst-table="public.tbl_state_tko" reference-fk="fk_state"
 	 src-required="false" dst-required="true"/>
 
@@ -1097,11 +1218,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tbl_object_building_type" reference-fk="fk_object_building_type"
 	 src-required="false" dst-required="true"/>
 
-<relationship name="rel_tbl_node_sertificates_tbl_iss_node" type="relfk" layer="0"
-	 src-table="public.tbl_node_sertificates"
-	 dst-table="public.tbl_iss_node" reference-fk="fk_iss_node"
-	 src-required="false" dst-required="true"/>
-
 <relationship name="rel_tbl_venting_tbl_object_building" type="relfk" layer="0"
 	 src-table="public.tbl_venting"
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
@@ -1116,5 +1232,25 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.tbl_cond"
 	 dst-table="public.tbl_object_building" reference-fk="fk_building"
 	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_equipment_distr_tbl_rooms" type="relfk" layer="0"
+	 src-table="public.tbl_equipment_distr"
+	 dst-table="public.tbl_rooms" reference-fk="fk_room"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_equipment_distr_tbl_telecom_equipment" type="relfk" layer="0"
+	 src-table="public.tbl_equipment_distr"
+	 dst-table="public.tbl_telecom_equipment" reference-fk="fk_equipment"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_submodules_distr_tbl_telekom_submodules" type="relfk" layer="0"
+	 src-table="public.tbl_submodules_distr"
+	 dst-table="public.tbl_telekom_submodules" reference-fk="fk_submodule"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_submodules_distr_tbl_telecom_equipment" type="relfk" layer="0"
+	 src-table="public.tbl_submodules_distr"
+	 dst-table="public.tbl_telecom_equipment" reference-fk="fk_module"
+	 src-required="false" dst-required="false"/>
 
 </dbmodel>
