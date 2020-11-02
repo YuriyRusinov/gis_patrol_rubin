@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,1128" last-zoom="1" max-obj-count="39"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="585,1" last-zoom="1" max-obj-count="39"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -329,17 +329,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
-	<column name="id_iss_object" not-null="true">
+	<column name="id_iss_adjacent_object1" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<column name="id_iss_adjacent_object" not-null="true">
+	<column name="id_iss_adjacent_object2" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
 	<constraint name="tbl_iss_object_adjucent_objects_pk" type="pk-constr" table="public.tbl_iss_object_adjacent_objects">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 	<constraint name="check_id_object" type="ck-constr" table="public.tbl_iss_object_adjacent_objects">
-			<expression><![CDATA[id_iss_object != id_iss_adjacent_object]]></expression>
+			<expression><![CDATA[id_iss_adjacent_object1 != id_iss_adjacent_object2]]></expression>
 	</constraint>
 </table>
 
@@ -399,9 +399,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
-	<column name="id_stat_number" not-null="true">
-		<type name="bigint" length="0"/>
-		<comment><![CDATA[Учетный номер узла]]></comment>
+	<column name="node_stat_number" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Учетный номер узла вида U-000011]]></comment>
 	</column>
 	<column name="id_node_type" not-null="true">
 		<type name="bigint" length="0"/>
@@ -440,7 +440,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="node_border">
 		<type name="geometry" length="0"/>
-		<comment><![CDATA[Границы контролируемой зоны узла]]></comment>
+		<comment><![CDATA[Граница контрольной зоны узла]]></comment>
 	</column>
 	<column name="node_border_pic">
 		<type name="xml" length="0"/>
@@ -565,8 +565,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_state_tko" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="tbl_state_tce" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
+	<comment><![CDATA[Набор состояний телекоммуникационного оборудования]]></comment>
 	<position x="40" y="1100"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
@@ -577,7 +578,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="description">
 		<type name="varchar" length="0"/>
 	</column>
-	<constraint name="tbl_state_tko_pk" type="pk-constr" table="public.tbl_state_tko">
+	<constraint name="tbl_state_tko_pk" type="pk-constr" table="public.tbl_state_tce">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -841,7 +842,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tbl_telekom_submodules" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="tbl_teleсom_submodules" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<position x="1240" y="1620"/>
 	<column name="id" not-null="true">
@@ -855,7 +856,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="text" length="0"/>
 		<comment><![CDATA[Назначение субмодуля ТКО]]></comment>
 	</column>
-	<constraint name="tbl_telekom_submodules_pk" type="pk-constr" table="public.tbl_telekom_submodules">
+	<constraint name="tbl_telekom_submodules_pk" type="pk-constr" table="public.&quot;tbl_teleсom_submodules&quot;">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -940,18 +941,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjacent_objects">
-	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id_iss_adjacent_object1" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_adjucent_object" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjacent_objects">
-	<columns names="id_iss_adjacent_object" ref-type="src-columns"/>
+	<columns names="id_iss_adjacent_object2" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_state" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_state_tko" table="public.tbl_telecom_equipment">
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_state_tce" table="public.tbl_telecom_equipment">
 	<columns names="id_state" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -1077,7 +1078,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_submodule" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_telekom_submodules" table="public.tbl_submodules_distr">
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.&quot;tbl_teleсom_submodules&quot;" table="public.tbl_submodules_distr">
 	<columns names="id_submodule" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -1165,7 +1166,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tbl_fire_alarm_room_device_tbl_state_tko" type="relfk" layer="0"
 	 src-table="public.tbl_telecom_equipment"
-	 dst-table="public.tbl_state_tko" reference-fk="fk_state"
+	 dst-table="public.tbl_state_tce" reference-fk="fk_state"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_stationary_part_vols_tbl_iss_objects" type="relfk" layer="0"
@@ -1245,12 +1246,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tbl_submodules_distr_tbl_telekom_submodules" type="relfk" layer="0"
 	 src-table="public.tbl_submodules_distr"
-	 dst-table="public.tbl_telekom_submodules" reference-fk="fk_submodule"
+	 dst-table="public.&quot;tbl_teleсom_submodules&quot;" reference-fk="fk_submodule"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_tbl_submodules_distr_tbl_telecom_equipment" type="relfk" layer="0"
 	 src-table="public.tbl_submodules_distr"
 	 dst-table="public.tbl_telecom_equipment" reference-fk="fk_module"
 	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_node_sertificates_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_sertificates"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_iss_node"
+	 src-required="false" dst-required="true"/>
 
 </dbmodel>
