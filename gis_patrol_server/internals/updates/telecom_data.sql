@@ -47,6 +47,13 @@ insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title,
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (437, 4, 4, 'sertification_valid_date', 'Срок действия сертификата', 'Срок действия сертификата', null::varchar, null::varchar, false) on conflict do nothing;
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (438, 9, 4, 'sertification_number', 'Номер сертификата', 'Номер сертификата', null::varchar, null::varchar, false) on conflict do nothing;
 --
+-- Состав ПО
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (439, 2, 4, 'id_soft', 'Состав пакета ПО', 'Состав пакета ПО', 'tbl_node_soft', 'software_list', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (440, 9, 4, 'software_list', 'Состав пакета ПО', 'Состав пакета ПО', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (441, 9, 4, 'software_version', 'Версия пакета ПО', 'Версия пакета ПО', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (442, 9, 4, 'software_crc', 'Контрольные суммы пакета ПО', 'Контрольные суммы пакета ПО', null::varchar, null::varchar, false) on conflict do nothing;
+--
 -- Категории информационных объектов
 --
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (200, 10, null::integer, false, 'Типы телекоммуникационных сущностей', 'TELECOM_CATEGORY_200', null::varchar, true) on conflict do nothing;
@@ -63,6 +70,10 @@ insert into tbl_communication_categories (id, id_category_type, id_child, is_mai
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (211, 8, 210, true, 'Справочники сертификатов', 'TELECOM_CATEGORY_211', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (212, 10, null::integer, false, 'Аттестация узлов', 'TELECOM_CATEGORY_212', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (213, 8, 212, true, 'Справочники аттестатов узлов', 'TELECOM_CATEGORY_213', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (214, 10, null::integer, false, 'Состав пакетов ПО', 'TELECOM_CATEGORY_214', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (215, 8, 214, true, 'Справочники ПО', 'TELECOM_CATEGORY_215', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (216, 10, null::integer, false, 'Состав пакетов ПО на узлах', 'TELECOM_CATEGORY_216', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (217, 8, 216, true, 'Справочники ПО по узлам', 'TELECOM_CATEGORY_217', null::varchar, true) on conflict do nothing;
 
 --
 -- Атрибуты категорий
@@ -122,6 +133,16 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (647, 212, 434, null::varchar, true, false, 3) on conflict do nothing;
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (648, 212, 435, null::varchar, true, false, 4) on conflict do nothing;
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (649, 212, 436, null::varchar, true, false, 5) on conflict do nothing;
+
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (650, 214, 1, null::varchar, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (651, 214, 440, null::varchar, true, false, 2) on conflict do nothing; --software_list
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (652, 214, 441, null::varchar, true, false, 3) on conflict do nothing; -- software_version
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (653, 214, 442, null::varchar, true, false, 4) on conflict do nothing; -- software_crc
+
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (654, 216, 1, null::varchar, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (655, 216, 433, null::varchar, true, false, 2) on conflict do nothing; -- id_iss_node
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (656, 216, 439, null::varchar, true, false, 3) on conflict do nothing; -- id_soft
+
 --
 -- Справочники
 --
@@ -134,6 +155,8 @@ insert into tbl_io_communication_objects_references (id, id_author, id_category,
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (106, 1, 209, 'Справочник сооружений', null::varchar, 'tbl_object_building', 'Сооружения ИСС', false, current_timestamp, true) on conflict do nothing;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (107, 1, 211, 'Справочник сертификатов', null::varchar, 'tbl_sertificates', 'Сертификаты ИСС', false, current_timestamp, true) on conflict do nothing;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (108, 1, 213, 'Аттестация узлов ИСС', null::varchar, 'tbl_node_sertificates', 'Сертификаты узлов ИСС', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (109, 1, 215, 'Справочники ПО', null::varchar, 'tbl_software', 'Справочники ПО', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (110, 1, 217, 'Справочники ПО на узлах ИСС', null::varchar, 'tbl_node_soft', 'Справочники ПО по узлам', false, current_timestamp, true) on conflict do nothing;
 --
 -- Первоначальные записи справочников
 --
