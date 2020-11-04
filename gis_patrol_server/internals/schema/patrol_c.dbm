@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="788,0" last-zoom="1" max-obj-count="38"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="973,0" last-zoom="1" max-obj-count="38"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -682,7 +682,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tbl_node_soft" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
 	<position x="1900" y="180"/>
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
