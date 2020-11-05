@@ -54,6 +54,80 @@ insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title,
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (441, 9, 4, 'software_version', 'Версия пакета ПО', 'Версия пакета ПО', null::varchar, null::varchar, false) on conflict do nothing;
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (442, 9, 4, 'software_crc', 'Контрольные суммы пакета ПО', 'Контрольные суммы пакета ПО', null::varchar, null::varchar, false) on conflict do nothing;
 --
+-- Security
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (443, 8, 4, 'confidential_levels', 'Атрибуты политик безопасности', 'Атрибуты политик безопасности', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Помещения в здании
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (444, 8, 4, 'id_floor_room', 'Номер помещения на этаже', 'Номер помещения на этаже', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (445, 8, 4, 'id_floor', 'Номер этажа', 'Номер этажа', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (446, 2, 4, 'id_room', 'Номер помещения', 'Номер помещения', 'tbl_rooms', 'id_floor_number', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (447, 7, 4, 'room_length', 'Размер помещения, длина', 'Размер помещения, длина', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (448, 7, 4, 'room_width', 'Размер помещения, ширина', 'Размер помещения, ширина', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (449, 9, 4, 'room_name', 'Наименование помещения', 'Наименование помещения', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (450, 2, 4, 'id_building', 'Номер сооружения', 'Номер сооружения', 'tbl_object_building', 'building_number', false) on conflict do nothing;
+--
+-- Системы пожарной и охранной сигнализации
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (451, 8, 4, 'id_device', 'Номер устройства', 'Номер устройства', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (452, 9, 4, 'device_model', 'Модель устройства', 'Модель устройства', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (453, 1, 4, 'is_fire', 'Пожарная(true) или охранная(false)', 'Пожарная(true) или охранная(false)', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (454, 9, 4, 'central_control', 'Модель центрального контроллера', 'Модель центрального контроллера', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (455, 9, 4, 'cable_mark', 'Марка кабеля', 'Марка кабеля', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Состояния сигнализации
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (456, 2, 4, 'id_state', 'Состояние ТКО', 'Состояние ТКО', 'tbl_state_tko', 'name', false) on conflict do nothing;
+--
+-- Система заземления
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (457, 9, 4, 'grounding_bar_mark', 'Маркировка шины заземления', 'Маркировка шины заземления', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (458, 9, 4, 'grounding_cord', 'Марка провода заземления', 'Марка провода заземления', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (459, 7, 4, 'grounding_resistance', 'Сопротивление заземления', 'Сопротивление заземления', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (460, 9, 4, 'grounding_type', 'Тип заземления', 'Тип заземления', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (461, 8, 4, 'grounding_contour_number', 'Номер контура заземления', 'Номер контура заземления', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Система электропитания
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (462, 9, 4, 'serial_number', 'Серийный номер', 'Серийный номер', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (463, 2, 4, 'id_electrical_system', 'Система электропитания', 'Система электропитания', 'tbl_electrical_systems', 'name', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (464, 9, 4, 'transformator_mark', 'Модель трансформатора', 'Модель трансформатора', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (465, 9, 4, 'shield_mark', 'Марка электрощита', 'Марка электрощита', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Стационарная часть ВОЛС
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (466, 2, 4, 'id_vols', 'ВОЛС', 'ВОЛС', 'tbl_linear_part_vols', 'color_mark', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (467, 9, 4, 'opt_crosses_purpose', 'Назначение оптических кроссов', 'Назначение оптических кроссов', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (468, 9, 4, 'opt_cross_type', 'Тип оптического кросса', 'Тип оптического кросса', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (469, 8, 4, 'cross_place_number', 'Номер места на оптическом кроссе', 'Номер места на оптическом кроссе', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (470, 8, 4, 'vols_number', 'Номер оптоволокна', 'Номер оптоволокна', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (471, 8, 4, 'column_number', 'Номер шкафа места подключения', 'Номер шкафа места подключения', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (472, 8, 4, 'reflection_number', 'Номер рефлектограммы', 'Номер рефлектограммы', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (473, 4, 4, 'date_reflection', 'Дата рефлектограммы', 'Дата рефлектограммы', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (474, 9, 4, 'periturbation_description', 'Описание неоднородностей', 'Описание неоднородностей', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Линейная часть ВОЛС
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (475, 2, 4, 'id_well', 'Номер колодца кабеля сигнализации', 'Номер колодца кабеля сигнализации', 'tbl_well_shaft', 'well_mark', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (476, 18, 4, 'color_mark', 'Маркировка ВОЛС', 'Маркировка ВОЛС', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (477, 7, 4, 'vols_length', 'Длина ВОЛС', 'Длина ВОЛС', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (478, 8, 4, 'sections_number', 'Количество секций', 'Количество секций', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (479, 7, 4, 'section_length', 'Длина секции', 'Длина секции', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (480, 2, 4, 'id_regenerator', 'Номер регенератора', 'Номер регенератора', 'tbl_regenerator', 'id', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (481, 9, 4, 'vols_type', 'Тип ВОЛС', 'Тип ВОЛС', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Колодец ВОЛС
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (482, 9, 4, 'well_mark', 'Маркировка колодца', 'Маркировка колодца', null::varchar, null::varchar, false) on conflict do nothing;
+--
+-- Регенератор ВОЛС
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (483, 9, 4, 'regenerator_mark', 'Маркировка регенератора', 'Маркировка регенератора', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (484, 9, 4, 'regenerator_type', 'Тип регенератора', 'Маркировка регенератора', null::varchar, null::varchar, false) on conflict do nothing;
+
+
+--
 -- Категории информационных объектов
 --
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (200, 10, null::integer, false, 'Типы телекоммуникационных сущностей', 'TELECOM_CATEGORY_200', null::varchar, true) on conflict do nothing;
@@ -74,6 +148,10 @@ insert into tbl_communication_categories (id, id_category_type, id_child, is_mai
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (215, 8, 214, true, 'Справочники ПО', 'TELECOM_CATEGORY_215', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (216, 10, null::integer, false, 'Состав пакетов ПО на узлах', 'TELECOM_CATEGORY_216', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (217, 8, 216, true, 'Справочники ПО по узлам', 'TELECOM_CATEGORY_217', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (218, 10, null::integer, false, 'Атрибуты политик безопасности', 'TELECOM_CATEGORY_218', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (219, 8, 218, true, 'Справочники атрибутов политик безопасности', 'TELECOM_CATEGORY_219', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (220, 10, null::integer, false, 'Помещения сооружений', 'TELECOM_CATEGORY_220', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (221, 8, 220, true, 'Справочники помещений', 'TELECOM_CATEGORY_221', null::varchar, true) on conflict do nothing;
 
 --
 -- Атрибуты категорий
@@ -143,6 +221,17 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (655, 216, 433, null::varchar, true, false, 2) on conflict do nothing; -- id_iss_node
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (656, 216, 439, null::varchar, true, false, 3) on conflict do nothing; -- id_soft
 
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (657, 218, 1, null::varchar, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (658, 218, 433, null::varchar, true, false, 2) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (659, 218, 443, null::varchar, true, false, 3) on conflict do nothing;
+
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (660, 220, 1, null::varchar, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (661, 220, 450, null::varchar, true, false, 2) on conflict do nothing; -- id_building
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (662, 220, 444, null::varchar, true, false, 3) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (663, 220, 445, null::varchar, true, false, 4) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (664, 220, 447, null::varchar, false, false, 6) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (665, 220, 448, null::varchar, false, false, 7) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (666, 220, 449, null::varchar, false, false, 5) on conflict do nothing;
 --
 -- Справочники
 --
@@ -157,6 +246,8 @@ insert into tbl_io_communication_objects_references (id, id_author, id_category,
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (108, 1, 213, 'Аттестация узлов ИСС', null::varchar, 'tbl_node_sertificates', 'Сертификаты узлов ИСС', false, current_timestamp, true) on conflict do nothing;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (109, 1, 215, 'Справочники ПО', null::varchar, 'tbl_software', 'Справочники ПО', false, current_timestamp, true) on conflict do nothing;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (110, 1, 217, 'Справочники ПО на узлах ИСС', null::varchar, 'tbl_node_soft', 'Справочники ПО по узлам', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (111, 1, 219, 'Справочник политик безопасности', null::varchar, 'tbl_node_security', 'Атрибуты политик безопасности', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (112, 1, 221, 'Справочник помещений', null::varchar, 'tbl_rooms', 'Помещения', false, current_timestamp, true) on conflict do nothing;
 --
 -- Первоначальные записи справочников
 --
