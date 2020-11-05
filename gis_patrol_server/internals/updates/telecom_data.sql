@@ -125,7 +125,24 @@ insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title,
 --
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (483, 9, 4, 'regenerator_mark', 'Маркировка регенератора', 'Маркировка регенератора', null::varchar, null::varchar, false) on conflict do nothing;
 insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (484, 9, 4, 'regenerator_type', 'Тип регенератора', 'Маркировка регенератора', null::varchar, null::varchar, false) on conflict do nothing;
-
+--
+-- Оборудование Телеком и его размещение
+--
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (485, 9, 4, 'equipment_name', 'Наименование ТКО', 'Наименование ТКО', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (486, 8, 4, 'serial_number', 'Заводской номер', 'Заводской номер', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (487, 9, 4, 'solid_equipment', 'Состав ЗИП', 'Состав ЗИП', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (488, 9, 4, 'solid_equipment_type', 'Тип ЗИП', 'Тип ЗИП', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (489, 13, 4, 'equipment_purpose', 'Назначение модуля ТКО', 'Назначение модуля ТКО', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (490, 2, 4, 'id_equipment_module', 'Номер модуля ТКО', 'Номер модуля ТКО', 'tbl_telecom_equipment', 'equipment_name', false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (491, 8, 4, 'id_board', 'Номер шкафа', 'Номер шкафа', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (492, 8, 4, 'id_shelf', 'Номер полки в шкафу', 'Номер полки в шкафу', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (493, 8, 4, 'id_board_place', 'Номер места модуля в шкафу', 'Номер места модуля в шкафу', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (494, 8, 4, 'id_basket', 'Номер места модуля в корзине', 'Номер места модуля в корзине', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (495, 8, 4, 'serial_number_minor', 'Номер версии', 'Номер версии', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (496, 8, 4, 'serial_number_minor_minor', 'Номер версии (patch)', 'Номер версии (patch)', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (497, 4, 4, 'date_of_production', 'Дата производства', 'Дата производства', null::varchar, null::varchar, false) on conflict do nothing;
+insert into tbl_parameters(id, id_param_type, id_param_group, code, name, title, table_name, column_name, is_system) values (498, 4, 4, 'date_of_entry', 'Дата ввода в эксплуатацию', 'Дата ввода в эксплуатацию', null::varchar, null::varchar, false) on conflict do nothing;
+select setval('tbl_parameters_id_seq', 600, true);
 
 --
 -- Категории информационных объектов
