@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,831" last-zoom="1" max-obj-count="38"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,360" last-zoom="1" max-obj-count="38"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -743,7 +743,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bigint" length="0"/>
 		<comment><![CDATA[Номер этажа]]></comment>
 	</column>
-	<column name="floor_venting">
+	<column name="venting">
 		<type name="xml" length="0"/>
 		<comment><![CDATA[Система вентиляции на этаже]]></comment>
 	</column>
@@ -769,6 +769,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="heating">
 		<type name="xml" length="0"/>
+		<comment><![CDATA[Система отопления на этаже]]></comment>
 	</column>
 	<constraint name="tbl_heating_pk" type="pk-constr" table="public.tbl_heating">
 		<columns names="id" ref-type="src-columns"/>
@@ -787,8 +788,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_floor" not-null="true">
 		<type name="bigint" length="0"/>
 	</column>
-	<column name="sys_cond">
+	<column name="conditioning">
 		<type name="xml" length="0"/>
+		<comment><![CDATA[Система кондиционирования на этаже]]></comment>
 	</column>
 	<constraint name="tbl_cond_pk" type="pk-constr" table="public.tbl_cond">
 		<columns names="id" ref-type="src-columns"/>
@@ -856,7 +858,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id" not-null="true">
 		<type name="bigserial" length="0"/>
 	</column>
-	<column name="id_submodule" not-null="true">
+	<column name="id_submodule">
 		<type name="bigint" length="0"/>
 		<comment><![CDATA[Номер субмодуля]]></comment>
 	</column>
@@ -1213,7 +1215,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tbl_submodules_distr_tbl_telekom_submodules" type="relfk" layer="0"
 	 src-table="public.tbl_submodules_distr"
 	 dst-table="public.&quot;tbl_teleсom_submodules&quot;" reference-fk="fk_submodule"
-	 src-required="false" dst-required="true"/>
+	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_tbl_submodules_distr_tbl_telecom_equipment" type="relfk" layer="0"
 	 src-table="public.tbl_submodules_distr"
