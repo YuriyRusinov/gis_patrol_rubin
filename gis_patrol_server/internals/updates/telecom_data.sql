@@ -197,6 +197,15 @@ insert into tbl_communication_categories (id, id_category_type, id_child, is_mai
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (233, 8, 232, true, 'Справочник электрощитов', 'TELECOM_CATEGORY_233', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (234, 10, null::integer, false, 'Электротрансформаторы', 'TELECOM_CATEGORY_234', null::varchar, true) on conflict do nothing;
 insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (235, 8, 234, true, 'Справочник электротрансформаторов', 'TELECOM_CATEGORY_235', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (236, 10, null::integer, false, 'Системы кондиционирования', 'TELECOM_CATEGORY_236', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (237, 8, 236, true, 'Справочник систем кондиционирования', 'TELECOM_CATEGORY_237', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (238, 10, null::integer, false, 'Системы отопления', 'TELECOM_CATEGORY_238', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (239, 8, 238, true, 'Справочник систем отопления', 'TELECOM_CATEGORY_239', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (240, 10, null::integer, false, 'Системы вентиляции', 'TELECOM_CATEGORY_240', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (241, 8, 240, true, 'Справочник систем вентиляции', 'TELECOM_CATEGORY_241', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (242, 10, null::integer, false, 'Размещение оборудования по помещениям', 'TELECOM_CATEGORY_242', null::varchar, true) on conflict do nothing;
+insert into tbl_communication_categories (id, id_category_type, id_child, is_main, name, code, description, is_system) values (243, 8, 242, true, 'Справочник размещения оборудования', 'TELECOM_CATEGORY_243', null::varchar, true) on conflict do nothing;
+
 
 
 --
@@ -327,6 +336,28 @@ insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mand
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (705, 234, 464, null, false, false, 3) on conflict do nothing;
 insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (706, 234, 463, null, true, false, 4) on conflict do nothing;
 
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (707, 236, 1, null, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (708, 236, 450, null, true, false, 2) on conflict do nothing; -- id_building
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (709, 236, 445, null, true, false, 3) on conflict do nothing; -- id_floor
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (710, 236, 500, null, false, false, 4) on conflict do nothing;
+
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (711, 238, 1, null, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (712, 238, 450, null, true, false, 2) on conflict do nothing; -- id_building
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (713, 238, 445, null, true, false, 3) on conflict do nothing; -- id_floor
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (714, 238, 499, null, false, false, 4) on conflict do nothing;
+
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (715, 240, 1, null, true, true, 1) on conflict do nothing; -- id
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (716, 240, 450, null, true, false, 2) on conflict do nothing; -- id_building
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (717, 240, 445, null, true, false, 3) on conflict do nothing; -- id_floor
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (718, 240, 501, null, false, false, 4) on conflict do nothing;
+
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (719, 242, 1, null, true, true, 1) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (720, 242, 446, null, true, false, 2) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (721, 242, 490, null, true, false, 3) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (722, 242, 491, null, true, false, 4) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (723, 242, 492, null, false, false, 5) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (724, 242, 493, null, false, false, 6) on conflict do nothing;
+insert into tbl_cat_params(id, id_category, id_parameter, default_value, is_mandatory, is_read_only, param_sort_order) values (725, 242, 494, null, false, false, 7) on conflict do nothing;
 
 --
 -- Справочники
@@ -351,6 +382,10 @@ insert into tbl_io_communication_objects_references (id, id_author, id_category,
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (117, 1, 231, 'Справочник систем электропитания', null::varchar, 'tbl_electrical_systems', 'Системы электропитания', false, current_timestamp, true) on conflict do nothing;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (118, 1, 233, 'Справочник электрощитов', null::varchar, 'tbl_electrical_shield', 'Электрощиты', false, current_timestamp, true) on conflict do nothing;
 insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (119, 1, 235, 'Справочник электротрансформаторов', null::varchar, 'tbl_electrical_transformator', 'Электротрансформаторы', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (120, 1, 237, 'Справочник систем кондиционирования', null::varchar, 'tbl_cond', 'Системы кондиционирования', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (121, 1, 239, 'Справочник систем отопления', null::varchar, 'tbl_heating', 'Системы отопления', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (122, 1, 241, 'Справочник систем вентиляции', null::varchar, 'tbl_venting', 'Системы вентиляции', false, current_timestamp, true) on conflict do nothing;
+insert into tbl_io_communication_objects_references (id, id_author, id_category, name, description, table_name, information, is_system, insert_time, is_global) values (123, 1, 243, 'Справочник размещения модулей по помещениям', null::varchar, 'tbl_equipment_distr', 'Размещение ТКО по помещениям', false, current_timestamp, true) on conflict do nothing;
 --
 -- Первоначальные записи справочников
 --
