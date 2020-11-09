@@ -106,8 +106,19 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
             qDebug() << __PRETTY_FUNCTION__ << tr("Author is %1 %2").arg(idUser).arg( rcUser->paramValue( ATTR_FIO )->value().toString() );
             readOnlyVal = true;
         }
-        else
+        else {
             pval = QSharedPointer< pParamValue >( pRec->paramValue( pca.value()->getId() ));
+            qDebug() << __PRETTY_FUNCTION__ << pval.isNull() << pval->getCatParam()->getId() << pval->value();
+            if( !pval.isNull() && pval->getCatParam()->getParamType()->getId() == pParamType::atList ) {
+                qint64 idRec = pval->value().toInt();//pRecF->getRecId();
+                QSharedPointer< pIObject > pRefIO = _dbLoader->loadIOByTableName( pval->getCatParam()->getTableName() );
+                QSharedPointer< pParamValue > pVal = _dbLoader->loadRecParamValue( idRec, pval->getCatParam(), pRefIO );
+                qDebug() << __PRETTY_FUNCTION__ << idRec << pVal->value();
+                pval->setValue( QVariant( idRec ) );
+                QString cVal = pVal->getColumnValue();
+                pval->setColumnValue( cVal );
+            }
+        }
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
         readOnlyVal = readOnlyVal || (pca.value()->isReadOnly() && pRec->getId() > 0);
         //qDebug() << __PRETTY_FUNCTION__ << pca.value()->getId() << pval.isNull() << (pw == nullptr ) << pca.value()->getParamType()->getId() << readOnlyVal;
@@ -442,6 +453,10 @@ QWidget* pIOGuiFactory::viewRecIOParams( QSharedPointer< pCategory > pCategory, 
         else {
             pval = QSharedPointer< pParamValue >( pIORec->paramValue( pca.value()->getId() ));
             qDebug() << __PRETTY_FUNCTION__ << pval.isNull();
+            if( ( pval.isNull() || pval->value().isNull() || pval->value().toString().isEmpty() ) && 
+                ( !pca.value()->getDefaultValue().isNull() ) ) {
+                qDebug() << __PRETTY_FUNCTION__ << "Has default value";
+            }
         }
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
         readOnlyVal = readOnlyVal || (pca.value()->isReadOnly() && pIORec->getId() > 0);
