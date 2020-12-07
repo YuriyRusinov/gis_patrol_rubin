@@ -11,12 +11,15 @@
 
 #include <gis_patroldatabase.h>
 #include "ui/logindbform.h"
+#include "psettings.h"
 #include "patrolguiapp.h"
 
-PatrolGuiApp::PatrolGuiApp(GISPatrolDatabase* db, QObject* parent) : QObject (parent), _dataBase(db) {
+PatrolGuiApp::PatrolGuiApp(GISPatrolDatabase* db, QObject* parent) : QObject (parent), _dataBase(db), _patrolSettings( new pSettings ) {
 }
 
-PatrolGuiApp::~PatrolGuiApp() {}
+PatrolGuiApp::~PatrolGuiApp() {
+    delete _patrolSettings;
+}
 
 bool PatrolGuiApp::GUIConnect(const QMap<int, QString>& accLevels, QWidget* parent, Qt::WindowFlags flags) {
     LoginDbForm* logForm = new LoginDbForm(accLevels, parent, flags);

@@ -11,6 +11,7 @@
 #include <QObject>
 
 class GISPatrolDatabase;
+class pSettings;
 
 class PatrolGuiApp : public QObject {
 public:
@@ -32,6 +33,7 @@ private:
     virtual ~PatrolGuiApp();
 
     mutable GISPatrolDatabase* _dataBase;
+    mutable pSettings* _patrolSettings;
 private:
     Q_OBJECT
 };
