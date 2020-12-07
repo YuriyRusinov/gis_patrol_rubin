@@ -113,10 +113,15 @@ QWidget* pIOGuiFactory::viewRecParams( QSharedPointer< pCategory > pCategory, QS
                 qint64 idRec = pval->value().toInt();//pRecF->getRecId();
                 QSharedPointer< pIObject > pRefIO = _dbLoader->loadIOByTableName( pval->getCatParam()->getTableName() );
                 QSharedPointer< pParamValue > pVal = _dbLoader->loadRecParamValue( idRec, pval->getCatParam(), pRefIO );
-                qDebug() << __PRETTY_FUNCTION__ << idRec << pVal->value();
-                pval->setValue( QVariant( idRec ) );
-                QString cVal = pVal->getColumnValue();
-                pval->setColumnValue( cVal );
+                if( !pVal.isNull() ) {
+                    qDebug() << __PRETTY_FUNCTION__ << idRec << pVal->value();
+                    pval->setValue( QVariant( idRec ) );
+                    QString cVal = pVal->getColumnValue();
+                    pval->setColumnValue( cVal );
+                }
+                else {
+                    qDebug() << __PRETTY_FUNCTION__ << idRec << tr("Null value");
+                }
             }
         }
         pAbstractParamWidget* pw = _paramFactory->createParamWidget( pval, paramWidget );
