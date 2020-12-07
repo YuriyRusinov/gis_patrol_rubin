@@ -699,7 +699,11 @@ QString pDBLoader::generateSelectRecQuery( QSharedPointer< const pCategory > pCa
     }
     int index = sql_query.lastIndexOf(", ");
     sql_query.remove(index, 2);
-    sql_query += QString(" from %1 as tab_%2").arg( usedTables[0] ).arg( tNumbers[0] );
+    if( QString::compare( tableName, "tbl_iss_objects", Qt::CaseInsensitive ) == 0 ) {
+        sql_query += QString(" from %1 as tab_%2 left join tbl_iss_object_adjacent_objects as tab_%2_1 on (tab_%2.id = tab_%2_1.id_iss_adjacent_object1) left join %1 as tab_%2_2 on (tab_%2_1.id_iss_adjacent_object2 = tab_%2_2.id)").arg( usedTables[0] ).arg( tNumbers[0] );
+    }
+    else
+        sql_query += QString(" from %1 as tab_%2").arg( usedTables[0] ).arg( tNumbers[0] );
     int nt = usedTables.size();
     for (int i=1; i<nt; i++) {
         if( QString::compare(usedTables[i], "spatial_ref_sys", Qt::CaseInsensitive) == 0 )
