@@ -113,6 +113,8 @@ void PatrolMainWindow::initActions() {
     QObject::connect(_UI->actViewParameters, &QAction::triggered, this, &PatrolMainWindow::slotViewParameters);
 
     QObject::connect( _UI->actCreateRef, &QAction::triggered, this, &PatrolMainWindow::slotCreateDocument );
+
+    QObject::connect( _UI->actSettings, &QAction::triggered, this, &PatrolMainWindow::slotSettings );
 }
 
 void PatrolMainWindow::slotDbDisconnected() {
@@ -179,4 +181,9 @@ void PatrolMainWindow::slotCreateDocument() {
     qDebug() << __PRETTY_FUNCTION__;
     pIOGuiFactory* pIOGuiF = _patrolS->getIOGUIFactory();
     pIOGuiF->createRecordCatEditor();
+}
+
+void PatrolMainWindow::slotSettings() {
+    PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
+    qDebug() << __PRETTY_FUNCTION__ << pGuiApp << (pGuiApp == nullptr);
 }

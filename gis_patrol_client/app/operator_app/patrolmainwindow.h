@@ -42,6 +42,8 @@ private slots:
 
     void slotCreateDocument();
 
+    void slotSettings();
+
 private:
     //
     // Functions

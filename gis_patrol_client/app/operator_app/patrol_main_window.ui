@@ -54,15 +54,16 @@
     <addaction name="menuView"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="menu_Settings">
+   <widget class="QMenu" name="menuSettings">
     <property name="title">
      <string>&amp;Settings</string>
     </property>
+    <addaction name="actSettings"/>
    </widget>
    <addaction name="menu_Db"/>
    <addaction name="menu_References"/>
    <addaction name="menu_Categories"/>
-   <addaction name="menu_Settings"/>
+   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actConnect">
@@ -121,6 +122,11 @@
   <action name="actCreateRef">
    <property name="text">
     <string>&amp;Create...</string>
+   </property>
+  </action>
+  <action name="actSettings">
+   <property name="text">
+    <string>Application settings...</string>
    </property>
   </action>
  </widget>
