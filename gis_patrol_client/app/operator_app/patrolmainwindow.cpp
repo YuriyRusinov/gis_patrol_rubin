@@ -25,6 +25,7 @@
 #include <pIOGuiFactory.h>
 #include <pCIOEditor.h>
 #include <patroldbloader.h>
+#include <psettings.h>
 #include "patrolmainwindow.h"
 #include "ui_patrol_main_window.h"
 
@@ -186,4 +187,6 @@ void PatrolMainWindow::slotCreateDocument() {
 void PatrolMainWindow::slotSettings() {
     PatrolGuiApp* pGuiApp = _patrolS->getGUIObj();
     qDebug() << __PRETTY_FUNCTION__ << pGuiApp << (pGuiApp == nullptr);
+    pSettings* pSettings = pGuiApp->getPatrolSettings();
+    pSettings->editSettings();
 }

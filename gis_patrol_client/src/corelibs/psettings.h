@@ -22,4 +22,25 @@
 #include <QSettings>
 
 class pSettings : public QSettings {
+public:
+    QString getParam( const QString& keyname ) const;
+    QString getGroupParam ( const QString& group, const QString& keyname );
+
+public slots:
+    void editSettings ( QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags() );
+    void writeSettings ( const QString& group, const QString& key, const QString & val );
+    void readSettings ( );
+
+private:
+    friend class PatrolGuiApp;
+    pSettings( QSettings::Scope scope, QObject* parent = nullptr );
+    pSettings( QObject* parent = nullptr );
+    pSettings( const QString& fileName, QSettings::Format format, QObject* parent = nullptr );
+    pSettings( QSettings::Format format, QSettings::Scope scope, const QString &organization, const QString& application = QString(), QObject* parent = nullptr );
+    pSettings( QSettings::Scope scope, const QString& organization, const QString& application = QString(), QObject* parent = nullptr );
+    pSettings( const QString& organization, const QString& application = QString(), QObject* parent = nullptr );
+    virtual ~pSettings();
+
+private:
+    Q_OBJECT
 };

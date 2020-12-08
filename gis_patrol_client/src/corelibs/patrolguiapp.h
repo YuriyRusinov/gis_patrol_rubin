@@ -17,6 +17,7 @@ class PatrolGuiApp : public QObject {
 public:
     bool GUIConnect(const QMap<int, QString>& accLevels, QWidget* parent=nullptr, Qt::WindowFlags flags=Qt::WindowFlags());
     void disconnectFromDb();
+    virtual pSettings* getPatrolSettings();
 
 private slots:
     void dbDisconnected();

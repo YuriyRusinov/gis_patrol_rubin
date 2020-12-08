@@ -4,7 +4,8 @@ HEADERS += \
            patrolguiapp.h \
            patroldbwriter.h \
            psettings.h \
-           ui/logindbform.h
+           ui/logindbform.h \
+           ui/psettingsform.h
 
 FORMS += \
          ui/login_db_form.ui \
@@ -16,4 +17,5 @@ SOURCES += \
            patrolguiapp.cpp \
            patroldbwriter.cpp \
            psettings.cpp \
-           ui/logindbform.cpp
+           ui/logindbform.cpp \
+           ui/psettingsform.cpp
