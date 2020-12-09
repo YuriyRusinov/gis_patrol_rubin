@@ -38,4 +38,7 @@ private:
     QSvgWidget* _svgWidget;
     QToolButton* _tbLoad;
     QByteArray _SVGContents;
+
+private:
+    Q_OBJECT
 };
