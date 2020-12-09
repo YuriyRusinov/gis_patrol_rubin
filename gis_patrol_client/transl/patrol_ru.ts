@@ -103,37 +103,37 @@
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>group name/parameter id</source>
-        <translation type="unfinished"></translation>
+        <translation>Наименование группы/атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Код</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Заголовок</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>Table name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя таблицы</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>Column name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя колонки</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pParamModel.cpp" line="113"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип</translation>
     </message>
 </context>
 <context>
@@ -141,37 +141,37 @@
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="69"/>
         <source>Not secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Несекретно</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="69"/>
         <source>Confidential</source>
-        <translation type="unfinished"></translation>
+        <translation>Для служебного полльзования</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="69"/>
         <source>Secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Секретно</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="69"/>
         <source>Top secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Совершенно секретно</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="85"/>
         <source>Connect to database</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединение с сервером БД</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="90"/>
         <source>Disconnect from database</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключение от сервера БД</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrolmainwindow.cpp" line="100"/>
         <source>View connection references</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры соединения</translation>
     </message>
 </context>
 <context>
@@ -179,67 +179,67 @@
     <message>
         <location filename="../src/patrolCommunications/pRecordC.cpp" line="122"/>
         <source>Parameter &apos;name&apos; does not present in object copy attributes!</source>
-        <translation type="unfinished"></translation>
+        <translation>Атрибут &apos;название&apos; отсутствует в объеккте!</translation>
     </message>
     <message>
         <location filename="../src/patrolCommunications/pRecordC.cpp" line="131"/>
         <source>Parameter &apos;id&apos; does not present in object copy attributes!</source>
-        <translation type="unfinished"></translation>
+        <translation>Атрибут &apos;идентификатор&apos; отсутствует в объеккте!</translation>
     </message>
     <message>
         <location filename="../src/patrolCommunications/pRecordC.cpp" line="140"/>
         <source>Parameter &apos;code&apos; does not present in object copy attributes!</source>
-        <translation type="unfinished"></translation>
+        <translation>Атрибут &apos;код&apos; отсутствует в объеккте!</translation>
     </message>
     <message>
         <location filename="../src/patrolCommunications/pRecordC.cpp" line="149"/>
         <source>Parameter &apos;description&apos; does not present in object copy attributes!</source>
-        <translation type="unfinished"></translation>
+        <translation>Атрибут &apos;описание&apos; отсутствует в объеккте!</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="166"/>
         <source>&lt;Set of references %1, dbl-click for details and see result table&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Набор элементов справочника %1 dbl-click подробности&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="170"/>
         <source>&lt;Image data %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="174"/>
         <source>&lt;SVG data %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="178"/>
         <source>&lt;XML document %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="182"/>
         <source>&lt;Video data %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="189"/>
         <source>&lt;Geometry data %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="193"/>
         <source>&lt;Complex value %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="199"/>
         <source>&lt;json value %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecTreeItem.cpp" line="203"/>
         <source>&lt;Binary data %1&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -247,37 +247,37 @@
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="14"/>
         <source>Connect to...</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединение с сервером БД...</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;User name:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Имя пользователя:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="52"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль:</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="75"/>
         <source>Access level:</source>
-        <translation type="unfinished"></translation>
+        <translation>Уровень доступа:</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="88"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Database:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;База данных:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="101"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Host:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/login_db_form.ui" line="114"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Port:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -285,22 +285,22 @@
     <message>
         <location filename="../src/factories/pgui/pCIOEditor.cpp" line="82"/>
         <source>Save record to DB</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение записи в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCIOEditor.cpp" line="83"/>
         <source>Save record to database</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение записи в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCIOEditor.cpp" line="118"/>
         <source>Delete record</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление записи</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCIOEditor.cpp" line="118"/>
         <source>Do you really want to delete ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите удалить ?</translation>
     </message>
 </context>
 <context>
@@ -309,110 +309,110 @@
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="39"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="51"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Название:</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="41"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="53"/>
         <source>Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Код:</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="43"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="55"/>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Описание:</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="45"/>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип:</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="208"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Категория</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="217"/>
         <source>Parameters of category</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="218"/>
         <source>Table category</source>
-        <translation type="unfinished"></translation>
+        <translation>Дочерняя категория</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="226"/>
         <source>Parameters of table category</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры дочерней категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="235"/>
         <source>Add parameter to category</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление атрибута в категорию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="236"/>
         <source>Add parameter to main category</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление атрибута в главную категорию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="239"/>
         <source>Remove parameter from category</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление атрибута из категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="240"/>
         <source>Remove parameter from main category</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление атрибута из главной категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="243"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="258"/>
         <source>Up</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="244"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="259"/>
         <source>Increase parameter order</source>
-        <translation type="unfinished"></translation>
+        <translation>Поднять атрибут в категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="246"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="261"/>
         <source>Down</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="247"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="262"/>
         <source>Decrease parameter order</source>
-        <translation type="unfinished"></translation>
+        <translation>Опустить атрибут в категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="250"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="251"/>
         <source>Add parameter to table category</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление атрибута в дочернюю категорию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="254"/>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="255"/>
         <source>Remove parameter from table category</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление атрибута из дочерней категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="265"/>
         <source>Save categories to DB</source>
-        <translation type="unfinished"></translation>
+        <translation>Записать категории в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatEditor.cpp" line="266"/>
         <source>Save categories to database</source>
-        <translation type="unfinished"></translation>
+        <translation>Записать категории в БД</translation>
     </message>
 </context>
 <context>
@@ -420,27 +420,27 @@
     <message>
         <location filename="../src/factories/pgui/pCatParamModel.cpp" line="103"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatParamModel.cpp" line="103"/>
         <source>Default Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatParamModel.cpp" line="103"/>
         <source>Mandatory</source>
-        <translation type="unfinished"></translation>
+        <translation>Является обязательным</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatParamModel.cpp" line="103"/>
         <source>Read only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только для чтения</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCatParamModel.cpp" line="103"/>
         <source>Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок в категории</translation>
     </message>
 </context>
 <context>
@@ -449,12 +449,12 @@
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="63"/>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="111"/>
         <source>Edit category</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="63"/>
         <source>Please select category for edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите из списка категорию для редактирования</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="86"/>
@@ -462,42 +462,42 @@
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="115"/>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="116"/>
         <source>Delete category</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="86"/>
         <source>Please select category for remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите из списка категорию для удаления</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="94"/>
         <source>Do you really want to delete category %1 and its child category ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Действительно удалить категорию %1 и ее дочерние категории ?</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="107"/>
         <source>Add category</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новую категорию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="108"/>
         <source>Add new category</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новую категорию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="112"/>
         <source>Edit existing category</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование категории</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="119"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryListForm.cpp" line="120"/>
         <source>Refresh categories</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить список категорий</translation>
     </message>
 </context>
 <context>
@@ -505,22 +505,22 @@
     <message>
         <location filename="../src/factories/pgui/pCategoryModel.cpp" line="116"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryModel.cpp" line="116"/>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Код</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryModel.cpp" line="116"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Описание</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pCategoryModel.cpp" line="116"/>
         <source>Name of type</source>
-        <translation type="unfinished"></translation>
+        <translation>Название типа</translation>
     </message>
 </context>
 <context>
@@ -528,12 +528,12 @@
     <message>
         <location filename="../src/factories/pgui/pColorEdit.cpp" line="29"/>
         <source>Sample text</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pColorEdit.cpp" line="47"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/corelibs/patroldbloader.cpp" line="122"/>
         <source>Group id = %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Идентификатор группы = %1</translation>
     </message>
 </context>
 <context>
@@ -549,48 +549,48 @@
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="49"/>
         <source>Point</source>
-        <translation type="unfinished"></translation>
+        <translation>Точка</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="50"/>
         <source>MultiPoint</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор точек</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="51"/>
         <source>LineString</source>
-        <translation type="unfinished"></translation>
+        <translation>Линия</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="52"/>
         <source>MultiLineString</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор линий</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="53"/>
         <source>Polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>Многоугольник</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="54"/>
         <source>MultiPolygon</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор многоугольников</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="67"/>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="69"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="68"/>
         <source>Add point to geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить точку в геометрию</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pGeomForm.cpp" line="70"/>
         <source>Remove point from geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить точку из геометрии</translation>
     </message>
 </context>
 <context>
@@ -598,59 +598,59 @@
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="106"/>
         <source>Author is %1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Автор %1 %2</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="123"/>
         <source>Null value</source>
-        <translation type="unfinished"></translation>
+        <translation>Нулевое значение</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="152"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Справочник</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="152"/>
         <source>Cannot load reference, error in DB</source>
-        <translation type="unfinished"></translation>
+        <translation>Не могу загрузить справочник, ошибка в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="198"/>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="219"/>
         <source>Save record</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение записи в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="198"/>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="219"/>
         <source>Save record %1, DB error code %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка сохранения записи %1 в БД, код %2</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="289"/>
         <source>Delete record</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление записи</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="289"/>
         <source>Cannot delete record with id %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка удаления записи id %1</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="370"/>
         <source>System properties</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="378"/>
         <source>User properties</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pIOGuiFactory.cpp" line="381"/>
         <source>Records</source>
-        <translation type="unfinished"></translation>
+        <translation>Записи</translation>
     </message>
 </context>
 <context>
@@ -658,33 +658,33 @@
     <message>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="54"/>
         <source>Open Image File</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть файл изображения</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="56"/>
         <source>Images (*.png *.xpm *.jpg *.PNG *.XPM *.JPG)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы изображений (*.png *.xpm *.jpg *.PNG *.XPM *.JPG)</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="61"/>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="63"/>
         <source>Cannot load %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка загрузки %1.</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="62"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="109"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить изображение</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pImageLabel.cpp" line="110"/>
         <source>Clear image</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить изображение</translation>
     </message>
 </context>
 <context>
@@ -692,82 +692,82 @@
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="101"/>
         <source>Write group to database</source>
-        <translation type="unfinished"></translation>
+        <translation>Запись в БД группы атрибутов</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="101"/>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="129"/>
         <source>Error in attempt to save group</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка записи группы атрибутов</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="129"/>
         <source>Update group in database</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновление группы в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="141"/>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="144"/>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="150"/>
         <source>Delete group</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление группы</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="141"/>
         <source>Cannot delete not empty group</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка удаления группы, содержащей атрибуты/подгруппы</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="144"/>
         <source>Do you really want to delete group ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите удалить группу атрибутов ?</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="150"/>
         <source>DB Error in delete group</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление группы, ошибка в БД</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="182"/>
         <source>New parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый атрибут</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="182"/>
         <source>Cannot insert parameter, DB error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка записи атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="231"/>
         <source>Edit parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="231"/>
         <source>Cannot update parameter, DB error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка обновления атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="243"/>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="246"/>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="251"/>
         <source>Delete parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="243"/>
         <source>Cannot delete parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка удаления атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="246"/>
         <source>Do you really want to delete parameter ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите удалить атрибут ?</translation>
     </message>
     <message>
         <location filename="../src/factories/guifactory/pParamGuiFactory.cpp" line="251"/>
         <source>DB Error in delete parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление атрибута, ошибка в БД</translation>
     </message>
 </context>
 <context>
@@ -777,50 +777,50 @@
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="132"/>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="133"/>
         <source>Edit record</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование записи</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="80"/>
         <source>Select record for edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите запись</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="97"/>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="138"/>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="139"/>
         <source>Delete record</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление записи</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="97"/>
         <source>Select record for delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите запись для удаления</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="116"/>
         <source>Refresh records</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновление записей</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="117"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="122"/>
         <source>Search ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск ...</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="123"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="126"/>
         <location filename="../src/factories/pgui/pRecWidget.cpp" line="127"/>
         <source>Create new record</source>
-        <translation type="unfinished"></translation>
+        <translation>Создание новой записи</translation>
     </message>
 </context>
 <context>
@@ -828,28 +828,28 @@
     <message>
         <location filename="../src/factories/pgui/pSVGWidget.cpp" line="45"/>
         <source>Open Image File</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть файл изображения</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pSVGWidget.cpp" line="47"/>
         <source>SVG files (*.svg *.svgz *.svg.gz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы SVG (*.svg *.svgz *.svg.gz)</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pSVGWidget.cpp" line="56"/>
         <location filename="../src/factories/pgui/pSVGWidget.cpp" line="58"/>
         <source>Cannot load %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка загрузки %1.</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pSVGWidget.cpp" line="57"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pSVGWidget.cpp" line="78"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -857,12 +857,12 @@
     <message>
         <location filename="../src/corelibs/psettings.cpp" line="68"/>
         <source>Save settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение настроек</translation>
     </message>
     <message>
         <location filename="../src/corelibs/psettings.cpp" line="69"/>
         <source>You have to restart your application in order to changes take effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки вступят в силу после перезапуска приложения</translation>
     </message>
 </context>
 <context>
@@ -870,22 +870,22 @@
     <message>
         <location filename="../src/corelibs/ui/psettingsform.cpp" line="47"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/psettingsform.cpp" line="47"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/psettingsform.cpp" line="94"/>
         <source>Settings edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование настроек приложения</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/psettingsform.cpp" line="94"/>
         <source>Only one settings value can be changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Только 1 настройка может быть выделена для редактирования</translation>
     </message>
 </context>
 <context>
@@ -893,22 +893,22 @@
     <message>
         <location filename="../src/factories/pgui/pXMLEdit.cpp" line="61"/>
         <source>Open File</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть XML файл</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pXMLEdit.cpp" line="61"/>
         <source>XML files (*.xml);;All files (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation>XML файлы (*.xml);;Все файлы (*.*)</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pXMLEdit.cpp" line="67"/>
         <source>Open xml file</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть XML файл</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/pXMLEdit.cpp" line="67"/>
         <source>Cannot open xml file %1 for reading</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка открытия файла %1 для чтения</translation>
     </message>
 </context>
 <context>
@@ -916,7 +916,7 @@
     <message>
         <location filename="../src/factories/pgui/ui/p_rec_dialog.ui" line="14"/>
         <source>Records</source>
-        <translation type="unfinished"></translation>
+        <translation>Записи</translation>
     </message>
 </context>
 <context>
@@ -1014,17 +1014,17 @@
     <message>
         <location filename="../src/corelibs/ui/p_settings_form.ui" line="20"/>
         <source>Save settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение настроек</translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/p_settings_form.ui" line="91"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/corelibs/ui/p_settings_form.ui" line="98"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1032,47 +1032,47 @@
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="14"/>
         <source>Add/edit parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление/редактирование атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Id:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Code :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Код :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="63"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Title :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Заголовок :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="76"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Тип :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="89"/>
         <source>Reference parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры справочника</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="95"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table name:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название таблицы :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_form.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Column name:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название столбца в таблице :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1080,22 +1080,22 @@
     <message>
         <location filename="../src/factories/pgui/ui/params_group_form.ui" line="14"/>
         <source>Add/edit parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление/редактирование атрибута</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_group_form.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Group id:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Идентификатор группы:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_group_form.ui" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Group name:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название группы:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/factories/pgui/ui/params_group_form.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parent group: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Родительская группы:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1103,93 +1103,93 @@
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>Главное окно приложения</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="28"/>
         <source>Data&amp;base</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="37"/>
         <source>&amp;References</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Справочники</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="44"/>
         <source>&amp;Categories</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Категории</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="48"/>
         <location filename="../app/operator_app/patrol_main_window.ui" line="94"/>
         <source>View ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Смотреть ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="59"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Настройки приложения</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="71"/>
         <source>&amp;Connect ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Соединение ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="76"/>
         <source>&amp;Disconnect ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Отключение ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="81"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>В&amp;ыход</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="84"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="89"/>
         <source>&amp;Create ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Создать ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="99"/>
         <source>Delete ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="104"/>
         <source>Create category</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новую категорию</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="109"/>
         <source>Add parameters to category ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление атрибутов в категорию ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="114"/>
         <source>View parameters ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотр атрибутов ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="119"/>
         <source>View categories ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотр категорий ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="124"/>
         <source>&amp;Create...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Создать ...</translation>
     </message>
     <message>
         <location filename="../app/operator_app/patrol_main_window.ui" line="129"/>
         <source>Application settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки ...</translation>
     </message>
 </context>
 </TS>
