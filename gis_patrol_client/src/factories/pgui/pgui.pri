@@ -30,6 +30,7 @@ HEADERS += \
            pEventFilter.h \
            pImageLabel.h \
            pGeomForm.h \
+           pSettingsDelegate.h \
            ui/paramsgroupform.h \
            ui/paramsform.h \
            ui/precdialog.h \
@@ -73,6 +74,7 @@ SOURCES += \
            pEventFilter.cpp \
            pImageLabel.cpp \
            pGeomForm.cpp \
+           pSettingsDelegate.cpp \
            ui/paramsgroupform.cpp \
            ui/paramsform.cpp \
            ui/precdialog.cpp \
