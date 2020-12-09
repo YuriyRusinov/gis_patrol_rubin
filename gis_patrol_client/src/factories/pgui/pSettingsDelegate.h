@@ -1,6 +1,5 @@
-/*
- * @brief Класс делегат для отображения-редактирования параметров категории.
- * pCatParamDelegate.h
+/* @brief Класс - делегат для отображения и редактирования локальных настроек приложения на форме.
+ * pSettingsDelegate.h
  *
  * (C) НИИ "Рубин"
  * @author
@@ -11,9 +10,9 @@
 
 #include <QItemDelegate>
 
-class pCatParamDelegate : public QItemDelegate {
+class pSettingsDelegate : public QItemDelegate {
 public:
-    pCatParamDelegate( QObject* parent = nullptr );
+    pSettingsDelegate( QObject* parent = nullptr );
 
     QWidget* createEditor( QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     void setEditorData( QWidget* editor, const QModelIndex& index ) const override;
