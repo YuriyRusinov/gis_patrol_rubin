@@ -40,7 +40,6 @@ PatrolMainWindow::PatrolMainWindow(QWidget* parent, Qt::WindowFlags flags) :
     this->addToolBar(Qt::TopToolBarArea, _tbActReferences);
     this->setCentralWidget(_mdiArea);
     _patrolS = PatrolSingleton::getPatrolS();
-    qDebug() << __PRETTY_FUNCTION__ << (_patrolS != nullptr);
 
     this->initActions();
     setEnabled( false );

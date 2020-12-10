@@ -8,3 +8,5 @@ include(../gis_patrol_client.conf)
 
 SUBDIRS += \
            operator_app
+
+TRANSLATIONS += ../transl/patrol_ru.ts

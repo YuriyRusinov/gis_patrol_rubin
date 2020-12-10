@@ -40,3 +40,5 @@ PKGCONFIG += libpq gsl
 LIBS *= -L$${DESTDIR} -lgis_patrol_utils -ldataaccess -lpgui -lpatrolCommunications
 
 include (corelibs.pri)
+
+TRANSLATIONS += ../../transl/patrol_ru.ts
