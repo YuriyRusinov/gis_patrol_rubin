@@ -15,4 +15,6 @@ transl.files = ./transl/*.qm
 transl.path = $$GIS_PATROL_TRANSL_DIR
 
 INSTALLS += transl
-TRANSLATIONS = ./transl/gis_patrol_ru.ts 
+TRANSLATIONS = ./transl/patrol_ru.ts 
+
+RESOURCES += gis_patrol.qrc
