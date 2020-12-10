@@ -10,6 +10,8 @@
 
 #include <QObject>
 
+class QTranslator;
+
 class GISPatrolDatabase;
 class PatrolGuiApp;
 class pParamGUIFactory;
@@ -30,6 +32,7 @@ public:
     pIOGuiFactory* getIOGUIFactory() const { return _piof; }
     pDBLoader* getDbLoader() const { return _pdbLoader; }
     pDBWriter* getDbWriter() const { return _pdbWriter; }
+    void installTranslator() const;
 
 private:
     PatrolSingleton(QObject* parent=nullptr);
@@ -46,6 +49,7 @@ private:
     mutable pParamGUIFactory* _pParamF;
     mutable pCatGuiFactory* _pcatf;
     mutable pIOGuiFactory* _piof;
+    QTranslator* _tor;
 
 private:
     Q_OBJECT

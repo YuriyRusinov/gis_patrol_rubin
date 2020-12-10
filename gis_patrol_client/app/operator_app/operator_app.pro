@@ -58,4 +58,7 @@ SOURCES += \
            patrolmainwindow.cpp \
            main.cpp
 
-RESOURCES = ../../src/patrol_icons/patrol.qrc
+RESOURCES += ../../src/patrol_icons/patrol.qrc \
+             ../../gis_patrol.qrc
+
+TRANSLATIONS += ../../transl/patrol_ru.ts

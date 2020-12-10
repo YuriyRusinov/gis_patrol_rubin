@@ -11,3 +11,5 @@ SUBDIRS += \
           factories/pgui \
           corelibs \
           factories/guifactory
+
+TRANSLATIONS = ../transl/patrol_ru.ts
