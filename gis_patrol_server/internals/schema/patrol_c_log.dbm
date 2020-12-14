@@ -1,0 +1,1267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,1081" last-zoom="1" max-obj-count="39"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="tbl_linear_part_vols" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<position x="100" y="120"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_well" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер колодца кабеля сигнализации]]></comment>
+	</column>
+	<column name="vols_length" not-null="true" default-value="0.0">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="sections_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Количество секций]]></comment>
+	</column>
+	<column name="section_length" not-null="true" default-value="0.0">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Длина секции]]></comment>
+	</column>
+	<column name="id_regenerator" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="vols_type">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_linear_part_vols_pk" type="pk-constr" table="public.tbl_linear_part_vols">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_well_shaft" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<position x="600" y="60"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="well_mark" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Маркировка колодца]]></comment>
+	</column>
+	<column name="longitude" not-null="true">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude" not-null="true">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="altitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_well_shaft_pk" type="pk-constr" table="public.tbl_well_shaft">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<extension name="postgis">
+	<schema name="public"/>
+</extension>
+
+<table name="tbl_regenerator" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<position x="520" y="260"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="regenerator_mark" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Маркировка регенератора]]></comment>
+	</column>
+	<column name="regenerator_type" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="cable_mark">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="longitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_regenerator_pk" type="pk-constr" table="public.tbl_regenerator">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_stationary_part_vols" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
+	<schema name="public"/>
+	<position x="80" y="440"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_vols" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="opt_crosses_purpose">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Назначение оптических кроссов]]></comment>
+	</column>
+	<column name="cross_type" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Тип оптического кросса]]></comment>
+	</column>
+	<column name="cross_place_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер места на оптическом кроссе]]></comment>
+	</column>
+	<column name="vols_number" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер оптоволокна]]></comment>
+	</column>
+	<column name="column_number" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер шкафа места подключения]]></comment>
+	</column>
+	<column name="reflection_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер рефлектограммы]]></comment>
+	</column>
+	<column name="date_reflection">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата рефлектограммы]]></comment>
+	</column>
+	<column name="periturbation_description">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Описание неоднородностей]]></comment>
+	</column>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_stationary_part_vols_pk" type="pk-constr" table="public.tbl_stationary_part_vols">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_fire_security_alarm" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<position x="860" y="460"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_device" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер датчика]]></comment>
+	</column>
+	<column name="device_model" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Модель датчика]]></comment>
+	</column>
+	<column name="is_fire" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+		<comment><![CDATA[Пожарная сигнализация (true) или охранная сигнализация (false).]]></comment>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер сооружения]]></comment>
+	</column>
+	<column name="central_control">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="cable_mark">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_fire_alarm_pk" type="pk-constr" table="public.tbl_fire_security_alarm">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_object_building" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Сооружения объекта]]></comment>
+	<position x="840" y="720"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="building_number" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Учетный номер сооружения]]></comment>
+	</column>
+	<column name="building_name" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Наименование сооружения]]></comment>
+	</column>
+	<column name="id_building_type" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Тип сооружения]]></comment>
+	</column>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="building_length" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Длина основания]]></comment>
+	</column>
+	<column name="building_width" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Ширина основания]]></comment>
+	</column>
+	<column name="building_altitude" not-null="true">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Высота строения]]></comment>
+	</column>
+	<column name="number_floors" not-null="true" default-value="1">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Этажность]]></comment>
+	</column>
+	<column name="longitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid" default-value="4326">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_object_buildings_pk" type="pk-constr" table="public.tbl_object_building">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_rooms" layer="0" gen-alter-cmds="true" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Помещения сооружения]]></comment>
+	<position x="520" y="720"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_floor_room" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер помещения на этаже]]></comment>
+	</column>
+	<column name="room_number">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Кодовый номер комнаты.]]></comment>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_floor" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер здания]]></comment>
+	</column>
+	<column name="width">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Размер помещения, длина]]></comment>
+	</column>
+	<column name="height">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Размер помещения, ширина]]></comment>
+	</column>
+<constraint name="tbl_rooms_pk" type="pk-constr" table="public.tbl_rooms">
+	<columns names="id" ref-type="src-columns"/>
+</constraint>
+
+</table>
+
+<table name="tbl_iss_objects" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Объекты ИСС]]></comment>
+	<position x="1240" y="780"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+		<comment><![CDATA[Номер объекта]]></comment>
+	</column>
+	<column name="iss_object_number" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Учетный номер объекта вида O-00001]]></comment>
+	</column>
+	<column name="id_iss_object_type" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Тип объекта]]></comment>
+	</column>
+	<column name="full_name" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Полное название]]></comment>
+	</column>
+	<column name="short_name">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Сокращенное название]]></comment>
+	</column>
+	<column name="control_border">
+		<type name="geometry" length="0"/>
+		<comment><![CDATA[Границы контрольной зоны]]></comment>
+	</column>
+	<column name="control_border_pic">
+		<type name="xml" length="0"/>
+	</column>
+	<column name="post_address" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="longitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="latitude">
+		<type name="float8" length="0"/>
+	</column>
+	<column name="srid" default-value="4326">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="tbl_iss_objects_pk" type="pk-constr" table="public.tbl_iss_objects">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_iss_object_adjacent_objects" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Соседние объекты ИСС]]></comment>
+	<position x="1300" y="1180"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_iss_adjacent_object1" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_iss_adjacent_object2" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_iss_object_adjucent_objects_pk" type="pk-constr" table="public.tbl_iss_object_adjacent_objects">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="check_id_object" type="ck-constr" table="public.tbl_iss_object_adjacent_objects">
+			<expression><![CDATA[id_iss_adjacent_object1 != id_iss_adjacent_object2]]></expression>
+	</constraint>
+</table>
+
+<table name="tbl_telecom_equipment" layer="0" collapse-mode="2" max-obj-count="13" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Телекоммуникационное оборудование]]></comment>
+	<position x="20" y="760"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="equipment_name">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Наименование ТКО]]></comment>
+	</column>
+	<column name="serial_number" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Заводской номер]]></comment>
+	</column>
+	<column name="serial_number_minor">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="serial_number_minor_minor">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="date_of_production" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата производства]]></comment>
+	</column>
+	<column name="date_of_entry" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата ввода в эксплуатацию]]></comment>
+	</column>
+	<column name="id_state" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Состояние устройства]]></comment>
+	</column>
+	<column name="solid_equipment">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Состав ЗИП]]></comment>
+	</column>
+	<column name="solid_equipment_type">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Тип ЗИП]]></comment>
+	</column>
+	<column name="equipment_purpose">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Назначение модуля ТКО]]></comment>
+	</column>
+	<constraint name="tbl_fire_alarm_room_device_pk" type="pk-constr" table="public.tbl_telecom_equipment">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_iss_node" layer="0" collapse-mode="2" max-obj-count="14" z-value="0">
+	<schema name="public"/>
+	<position x="1480" y="340"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="node_stat_number" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Учетный номер узла вида U-000011]]></comment>
+	</column>
+	<column name="id_node_type" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Тип узла]]></comment>
+	</column>
+	<column name="id_iss_object" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[К какому объекту относится]]></comment>
+	</column>
+	<column name="control_management_system">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Подсистема центрального управления]]></comment>
+	</column>
+	<column name="security_system">
+		<type name="boolean" length="0"/>
+		<comment><![CDATA[Система мониторинга информационной безопасности]]></comment>
+	</column>
+	<column name="system_management_security">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Система управления информационной безопасностью]]></comment>
+	</column>
+	<column name="control_level" not-null="true" default-value="3">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[Уровень управления
+3й 
+2й 
+1й]]></comment>
+	</column>
+	<column name="state_number" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Количество обслуживающего персонала]]></comment>
+	</column>
+	<column name="special_user_category" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[Категория спецпотребителей]]></comment>
+	</column>
+	<column name="node_border">
+		<type name="geometry" length="0"/>
+		<comment><![CDATA[Граница контрольной зоны узла]]></comment>
+	</column>
+	<column name="node_border_pic">
+		<type name="xml" length="0"/>
+		<comment><![CDATA[Граница контрольной зоны узла]]></comment>
+	</column>
+	<constraint name="tbl_iss_node_pk" type="pk-constr" table="public.tbl_iss_node">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electrical_systems" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="620" y="1020"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_electrical_systems_pk" type="pk-constr" table="public.tbl_electrical_systems">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electrical_shield" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="60" y="1400"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="serial_number" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="shield_mark" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Марка щита.]]></comment>
+	</column>
+	<column name="id_electrical_system" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_electrical_shield_pk" type="pk-constr" table="public.tbl_electrical_shield">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electrical_transformator" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="460" y="1260"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="serial_number" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="transfomator_mark">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="id_electrical_system" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_electrical_transform_pk" type="pk-constr" table="public.tbl_electrical_transformator">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_electric_shield_transform" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="20" y="1660"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_shield" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_transformator" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_electric_shield_transform_pk" type="pk-constr" table="public.tbl_electric_shield_transform">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_grounding_system" layer="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Система заземления]]></comment>
+	<position x="600" y="1500"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="grounding_bar_mark">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Маркировка шины заземления]]></comment>
+	</column>
+	<column name="grounding_cord">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Марка провода заземления]]></comment>
+	</column>
+	<column name="grounding_resistance">
+		<type name="float8" length="0"/>
+		<comment><![CDATA[Сопротивление заземления]]></comment>
+	</column>
+	<column name="grounding_type">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="grounding_contour_number">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер контура заземления]]></comment>
+	</column>
+	<column name="id_floor">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер строения]]></comment>
+	</column>
+	<constraint name="tbl_grounding_system_pk" type="pk-constr" table="public.tbl_grounding_system">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_state_tce" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Набор состояний телекоммуникационного оборудования]]></comment>
+	<position x="40" y="1100"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="description">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_state_tko_pk" type="pk-constr" table="public.tbl_state_tce">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_iss_object_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<position x="1660" y="840"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_iss_object_type_pk" type="pk-constr" table="public.tbl_iss_object_type">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_iss_node_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<position x="2120" y="380"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_iss_node_type_pk" type="pk-constr" table="public.tbl_iss_node_type">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_sertificates" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<position x="1520" y="20"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_iss_node" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Узел ИСС, которому относится сертификат]]></comment>
+	</column>
+	<column name="sertification_date" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата сертификации]]></comment>
+	</column>
+	<column name="agreement_number">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Номер заключительного соответствия.]]></comment>
+	</column>
+	<column name="id_sertificate" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_sertificates_pk" type="pk-constr" table="public.tbl_node_sertificates">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_sertificates" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="2040" y="40"/>
+	<column name="id">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="sertification_number" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Номер сертификата]]></comment>
+	</column>
+	<column name="sertification_valid_date" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Срок действия сертификата]]></comment>
+	</column>
+</table>
+
+<table name="tbl_software" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="2240" y="200"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="software_list" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Состав пакета ПО]]></comment>
+	</column>
+	<column name="software_version" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Версия ПО]]></comment>
+	</column>
+	<column name="software_crc" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[CRC - sums]]></comment>
+	</column>
+	<constraint name="tbl_software_pk" type="pk-constr" table="public.tbl_software">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_soft" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="1900" y="180"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_iss_node" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_soft" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_soft_pk" type="pk-constr" table="public.tbl_node_soft">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_node_security" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[атрибуты политик безопасности]]></comment>
+	<position x="2160" y="500"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="confidential_levels">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_iss_node">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="tbl_node_security_pk" type="pk-constr" table="public.tbl_node_security">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_object_building_type" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<position x="1740" y="700"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="tbl_object_building_type_pk" type="pk-constr" table="public.tbl_object_building_type">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_venting" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Системы вентиляции по этажам]]></comment>
+	<position x="540" y="480"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_floor">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="venting">
+		<type name="xml" length="0"/>
+		<comment><![CDATA[Система вентиляции на этаже]]></comment>
+	</column>
+	<constraint name="tbl_venting_pk" type="pk-constr" table="public.tbl_venting">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_heating" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Система отопления на этаже]]></comment>
+	<position x="900" y="1080"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер здания]]></comment>
+	</column>
+	<column name="id_floor" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер этажа]]></comment>
+	</column>
+	<column name="heating">
+		<type name="xml" length="0"/>
+		<comment><![CDATA[Система отопления на этаже]]></comment>
+	</column>
+	<constraint name="tbl_heating_pk" type="pk-constr" table="public.tbl_heating">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_cond" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<position x="900" y="1260"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_building" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_floor" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="conditioning">
+		<type name="xml" length="0"/>
+		<comment><![CDATA[Система кондиционирования на этаже]]></comment>
+	</column>
+	<constraint name="tbl_cond_pk" type="pk-constr" table="public.tbl_cond">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_equipment_distr" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Размещение ТКО по помещениям]]></comment>
+	<position x="300" y="1040"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_room" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_equipment_module" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер модуля]]></comment>
+	</column>
+	<column name="id_board" not-null="true">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер шкафа]]></comment>
+	</column>
+	<column name="id_shelf">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер полки в шкафу]]></comment>
+	</column>
+	<column name="id_board_place">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер места модуля в шкафу]]></comment>
+	</column>
+	<column name="id_basket">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер места модуля в корзине]]></comment>
+	</column>
+	<constraint name="tbl_equipment_distr_pk" type="pk-constr" table="public.tbl_equipment_distr">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_teleсom_submodules" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<position x="1240" y="1620"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="submodule_name">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Наименование субмодуля]]></comment>
+	</column>
+	<column name="submodule_purpose">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Назначение субмодуля ТКО]]></comment>
+	</column>
+	<constraint name="tbl_telekom_submodules_pk" type="pk-constr" table="public.&quot;tbl_teleсom_submodules&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_submodules_distr" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Размещение субмодулей]]></comment>
+	<position x="960" y="1460"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_submodule">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер субмодуля]]></comment>
+	</column>
+	<column name="place_number">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер места]]></comment>
+	</column>
+	<column name="id_module">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[Номер модуля]]></comment>
+	</column>
+	<constraint name="tbl_submodules_distr_pk" type="pk-constr" table="public.tbl_submodules_distr">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tbl_event_log" layer="0" collapse-mode="2" rls-enabled="true" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<comment><![CDATA[Журнал событий на узле.]]></comment>
+	<position x="860" y="1820"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="event_time" not-null="true">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="event_type" not-null="true" default-value="0">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[Тип события, как-то сообщение (notice), предупреждение (warning) ошибка (exception)]]></comment>
+	</column>
+	<column name="id_room">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="event_description">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Подробное описание события]]></comment>
+	</column>
+	<constraint name="pk_event_log" type="pk-constr" table="public.tbl_event_log">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_well" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_well_shaft" table="public.tbl_linear_part_vols">
+	<columns names="id_well" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_regenerator" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_regenerator" table="public.tbl_linear_part_vols">
+	<columns names="id_regenerator" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_vols" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_linear_part_vols" table="public.tbl_stationary_part_vols">
+	<columns names="id_vols" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_stationary_part_vols">
+	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_fire_security_alarm">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_iss_objects" table="public.tbl_object_building">
+	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object_building_type" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building_type" table="public.tbl_object_building">
+	<columns names="id_building_type" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object_buildings" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_rooms">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_type" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_object_type" table="public.tbl_iss_objects">
+	<columns names="id_iss_object_type" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjacent_objects">
+	<columns names="id_iss_adjacent_object1" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_adjucent_object" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_object_adjacent_objects">
+	<columns names="id_iss_adjacent_object2" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_state" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_state_tce" table="public.tbl_telecom_equipment">
+	<columns names="id_state" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_iss_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_objects" table="public.tbl_iss_node">
+	<columns names="id_iss_object" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node_type" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_node_type" table="public.tbl_iss_node">
+	<columns names="id_node_type" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_electrical_systems">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_electrical_system" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_systems" table="public.tbl_electrical_shield">
+	<columns names="id_electrical_system" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_electrical_system" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_systems" table="public.tbl_electrical_transformator">
+	<columns names="id_electrical_system" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_shield" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_shield" table="public.tbl_electric_shield_transform">
+	<columns names="id_shield" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_transform" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_electrical_transformator" table="public.tbl_electric_shield_transform">
+	<columns names="id_transformator" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_object_building" table="public.tbl_grounding_system">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_iss_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_iss_node" table="public.tbl_node_sertificates">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_sertification" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_sertificates" table="public.tbl_node_sertificates">
+	<columns names="id_sertificate" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_node" table="public.tbl_node_soft">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_soft" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_software" table="public.tbl_node_soft">
+	<columns names="id_soft" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_iss_node" table="public.tbl_node_security">
+	<columns names="id_iss_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building" table="public.tbl_venting">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building" table="public.tbl_heating">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_building" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_object_building" table="public.tbl_cond">
+	<columns names="id_building" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_room" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_rooms" table="public.tbl_equipment_distr">
+	<columns names="id_room" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_equipment" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_telecom_equipment" table="public.tbl_equipment_distr">
+	<columns names="id_equipment_module" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_submodule" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.&quot;tbl_teleсom_submodules&quot;" table="public.tbl_submodules_distr">
+	<columns names="id_submodule" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_module" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="RESTRICT" del-action="RESTRICT" ref-table="public.tbl_telecom_equipment" table="public.tbl_submodules_distr">
+	<columns names="id_module" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_room" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tbl_rooms" table="public.tbl_event_log">
+	<columns names="id_room" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_tbl_linear_part_vols_tbl_well_shaft" type="relfk" layer="0"
+	 src-table="public.tbl_linear_part_vols"
+	 dst-table="public.tbl_well_shaft" reference-fk="fk_well"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_linear_part_vols_tbl_regenerator" type="relfk" layer="0"
+	 src-table="public.tbl_linear_part_vols"
+	 dst-table="public.tbl_regenerator" reference-fk="fk_regenerator"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_stationary_part_vols_tbl_linear_part_vols" type="relfk" layer="0"
+	 src-table="public.tbl_stationary_part_vols"
+	 dst-table="public.tbl_linear_part_vols" reference-fk="fk_vols"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_rooms_tbl_object_buildings" type="relfk" layer="0"
+	 src-table="public.tbl_rooms"
+	 dst-table="public.tbl_object_building" reference-fk="fk_object_buildings"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_object_buildings_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_object_building"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_object_adjucent_objects_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_iss_object_adjacent_objects"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_object_adjucent_objects_tbl_iss_objects1" type="relfk" layer="0"
+	 src-table="public.tbl_iss_object_adjacent_objects"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_adjucent_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_fire_security_alarm_tbl_object_buildings" type="relfk" layer="0"
+	 src-table="public.tbl_fire_security_alarm"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_node_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_iss_node"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_iss_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electrical_systems_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_electrical_systems"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electrical_shield_tbl_electrical_systems" type="relfk" layer="0"
+	 src-table="public.tbl_electrical_shield"
+	 dst-table="public.tbl_electrical_systems" reference-fk="fk_electrical_system"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electrical_transform_tbl_electrical_systems" type="relfk" layer="0"
+	 src-table="public.tbl_electrical_transformator"
+	 dst-table="public.tbl_electrical_systems" reference-fk="fk_electrical_system"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electric_shield_transform_tbl_electrical_shield" type="relfk" layer="0"
+	 src-table="public.tbl_electric_shield_transform"
+	 dst-table="public.tbl_electrical_shield" reference-fk="fk_shield"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_electric_shield_transform_tbl_electrical_transform" type="relfk" layer="0"
+	 src-table="public.tbl_electric_shield_transform"
+	 dst-table="public.tbl_electrical_transformator" reference-fk="fk_transform"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_grounding_system_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_grounding_system"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_fire_alarm_room_device_tbl_state_tko" type="relfk" layer="0"
+	 src-table="public.tbl_telecom_equipment"
+	 dst-table="public.tbl_state_tce" reference-fk="fk_state"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_stationary_part_vols_tbl_iss_objects" type="relfk" layer="0"
+	 src-table="public.tbl_stationary_part_vols"
+	 dst-table="public.tbl_iss_objects" reference-fk="fk_object"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_objects_tbl_iss_object_type" type="relfk" layer="0"
+	 src-table="public.tbl_iss_objects"
+	 dst-table="public.tbl_iss_object_type" reference-fk="fk_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_iss_node_tbl_iss_node_type" type="relfk" layer="0"
+	 src-table="public.tbl_iss_node"
+	 dst-table="public.tbl_iss_node_type" reference-fk="fk_node_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_sertificates_tbl_sertificates" type="relfk" layer="0"
+	 src-table="public.tbl_node_sertificates"
+	 dst-table="public.tbl_sertificates" reference-fk="fk_sertification"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_soft_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_soft"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_soft_tbl_software" type="relfk" layer="0"
+	 src-table="public.tbl_node_soft"
+	 dst-table="public.tbl_software" reference-fk="fk_soft"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_node_security_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_security"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_object_building_tbl_object_building_type" type="relfk" layer="0"
+	 src-table="public.tbl_object_building"
+	 dst-table="public.tbl_object_building_type" reference-fk="fk_object_building_type"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_venting_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_venting"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_heating_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_heating"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_cond_tbl_object_building" type="relfk" layer="0"
+	 src-table="public.tbl_cond"
+	 dst-table="public.tbl_object_building" reference-fk="fk_building"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_equipment_distr_tbl_rooms" type="relfk" layer="0"
+	 src-table="public.tbl_equipment_distr"
+	 dst-table="public.tbl_rooms" reference-fk="fk_room"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_equipment_distr_tbl_telecom_equipment" type="relfk" layer="0"
+	 src-table="public.tbl_equipment_distr"
+	 dst-table="public.tbl_telecom_equipment" reference-fk="fk_equipment"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_submodules_distr_tbl_telekom_submodules" type="relfk" layer="0"
+	 src-table="public.tbl_submodules_distr"
+	 dst-table="public.&quot;tbl_teleсom_submodules&quot;" reference-fk="fk_submodule"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_submodules_distr_tbl_telecom_equipment" type="relfk" layer="0"
+	 src-table="public.tbl_submodules_distr"
+	 dst-table="public.tbl_telecom_equipment" reference-fk="fk_module"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tbl_node_sertificates_tbl_iss_node" type="relfk" layer="0"
+	 src-table="public.tbl_node_sertificates"
+	 dst-table="public.tbl_iss_node" reference-fk="fk_iss_node"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_tbl_event_log_tbl_rooms" type="relfk" layer="0"
+	 src-table="public.tbl_event_log"
+	 dst-table="public.tbl_rooms" reference-fk="fk_room"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
