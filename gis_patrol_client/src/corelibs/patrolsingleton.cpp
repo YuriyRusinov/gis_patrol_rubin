@@ -53,6 +53,13 @@ PatrolSingleton::PatrolSingleton( QObject* parent )
 PatrolSingleton::~PatrolSingleton() {
     qDebug() << __PRETTY_FUNCTION__;
     delete _tor;
+    delete _piof;
+    delete _pcatf;
+    delete _pParamF;
+    delete _pdbWriter;
+    delete _pdbLoader;
+    delete _pga;
+    delete _dataBase;
     _instance = nullptr;
 }
 
