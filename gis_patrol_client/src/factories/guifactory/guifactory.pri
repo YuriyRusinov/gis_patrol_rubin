@@ -7,5 +7,5 @@ HEADERS += \
 SOURCES += \
            pEntityFactory.cpp \
            pParamGuiFactory.cpp \
-           pCatGuifactory.cpp \
+           pCatGuiFactory.cpp \
            pIOGuiFactory.cpp

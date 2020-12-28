@@ -742,7 +742,7 @@ GISPatrolResult * GISPatrolPGDatabase::execSQL( const char * query, ... ) const
     va_list ap;
 
     va_start(ap, query);
-    s = s.vsprintf(query, ap);
+    s = s.vasprintf(query, ap);
     va_end(ap);
     
     return GISPatrolDatabase::execute(s);
