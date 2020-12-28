@@ -45,7 +45,7 @@ QString GISPatrolResult::getCellAsString( int row, int column, bool * ok ) const
     if(v.isValid() == false){
         if(ok)
             *ok = false; 
-        return QString::null;
+        return QString();
     }
     if(ok)
         *ok = true;
