@@ -21,4 +21,3 @@ add_subdirectory(patrolCommunications)
 add_subdirectory(factories/pgui)
 add_subdirectory(corelibs)
 add_subdirectory(factories/guifactory)
-
