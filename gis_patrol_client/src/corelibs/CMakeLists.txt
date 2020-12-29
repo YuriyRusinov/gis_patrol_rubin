@@ -26,7 +26,8 @@ include_directories(${PROJECT_SOURCE_DIR}
                     ${Qt5Gui_INCLUDE_DIRS}
                     ${PostgreSQL_INCLUDE_DIRS}
                     ${GSL_INCLUDE_DIRS}
-                    ../gis_patrolutils
+                    ${gis_patrolutils_INCLUDE_DIRS}
+                    #                    ../gis_patrolutils
                     ../dataaccess
                     ../factories/pgui
                     ../factories/guifactory
@@ -65,3 +66,10 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR}/../src/patrolCommunications)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets ${PostgreSQL_LIBRARIES} ${GSL_LIBRARIES} patrolCommunications guifactory)
+#target_include_directories(${PROJECT_NAME} INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/corelibs>)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/lib/${PROJECT_NAME}.so"
+  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}"
+)

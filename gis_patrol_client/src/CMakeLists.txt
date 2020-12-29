@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
+project(gis_patrol_src VERSION 1.0.0)
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -20,3 +22,5 @@ add_subdirectory(dataaccess)
 add_subdirectory(patrolCommunications)
 add_subdirectory(factories)
 add_subdirectory(corelibs)
+
+#target_link_libraries(gis_patrolutils dataaccess patrolCommunications factories corelibs)
