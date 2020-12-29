@@ -14,9 +14,7 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
 endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core REQUIRED)
 
-add_subdirectory(gis_patrolutils)
-add_subdirectory(dataaccess)
-add_subdirectory(patrolCommunications)
-add_subdirectory(factories)
-add_subdirectory(corelibs)
+add_subdirectory(pgui)
+add_subdirectory(guifactory)

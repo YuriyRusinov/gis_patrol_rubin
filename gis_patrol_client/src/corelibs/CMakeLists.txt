@@ -60,6 +60,8 @@ set(SOURCES
     ui/psettingsform.cpp
 )
 
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/../src)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/../src/patrolCommunications)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets ${PostgreSQL_LIBRARIES} ${GSL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets ${PostgreSQL_LIBRARIES} ${GSL_LIBRARIES} patrolCommunications guifactory)
