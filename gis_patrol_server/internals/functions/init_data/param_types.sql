@@ -6,7 +6,7 @@ insert into tbl_param_views (id, name) values (5, 'строка текста');
 insert into tbl_param_views (id, name) values (6, 'интервал');
 insert into tbl_param_views (id, name) values (7, 'набор элементов');
 insert into tbl_param_views (id, name) values (8, 'поле текста');
-insert into tbl_param_views (id, name) values (9, 'строка текста фиксированнрой длины');
+insert into tbl_param_views (id, name) values (9, 'строка текста фиксированной длины');
 insert into tbl_param_views (id, name) values (10, 'Изображение JPG');
 insert into tbl_param_views (id, name) values (11, 'Выбор цвета');
 insert into tbl_param_views (id, name) values (12, 'Набор пространственных точек');
