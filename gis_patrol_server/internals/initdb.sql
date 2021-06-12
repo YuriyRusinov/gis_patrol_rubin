@@ -14,7 +14,7 @@ commit;
 
 begin;
 \i ./schema/all_tables.sql
-create extension if not exists postgis;
+/*create extension if not exists postgis;
 create extension if not exists postgis_raster;
 create extension if not exists postgis_topology;
 create extension if not exists fuzzystrmatch;
@@ -22,6 +22,7 @@ create extension if not exists postgis_tiger_geocoder;
 create extension if not exists address_standardizer;
 create extension if not exists address_standardizer_data_us;
 create view v_spatial_ref_sys as select srid as id, proj4text, srtext from spatial_ref_sys order by 1;
+*/
 \i ./schema/maclabel.sql
 commit;
 
