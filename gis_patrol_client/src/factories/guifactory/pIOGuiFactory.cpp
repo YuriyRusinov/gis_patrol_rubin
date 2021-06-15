@@ -203,6 +203,7 @@ void pIOGuiFactory::saveIORecToDb( QSharedPointer< pRecordCopy > pRec, QSharedPo
     if( pRec.isNull() || pIO.isNull() )
         return;
     int res( 0 );
+    qDebug() << __PRETTY_FUNCTION__;
     if( pRec->getId() < 0 ) {
         res = _dbWriter->insertRecord( pRec, pIO );
     }

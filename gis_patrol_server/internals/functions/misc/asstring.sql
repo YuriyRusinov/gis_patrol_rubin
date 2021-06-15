@@ -387,6 +387,7 @@ end
 $BODY$
 language 'plpgsql';
 
+/*
 create or replace function asString(geometry, boolean) returns varchar as
 $BODY$
 declare
@@ -408,7 +409,7 @@ begin
 end
 $BODY$
 language 'plpgsql';
-
+*/
 
 create or replace function asString(BIT, boolean) returns varchar as
 $BODY$

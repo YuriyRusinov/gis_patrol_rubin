@@ -157,6 +157,7 @@ void pCIOEditor::slotParamIORecChanged( QSharedPointer< pParamValue > pValue ) {
 }
 
 void pCIOEditor::slotSaveRecord() {
+    qDebug() << __PRETTY_FUNCTION__;
     if( _isIO ) {
         qDebug() << __PRETTY_FUNCTION__ << _pRecord->getId() << _pIO->getId();
         emit saveRecordIO( _pRecord, _pIO );

@@ -15,10 +15,10 @@
 
 -- object: postgis | type: EXTENSION --
 -- DROP EXTENSION IF EXISTS postgis CASCADE;
-CREATE EXTENSION postgis
-WITH SCHEMA public;
+--CREATE EXTENSION postgis
+--WITH SCHEMA public;
 -- ddl-end --
-COMMENT ON EXTENSION postgis IS E'PostGIS geometry, geography, and raster spatial types and functions';
+--COMMENT ON EXTENSION postgis IS E'PostGIS geometry, geography, and raster spatial types and functions';
 -- ddl-end --
 
 -- object: public.tbl_communication_categories | type: TABLE --
