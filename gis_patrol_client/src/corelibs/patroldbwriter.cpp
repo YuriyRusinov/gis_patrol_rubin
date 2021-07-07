@@ -465,8 +465,10 @@ qint64 pDBWriter::getNextSeq( QString tableName, QString columnName ) const {
 }
 
 qint64 pDBWriter::insertRecord( QSharedPointer< pRecordCopy > pRecord, QSharedPointer< pIObject > pIO ) const {
-    if( pIO.isNull() || pRecord.isNull() )
+    if( pIO.isNull() || pRecord.isNull() ) {
+        qDebug() << __PRETTY_FUNCTION__ << "Record or reference is null";
         return -1;
+    }
     QString tName = pIO->getTableName();
     QString exQuery;
     QString sql_query = generateInsertRecQuery( pRecord, tName, exQuery );
